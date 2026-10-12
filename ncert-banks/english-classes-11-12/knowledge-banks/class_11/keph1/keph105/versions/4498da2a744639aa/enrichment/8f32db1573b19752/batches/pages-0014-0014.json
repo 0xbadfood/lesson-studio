@@ -1,0 +1,99 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    14
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 14,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "5.11.1 Elastic and Inelastic Collisions",
+          "5.11.2 Collisions in One Dimension"
+        ],
+        "page_summary": "The page defines elastic and inelastic collisions, explaining that while linear momentum is always conserved, kinetic energy is not necessarily conserved. It derives the final velocities for a completely inelastic collision in one dimension (Eq. 5.22) and an elastic collision in one dimension (Eqs. 5.23-5.27). It concludes by analyzing two special cases for elastic collisions: equal masses and a dominant mass.",
+        "knowledge_points": [
+          "In all collisions, total linear momentum is conserved (initial momentum equals final momentum).",
+          "Mutual impulsive forces during collision cause changes in momentum: Δp1 = F12 Δt and Δp2 = F21 Δt.",
+          "According to Newton's third law, F12 = -F21, implying Δp1 + Δp2 = 0.",
+          "Total kinetic energy is not necessarily conserved in collisions; impact and deformation can generate heat and sound.",
+          "An elastic collision is one where the 'compressed spring' between masses regains its shape without energy loss, so initial kinetic energy equals final kinetic energy.",
+          "A completely inelastic collision is one where the two particles move together after the collision.",
+          "An inelastic collision is an intermediate case where deformation is partly relieved and some kinetic energy is lost.",
+          "For a completely inelastic collision in one dimension (θ1 = θ2 = 0), the final velocity is vf = (m1 / (m1 + m2)) v1i (Eq. 5.22).",
+          "The loss in kinetic energy for a completely inelastic collision is ΔK = (1/2) * (m1m2 / (m1 + m2)) * v1i^2.",
+          "For an elastic collision in one dimension, momentum conservation is m1v1i = m1v1f + m2v2f (Eq. 5.23) and kinetic energy conservation is m1v1i^2 = m1v1f^2 + m2v2f^2 (Eq. 5.24).",
+          "From the conservation equations, it follows that v2f = v1i + v1f (Eq. 5.25).",
+          "The final velocity of the first mass in an elastic collision is v1f = ((m1 - m2) / (m1 + m2)) v1i (Eq. 5.26).",
+          "The final velocity of the second mass in an elastic collision is v2f = (2m1 / (m1 + m2)) v1i (Eq. 5.27).",
+          "Case I (Equal masses): v1f = 0 and v2f = v1i. The first mass comes to rest and pushes off the second mass with its initial speed.",
+          "Case II (One mass dominates, m2 >> m1): v1f ~ -v1i and v2f ~ 0. The heavier mass is undisturbed while the lighter mass reverses its velocity."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Mathematical equations and text blocks",
+            "text": [
+              "Δp1 = F12 Δt",
+              "Δp2 = F21 Δt",
+              "Δp1 + Δp2 = 0",
+              "ΔK = 1/2 m1 v1i^2 - 1/2 (m1 + m2) vf^2",
+              "= 1/2 m1 v1i^2 - 1/2 (m1^2 / (m1 + m2)) v1i^2 [using Eq. (5.22)]",
+              "= 1/2 m1 v1i^2 [1 - m1 / (m1 + m2)]",
+              "= 1/2 (m1m2 / (m1 + m2)) v1i^2",
+              "m1v1i = m1v1f + m2v2f (5.23)",
+              "m1v1i^2 = m1v1f^2 + m2v2f^2 (5.24)",
+              "m1v1i (v2f - v1i) = m1v1f (v2f - v1f)",
+              "v2f (v1i - v1f) = v1i^2 - v1f^2",
+              "= (v1i - v1f)(v1i + v1f)",
+              "∴ v2f = v1i + v1f (5.25)",
+              "v1f = ((m1 - m2) / (m1 + m2)) v1i (5.26)",
+              "v2f = (2m1 / (m1 + m2)) v1i (5.27)",
+              "v1f = 0",
+              "v2f = v1i",
+              "v1f ~ -v1i",
+              "v2f ~ 0"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "Mathematical derivation of collision equations",
+            "educational_role": "Derives the final velocities for elastic and inelastic collisions",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "not_applicable"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Elastic and Inelastic Collisions",
+      "Collisions in One Dimension",
+      "Conservation of Momentum",
+      "Conservation of Kinetic Energy"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 14,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"5.11.1 Elastic and Inelastic Collisions\",\n        \"5.11.2 Collisions in One Dimension\"\n      ],\n      \"page_summary\": \"The page defines elastic and inelastic collisions, explaining that while linear momentum is always conserved, kinetic energy is not necessarily conserved. It derives the final velocities for a completely inelastic collision in one dimension (Eq. 5.22) and an elastic collision in one dimension (Eqs. 5.23-5.27). It concludes by analyzing two special cases for elastic collisions: equal masses and a dominant mass.\",\n      \"knowledge_points\": [\n        \"In all collisions, total linear momentum is conserved (initial momentum equals final momentum).\",\n        \"Mutual impulsive forces during collision cause changes in momentum: Δp1 = F12 Δt and Δp2 = F21 Δt.\",\n        \"According to Newton's third law, F12 = -F21, implying Δp1 + Δp2 = 0.\",\n        \"Total kinetic energy is not necessarily conserved in collisions; impact and deformation can generate heat and sound.\",\n        \"An elastic collision is one where the 'compressed spring' between masses regains its shape without energy loss, so initial kinetic energy equals final kinetic energy.\",\n        \"A completely inelastic collision is one where the two particles move together after the collision.\",\n        \"An inelastic collision is an intermediate case where deformation is partly relieved and some kinetic energy is lost.\",\n        \"For a completely inelastic collision in one dimension (θ1 = θ2 = 0), the final velocity is vf = (m1 / (m1 + m2)) v1i (Eq. 5.22).\",\n        \"The loss in kinetic energy for a completely inelastic collision is ΔK = (1/2) * (m1m2 / (m1 + m2)) * v1i^2.\",\n        \"For an elastic collision in one dimension, momentum conservation is m1v1i = m1v1f + m2v2f (Eq. 5.23) and kinetic energy conservation is m1v1i^2 = m1v1f^2 + m2v2f^2 (Eq. 5.24).\",\n        \"From the conservation equations, it follows that v2f = v1i + v1f (Eq. 5.25).\",\n        \"The final velocity of the first mass in an elastic collision is v1f = ((m1 - m2) / (m1 + m2)) v1i (Eq. 5.26).\",\n        \"The final velocity of the second mass in an elastic collision is v2f = (2m1 / (m1 + m2)) v1i (Eq. 5.27).\",\n        \"Case I (Equal masses): v1f = 0 and v2f = v1i. The first mass comes to rest and pushes off the second mass with its initial speed.\",\n        \"Case II (One mass dominates, m2 >> m1): v1f ~ -v1i and v2f ~ 0. The heavier mass is undisturbed while the lighter mass reverses its velocity.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Mathematical equations and text blocks\",\n          \"text\": [\n            \"Δp1 = F12 Δt\",\n            \"Δp2 = F21 Δt\",\n            \"Δp1 + Δp2 = 0\",\n            \"ΔK = 1/2 m1 v1i^2 - 1/2 (m1 + m2) vf^2\",\n            \"= 1/2 m1 v1i^2 - 1/2 (m1^2 / (m1 + m2)) v1i^2 [using Eq. (5.22)]\",\n            \"= 1/2 m1 v1i^2 [1 - m1 / (m1 + m2)]\",\n            \"= 1/2 (m1m2 / (m1 + m2)) v1i^2\",\n            \"m1v1i = m1v1f + m2v2f (5.23)\",\n            \"m1v1i^2 = m1v1f^2 + m2v2f^2 (5.24)\",\n            \"m1v1i (v2f - v1i) = m1v1f (v2f - v1f)\",\n            \"v2f (v1i - v1f) = v1i^2 - v1f^2\",\n            \"= (v1i - v1f)(v1i + v1f)\",\n            \"∴ v2f = v1i + v1f (5.25)\",\n            \"v1f = ((m1 - m2) / (m1 + m2)) v1i (5.26)\",\n            \"v2f = (2m1 / (m1 + m2)) v1i (5.27)\",\n            \"v1f = 0\",\n            \"v2f = v1i\",\n            \"v1f ~ -v1i\",\n            \"v2f ~ 0\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Mathematical derivation of collision equations\",\n          \"educational_role\": \"Derives the final velocities for elastic and inelastic collisions\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"not_applicable\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Elastic and Inelastic Collisions\",\n    \"Collisions in One Dimension\",\n    \"Conservation of Momentum\",\n    \"Conservation of Kinetic Energy\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 1467,
+    "prompt_tokens": 4079,
+    "total_tokens": 5546,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520466-T5KYKFA4DlyhLUQ82pZk",
+  "object": "chat.completion",
+  "created": 1791520466,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[\n{\"chapter\":1,\"title\":\"Sets\"},\n{\"chapter\":2,\"title\":\"Relations and Functions\"},\n{\"chapter\":3,\"title\":\"Trigonometric Functions\"},\n{\"chapter\":4,\"title\":\"Complex Numbers and Quadratic Equations\"},\n{\"chapter\":5,\"title\":\"Linear Inequalities\"},\n{\"chapter\":6,\"title\":\"Permutations and Combinations\"},\n{\"chapter\":7,\"title\":\"Binomial Theorem\"},\n{\"chapter\":8,\"title\":\"Sequences and Series\"},\n{\"chapter\":9,\"title\":\"Straight Lines\"},\n{\"chapter\":10,\"title\":\"Conic Sections\"},\n{\"chapter\":11,\"title\":\"Introduction to Three Dimensional Geometry\"},\n{\"chapter\":12,\"title\":\"Limits and Derivatives\"},\n{\"chapter\":13,\"title\":\"Statistics\"},\n{\"chapter\":14,\"title\":\"Probability\"}\n]}\n```",
+        "refusal": null,
+        "reasoning": "I'm recalling the standard chapter titles for the NCERT Class 11 Maths textbook, listing out each chapter name to use correctly.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm recalling the standard chapter titles for the NCERT Class 11 Maths textbook, listing out each chapter name to use correctly.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSywgKEAgSGAI4AUIIdGhpbmtpbmcSDMkf8PyTM2SLOOEAhhoMu4mP62V9WSLN2oFrIjC6p7r1R42wY4U6YHgOgPrvy8qhTvF6NkRwSJdYiupxc98f7REzkCM7rCJkNen6je0q6AffmCFLddJ/dN3WFd+/AacRiV8ZD1YtiZJkxZvzj+An5LMIktMgKSKHsWtG1gC0dbIDpoSN/3eEd0wAPw/g9x2hdEmF6uYA/hqHGVezJdgM1VAyGqzRmIyUh8xujuSQrdM54cpD+CermRp7qqnlMVGSsjcRgDdGHBvVDVOAGn2D1vBZ0gHfxdL2e4fkogXoglg75+eUZI4l6Lm5g61n2eCoifeIqoCWfC+6zBRqWH2DNocMmUabjWk17fgbb54wcnZJmQ0g+XasgsLRgn+tHHpGIA5naCp3Wcup5+qddNskV7XCVJ4Rk4A8ngnFPsKaIvH7RPDl/VgeilichsfEhyD5Njawb3Ti2z4WUcN2wQ/zoPWNFeJkpBdMTEizeSYfvMSnXHYqXqzu6GPEbXVT7Nn74WoFgrAIrbVgoXq3qFcaJzL5SfOeieR/9Bm1BUixs4ZJiMI3dVBIsIk09bj0xe+YjANUB6AGLqjvvohylCaC4Ig7KtaR90II10QrI6w7QZsp42SRgJ4pbegR7tex6I5ptfdIE9pguAFgjovBF6VNVgEUI4KB+p6RDYQfINE2pfRDh/K9zMJtN10OUCqAmz19+2Q6Uu4GHFA7Fd9DQ7slNoktwo98Yascv1dLCPQf+2+3bBxnlZkc4MMr8aHOR7diFDwO71PgykGkf/wgRGpxF/S5pywlpvZ4zWDLmfxwaNQlH05uKdCbnPOYOtLyLaPkcgj+KEC9Rayl5m8BrUHNYEyCOt8MGTQ+KCg8Yyw5erYj7n57cwShFEYPh/DSt4xRfLTboZ3N0iyb/PafnZC9iO2V8YiGxGQjSpAhk0P/2bakL1jsuatNSDKNT9mac4GafXvHsy7BFH6aBt6+T0peX00QKt3DKZz+g9Wag/D6kRMY3hdB9Wh8S9n3uOfArKQPVS58gP72ipA3vtwR6Qqk8ZNoSCTcP02HSV16DjGQdBGkjMxb3qjb7iuvQDeb83nvTma8qo9HngiEmoHO25G6caSHN8YdsQsInZNjRDmvZBO0MQv8EH3rnW1ZO9dUcERzt5x8nPnhOqZCSybIJFzHxnGbsY01UhD22YO6x59VXshzX3cMKgAXLeZz0Swj1oa0FNDT+QXBOy2L7+vzvi1ukxtnS7uw9Cr82YmR8rFRdqdHStHunxnCHzT5VRKHqh9Uetc6+tHKWFXA1MNtHqmaK/Lgok+C8FpOCbEUFSrDrwLgdA8GWEzcTGiAaK/9jaWQ/zCBNg/ozd0LUiN81hefQ4ZyRWvl5CCog3u8pOfMr1/AP39tBNXOQHjC9mbw6nQg09gEybNW3pEe90eY+sKoX6oi+ccw0JgGGAE=.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 5480,
+    "completion_tokens": 566,
+    "total_tokens": 6046,
+    "cost": 0.000831,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.000831,
+      "upstream_inference_prompt_cost": 0.000548,
+      "upstream_inference_completions_cost": 0.000283
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 228,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 4.52
+}

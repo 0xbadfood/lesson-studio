@@ -1,0 +1,72 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    14
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 14,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "English",
+        "headings": [
+          "5.11.1 Elastic and Inelastic Collisions",
+          "5.11.2 Collisions in One Dimension"
+        ],
+        "page_summary": "The page defines elastic and inelastic collisions, explaining that while linear momentum is always conserved, kinetic energy is not necessarily conserved. It derives the final velocities for a completely inelastic collision in one dimension (Eq. 5.22) and calculates the resulting loss in kinetic energy. It then derives the final velocities for an elastic collision in one dimension (Eqs. 5.23-5.27) and discusses special cases where masses are equal or one mass dominates.",
+        "knowledge_points": [
+          "In all collisions, total linear momentum is conserved.",
+          "The mutual impulsive forces acting over the collision time cause a change in momenta.",
+          "From Newton's third law, the total impulse on the first object is equal and opposite to that on the second.",
+          "Total kinetic energy is not necessarily conserved in collisions.",
+          "An elastic collision is one where the deformation is relieved without loss in energy.",
+          "A completely inelastic collision is one where the two particles move together after the collision.",
+          "An inelastic collision is an intermediate case where some initial kinetic energy is lost.",
+          "For a completely inelastic collision in 1D, the final velocity is given by Eq. (5.22).",
+          "The loss in kinetic energy for a completely inelastic collision is a positive quantity.",
+          "For an elastic collision in 1D, the final velocities are given by Eqs. (5.26) and (5.27).",
+          "If two masses are equal in an elastic collision, the first mass comes to rest and the second moves with the initial speed.",
+          "If one mass dominates in an elastic collision, the heavier mass is undisturbed and the lighter mass reverses its velocity."
+        ],
+        "embedded_text": [],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A diagram illustrating a completely inelastic collision in one dimension, showing two masses m1 and m2 moving with velocities v1i and v2i (where v2i is 0) before collision and moving together with velocity vf after collision.",
+            "educational_role": "Illustrates the physical setup for the derivation of the completely inelastic collision equations.",
+            "evidence": "depicted",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Elastic and Inelastic Collisions",
+      "Collisions in One Dimension",
+      "Momentum Conservation",
+      "Kinetic Energy Loss",
+      "Elastic Collision Equations",
+      "Inelastic Collision Equations",
+      "Special Cases of Elastic Collisions"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\"vision_input_worked\": true, \"pages\": [{\"page\": 14, \"readability\": \"readable\", \"native_text_alignment\": \"complete\", \"ocr_needed\": false, \"ocr_reason\": null, \"detected_language\": \"English\", \"headings\": [\"5.11.1 Elastic and Inelastic Collisions\", \"5.11.2 Collisions in One Dimension\"], \"page_summary\": \"The page defines elastic and inelastic collisions, explaining that while linear momentum is always conserved, kinetic energy is not necessarily conserved. It derives the final velocities for a completely inelastic collision in one dimension (Eq. 5.22) and calculates the resulting loss in kinetic energy. It then derives the final velocities for an elastic collision in one dimension (Eqs. 5.23-5.27) and discusses special cases where masses are equal or one mass dominates.\", \"knowledge_points\": [\"In all collisions, total linear momentum is conserved.\", \"The mutual impulsive forces acting over the collision time cause a change in momenta.\", \"From Newton's third law, the total impulse on the first object is equal and opposite to that on the second.\", \"Total kinetic energy is not necessarily conserved in collisions.\", \"An elastic collision is one where the deformation is relieved without loss in energy.\", \"A completely inelastic collision is one where the two particles move together after the collision.\", \"An inelastic collision is an intermediate case where some initial kinetic energy is lost.\", \"For a completely inelastic collision in 1D, the final velocity is given by Eq. (5.22).\", \"The loss in kinetic energy for a completely inelastic collision is a positive quantity.\", \"For an elastic collision in 1D, the final velocities are given by Eqs. (5.26) and (5.27).\", \"If two masses are equal in an elastic collision, the first mass comes to rest and the second moves with the initial speed.\", \"If one mass dominates in an elastic collision, the heavier mass is undisturbed and the lighter mass reverses its velocity.\"], \"embedded_text\": [], \"embedded_text_complete\": true, \"human_visual_review_needed\": false, \"visuals\": [{\"kind\": \"diagram\", \"description\": \"A diagram illustrating a completely inelastic collision in one dimension, showing two masses m1 and m2 moving with velocities v1i and v2i (where v2i is 0) before collision and moving together with velocity vf after collision.\", \"educational_role\": \"Illustrates the physical setup for the derivation of the completely inelastic collision equations.\", \"evidence\": \"depicted\", \"confidence\": \"high\", \"text_dependency\": \"none\", \"recreation_route\": \"deterministic_renderer\"}]}], \"batch_topics\": [\"Elastic and Inelastic Collisions\", \"Collisions in One Dimension\", \"Momentum Conservation\", \"Kinetic Energy Loss\", \"Elastic Collision Equations\", \"Inelastic Collision Equations\", \"Special Cases of Elastic Collisions\"], \"uncertainties\": []}",
+  "usage": {
+    "prompt_tokens": 3603,
+    "total_tokens": 4255,
+    "completion_tokens": 652,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

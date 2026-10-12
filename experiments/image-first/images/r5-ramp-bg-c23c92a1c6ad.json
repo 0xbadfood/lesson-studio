@@ -1,0 +1,17 @@
+{
+  "name": "r5-ramp-bg",
+  "prompt": "Edit the reference illustration: remove the blue ball and the magenta dashed line completely. Keep the ramp, its shadow, the plain background and the framing exactly identical.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/images/r2-ramp-eecfb70032ec.png"
+  ],
+  "seconds": 90.6,
+  "job": {
+    "inference_seconds": 89.77933145899442,
+    "peak_allocated_gb": 19.09231662750244,
+    "seed": 12345
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    6
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 6,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "5.6 THE WORK-ENERGY THEOREM FOR A VARIABLE FORCE"
+        ],
+        "page_summary": "This page concludes the discussion on work done by a variable force using graphical representation (Fig. 5.3) and provides a worked example (Example 5.5) involving a woman pushing a trunk. It then derives the Work-Energy Theorem for a variable force in one dimension, showing that the change in kinetic energy equals the integral of force over displacement.",
+        "knowledge_points": [
+          "The work done by a variable force is equal to the area under the force-displacement curve.",
+          "Example 5.5: A woman applies a force of 100 N for 10 m, then the force reduces linearly to 50 N over the next 10 m (total 20 m). The frictional force is constant at 50 N.",
+          "The work done by the applied force is calculated as the area of a rectangle (100 N * 10 m) plus the area of a trapezium (average of 100 N and 50 N * 10 m), totaling 1750 J.",
+          "The work done by the frictional force is negative because it opposes motion, calculated as -50 N * 20 m = -1000 J.",
+          "The Work-Energy Theorem for a variable force is derived by integrating Newton's Second Law (F = ma) with respect to displacement.",
+          "The theorem states that the change in kinetic energy (Kf - Ki) is equal to the work done (W) or the integral of force over displacement."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Fig. 5.3 (b) Graph of Force F(x) vs Displacement x",
+            "text": [
+              "F(x)",
+              "Work",
+              "0",
+              "xi",
+              "xf",
+              "x"
+            ]
+          },
+          {
+            "visual_description": "Fig. 5.4 Graph of Force F and frictional force f vs Displacement x",
+            "text": [
+              "Force (N)",
+              "100",
+              "50",
+              "0",
+              "f = -50",
+              "B",
+              "F",
+              "C",
+              "A",
+              "D",
+              "E",
+              "G",
+              "H",
+              "I",
+              "10 m",
+              "20 m",
+              "x"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "Fig. 5.3 (b) shows a graph of a varying force F(x) against displacement x. The area under the curve between xi and xf is shaded and labeled 'Work'.",
+            "educational_role": "Illustrates the concept that work done by a variable force is the area under the force-displacement curve.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "diagram",
+            "description": "Fig. 5.4 is a graph plotting the applied force F (blue line) and the opposing frictional force f (dashed line) against displacement x. The applied force is constant at 100 N from 0 to 10 m, then decreases linearly to 50 N at 20 m. The frictional force is constant at -50 N. The areas under the curves are marked with points A, B, C, D, E, G, H, I.",
+            "educational_role": "Visualizes the specific force profile for Example 5.5, allowing the calculation of work as the area of geometric shapes (rectangle and trapezium).",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work done by variable force",
+      "Work-Energy Theorem derivation",
+      "Graphical representation of work"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 6,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"5.6 THE WORK-ENERGY THEOREM FOR A VARIABLE FORCE\"\n      ],\n      \"page_summary\": \"This page concludes the discussion on work done by a variable force using graphical representation (Fig. 5.3) and provides a worked example (Example 5.5) involving a woman pushing a trunk. It then derives the Work-Energy Theorem for a variable force in one dimension, showing that the change in kinetic energy equals the integral of force over displacement.\",\n      \"knowledge_points\": [\n        \"The work done by a variable force is equal to the area under the force-displacement curve.\",\n        \"Example 5.5: A woman applies a force of 100 N for 10 m, then the force reduces linearly to 50 N over the next 10 m (total 20 m). The frictional force is constant at 50 N.\",\n        \"The work done by the applied force is calculated as the area of a rectangle (100 N * 10 m) plus the area of a trapezium (average of 100 N and 50 N * 10 m), totaling 1750 J.\",\n        \"The work done by the frictional force is negative because it opposes motion, calculated as -50 N * 20 m = -1000 J.\",\n        \"The Work-Energy Theorem for a variable force is derived by integrating Newton's Second Law (F = ma) with respect to displacement.\",\n        \"The theorem states that the change in kinetic energy (Kf - Ki) is equal to the work done (W) or the integral of force over displacement.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Fig. 5.3 (b) Graph of Force F(x) vs Displacement x\",\n          \"text\": [\n            \"F(x)\",\n            \"Work\",\n            \"0\",\n            \"xi\",\n            \"xf\",\n            \"x\"\n          ]\n        },\n        {\n          \"visual_description\": \"Fig. 5.4 Graph of Force F and frictional force f vs Displacement x\",\n          \"text\": [\n            \"Force (N)\",\n            \"100\",\n            \"50\",\n            \"0\",\n            \"f = -50\",\n            \"B\",\n            \"F\",\n            \"C\",\n            \"A\",\n            \"D\",\n            \"E\",\n            \"G\",\n            \"H\",\n            \"I\",\n            \"10 m\",\n            \"20 m\",\n            \"x\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Fig. 5.3 (b) shows a graph of a varying force F(x) against displacement x. The area under the curve between xi and xf is shaded and labeled 'Work'.\",\n          \"educational_role\": \"Illustrates the concept that work done by a variable force is the area under the force-displacement curve.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        },\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Fig. 5.4 is a graph plotting the applied force F (blue line) and the opposing frictional force f (dashed line) against displacement x. The applied force is constant at 100 N from 0 to 10 m, then decreases linearly to 50 N at 20 m. The frictional force is constant at -50 N. The areas under the curves are marked with points A, B, C, D, E, G, H, I.\",\n          \"educational_role\": \"Visualizes the specific force profile for Example 5.5, allowing the calculation of work as the area of geometric shapes (rectangle and trapezium).\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n  ,\n  \"batch_topics\": [\n    \"Work done by variable force\",\n    \"Work-Energy Theorem derivation\",\n    \"Graphical representation of work\"\n  ]\n  ,\n  \"uncertainties\": []\n}",
+  "usage": {
+    "prompt_tokens": 3354,
+    "total_tokens": 4472,
+    "completion_tokens": 1118,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

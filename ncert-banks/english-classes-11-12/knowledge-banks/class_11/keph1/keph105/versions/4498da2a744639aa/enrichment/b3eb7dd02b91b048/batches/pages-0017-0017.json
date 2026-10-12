@@ -1,0 +1,65 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    17
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 17,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "English",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "POINTS TO PONDER"
+        ],
+        "page_summary": "This page contains a summary table of physical quantities related to work, energy, and power, followed by a section titled 'Points to Ponder' which lists nine conceptual clarifications regarding the Work-Energy theorem, scalar nature of work, Newton's laws, and conservation principles.",
+        "knowledge_points": [
+          "A table summarizes the symbol, dimensions, units, and remarks for Work, Kinetic energy, Potential energy, Mechanical energy, Spring constant, and Power.",
+          "Work is a scalar quantity that can be positive or negative, unlike mass and kinetic energy which are positive scalar quantities.",
+          "The work done by friction or viscous force on a moving body is negative.",
+          "For two bodies, the sum of mutual forces is zero (Newton's Third Law), but the sum of work done by these forces need not always cancel.",
+          "The Work-Energy (WE) theorem can be viewed as a scalar form of Newton's Second Law.",
+          "The WE theorem holds in all inertial frames and can be extended to non-inertial frames by including pseudoforces.",
+          "Potential energy is undetermined up to a constant; the zero point is a matter of choice (e.g., ground for gravitational, equilibrium position for spring).",
+          "Not every force has an associated potential energy; for example, friction does not because work done over a closed path is not zero.",
+          "During a collision, total linear momentum is conserved at each instant, but kinetic energy conservation applies only after the collision is over."
+        ],
+        "embedded_text": [],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "table",
+            "description": "A table with a blue header row listing physical quantities and their properties.",
+            "educational_role": "Summarizes the mathematical definitions, dimensions, and units for key concepts in the chapter.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Physical Quantities Table",
+      "Points to Ponder"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\"vision_input_worked\": true, \"pages\": [{\"page\": 17, \"readability\": \"readable\", \"native_text_alignment\": \"complete\", \"ocr_needed\": false, \"ocr_reason\": null, \"detected_language\": \"English\", \"headings\": [\"WORK, ENERGY AND POWER\", \"POINTS TO PONDER\"], \"page_summary\": \"This page contains a summary table of physical quantities related to work, energy, and power, followed by a section titled 'Points to Ponder' which lists nine conceptual clarifications regarding the Work-Energy theorem, scalar nature of work, Newton's laws, and conservation principles.\", \"knowledge_points\": [\"A table summarizes the symbol, dimensions, units, and remarks for Work, Kinetic energy, Potential energy, Mechanical energy, Spring constant, and Power.\", \"Work is a scalar quantity that can be positive or negative, unlike mass and kinetic energy which are positive scalar quantities.\", \"The work done by friction or viscous force on a moving body is negative.\", \"For two bodies, the sum of mutual forces is zero (Newton's Third Law), but the sum of work done by these forces need not always cancel.\", \"The Work-Energy (WE) theorem can be viewed as a scalar form of Newton's Second Law.\", \"The WE theorem holds in all inertial frames and can be extended to non-inertial frames by including pseudoforces.\", \"Potential energy is undetermined up to a constant; the zero point is a matter of choice (e.g., ground for gravitational, equilibrium position for spring).\", \"Not every force has an associated potential energy; for example, friction does not because work done over a closed path is not zero.\", \"During a collision, total linear momentum is conserved at each instant, but kinetic energy conservation applies only after the collision is over.\"], \"embedded_text\": [], \"embedded_text_complete\": true, \"human_visual_review_needed\": false, \"visuals\": [{\"kind\": \"table\", \"description\": \"A table with a blue header row listing physical quantities and their properties.\", \"educational_role\": \"Summarizes the mathematical definitions, dimensions, and units for key concepts in the chapter.\", \"evidence\": \"printed_text\", \"confidence\": \"high\", \"text_dependency\": \"none\", \"recreation_route\": \"deterministic_renderer\"}] }], \"batch_topics\": [\"Work, Energy and Power\", \"Physical Quantities Table\", \"Points to Ponder\"], \"uncertainties\": []}",
+  "usage": {
+    "prompt_tokens": 3081,
+    "total_tokens": 3604,
+    "completion_tokens": 523,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

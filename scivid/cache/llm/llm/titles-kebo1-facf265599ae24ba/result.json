@@ -1,0 +1,80 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "The Living World"
+    },
+    {
+      "chapter": 2,
+      "title": "Biological Classification"
+    },
+    {
+      "chapter": 3,
+      "title": "Plant Kingdom"
+    },
+    {
+      "chapter": 4,
+      "title": "Animal Kingdom"
+    },
+    {
+      "chapter": 5,
+      "title": "Morphology of Flowering Plants"
+    },
+    {
+      "chapter": 6,
+      "title": "Anatomy of Flowering Plants"
+    },
+    {
+      "chapter": 7,
+      "title": "Structural Organisation in Animals"
+    },
+    {
+      "chapter": 8,
+      "title": "Cell: The Unit of Life"
+    },
+    {
+      "chapter": 9,
+      "title": "Biomolecules"
+    },
+    {
+      "chapter": 10,
+      "title": "Cell Cycle and Cell Division"
+    },
+    {
+      "chapter": 11,
+      "title": "Photosynthesis in Higher Plants"
+    },
+    {
+      "chapter": 12,
+      "title": "Respiration in Plants"
+    },
+    {
+      "chapter": 13,
+      "title": "Plant Growth and Development"
+    },
+    {
+      "chapter": 14,
+      "title": "Breathing and Exchange of Gases"
+    },
+    {
+      "chapter": 15,
+      "title": "Body Fluids and Circulation"
+    },
+    {
+      "chapter": 16,
+      "title": "Excretory Products and their Elimination"
+    },
+    {
+      "chapter": 17,
+      "title": "Locomotion and Movement"
+    },
+    {
+      "chapter": 18,
+      "title": "Neural Control and Coordination"
+    },
+    {
+      "chapter": 19,
+      "title": "Chemical Coordination and Integration"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "r4-orbit-bg",
+  "prompt": "Edit the reference illustration: remove the red stone and the string completely. Keep the hand, the background and the framing exactly identical.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/paths/r2-orbit-clean.png"
+  ],
+  "seconds": 88.3,
+  "job": {
+    "inference_seconds": 86.62780483199458,
+    "peak_allocated_gb": 19.09152126312256,
+    "seed": 12345
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "chapters": [
+    {
+      "chapter": 8,
+      "title": "Mechanical Properties of Solids"
+    },
+    {
+      "chapter": 9,
+      "title": "Mechanical Properties of Fluids"
+    },
+    {
+      "chapter": 10,
+      "title": "Thermal Properties of Matter"
+    },
+    {
+      "chapter": 11,
+      "title": "Thermodynamics"
+    },
+    {
+      "chapter": 12,
+      "title": "Kinetic Theory"
+    },
+    {
+      "chapter": 13,
+      "title": "Oscillations"
+    },
+    {
+      "chapter": 14,
+      "title": "Waves"
+    }
+  ]
+}

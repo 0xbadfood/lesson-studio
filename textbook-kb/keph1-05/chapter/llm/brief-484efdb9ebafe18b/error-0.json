@@ -1,0 +1,4 @@
+{
+  "type": "ValueError",
+  "error": "T2: the quote \"A.B = Ax Bx + Ay By + Az Bz\" is not on page(s) [2] or next to them; copy 4-25 consecutive words of prose exactly as printed (not an equation); T3: the quote \"Find the angle between force F = (3 i + 4 j - 5 k) unit and displacement\" is not on page(s) [2] or next to them; copy 4-25 consecutive words of prose exactly as printed (not an equation)"
+}

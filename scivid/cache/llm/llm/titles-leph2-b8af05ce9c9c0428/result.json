@@ -1,0 +1,28 @@
+{
+  "chapters": [
+    {
+      "chapter": 9,
+      "title": "Ray Optics and Optical Instruments"
+    },
+    {
+      "chapter": 10,
+      "title": "Wave Optics"
+    },
+    {
+      "chapter": 11,
+      "title": "Dual Nature of Radiation and Matter"
+    },
+    {
+      "chapter": 12,
+      "title": "Atoms"
+    },
+    {
+      "chapter": 13,
+      "title": "Nuclei"
+    },
+    {
+      "chapter": 14,
+      "title": "Semiconductor Electronics: Materials, Devices and Simple Circuits"
+    }
+  ]
+}

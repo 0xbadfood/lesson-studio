@@ -1,0 +1,117 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    2
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 2,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "PHYSICS"
+        ],
+        "page_summary": "This page defines the scalar (dot) product of two vectors, A and B, as A·B = AB cos θ. It explains the geometric interpretation of the dot product as the product of the magnitude of one vector and the projection of the other onto it. The page derives the component form of the dot product (A·B = Ax Bx + Ay By + Az Bz) and lists its properties, including commutativity and distributivity. It also provides the dot products of unit vectors and includes a worked example (Example 5.1) calculating the angle between two force/displacement vectors and the projection of one on the other. A figure illustrates the geometric projections involved in the scalar product.",
+        "knowledge_points": [
+          "The scalar product of two vectors A and B is defined as A·B = AB cos θ, where θ is the angle between them.",
+          "The scalar product is a scalar quantity, not a vector.",
+          "Geometrically, A·B is the product of the magnitude of A and the projection of B onto A (B cos θ), or the product of the magnitude of B and the projection of A onto B (A cos θ).",
+          "The scalar product follows the commutative law: A·B = B·A.",
+          "The scalar product obeys the distributive law: A·(B + C) = A·B + A·C.",
+          "For a real number λ, A·(λB) = λ(A·B).",
+          "The dot product of a vector with itself is the square of its magnitude: A·A = A² = Ax² + Ay² + Az².",
+          "The dot product of two perpendicular vectors is zero: A·B = 0 if A and B are perpendicular.",
+          "For unit vectors i, j, k: i·i = j·j = k·k = 1, and i·j = j·k = k·i = 0.",
+          "The component form of the scalar product is A·B = Ax Bx + Ay By + Az Bz.",
+          "Example 5.1 calculates the angle between F = (3i + 4j - 5k) and d = (5i + 4j + 3k) as cos⁻¹(0.32), and the projection of F on d as 16/√50."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Figure 5.1(a): Diagram showing two vectors A and B originating from a common point, with the angle θ between them.",
+            "text": [
+              "A",
+              "B",
+              "θ"
+            ]
+          },
+          {
+            "visual_description": "Figure 5.1(b): Diagram showing vector B projected onto vector A, with the projection labeled B cos θ.",
+            "text": [
+              "A",
+              "B",
+              "θ",
+              "B cos θ"
+            ]
+          },
+          {
+            "visual_description": "Figure 5.1(c): Diagram showing vector A projected onto vector B, with the projection labeled A cos θ.",
+            "text": [
+              "A",
+              "B",
+              "θ",
+              "A cos θ"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "Figure 5.1(a): Shows two vectors A and B originating from a common point, with the angle θ between them. This illustrates the definition of the scalar product A·B = AB cos θ.",
+            "educational_role": "Illustrates the geometric definition of the scalar product of two vectors.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "diagram",
+            "description": "Figure 5.1(b): Shows vector B projected onto vector A. The projection is labeled B cos θ. This illustrates the geometric interpretation of the scalar product as the product of the magnitude of A and the projection of B onto A.",
+            "educational_role": "Illustrates the projection of vector B onto vector A, which is a key component of the scalar product.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "diagram",
+            "description": "Figure 5.1(c): Shows vector A projected onto vector B. The projection is labeled A cos θ. This illustrates the geometric interpretation of the scalar product as the product of the magnitude of B and the projection of A onto B.",
+            "educational_role": "Illustrates the projection of vector A onto vector B, which is an alternative geometric interpretation of the scalar product.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Scalar (dot) product of vectors",
+      "Geometric interpretation of scalar product",
+      "Component form of scalar product",
+      "Properties of scalar product (commutative, distributive)",
+      "Dot product of unit vectors",
+      "Projection of one vector onto another",
+      "Example: Finding angle between vectors and projection"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 2,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"PHYSICS\"\n      ],\n      \"page_summary\": \"This page defines the scalar (dot) product of two vectors, A and B, as A·B = AB cos θ. It explains the geometric interpretation of the dot product as the product of the magnitude of one vector and the projection of the other onto it. The page derives the component form of the dot product (A·B = Ax Bx + Ay By + Az Bz) and lists its properties, including commutativity and distributivity. It also provides the dot products of unit vectors and includes a worked example (Example 5.1) calculating the angle between two force/displacement vectors and the projection of one on the other. A figure illustrates the geometric projections involved in the scalar product.\",\n      \"knowledge_points\": [\n        \"The scalar product of two vectors A and B is defined as A·B = AB cos θ, where θ is the angle between them.\",\n        \"The scalar product is a scalar quantity, not a vector.\",\n        \"Geometrically, A·B is the product of the magnitude of A and the projection of B onto A (B cos θ), or the product of the magnitude of B and the projection of A onto B (A cos θ).\",\n        \"The scalar product follows the commutative law: A·B = B·A.\",\n        \"The scalar product obeys the distributive law: A·(B + C) = A·B + A·C.\",\n        \"For a real number λ, A·(λB) = λ(A·B).\",\n        \"The dot product of a vector with itself is the square of its magnitude: A·A = A² = Ax² + Ay² + Az².\",\n        \"The dot product of two perpendicular vectors is zero: A·B = 0 if A and B are perpendicular.\",\n        \"For unit vectors i, j, k: i·i = j·j = k·k = 1, and i·j = j·k = k·i = 0.\",\n        \"The component form of the scalar product is A·B = Ax Bx + Ay By + Az Bz.\",\n        \"Example 5.1 calculates the angle between F = (3i + 4j - 5k) and d = (5i + 4j + 3k) as cos⁻¹(0.32), and the projection of F on d as 16/√50.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Figure 5.1(a): Diagram showing two vectors A and B originating from a common point, with the angle θ between them.\",\n          \"text\": [\n            \"A\",\n            \"B\",\n            \"θ\"\n          ]\n        },\n        {\n          \"visual_description\": \"Figure 5.1(b): Diagram showing vector B projected onto vector A, with the projection labeled B cos θ.\",\n          \"text\": [\n            \"A\",\n            \"B\",\n            \"θ\",\n            \"B cos θ\"\n          ]\n        },\n        {\n          \"visual_description\": \"Figure 5.1(c): Diagram showing vector A projected onto vector B, with the projection labeled A cos θ.\",\n          \"text\": [\n            \"A\",\n            \"B\",\n            \"θ\",\n            \"A cos θ\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Figure 5.1(a): Shows two vectors A and B originating from a common point, with the angle θ between them. This illustrates the definition of the scalar product A·B = AB cos θ.\",\n          \"educational_role\": \"Illustrates the geometric definition of the scalar product of two vectors.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        },\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Figure 5.1(b): Shows vector B projected onto vector A. The projection is labeled B cos θ. This illustrates the geometric interpretation of the scalar product as the product of the magnitude of A and the projection of B onto A.\",\n          \"educational_role\": \"Illustrates the projection of vector B onto vector A, which is a key component of the scalar product.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        },\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Figure 5.1(c): Shows vector A projected onto vector B. The projection is labeled A cos θ. This illustrates the geometric interpretation of the scalar product as the product of the magnitude of B and the projection of A onto B.\",\n          \"educational_role\": \"Illustrates the projection of vector A onto vector B, which is an alternative geometric interpretation of the scalar product.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Scalar (dot) product of vectors\",\n    \"Geometric interpretation of scalar product\",\n    \"Component form of scalar product\",\n    \"Properties of scalar product (commutative, distributive)\",\n    \"Dot product of unit vectors\",\n    \"Projection of one vector onto another\",\n    \"Example: Finding angle between vectors and projection\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 1382,
+    "prompt_tokens": 3921,
+    "total_tokens": 5303,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

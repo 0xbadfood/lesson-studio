@@ -1,0 +1,84 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    4
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 4,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "5.4 KINETIC ENERGY"
+        ],
+        "page_summary": "The page defines work as the product of the force component in the direction of displacement and the magnitude of displacement (W = F.d). It lists three conditions under which no work is done: zero displacement, zero force, or perpendicular force and displacement. It explains that work can be positive or negative depending on the angle between force and displacement. The page introduces the joule (J) as the SI unit of work and energy, referencing James Prescott Joule. It includes a worked example (Example 5.3) calculating the work done by friction on a skidding cyclist and the work done by the cycle on the road. Finally, it introduces the concept of kinetic energy (K = 1/2 mv^2) as a scalar quantity.",
+        "knowledge_points": [
+          "Work is defined as W = (F cos θ)d = F.d (Eq. 5.4).",
+          "No work is done if displacement is zero (e.g., pushing a rigid wall, holding a weight stationary).",
+          "No work is done if the force is zero (e.g., block moving on a smooth table).",
+          "No work is done if force and displacement are perpendicular (e.g., gravity on a block moving horizontally, centripetal force in circular motion).",
+          "Work is positive if the angle θ is between 0° and 90°.",
+          "Work is negative if the angle θ is between 90° and 180° (e.g., friction opposing motion).",
+          "Work and energy have dimensions [ML²T⁻²].",
+          "The SI unit of work and energy is the joule (J), named after James Prescott Joule (1811-1869).",
+          "Example 5.3: A cyclist skidding to a stop in 10 m with a 200 N frictional force does -2000 J of work on the cycle.",
+          "The work done by the cycle on the road is zero because the road undergoes no displacement.",
+          "Newton's Third Law forces are equal and opposite, but the work done by them is not necessarily equal and opposite.",
+          "Kinetic energy K is defined as K = 1/2 m v.v = 1/2 mv² (Eq. 5.5).",
+          "Kinetic energy is a scalar quantity."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Table 5.1 Alternative Units of Work/Energy in J",
+            "text": [
+              "erg",
+              "10⁻⁷ J",
+              "electron volt (eV)",
+              "1.6×10⁻¹⁹ J",
+              "calorie (cal)",
+              "4.186 J",
+              "kilowatt hour (kWh)",
+              "3.6×10⁶ J"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "table",
+            "description": "Table 5.1 listing alternative units of work/energy and their equivalent values in Joules.",
+            "educational_role": "Provides conversion factors for common non-SI units of energy to the SI unit (Joule).",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work-Energy Theorem",
+      "Kinetic Energy",
+      "Units of Energy"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 4,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"5.4 KINETIC ENERGY\"\n      ],\n      \"page_summary\": \"The page defines work as the product of the force component in the direction of displacement and the magnitude of displacement (W = F.d). It lists three conditions under which no work is done: zero displacement, zero force, or perpendicular force and displacement. It explains that work can be positive or negative depending on the angle between force and displacement. The page introduces the joule (J) as the SI unit of work and energy, referencing James Prescott Joule. It includes a worked example (Example 5.3) calculating the work done by friction on a skidding cyclist and the work done by the cycle on the road. Finally, it introduces the concept of kinetic energy (K = 1/2 mv^2) as a scalar quantity.\",\n      \"knowledge_points\": [\n        \"Work is defined as W = (F cos θ)d = F.d (Eq. 5.4).\",\n        \"No work is done if displacement is zero (e.g., pushing a rigid wall, holding a weight stationary).\",\n        \"No work is done if the force is zero (e.g., block moving on a smooth table).\",\n        \"No work is done if force and displacement are perpendicular (e.g., gravity on a block moving horizontally, centripetal force in circular motion).\",\n        \"Work is positive if the angle θ is between 0° and 90°.\",\n        \"Work is negative if the angle θ is between 90° and 180° (e.g., friction opposing motion).\",\n        \"Work and energy have dimensions [ML²T⁻²].\",\n        \"The SI unit of work and energy is the joule (J), named after James Prescott Joule (1811-1869).\",\n        \"Example 5.3: A cyclist skidding to a stop in 10 m with a 200 N frictional force does -2000 J of work on the cycle.\",\n        \"The work done by the cycle on the road is zero because the road undergoes no displacement.\",\n        \"Newton's Third Law forces are equal and opposite, but the work done by them is not necessarily equal and opposite.\",\n        \"Kinetic energy K is defined as K = 1/2 m v.v = 1/2 mv² (Eq. 5.5).\",\n        \"Kinetic energy is a scalar quantity.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Table 5.1 Alternative Units of Work/Energy in J\",\n          \"text\": [\n            \"erg\",\n            \"10⁻⁷ J\",\n            \"electron volt (eV)\",\n            \"1.6×10⁻¹⁹ J\",\n            \"calorie (cal)\",\n            \"4.186 J\",\n            \"kilowatt hour (kWh)\",\n            \"3.6×10⁶ J\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"table\",\n          \"description\": \"Table 5.1 listing alternative units of work/energy and their equivalent values in Joules.\",\n          \"educational_role\": \"Provides conversion factors for common non-SI units of energy to the SI unit (Joule).\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work-Energy Theorem\",\n    \"Kinetic Energy\",\n    \"Units of Energy\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 945,
+    "prompt_tokens": 3979,
+    "total_tokens": 4924,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

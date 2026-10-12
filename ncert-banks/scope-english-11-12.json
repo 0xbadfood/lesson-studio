@@ -1,0 +1,15 @@
+{
+  "schema_version": "phase1_scope_v1",
+  "scope_id": "english_classes_11_12_v1",
+  "language": "English",
+  "classes": [11, 12],
+  "source_authority": "NCERT official textbook catalog",
+  "corpus_root": "/home/nitin/story_generator/ncert_downloader/ncert_official_books",
+  "catalog_output": "english-classes-11-12/corpus-catalog.json",
+  "catalog_fingerprint": "0e36f4e12fa03c79166f2208aa90385d884ec7adeb79b2daa89df05a977a1686",
+  "catalog_freeze_status": "frozen",
+  "audit_output": "english-classes-11-12/corpus-audit.md",
+  "knowledge_bank_root": "english-classes-11-12/knowledge-banks",
+  "rollout_status": "lesson_studio_science",
+  "notes": "Lesson Studio grounding for Classes 11-12 Physics, Chemistry, Biology, Mathematics (Biotechnology optional). English only. Kept outside the root-owned ingestion folder; the Classes 1-8 scope is untouched."
+}

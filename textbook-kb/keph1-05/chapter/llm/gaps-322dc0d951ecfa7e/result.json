@@ -1,0 +1,169 @@
+{
+  "gaps": [
+    {
+      "id": "G1",
+      "type": "intuition",
+      "about": [
+        "T1",
+        "T5"
+      ],
+      "missing": "The dot product is given as AB cosθ and W=F.d, but the geometric idea that it is the projection of one vector onto the other—the component of F along d multiplied by |d|—is not developed as the reason for the formula.",
+      "why_it_matters": "Without projection intuition, students may use the full force magnitude or be unsure why the angle matters, making work seem like an arbitrary scalar product.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G2",
+      "type": "misconception",
+      "about": [
+        "T5",
+        "T6"
+      ],
+      "missing": "The zero-work conditions are listed, but the book does not directly confront everyday beliefs that muscular effort, holding a load, or pushing a stationary wall is 'work' in the physics sense.",
+      "why_it_matters": "Students often equate effort with work; clarifying that only displacement and the force component along it count prevents wrong zero-work and sign errors.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G3",
+      "type": "intuition",
+      "about": [
+        "T4",
+        "T8"
+      ],
+      "missing": "The theorem is motivated from v^2-u^2=2as, but the reason the factor 1/2 appears in K=1/2 mv^2 is not emphasized: force times distance accumulates as ∫v dv, making 1/2 mv^2 the natural quantity whose change equals work.",
+      "why_it_matters": "This turns kinetic energy from a memorized formula into the quantity that work changes, which is the core of the work-energy theorem.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G4",
+      "type": "prerequisite",
+      "about": [
+        "T10",
+        "T11"
+      ],
+      "missing": "The chapter uses definite integrals, dK/dt, and the chain rule without a brief review of what ∫F dx means as accumulated area and how d(1/2 mv^2)/dt = m v dv/dt.",
+      "why_it_matters": "Class 11 students encountering calculus for the first time may stall before the physics idea of variable-force work and variable-force energy change.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G5",
+      "type": "skipped_step",
+      "about": [
+        "T10",
+        "T11"
+      ],
+      "missing": "The move from a sum over small displacements to W=∫F dx, and then to dK=Fdx, compresses the limiting process and the substitution v=dx/dt.",
+      "why_it_matters": "Learners need the intermediate step: split displacement into dx, approximate F constant over dx, sum, then take the limit; otherwise the integral appears as a symbol rather than a method.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G6",
+      "type": "intuition",
+      "about": [
+        "T12",
+        "T16"
+      ],
+      "missing": "F=-dV/dx is stated, but the meaning of the minus sign is not developed: a conservative force points in the direction of decreasing potential energy, and V is the negative integral of the force.",
+      "why_it_matters": "Students frequently lose the sign when writing mgh or 1/2 kx^2 and cannot predict whether a force increases or decreases potential energy.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G7",
+      "type": "skipped_step",
+      "about": [
+        "T16"
+      ],
+      "missing": "The spring potential energy 1/2 kx^2 is given, but the key step that the spring force varies from 0 to kx, so the work is the area of a triangle or ∫0^x kx' dx', is not made explicit.",
+      "why_it_matters": "This is the first variable-force potential energy; without the average-force/integral step, the formula looks like another memorized result.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G8",
+      "type": "misconception",
+      "about": [
+        "T14",
+        "T18"
+      ],
+      "missing": "The book says mechanical energy is conserved only for conservative forces and gives Ef-Ei=Wnc, but it does not explicitly confront the idea that friction 'destroys' energy; it converts mechanical energy to thermal/internal energy.",
+      "why_it_matters": "This distinction is central to energy conservation and prevents students from thinking energy disappears in skidding, collisions, or friction.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G9",
+      "type": "skipped_step",
+      "about": [
+        "T22"
+      ],
+      "missing": "The 1D elastic collision formulas are presented after 'solving momentum and energy conservation', but the useful intermediate relation v1i - v2i = v2f - v1f (relative speed reversal) is not shown.",
+      "why_it_matters": "This relation is the algebraic key that turns two nonlinear equations into linear ones; without it the derivation is a black box.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G10",
+      "type": "visual",
+      "about": [
+        "T24",
+        "T25"
+      ],
+      "missing": "The right-angle result for equal-mass glancing elastic collisions is proved algebraically, but the visual vector-triangle interpretation—momentum vectors before and after forming a right triangle—is not animated or emphasized.",
+      "why_it_matters": "A motion/vector diagram shows why the two final velocity vectors must be perpendicular when one ball is initially at rest and masses are equal.",
+      "priority": "high",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G11",
+      "type": "context",
+      "about": [
+        "T17"
+      ],
+      "missing": "The car-spring example is idealized; it lacks real crash context: crumple zones, force-displacement curves, typical car mass/speed, and how much energy is absorbed by deformation.",
+      "why_it_matters": "Connecting 1/2 kx^2 to automotive safety makes energy conservation concrete and shows why springs/crumple zones reduce impact forces.",
+      "priority": "medium",
+      "resolve": "research",
+      "research_question": "What is the kinetic energy of a 1500 kg car at 50 km/h, and how much energy is typically absorbed by crumple zones in a frontal collision?"
+    },
+    {
+      "id": "G12",
+      "type": "context",
+      "about": [
+        "T23"
+      ],
+      "missing": "The neutron moderation example gives the physics but lacks real reactor context: common moderators (light water, heavy water, graphite), why light nuclei are effective, and typical neutron speed/energy reductions.",
+      "why_it_matters": "The application is a major real-world use of elastic collision energy loss; students need the connection to reactor design.",
+      "priority": "medium",
+      "resolve": "research",
+      "research_question": "Why are hydrogen, deuterium, and graphite used as neutron moderators in nuclear reactors, and what are typical neutron speed reductions after moderation?"
+    },
+    {
+      "id": "G13",
+      "type": "oversimplification",
+      "about": [
+        "T13"
+      ],
+      "missing": "V=mgh is presented as gravitational potential energy near Earth's surface, but the limitation that g is assumed constant and the formula is only a local approximation is not strongly flagged.",
+      "why_it_matters": "Students may apply mgh to satellites or large altitude changes; the lesson should teach the textbook version first while warning that Chapter 7 uses -GMm/r.",
+      "priority": "medium",
+      "resolve": "knowledge"
+    },
+    {
+      "id": "G14",
+      "type": "misconception",
+      "about": [
+        "T8",
+        "T21"
+      ],
+      "missing": "Kinetic energy is introduced as 1/2 mv^2 without emphasizing that its value depends on the reference frame, while the work-energy theorem and collision energy conservation must be applied consistently in an inertial frame.",
+      "why_it_matters": "In collisions and moving systems, students may think kinetic energy is absolute or get inconsistent energy balances by mixing frames.",
+      "priority": "medium",
+      "resolve": "knowledge"
+    }
+  ]
+}

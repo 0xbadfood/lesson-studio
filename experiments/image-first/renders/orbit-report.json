@@ -1,0 +1,20 @@
+{
+  "circle_px": {
+    "center_px": [
+      844.6,
+      457.0
+    ],
+    "radius_px": 341.5,
+    "median_residual_px": 2.97,
+    "p95_residual_px": 6.93,
+    "angular_coverage_deg": 340
+  },
+  "grip_vs_path_centre_px": null,
+  "release_time_s": 7.2,
+  "legend_corner": "[1. 1. 0.]",
+  "assumptions": [
+    "uniform circular motion, 2.4 s per turn",
+    "string drawn from the measured path centre",
+    "after release: straight line at release velocity (no gravity, top view)"
+  ]
+}

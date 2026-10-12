@@ -1,0 +1,21 @@
+You direct an animated cutaway for a narrated science lesson. The picture already exists; its moving parts were detected automatically. Decide what the viewer should SEE while each phrase is spoken, so the animation explains exactly what the narrator says at that moment. Make it lively but never contradict the physics. Use only these parts and verbs. Anchor every cue to word IDs from the narration; you never give coordinates, sizes or times.
+
+Parts:
+[{"id": "valve_L", "role": "Left poppet valve (intake/exhaust) with stem, head and return spring; meters gas flow into/out of the chamber", "motion": "slide up/down along vertical axis (open/close); spring compresses as stem lifts"}, {"id": "valve_R", "role": "Right poppet valve with stem, head and return spring; meters gas flow", "motion": "slide up/down along vertical axis (open/close); spring compresses as stem lifts"}, {"id": "piston", "role": "Piston; transfers combustion pressure to the connecting rod via the wrist pin", "motion": "slide up/down along vertical cylinder axis (reciprocating)"}, {"id": "conrod", "role": "Connecting rod; couples the reciprocating piston to the rotating crank", "motion": "swing / planar linkage: small end translates with piston, big end orbits the crank pin (combined translation + rotation)"}, {"id": "crankshaft", "role": "Crank disc + crank pin; converts reciprocating rod motion into continuous rotation (output shaft)", "motion": "rotate about main_axle_centre (continuous 360 deg)"}]
+
+Verbs (each cue names words, never positions or numbers of pixels):
+- {"verb":"stroke","direction":"down"|"up","from":wordId,"to":wordId}  piston travels one stroke; the crank/rod follow automatically
+- {"verb":"valve","part":partId,"state":"open"|"closed","at":wordId}
+- {"verb":"highlight","part":partId,"from":wordId,"to":wordId}
+- {"verb":"label","part":partId,"text":str,"from":wordId,"to":wordId}   short on-screen name (<=3 words)
+- {"verb":"gas","kind":"fresh_mixture"|"compressed"|"burning"|"exhaust","from":wordId,"to":wordId}  colour the cylinder contents
+- {"verb":"flow","through":partId,"direction":"in"|"out","from":wordId,"to":wordId}  arrows through a valve passage
+- {"verb":"spark","at":wordId}
+- {"verb":"title","text":str,"from":wordId,"to":wordId}  stage name banner
+
+Narration with word IDs:
+First[w0060] comes[w0061] the[w0062] intake[w0063] stroke.[w0064] The[w0065] piston[w0066] moves[w0067] down[w0068] as[w0069] the[w0070] intake[w0071] valve[w0072] opens[w0073] and[w0074] the[w0075] exhaust[w0076] valve[w0077] stays[w0078] closed.[w0079] This[w0080] draws[w0081] an[w0082] air-fuel[w0083] mixture[w0084] through[w0085] the[w0086] intake[w0087] passage[w0088] and[w0089] into[w0090] the[w0091] cylinder.[w0092] Next[w0093] is[w0094] compression.[w0095] The[w0096] piston[w0097] moves[w0098] up[w0099] while[w0100] both[w0101] valves[w0102] are[w0103] closed,[w0104] trapping[w0105] and[w0106] compressing[w0107] the[w0108] mixture[w0109] inside[w0110] the[w0111] cylinder.[w0112] Near[w0113] the[w0114] top[w0115] of[w0116] the[w0117] stroke,[w0118] the[w0119] spark[w0120] plug[w0121] makes[w0122] a[w0123] spark.[w0124]
+
+A motion such as a stroke should last as long as the narration is describing that stage, not just the words that name it. 
+
+Return JSON {"cues":[...],"notes":str}. Cues in chronological order.

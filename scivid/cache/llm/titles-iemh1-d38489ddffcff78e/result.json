@@ -1,0 +1,36 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Orienting Yourself: The Use of Coordinates"
+    },
+    {
+      "chapter": 2,
+      "title": "Introduction to Linear Polynomials"
+    },
+    {
+      "chapter": 3,
+      "title": "The World of Numbers"
+    },
+    {
+      "chapter": 4,
+      "title": "Exploring Algebraic Identities"
+    },
+    {
+      "chapter": 5,
+      "title": "I'm Up and Down, and Round and Round"
+    },
+    {
+      "chapter": 6,
+      "title": "Measuring Space: Perimeter and Area"
+    },
+    {
+      "chapter": 7,
+      "title": "The Mathematics of Maybe: Introduction to Probability"
+    },
+    {
+      "chapter": 8,
+      "title": "Predicting What Comes Next: Exploring Sequences and Progressions"
+    }
+  ]
+}

@@ -1,0 +1,544 @@
+{
+  "schema_version": "phase1_knowledge_bank_v1",
+  "scope_id": "english_classes_11_12_v1",
+  "catalog_fingerprint": "0e36f4e12fa03c79166f2208aa90385d884ec7adeb79b2daa89df05a977a1686",
+  "source_document": {
+    "document_id": "ncert:english:11:keph1:05",
+    "chapter_id": "keph105",
+    "language": "English",
+    "class_no": 11,
+    "subject": "Physics",
+    "book_code": "keph1",
+    "book_title": "Physics Part-I",
+    "chapter_suffix": "05",
+    "chapter_number": 5,
+    "source_url": "https://ncert.nic.in/textbook/pdf/keph105.pdf",
+    "relative_path": "English/class_11/Physics/keph1-physics-part-i/keph105.pdf",
+    "document_fingerprint": "efb94294943d9d1030613aca5b07d71e88e00af17e2f0d5e5dd38169f9d7fc1f"
+  },
+  "source_pdf": {
+    "sha256": "a6d4b72b0fc10230bd54393f86e58630ccd258d54269b60de226c68d0eaa937e",
+    "bytes": 1989036,
+    "pages": 21
+  },
+  "page_evidence_input_fingerprint": "4498da2a744639aa51af7c5e5ebdc8ed8c36a1f298d696bfdee6a5b19846b975",
+  "enrichment_fingerprint": "b3eb7dd02b91b04870a1fca6e176a0fce7432d06b61f636ccd983de70353f4cd",
+  "model": {
+    "endpoint": "http://127.0.0.1:7001/v1",
+    "id": "qwen3.8-27b",
+    "prompt_version": "phase1_multimodal_enrichment_v3",
+    "seed": 20260826
+  },
+  "content": {
+    "chapter_title": "Work, Energy and Power",
+    "chapter_summary": "This chapter introduces the precise physical definitions of work, energy, and power, distinguishing them from their everyday usage. It begins with the scalar product of vectors as a mathematical prerequisite. The work-energy theorem is derived, establishing that the change in kinetic energy equals the work done by the net force. The chapter explores work done by constant and variable forces, defining work as the area under a force-displacement curve. It introduces potential energy for conservative forces (gravity and springs) and the principle of conservation of mechanical energy. Finally, it covers the concept of power and applies conservation laws to analyze elastic and inelastic collisions in one and two dimensions.",
+    "key_concepts": [
+      {
+        "concept": "Scalar Product (Dot Product) of Vectors",
+        "pages": [
+          1,
+          2
+        ]
+      },
+      {
+        "concept": "Work-Energy Theorem",
+        "pages": [
+          3,
+          6
+        ]
+      },
+      {
+        "concept": "Work Done by a Constant Force",
+        "pages": [
+          3,
+          4
+        ]
+      },
+      {
+        "concept": "Kinetic Energy",
+        "pages": [
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "concept": "Work Done by a Variable Force",
+        "pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "concept": "Potential Energy (Gravitational and Spring)",
+        "pages": [
+          7,
+          8,
+          10,
+          11
+        ]
+      },
+      {
+        "concept": "Conservation of Mechanical Energy",
+        "pages": [
+          8,
+          9,
+          11
+        ]
+      },
+      {
+        "concept": "Power",
+        "pages": [
+          13
+        ]
+      },
+      {
+        "concept": "Collisions (Elastic and Inelastic)",
+        "pages": [
+          13,
+          14,
+          15,
+          16
+        ]
+      }
+    ],
+    "learning_progression": [
+      {
+        "description": "Introduction to the physical meanings of work, energy, and power, distinguishing them from everyday usage.",
+        "pages": [
+          1
+        ]
+      },
+      {
+        "description": "Mathematical prerequisite: Definition and properties of the scalar (dot) product of two vectors.",
+        "pages": [
+          1,
+          2
+        ]
+      },
+      {
+        "description": "Derivation of the work-energy theorem from kinematics for constant acceleration, defining work and kinetic energy.",
+        "pages": [
+          3
+        ]
+      },
+      {
+        "description": "Definition of work done by a constant force and conditions for zero work.",
+        "pages": [
+          3,
+          4
+        ]
+      },
+      {
+        "description": "Definition of kinetic energy and its scalar nature.",
+        "pages": [
+          4,
+          5
+        ]
+      },
+      {
+        "description": "Work done by a variable force as the area under the force-displacement curve (integral form).",
+        "pages": [
+          5,
+          6
+        ]
+      },
+      {
+        "description": "Generalization of the work-energy theorem for variable forces.",
+        "pages": [
+          6
+        ]
+      },
+      {
+        "description": "Concept of potential energy for conservative forces (gravity).",
+        "pages": [
+          7,
+          8
+        ]
+      },
+      {
+        "description": "Principle of conservation of mechanical energy for conservative forces.",
+        "pages": [
+          8,
+          9
+        ]
+      },
+      {
+        "description": "Potential energy of a spring (Hooke's Law) and conservation in oscillatory systems.",
+        "pages": [
+          10,
+          11
+        ]
+      },
+      {
+        "description": "Definition of power (average and instantaneous) and its units.",
+        "pages": [
+          13
+        ]
+      },
+      {
+        "description": "Analysis of collisions: conservation of momentum and kinetic energy in elastic vs. inelastic collisions.",
+        "pages": [
+          13,
+          14,
+          15,
+          16
+        ]
+      }
+    ],
+    "grounded_facts": [
+      {
+        "statement": "The scalar product of two vectors A and B is defined as A·B = AB cos θ, where θ is the angle between them.",
+        "pages": [
+          2
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "The dot product is a scalar quantity.",
+        "pages": [
+          2
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "The work-energy theorem states that the change in kinetic energy of a particle is equal to the work done on it by the net force.",
+        "pages": [
+          3
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "Kinetic energy is defined as K = 1/2 mv².",
+        "pages": [
+          3,
+          4
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "Work is defined as the product of the component of force in the direction of displacement and the magnitude of displacement: W = (F cos θ)d = F·d.",
+        "pages": [
+          4
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "No work is done if the displacement is zero, the force is zero, or the force and displacement are mutually perpendicular.",
+        "pages": [
+          4
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "The SI unit of work and energy is the joule (J).",
+        "pages": [
+          4
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "Work done by a variable force is equal to the area under the force-displacement curve.",
+        "pages": [
+          5,
+          6
+        ],
+        "evidence": "both",
+        "confidence": "high"
+      },
+      {
+        "statement": "A force is conservative if the work done by it depends only on the initial and final positions, or if the work done in a closed path is zero.",
+        "pages": [
+          8
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "The total mechanical energy (K + V) is conserved if the forces doing work are conservative.",
+        "pages": [
+          8
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "Gravitational potential energy near the earth's surface is V(h) = mgh.",
+        "pages": [
+          7,
+          8
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "Hooke's Law states that the spring force is Fs = -kx, where k is the spring constant.",
+        "pages": [
+          10
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "The potential energy of a spring is V(x) = 1/2 kx².",
+        "pages": [
+          11
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "Power is defined as the time rate at which work is done or energy is transferred.",
+        "pages": [
+          13
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "The SI unit of power is the watt (W), where 1 W = 1 J/s.",
+        "pages": [
+          13
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "In all collisions, total linear momentum is conserved.",
+        "pages": [
+          14
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "In an elastic collision, total kinetic energy is conserved.",
+        "pages": [
+          14
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      },
+      {
+        "statement": "When two equal masses undergo a glancing elastic collision with one at rest, they move at right angles to each other after the collision.",
+        "pages": [
+          16
+        ],
+        "evidence": "native_text",
+        "confidence": "high"
+      }
+    ],
+    "important_visuals": [
+      {
+        "page": 2,
+        "description": "Figure 5.1: Diagrams illustrating the scalar product of two vectors A and B, showing the angle θ and projections B cos θ and A cos θ.",
+        "educational_role": "Illustrates the geometric interpretation of the dot product.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 3,
+        "description": "Figure 5.2: A block on a horizontal surface undergoing displacement d under a force F acting at an angle θ.",
+        "educational_role": "Illustrates the setup for calculating work done by a constant force at an angle.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 5,
+        "description": "Figure 5.3(a): Graph of a varying force F(x) against displacement x, with the area under the curve shaded to represent work.",
+        "educational_role": "Illustrates work done by a variable force as the area under the curve.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 6,
+        "description": "Figure 5.4: Graph of applied force F and frictional force f versus displacement for a trunk being pushed.",
+        "educational_role": "Visualizes the force profile for calculating work in Example 5.5.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 8,
+        "description": "Figure 5.5: A ball falling from a cliff of height H, showing positions at different heights and velocities.",
+        "educational_role": "Illustrates the conversion of potential energy to kinetic energy.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 9,
+        "description": "Figure 5.6: A bob on a string completing a semi-circular trajectory, showing forces at points A, B, and C.",
+        "educational_role": "Illustrates the forces and energy changes in a pendulum system for Example 5.7.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 10,
+        "description": "Figure 5.7: Illustration of a block attached to a spring, showing equilibrium, stretched, and compressed states, and a graph of Fs vs x.",
+        "educational_role": "Illustrates Hooke's Law and the work done by a spring force.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 11,
+        "description": "Figure 5.8: Parabolic plots of potential energy V and kinetic energy K for a block attached to a spring.",
+        "educational_role": "Illustrates the conservation of mechanical energy in a spring system.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 13,
+        "description": "Figure 5.10: Diagram of a collision between a moving mass m1 and a stationary mass m2, showing final velocities and angles.",
+        "educational_role": "Illustrates the geometry of a two-dimensional collision.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 18,
+        "description": "Figure 5.11: Four graphs of potential energy functions V(x) in one dimension.",
+        "educational_role": "Illustrates different potential energy landscapes for Exercise 5.3.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 19,
+        "description": "Figure 5.12: Graph of V(x) = kx²/2 for simple harmonic motion.",
+        "educational_role": "Illustrates the potential energy function for Exercise 5.4.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 19,
+        "description": "Figure 5.13: Two scenarios of a man carrying or pulling a 15 kg mass.",
+        "educational_role": "Illustrates scenarios for comparing work done in Exercise 5.5.",
+        "text_dependency": "labels",
+        "recreation_route": "source_reference_only"
+      },
+      {
+        "page": 20,
+        "description": "Figure 5.14: Three possible outcomes of an elastic collision between three identical ball bearings.",
+        "educational_role": "Illustrates possible results for Exercise 5.16.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      },
+      {
+        "page": 21,
+        "description": "Figure 5.15: A pendulum bob A hitting another bob B.",
+        "educational_role": "Illustrates the setup for Exercise 5.17.",
+        "text_dependency": "labels",
+        "recreation_route": "deterministic_renderer"
+      }
+    ],
+    "question_opportunities": [
+      {
+        "learning_objective": "Identify the sign of work done in various physical scenarios.",
+        "pages": [
+          18
+        ],
+        "media_candidate": "none",
+        "rationale": "Exercise 5.1 asks to state if work is positive or negative in five scenarios. This is a conceptual question that can be answered with text alone.",
+        "constraints": []
+      },
+      {
+        "learning_objective": "Calculate work done by applied force, friction, and net force on a moving body.",
+        "pages": [
+          18
+        ],
+        "media_candidate": "none",
+        "rationale": "Exercise 5.2 involves numerical calculation of work and change in kinetic energy. No visual media is required.",
+        "constraints": []
+      },
+      {
+        "learning_objective": "Determine regions where a particle cannot be found for a given total energy in different potential energy functions.",
+        "pages": [
+          18
+        ],
+        "media_candidate": "type2",
+        "rationale": "Exercise 5.3 requires analyzing the graphs in Fig. 5.11. A question could present one of the graphs and ask for the forbidden region or minimum energy.",
+        "constraints": [
+          "Requires deterministic rendering of the specific potential energy graph."
+        ]
+      },
+      {
+        "learning_objective": "Determine the turning points of a particle in a simple harmonic motion potential.",
+        "pages": [
+          19
+        ],
+        "media_candidate": "type2",
+        "rationale": "Exercise 5.4 asks to show that a particle turns back at x = ±2 m for a given potential and energy. A question could present the graph and ask for the turning points.",
+        "constraints": [
+          "Requires deterministic rendering of the parabolic potential graph."
+        ]
+      },
+      {
+        "learning_objective": "Compare work done in two different scenarios involving a 15 kg mass.",
+        "pages": [
+          19
+        ],
+        "media_candidate": "type1",
+        "rationale": "Exercise 5.5(d) asks to compare work done in two scenarios depicted in Fig. 5.13. The images can be distinguished without exact text labels (carrying vs. pulling with pulley).",
+        "constraints": [
+          "The images must be clearly distinguishable as 'carrying' vs 'pulling with pulley'."
+        ]
+      },
+      {
+        "learning_objective": "Identify the correct alternative for statements about conservative forces, friction, and momentum.",
+        "pages": [
+          19
+        ],
+        "media_candidate": "none",
+        "rationale": "Exercise 5.6 is a multiple-choice question that can be answered with text alone.",
+        "constraints": []
+      },
+      {
+        "learning_objective": "Determine the proportionality of power or displacement to time for specific motion types.",
+        "pages": [
+          20
+        ],
+        "media_candidate": "none",
+        "rationale": "Exercises 5.9 and 5.10 ask for proportionality relationships. These are conceptual/mathematical questions that do not require visual media.",
+        "constraints": []
+      },
+      {
+        "learning_objective": "Identify the possible result of an elastic collision between three identical ball bearings.",
+        "pages": [
+          20
+        ],
+        "media_candidate": "type1",
+        "rationale": "Exercise 5.16 asks to identify the possible result from three options in Fig. 5.14. The options can be distinguished by the final positions and velocities of the balls.",
+        "constraints": [
+          "The diagrams must be clearly distinguishable."
+        ]
+      },
+      {
+        "learning_objective": "Calculate the height a pendulum bob rises after an elastic collision.",
+        "pages": [
+          21
+        ],
+        "media_candidate": "none",
+        "rationale": "Exercise 5.17 involves a calculation based on the setup in Fig. 5.15. The question can be posed with text and the figure as a reference, but the answer is a numerical value.",
+        "constraints": []
+      }
+    ],
+    "unresolved_uncertainties": [
+      "OCR errors in mathematical formulas on pages 2, 5, 10, 11, and 16 (e.g., 'A = A x iɵ' instead of 'A = Ax î', 'k xm2' instead of 'kxm^2/2'). The native text and visual inspection confirm the correct formulas, but the OCR text is unreliable for these specific mathematical expressions."
+    ],
+    "drafting_status": "candidate_ready",
+    "drafting_reason": "The chapter content is well-structured with clear learning progressions and grounded facts. Visuals are well-described and can be recreated deterministically where needed. Question opportunities are identified with appropriate media candidates. OCR uncertainties are noted but do not block the creation of a knowledge bank as the native text and visual inspection provide sufficient evidence."
+  },
+  "evidence_artifacts": {
+    "prepared_source": "../../source.json",
+    "prepared_pages": "../../pages.jsonl",
+    "page_inspections": "page-inspections.jsonl",
+    "ocr": "ocr.json",
+    "audit": "audit.json"
+  },
+  "status": "candidate_pending_independent_audit",
+  "created_at_utc": "2026-10-09T05:18:03.234820+00:00"
+}

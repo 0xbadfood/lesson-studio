@@ -1,0 +1,28 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Relations and Functions"
+    },
+    {
+      "chapter": 2,
+      "title": "Inverse Trigonometric Functions"
+    },
+    {
+      "chapter": 3,
+      "title": "Matrices"
+    },
+    {
+      "chapter": 4,
+      "title": "Determinants"
+    },
+    {
+      "chapter": 5,
+      "title": "Continuity and Differentiability"
+    },
+    {
+      "chapter": 6,
+      "title": "Application of Derivatives"
+    }
+  ]
+}

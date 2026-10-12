@@ -1,0 +1,91 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    13
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 13,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "5.10 POWER",
+          "5.11 COLLISIONS"
+        ],
+        "page_summary": "The page concludes the discussion on non-conservative forces and introduces Section 5.10 on Power, defining average and instantaneous power, their units (Watt, horsepower), and providing an example calculation for an elevator. Section 5.11 introduces Collisions, discussing the conservation of momentum and energy, and sets up a scenario for a two-dimensional collision between two masses.",
+        "knowledge_points": [
+          "Non-conservative work (Wnc) depends on the particular path from i to f.",
+          "kWh is a unit of energy, not power.",
+          "Power is defined as the time rate at which work is done or energy is transferred.",
+          "Average power (Pav) is the ratio of work (W) to total time (t).",
+          "Instantaneous power (P) is the limiting value of average power as the time interval approaches zero (dW/dt).",
+          "Instantaneous power can be expressed as the dot product of force and velocity (P = F.v).",
+          "Power is a scalar quantity with dimensions [ML²T⁻³].",
+          "The SI unit of power is the watt (W), where 1 W = 1 J s⁻¹.",
+          "The unit watt is named after James Watt, an innovator of the steam engine.",
+          "1 horsepower (hp) = 746 W.",
+          "A 100-watt bulb running for 10 hours consumes 1 kWh of energy.",
+          "1 kWh = 10³ W × 3600 s = 3.6 × 10⁶ J.",
+          "Collisions are studied using laws of momentum and energy conservation.",
+          "In a collision between two masses m1 and m2, m1 moves with initial speed v1i and m2 is at rest.",
+          "After collision, masses m1 and m2 fly off in different directions with velocities v1f and v2f at angles θ1 and θ2 respectively."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Diagram of a two-dimensional collision between two masses on an x-y coordinate system.",
+            "text": [
+              "y",
+              "v1f",
+              "m1",
+              "v1i",
+              "m1",
+              "m2",
+              "θ1",
+              "θ2",
+              "x",
+              "m2",
+              "v2f"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A schematic diagram showing a collision between two masses, m1 and m2, on a Cartesian coordinate system. Mass m1 approaches from the left along the x-axis with velocity v1i. Mass m2 is initially at the origin. After collision, m1 moves at an angle θ1 with velocity v1f, and m2 moves at an angle θ2 with velocity v2f.",
+            "educational_role": "Illustrates the geometry and vector relationships of a two-dimensional collision.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Power",
+      "Collisions",
+      "Work and Energy"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 13,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"WORK, ENERGY AND POWER\",\n        \"5.10 POWER\",\n        \"5.11 COLLISIONS\"\n      ],\n      \"page_summary\": \"The page concludes the discussion on non-conservative forces and introduces Section 5.10 on Power, defining average and instantaneous power, their units (Watt, horsepower), and providing an example calculation for an elevator. Section 5.11 introduces Collisions, discussing the conservation of momentum and energy, and sets up a scenario for a two-dimensional collision between two masses.\",\n      \"knowledge_points\": [\n        \"Non-conservative work (Wnc) depends on the particular path from i to f.\",\n        \"kWh is a unit of energy, not power.\",\n        \"Power is defined as the time rate at which work is done or energy is transferred.\",\n        \"Average power (Pav) is the ratio of work (W) to total time (t).\",\n        \"Instantaneous power (P) is the limiting value of average power as the time interval approaches zero (dW/dt).\",\n        \"Instantaneous power can be expressed as the dot product of force and velocity (P = F.v).\",\n        \"Power is a scalar quantity with dimensions [ML²T⁻³].\",\n        \"The SI unit of power is the watt (W), where 1 W = 1 J s⁻¹.\",\n        \"The unit watt is named after James Watt, an innovator of the steam engine.\",\n        \"1 horsepower (hp) = 746 W.\",\n        \"A 100-watt bulb running for 10 hours consumes 1 kWh of energy.\",\n        \"1 kWh = 10³ W × 3600 s = 3.6 × 10⁶ J.\",\n        \"Collisions are studied using laws of momentum and energy conservation.\",\n        \"In a collision between two masses m1 and m2, m1 moves with initial speed v1i and m2 is at rest.\",\n        \"After collision, masses m1 and m2 fly off in different directions with velocities v1f and v2f at angles θ1 and θ2 respectively.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Diagram of a two-dimensional collision between two masses on an x-y coordinate system.\",\n          \"text\": [\n            \"y\",\n            \"v1f\",\n            \"m1\",\n            \"v1i\",\n            \"m1\",\n            \"m2\",\n            \"θ1\",\n            \"θ2\",\n            \"x\",\n            \"m2\",\n            \"v2f\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"A schematic diagram showing a collision between two masses, m1 and m2, on a Cartesian coordinate system. Mass m1 approaches from the left along the x-axis with velocity v1i. Mass m2 is initially at the origin. After collision, m1 moves at an angle θ1 with velocity v1f, and m2 moves at an angle θ2 with velocity v2f.\",\n          \"educational_role\": \"Illustrates the geometry and vector relationships of a two-dimensional collision.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Power\",\n    \"Collisions\",\n    \"Work and Energy\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 922,
+    "prompt_tokens": 3920,
+    "total_tokens": 4842,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

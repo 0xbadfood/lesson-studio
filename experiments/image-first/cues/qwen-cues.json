@@ -1,0 +1,89 @@
+{
+  "cues": [
+    {
+      "verb": "title",
+      "text": "Intake stroke",
+      "from": "w0060",
+      "to": "w0092"
+    },
+    {
+      "verb": "label",
+      "part": "valve_L",
+      "text": "intake valve",
+      "from": "w0070",
+      "to": "w0092"
+    },
+    {
+      "verb": "label",
+      "part": "valve_R",
+      "text": "exhaust valve",
+      "from": "w0075",
+      "to": "w0092"
+    },
+    {
+      "verb": "stroke",
+      "direction": "down",
+      "from": "w0065",
+      "to": "w0092"
+    },
+    {
+      "verb": "valve",
+      "part": "valve_L",
+      "state": "open",
+      "at": "w0073"
+    },
+    {
+      "verb": "valve",
+      "part": "valve_R",
+      "state": "closed",
+      "at": "w0078"
+    },
+    {
+      "verb": "gas",
+      "kind": "fresh_mixture",
+      "from": "w0080",
+      "to": "w0092"
+    },
+    {
+      "verb": "flow",
+      "through": "valve_L",
+      "from": "w0085",
+      "to": "w0092"
+    },
+    {
+      "verb": "title",
+      "text": "Compression",
+      "from": "w0093",
+      "to": "w0124"
+    },
+    {
+      "verb": "stroke",
+      "direction": "up",
+      "from": "w0096",
+      "to": "w0112"
+    },
+    {
+      "verb": "valve",
+      "part": "valve_L",
+      "state": "closed",
+      "at": "w0103"
+    },
+    {
+      "verb": "valve",
+      "part": "valve_R",
+      "state": "closed",
+      "at": "w0103"
+    },
+    {
+      "verb": "gas",
+      "kind": "compressed",
+      "from": "w0104",
+      "to": "w0124"
+    },
+    {
+      "verb": "spark",
+      "at": "w0124"
+    }
+  ],
+  "notes": "The intake stroke is shown as a continuous downward piston motion through the full intake sentence, with the intake valve opening and fresh mixture flowing in. Compression is shown as a continuous upward piston motion while both valves are closed and the trapped mixture is coloured compressed. The spark is timed to the final word, without adding unspoken combustion or exhaust motion."
+}

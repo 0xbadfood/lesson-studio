@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520479-uSynnMgBObBQYH8XWt6x",
+  "object": "chat.completion",
+  "created": 1791520479,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[{\"chapter\":8,\"title\":\"Mechanical Properties of Solids\"},{\"chapter\":9,\"title\":\"Mechanical Properties of Fluids\"},{\"chapter\":10,\"title\":\"Thermal Properties of Matter\"},{\"chapter\":11,\"title\":\"Thermodynamics\"},{\"chapter\":12,\"title\":\"Kinetic Theory\"},{\"chapter\":13,\"title\":\"Oscillations\"},{\"chapter\":14,\"title\":\"Waves\"}]}\n```",
+        "refusal": null,
+        "reasoning": "I'm pulling the chapter titles from the contents page despite some garbled OCR text, listing chapters 8 through 14: Mechanical Properties of Solids, Mechanical Properties of Fluids, Thermal Properties of Matter, Thermodynamics, Kinetic Theory, Oscillations, and Waves.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm pulling the chapter titles from the contents page despite some garbled OCR text, listing chapters 8 through 14: Mechanical Properties of Solids, Mechanical Properties of Fluids, Thermal Properties of Matter, Thermodynamics, Kinetic Theory, Oscillations, and Waves.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQS/wcKEAgSGAI4AUIIdGhpbmtpbmcSDFGTMr0dlFs9LAtvwBoMlhBYKPsVKZymF5LyIjAfcdpJrkgVBhCBIGFAMbQIXXfW9vYyhg2mMfwoDN6sHE3g7Oo9xN4+O6hMHaydIkoqnAeF3aDmd0PJUrrjPAQNF3UxyRzEzgVLTa4KxsZXZ+v9eEF5afdy9eZfNRqrOfc9ny6WDWH99HtRqJ4HmbWWu2/VJPsahTz+M64aChLCB54QR7nxYDe1w1lmkXUUhtmzrnNMwnYHmBrsNs39cXbetiz3lvCeNTLlC8X2dhD8QuFumvkVw+fuvz6o5+HaKNROGIvfPEq68+DbxGJ/H/TondpYg/fUofVC3y9nKm2zrnfgj6voa66hmEN/pp13yOdwFQksYZ07Vg/VzCyEzruGZ5GEsE8VTGVqa4OZiveQs9E5kaY1CFDfxREz4GgH4w2oz9eWj/+t/3wmPPo9ylIZsXhmzOVL96RVH3ZomhT85Jmln0wdh9G0wUrfR+A/gbn1/Q4MaxhbJmwSdgl4J5ZecjgHl27fdINk4wmcXo0aBnxsZeLcxRQucm2Gv+8RJRtfmQdm7C4kai2ZsGGK5+41lSsLthFkO1tkUM5gXbn1aDqoovVc2CoQN5ER5aWhvZa/2YwEpG01/YsvqVq8OD3ZiiZSRJtjs+aCRqqOojLLNMdI1SH0weO3CPSTHQY+wReAFB13AHz6FSE1JaIWFD64E4GclVqd/3ea4iJDiAJcmaYZtMspQnGStIQF+qIOEkwkQ87cfOdCHBHpsXl2hioYs78v7IlIuEGyWhUWlstr9wWZ3DdIFN0AxBA1eiD4YvtKpsH+farA+QYDaw17l6ztcK8TS9ID3R5YYajMS1W1ipjg687JUmoBXBr6LuN3mQSAuSquo0hND2DJm9Uta3Hl/L56YYbJ5PSMU4Y5Arr4qtF1PexzDI9adCtaiHu8RrgatoTroCikQNcTuUyh+oP4EBkrKb5WdKxnl2/c2UN5IzKhXmRlWHiLpa+OFUOwDMhwqLS2OYNS0UfPkuvXvdmqGKKQnZQ3AlSnX65Ss3Aw7S+uoBH7O+QQzssFC0+oj9M7jNRshsOAwjzZrRHr+CKmEtlQlBQDu9PeEQvyZNTmqZdjIM9ApqA0CfYBLaxTArGYS018SR6XMX6V82Ak7nsxG7BooR9boteJV19wP1XPdRgCtz7c2jxK0xAKxIntszRBa0LrDNvsq2OpN04cRgQQ1LBj+Dk9XXLbETQ7ySUSeXR0fjQ3KDJMkQ672TFT/jVtQwgW230jTYz//cr5I6fl2ynQP8d3+3sos5cJXKpSv3yqGQhNnQVCCfeCaamqm3MSE4D0PTD1kpvlJOeW1+cYAQ==.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3877,
+    "completion_tokens": 371,
+    "total_tokens": 4248,
+    "cost": 0.0005732,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0005732,
+      "upstream_inference_prompt_cost": 0.0003877,
+      "upstream_inference_completions_cost": 0.0001855
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 198,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 4.12
+}

@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520506-Abeq78VVPreIILkb91bP",
+  "object": "chat.completion",
+  "created": 1791520506,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[\n{\"chapter\":1,\"title\":\"The Living World\"},\n{\"chapter\":2,\"title\":\"Biological Classification\"},\n{\"chapter\":3,\"title\":\"Plant Kingdom\"},\n{\"chapter\":4,\"title\":\"Animal Kingdom\"},\n{\"chapter\":5,\"title\":\"Morphology of Flowering Plants\"},\n{\"chapter\":6,\"title\":\"Anatomy of Flowering Plants\"},\n{\"chapter\":7,\"title\":\"Structural Organisation in Animals\"},\n{\"chapter\":8,\"title\":\"Cell: The Unit of Life\"},\n{\"chapter\":9,\"title\":\"Biomolecules\"},\n{\"chapter\":10,\"title\":\"Cell Cycle and Cell Division\"},\n{\"chapter\":11,\"title\":\"Photosynthesis in Higher Plants\"},\n{\"chapter\":12,\"title\":\"Respiration in Plants\"},\n{\"chapter\":13,\"title\":\"Plant Growth and Development\"},\n{\"chapter\":14,\"title\":\"Breathing and Exchange of Gases\"},\n{\"chapter\":15,\"title\":\"Body Fluids and Circulation\"},\n{\"chapter\":16,\"title\":\"Excretory Products and their Elimination\"},\n{\"chapter\":17,\"title\":\"Locomotion and Movement\"},\n{\"chapter\":18,\"title\":\"Neural Control and Coordination\"},\n{\"chapter\":19,\"title\":\"Chemical Coordination and Integration\"}\n]}\n```",
+        "refusal": null,
+        "reasoning": "I'm pulling the chapter titles from the contents page - things like \"The Living World,\" \"Biological Classification,\" \"Plant Kingdom,\" \"Animal Kingdom,\" and so on through the structural biology chapters.\n\nI'm continuing through the list - \"Cell: The Unit of Life,\" \"Biomolecules,\" \"Cell Cycle and Cell Division,\" and the remaining physiology chapters covering photosynthesis, respiration, growth, circulation, excretion, movement, and neural/chemical coordination. Now I'll format this as JSON.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm pulling the chapter titles from the contents page - things like \"The Living World,\" \"Biological Classification,\" \"Plant Kingdom,\" \"Animal Kingdom,\" and so on through the structural biology chapters.\n\nI'm continuing through the list - \"Cell: The Unit of Life,\" \"Biomolecules,\" \"Cell Cycle and Cell Division,\" and the remaining physiology chapters covering photosynthesis, respiration, growth, circulation, excretion, movement, and neural/chemical coordination. Now I'll format this as JSON.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSogsKEAgSGAI4AUIIdGhpbmtpbmcSDJWCvoFjxtuBaXxwzBoMSHAbC0IVyuBNgZ96IjAFG0boxHApoHwzJ4srucPNL2H14Vf5miC0da5yrDOwiGHDCFHoIYPRHppyI1QzPKYqvwrnM1JnKCGfM3FwJyz48bM/uNxhV2WNgZ5xiJkqt3GskdxF4qBv2ZPvDtd/mHUCDzTyz/4KyJfNZt5kZqjZFHeQbG4wiVSnycyf9Ucjjf+lTa5P0E3okacIxXCF85vybEXZJAdoQlgyZPKrHZeAckUvU/IXUteQQzCVJeo449t8r5jVKil0CkMysvw2eZqUmvw/HgQAhB4PgGPlCRBna+CKKEk78KsEhPdGEzTvmwVNm9gvPBnwtwD6UYPwLF5YlvmC6m2jwTQkK4E57RVvRE9XnVQ/KeR1N4dIOzS/XqIfXtOxMV6pIB1GlWyymd0ou5Ypi1Jp0W4qILvlwME1mU/j9xINQkGwR7nIOeaajzrZrvYdsJBmLXjCXSbw0AyD2w0PuYUV8llzvbxNTvW7uh2c8s2ZNopyQIExv/KKvONHqQVzQj/cXnNd7MB0XhEz8ra5KUQK6UCRBcnTM0R4BVp+kIHuNYZaPBexxPvUQu5II9iLBD1vckyq1tQoyNz1Ia5lLKGG3htVZV3kLAB+y1ApDE848GTR+9o64Lag2p9iWGUwOV8uwMcz7inrI4bl5MOo00Rn3e1mXwvjXeBJ6ylBhsaATBlR/SHQBptBf/AUuGYADC9pGc41j4bNyXjRdDhuzgJGQ0yfwgC5w1SGlAQA+MenQKTxFFeL0GspGmh22SCwcOpSvYNpwZkUwrBbpAbR1oFZui8UVbTNxKNUoy0xC2iVEAoO81fYiXxtabdLca+sg4x+roYt68vIzk+G5Hsk29/xwMTeRviQAdCoCkwWoWXLXFU1ua7yOzbssi4aQREo97JM+1upbdcJL3UsLAu4udcngcB4U3ykb49jo5+tf6y+47LGU2D378nEDcIy1b8RuzQXK7cIds+58XGglWyq0mKSdBNWz5/Q69ObC1V3Jc3jWTlIQ8EJAA2NNk/s1P3IYrKPck/ELHlFDg4MltKXAK9gbc65wF4ClZQWwbUJGqm6Nbmoal+E/d1EQF8mDnX6YdYJYIObcJcTgKIRLpODA5xiT1hRwZ71RZ7bR50kw8W+QI7imyKRFPt3DZ5Dox/DIEAVnVksznNI/vnQ3pCObygj7rWxIAAjsBvxqmGdFeiLlr16PL72iFjTK2wiydkDvSdGzV5pXf2tUPOuduvuFJU+UTF9c3MfTMB1iykFzeEOKY/v2zuKhFj5xZDFoCVF71PwqaMXqDggx7MMpcekh3JdqZyk6t4bSdkGLep/GMQWmOEt2RcMxbwvDQH6/+cfM9LcWWPdD+ucWS0stn5G3nxFklxC7W0JDTijZ8P35LtllcfTDWJcbJymCvm5RYqQ8q/+wKOlS/uuMqVCsIx1C6TiCYDxFh9Yk7pwcrhP0+JHntTDcqW+T9S7yTAVDd7gg3x636BRGp0XDi/0HE4VE2ivAXvYadrvnNugEiHX7yMzhHpJOe14yghGgXUkOBOVf0tesMzSad9mWLsCMQyLNdnFLGH2mhq4SvgZBSAcCYJUTUvX8fFp1xFiWmkUCGswf3duAsdkqTPrEuInGyrob2hxciQO1glL3FjA2lb9VboyepI4nU0sVzU3KcVCxG9WtdR3ELQTdbnIcIGrZWte6CWSOU1LRJYY9MPStwr0sl4fN7Wrv8cT3B2Ap81f1jfF7wConH/GvcsjTte0w+Ox7+MoynKPNjAlJ3kJqldGAQ0ay9ZgkH08MuP98MxEd1vO2uf9m69UAPXctZqDwhEENshrKPhUG2TYxhhbVO64pKcddZ8HWPf3rDP2W8ruLhRL5OwQX/2lVJa/z2Ou1BgB.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 6810,
+    "completion_tokens": 865,
+    "total_tokens": 7675,
+    "cost": 0.0011135,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0011135,
+      "upstream_inference_prompt_cost": 0.000681,
+      "upstream_inference_completions_cost": 0.0004325
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 373,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 4.68
+}

@@ -1,0 +1,17 @@
+{
+  "name": "b-bdc",
+  "prompt": "Edit the reference engine cutaway to show the next moment of the engine: the crankshaft has rotated half a turn so the crank pin is now at the bottom, and the piston has moved down to the bottom of the cylinder (bottom dead centre), still joined to the crank pin by the connecting rod. Keep the engine housing, valves, spark plug, colours, style and framing exactly identical.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/inputs/engine-canvas.png"
+  ],
+  "seconds": 104.3,
+  "job": {
+    "inference_seconds": 102.8970769890002,
+    "peak_allocated_gb": 19.09352397918701,
+    "seed": 12345
+  }
+}

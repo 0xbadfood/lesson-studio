@@ -1,0 +1,76 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    21
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 21,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "WORK, ENERGY AND POWER"
+        ],
+        "page_summary": "This page contains a series of physics problems (5.17 through 5.23) related to work, energy, and power. It includes a diagram (Fig. 5.15) illustrating a pendulum collision scenario.",
+        "knowledge_points": [
+          "Problem 5.17: A pendulum bob A (mass m) released from 30° to the vertical hits another bob B (mass m) at rest on a table. The collision is elastic. The question asks for the height bob A rises after the collision.",
+          "Problem 5.18: A pendulum bob is released from a horizontal position with a length of 1.5 m. It dissipates 5% of its initial energy against air resistance. The question asks for the speed at the lowermost point.",
+          "Problem 5.19: A trolley of mass 300 kg carrying a sandbag of 25 kg moves at 27 km/h on a frictionless track. Sand leaks out at 0.05 kg/s. The question asks for the speed of the trolley after the sandbag is empty.",
+          "Problem 5.20: A body of mass 0.5 kg travels in a straight line with velocity v = ax^(3/2) where a = 5 m^(-1/2) s^(-1). The question asks for the work done by the net force during displacement from x = 0 to x = 2 m.",
+          "Problem 5.21: Windmill blades sweep out a circle of area A. Wind flows at velocity v perpendicular to the circle. Questions ask for mass of air passing through in time t, kinetic energy of the air, and electrical power produced given specific values (A=30 m², v=36 km/h, density=1.2 kg/m³, 25% efficiency).",
+          "Problem 5.22: A person lifts a 10 kg mass 1000 times to a height of 0.5 m. Questions ask for work done against gravity and the amount of fat used up given fat energy content (3.8 x 10^7 J/kg) and 20% efficiency.",
+          "Problem 5.23: A family uses 8 kW of power. Direct solar energy is incident at 200 W/m². 20% is converted to electrical energy. Questions ask for the area needed to supply 8 kW and a comparison to a typical house roof."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Diagram of a pendulum collision (Fig. 5.15)",
+            "text": [
+              "30°",
+              "A",
+              "m",
+              "m",
+              "B",
+              "Fig. 5.15"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A diagram showing a pendulum bob A suspended from a pivot, released from an angle of 30 degrees to the vertical. It swings down to hit another bob B of the same mass (m) resting on a horizontal surface. The diagram shows the initial position of A and the position of B.",
+            "educational_role": "Illustrates the setup for the physics problem 5.17 regarding elastic collision between two pendulum bobs.",
+            "evidence": "depicted",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Elastic Collision",
+      "Pendulum Motion",
+      "Kinetic Energy",
+      "Power"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 21,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"WORK, ENERGY AND POWER\"\n      ],\n      \"page_summary\": \"This page contains a series of physics problems (5.17 through 5.23) related to work, energy, and power. It includes a diagram (Fig. 5.15) illustrating a pendulum collision scenario.\",\n      \"knowledge_points\": [\n        \"Problem 5.17: A pendulum bob A (mass m) released from 30° to the vertical hits another bob B (mass m) at rest on a table. The collision is elastic. The question asks for the height bob A rises after the collision.\",\n        \"Problem 5.18: A pendulum bob is released from a horizontal position with a length of 1.5 m. It dissipates 5% of its initial energy against air resistance. The question asks for the speed at the lowermost point.\",\n        \"Problem 5.19: A trolley of mass 300 kg carrying a sandbag of 25 kg moves at 27 km/h on a frictionless track. Sand leaks out at 0.05 kg/s. The question asks for the speed of the trolley after the sandbag is empty.\",\n        \"Problem 5.20: A body of mass 0.5 kg travels in a straight line with velocity v = ax^(3/2) where a = 5 m^(-1/2) s^(-1). The question asks for the work done by the net force during displacement from x = 0 to x = 2 m.\",\n        \"Problem 5.21: Windmill blades sweep out a circle of area A. Wind flows at velocity v perpendicular to the circle. Questions ask for mass of air passing through in time t, kinetic energy of the air, and electrical power produced given specific values (A=30 m², v=36 km/h, density=1.2 kg/m³, 25% efficiency).\",\n        \"Problem 5.22: A person lifts a 10 kg mass 1000 times to a height of 0.5 m. Questions ask for work done against gravity and the amount of fat used up given fat energy content (3.8 x 10^7 J/kg) and 20% efficiency.\",\n        \"Problem 5.23: A family uses 8 kW of power. Direct solar energy is incident at 200 W/m². 20% is converted to electrical energy. Questions ask for the area needed to supply 8 kW and a comparison to a typical house roof.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Diagram of a pendulum collision (Fig. 5.15)\",\n          \"text\": [\n            \"30°\",\n            \"A\",\n            \"m\",\n            \"m\",\n            \"B\",\n            \"Fig. 5.15\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"A diagram showing a pendulum bob A suspended from a pivot, released from an angle of 30 degrees to the vertical. It swings down to hit another bob B of the same mass (m) resting on a horizontal surface. The diagram shows the initial position of A and the position of B.\",\n          \"educational_role\": \"Illustrates the setup for the physics problem 5.17 regarding elastic collision between two pendulum bobs.\",\n          \"evidence\": \"depicted\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n  ,\n  \"batch_topics\": [\n    \"Work, Energy and Power\",\n    \"Elastic Collision\",\n    \"Pendulum Motion\",\n    \"Kinetic Energy\",\n    \"Power\"\n  ]\n  ,\n  \"uncertainties\": []\n}",
+  "usage": {
+    "prompt_tokens": 3164,
+    "total_tokens": 4157,
+    "completion_tokens": 993,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

@@ -1,0 +1,168 @@
+{
+  "canvas_size": [
+    1672,
+    941
+  ],
+  "layers": {
+    "piston": {
+      "file": "piston.png",
+      "bbox_px": [
+        524,
+        326,
+        762,
+        457
+      ],
+      "source": "engine-canvas.png",
+      "area_px": 28756
+    },
+    "valve_L": {
+      "file": "valve_L.png",
+      "bbox_px": [
+        524,
+        41,
+        585,
+        213
+      ],
+      "source": "engine-canvas.png",
+      "area_px": 5258
+    },
+    "valve_R": {
+      "file": "valve_R.png",
+      "bbox_px": [
+        698,
+        41,
+        765,
+        214
+      ],
+      "source": "engine-canvas.png",
+      "area_px": 5386
+    },
+    "crankshaft": {
+      "file": "crankshaft.png",
+      "bbox_px": [
+        494,
+        530,
+        786,
+        823
+      ],
+      "source": "a-crankshaft.png",
+      "area_px": 60485
+    },
+    "conrod": {
+      "file": "conrod.png",
+      "bbox_px": [
+        629,
+        440,
+        783,
+        729
+      ],
+      "source": "r2-nopiston.png",
+      "area_px": 18521
+    }
+  },
+  "anchors": {
+    "wrist_pin": [
+      643.7,
+      399.9
+    ],
+    "crank_pin": [
+      735.7,
+      677.5
+    ],
+    "axle": [
+      638.5,
+      673.5
+    ],
+    "axle_model": [
+      643.7,
+      668.1
+    ],
+    "axle_hough_votes": 118,
+    "rod_small_end": [
+      643.7,
+      399.9
+    ],
+    "rod_big_end": [
+      735.7,
+      677.5
+    ],
+    "valve_L_head": [
+      551.8,
+      197.6
+    ],
+    "valve_R_head": [
+      735.7,
+      197.6
+    ]
+  },
+  "mechanism": {
+    "crank_radius_px": 97.3,
+    "rod_length_px": 292.4,
+    "pin_angle_deg": 2.36,
+    "cylinder_axis_offset_px": 5.2
+  },
+  "fixed": {
+    "intake_passage": [
+      [
+        387.904,
+        152.442
+      ],
+      [
+        454.784,
+        148.678
+      ],
+      [
+        504.944,
+        143.032
+      ],
+      [
+        538.384,
+        152.442
+      ],
+      [
+        555.104,
+        180.672
+      ]
+    ],
+    "exhaust_passage": [
+      [
+        722.304,
+        180.672
+      ],
+      [
+        739.024,
+        152.442
+      ],
+      [
+        772.464,
+        143.032
+      ],
+      [
+        822.624,
+        148.678
+      ],
+      [
+        889.504,
+        152.442
+      ]
+    ],
+    "combustion_chamber": [
+      526.68,
+      218.312,
+      765.776,
+      331.232
+    ],
+    "cylinder_bore": [
+      526.68,
+      218.312,
+      765.776,
+      510.022
+    ],
+    "spark_plug_tip": [
+      643.72,
+      218.312
+    ]
+  },
+  "background": "/home/nitin/manim/experiments/image-first/layers/background.png",
+  "background_recipe": "b-empty + feathered valve zones from r3-empty-novalves (tone-matched)"
+}

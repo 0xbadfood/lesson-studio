@@ -1,0 +1,72 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    15
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 15,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "English",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "Example 5.11 Slowing down of neutrons",
+          "5.11.3 Collisions in Two Dimensions",
+          "Example 5.12"
+        ],
+        "page_summary": "The page covers the slowing down of neutrons in nuclear reactors (Example 5.11) and the physics of collisions in two dimensions (Section 5.11.3). It derives the fractional kinetic energy lost by a neutron in an elastic collision with a moderator nucleus (deuterium or carbon) and presents the vector equations for momentum and energy conservation in a 2D collision, concluding with a billiard ball example (Example 5.12).",
+        "knowledge_points": [
+          "In a nuclear reactor, a neutron of high speed (typically 10^7 m s^-1) must be slowed to 10^3 m s^-1 to interact with isotope U-235 and cause fission.",
+          "The material making up light nuclei (usually heavy water D2O or graphite) is called a moderator.",
+          "For an elastic collision, the fractional kinetic energy lost by the neutron is f1 = ((m1 - m2) / (m1 + m2))^2.",
+          "The fractional kinetic energy gained by the moderating nuclei is f2 = 1 - f1 = 4m1m2 / (m1 + m2)^2.",
+          "For deuterium (m2 = 2m1), f1 = 1/9 and f2 = 8/9, meaning almost 90% of the neutron's energy is transferred.",
+          "For carbon, f1 = 71.6% and f2 = 28.4%.",
+          "In a two-dimensional collision, linear momentum is conserved, implying three equations for directions {x, y, z}.",
+          "The conservation of the z-component of linear momentum implies the entire collision is in the x-y plane.",
+          "The x-component equation is m1v1i = m1v1f cos θ1 + m2v2f cos θ2 (Eq. 5.28).",
+          "The y-component equation is 0 = m1v1f sin θ1 - m2v2f sin θ2 (Eq. 5.29).",
+          "For an elastic collision, kinetic energy is conserved: 1/2 m1v1i^2 = 1/2 m1v1f^2 + 1/2 m2v2f^2 (Eq. 5.30).",
+          "In a 2D collision with known masses and initial velocity, there are four unknowns {v1f, v2f, θ1, θ2} and only three equations (two momentum, one energy), so one unknown (e.g., θ1) must be measured to solve the system.",
+          "Example 5.12 involves a collision between two billiard balls with equal masses (m1 = m2), where the target ball is to be sunk in a corner pocket at an angle θ2 = 37°."
+        ],
+        "embedded_text": [],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A schematic diagram illustrating a two-dimensional collision between two masses, m1 and m2. Mass m1 approaches with initial velocity v1i. After collision, m1 moves with velocity v1f at an angle θ1, and m2 moves with velocity v2f at an angle θ2. The diagram shows the x and y axes.",
+            "educational_role": "Illustrates the geometry and vector components of a 2D collision, defining the angles θ1 and θ2 used in the conservation equations.",
+            "evidence": "depicted",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Nuclear Reactor Neutron Moderation",
+      "Two-Dimensional Collision Physics",
+      "Momentum and Energy Conservation",
+      "Billiard Ball Collision Example"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\"vision_input_worked\": true, \"pages\": [{\"page\": 15, \"readability\": \"readable\", \"native_text_alignment\": \"complete\", \"ocr_needed\": false, \"ocr_reason\": null, \"detected_language\": \"English\", \"headings\": [\"WORK, ENERGY AND POWER\", \"Example 5.11 Slowing down of neutrons\", \"5.11.3 Collisions in Two Dimensions\", \"Example 5.12\"], \"page_summary\": \"The page covers the slowing down of neutrons in nuclear reactors (Example 5.11) and the physics of collisions in two dimensions (Section 5.11.3). It derives the fractional kinetic energy lost by a neutron in an elastic collision with a moderator nucleus (deuterium or carbon) and presents the vector equations for momentum and energy conservation in a 2D collision, concluding with a billiard ball example (Example 5.12).\", \"knowledge_points\": [\"In a nuclear reactor, a neutron of high speed (typically 10^7 m s^-1) must be slowed to 10^3 m s^-1 to interact with isotope U-235 and cause fission.\", \"The material making up light nuclei (usually heavy water D2O or graphite) is called a moderator.\", \"For an elastic collision, the fractional kinetic energy lost by the neutron is f1 = ((m1 - m2) / (m1 + m2))^2.\", \"The fractional kinetic energy gained by the moderating nuclei is f2 = 1 - f1 = 4m1m2 / (m1 + m2)^2.\", \"For deuterium (m2 = 2m1), f1 = 1/9 and f2 = 8/9, meaning almost 90% of the neutron's energy is transferred.\", \"For carbon, f1 = 71.6% and f2 = 28.4%.\", \"In a two-dimensional collision, linear momentum is conserved, implying three equations for directions {x, y, z}.\", \"The conservation of the z-component of linear momentum implies the entire collision is in the x-y plane.\", \"The x-component equation is m1v1i = m1v1f cos θ1 + m2v2f cos θ2 (Eq. 5.28).\", \"The y-component equation is 0 = m1v1f sin θ1 - m2v2f sin θ2 (Eq. 5.29).\", \"For an elastic collision, kinetic energy is conserved: 1/2 m1v1i^2 = 1/2 m1v1f^2 + 1/2 m2v2f^2 (Eq. 5.30).\", \"In a 2D collision with known masses and initial velocity, there are four unknowns {v1f, v2f, θ1, θ2} and only three equations (two momentum, one energy), so one unknown (e.g., θ1) must be measured to solve the system.\", \"Example 5.12 involves a collision between two billiard balls with equal masses (m1 = m2), where the target ball is to be sunk in a corner pocket at an angle θ2 = 37°.\"], \"embedded_text\": [], \"embedded_text_complete\": true, \"human_visual_review_needed\": false, \"visuals\": [{\"kind\": \"diagram\", \"description\": \"A schematic diagram illustrating a two-dimensional collision between two masses, m1 and m2. Mass m1 approaches with initial velocity v1i. After collision, m1 moves with velocity v1f at an angle θ1, and m2 moves with velocity v2f at an angle θ2. The diagram shows the x and y axes.\", \"educational_role\": \"Illustrates the geometry and vector components of a 2D collision, defining the angles θ1 and θ2 used in the conservation equations.\", \"evidence\": \"depicted\", \"confidence\": \"high\", \"text_dependency\": \"labels\", \"recreation_route\": \"deterministic_renderer\"}] }], \"batch_topics\": [\"Nuclear Reactor Neutron Moderation\", \"Two-Dimensional Collision Physics\", \"Momentum and Energy Conservation\", \"Billiard Ball Collision Example\"], \"uncertainties\": []}",
+  "usage": {
+    "prompt_tokens": 3505,
+    "total_tokens": 4440,
+    "completion_tokens": 935,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

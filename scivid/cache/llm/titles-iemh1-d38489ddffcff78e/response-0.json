@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"Orienting Yourself: The Use of Coordinates\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"Introduction to Linear Polynomials\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"The World of Numbers\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"Exploring Algebraic Identities\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"I'm Up and Down, and Round and Round\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"Measuring Space: Perimeter and Area\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"The Mathematics of Maybe: Introduction to Probability\"\n    },\n    {\n      \"chapter\": 8,\n      \"title\": \"Predicting What Comes Next: Exploring Sequences and Progressions\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791387964,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 244,
+    "prompt_tokens": 2594,
+    "total_tokens": 2838,
+    "prompt_tokens_details": {
+      "cached_tokens": 37
+    }
+  },
+  "id": "chatcmpl-IlXJpdj23bpR9mYmhMcA4EYRFsYbAiWT",
+  "timings": {
+    "cache_n": 37,
+    "prompt_n": 2557,
+    "prompt_ms": 3366.008,
+    "prompt_per_token_ms": 1.31638951896754,
+    "prompt_per_second": 759.6535718275179,
+    "predicted_n": 244,
+    "predicted_ms": 5092.298,
+    "predicted_per_token_ms": 20.870073770491803,
+    "predicted_per_second": 47.915499053668896,
+    "draft_n": 162,
+    "draft_n_accepted": 162
+  },
+  "elapsed_seconds": 9.28
+}

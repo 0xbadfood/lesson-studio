@@ -1,0 +1,17 @@
+{
+  "name": "r2-nopiston",
+  "prompt": "Edit the reference engine cutaway: remove only the piston. Show the complete copper connecting rod including its small end and wrist pin that the piston was hiding, and the empty cylinder bore behind it. Keep everything else exactly identical and in the same position.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/inputs/engine-canvas.png"
+  ],
+  "seconds": 102.3,
+  "job": {
+    "inference_seconds": 101.4311910510005,
+    "peak_allocated_gb": 19.09147357940674,
+    "seed": 12345
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520582-8pFHhTLS2kC1ugJGvPSE",
+  "object": "chat.completion",
+  "created": 1791520582,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[{\"chapter\":1,\"title\":\"Sexual Reproduction in Flowering Plants\"},{\"chapter\":2,\"title\":\"Human Reproduction\"},{\"chapter\":3,\"title\":\"Reproductive Health\"},{\"chapter\":4,\"title\":\"Principles of Inheritance and Variation\"},{\"chapter\":5,\"title\":\"Molecular Basis of Inheritance\"},{\"chapter\":6,\"title\":\"Evolution\"},{\"chapter\":7,\"title\":\"Human Health and Disease\"},{\"chapter\":8,\"title\":\"Microbes in Human Welfare\"},{\"chapter\":9,\"title\":\"Biotechnology: Principles and Processes\"},{\"chapter\":10,\"title\":\"Biotechnology and its Applications\"},{\"chapter\":11,\"title\":\"Organisms and Populations\"},{\"chapter\":12,\"title\":\"Ecosystem\"},{\"chapter\":13,\"title\":\"Biodiversity and Conservation\"}]}\n```",
+        "refusal": null,
+        "reasoning": "I'm going through the table of contents, noting chapter titles like Sexual Reproduction in Flowering Plants, Human Reproduction, Reproductive Health, Principles of Inheritance and Variation, Molecular Basis of Inheritance, Evolution, Human Health and Disease, Microbes in Human Welfare, and Biotechnology Principles and Processes.\n\nContinuing through the remaining chapters: Biotechnology and its Applications, Organisms and Populations, Ecosystem, and Biodiversity and Conservation, then preparing to output the JSON.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm going through the table of contents, noting chapter titles like Sexual Reproduction in Flowering Plants, Human Reproduction, Reproductive Health, Principles of Inheritance and Variation, Molecular Basis of Inheritance, Evolution, Human Health and Disease, Microbes in Human Welfare, and Biotechnology Principles and Processes.\n\nContinuing through the remaining chapters: Biotechnology and its Applications, Organisms and Populations, Ecosystem, and Biodiversity and Conservation, then preparing to output the JSON.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSgAsKEAgSGAI4AUIIdGhpbmtpbmcSDCJZmathVbMB4m/aWBoMMM3bCiBtZ3XCazvpIjB4C0nkjafHF+QfrJ0Ilkks3quMAyCs0ojWA5iRmG9uEManZTLdSfyZWV+v9Ri2xRMqnQqAa4Doo6c6aerd8zA8/z99IC+gM8X9yMd87pCd40xL5NRb47gF2f8jeWoQ+abQhY6qfEBh+q/VZlIw3VZCqVdbdsiJiOzt92ThjAEOz/A+nHpifETa44rz9mNNX5rhQ0yJRKdTd5NhRh2NF11L04xjUnlSINtKUqvCn6z1naY+4K/MyIMt6oJhcvLkd0+bKXpOYWP3N8dupDkgWNauUa8vJ+XmvElrba5WUh/Ob2vBVL2kEuJVtEQZ//TgrOjkjokavaQDUT9dVHOCehb41wEnYc5dk6ENLV4qm+vpqfQswnVk8/BX30p9oDvnndy8ko4Zy7BqGi/jpWlMQS7M7KzwIyaqOePbBjsm7zEkDVVwNIaIOLZHCq5plcPWp6DYrGsQVQJGAhCM2CCkcweC+4MLsht5dYbgH0N/UutnDKFcXTuZWm2/SvKUmCcUK/rxaJhwuYMWZV4ilholbwNZTrehVUn+1fH+oRoqnBglqep2WFWaka3qE+iAwNk/xgJcysqTQwCuhYJ+thti27DWusEPUc5/ihoIodQrVl1oMVPBv3syTCAecrECO9xrC68hTZoQN8yZ+K1AuhJSDYLx86VGcWpaDTV0zjDH1cN3DPmGolwFgBENIO8nLMy9tDhnz4W8Ne9nIJ64JT8z12QvIRRfnsqwrr2Oq0FmbX+pSUpFcAELoI2rzz9IowXqvV6Ku9PtMXi7AXL66mmwvv1AbsxXKoYZ4b3ndCwULhX+VmBKuDbpX1WGrqVvnXP4HKnlI8CK0PhiLFb47pST6uVaXUuq3jjJKjOVK84Lhq1c0RcFwWMx4JWbFB/pQd4fDq78evQM84R8++uJPgCQsQ18Qpe6sZ+8kJ8G0CLwZTmCT/Wb2cV/ka7lqZml6aVbQ/YLkMVV9Qwo44CCJ//aYzgI/kWkvazyWn9D/uuecTpLhNFxEVv2ZjlVmAoZeQZaws1HZAi3jj489J2zrKo9bA9+61+2uIjyo3bi2AIeKkxEd7JPLGrOjnSR8AeCS9z1CFT5EEfPjYJtct8QdTfTX/baNQdnJqkmkUPxlv7dSlthny9XolQKVuNKflI9Bw3JYy9jhdzCej8cf8wKcf7kwAt9c5FMv8FjDa6ZTc3fk66Zkqa+5OUzFbVvnbDZBpPOYej71NrGYuAPcJVKr4hV82nynW2QaUz4V2rFnvere9Khq4eEfvQUYbCPcepuu8Y8yz0pXJwNRF4qdmQHCY3FfuCeo1Ww60Iclmgohq2XflpqCHhhtXbNl6JpFoztYJOP2oBPF9m9jkL8c8RrRipAACJm27PDHM4ssljSlnEbzIcu+TOTp5S14hbliPj9fM8mkSwH3sBh8KU3GENpn+lgDS5ZXNv5xZresgOfxz3Lb8lF4EMft8mFa0KVDgtOw6CBVr7xFGTrySzupGhW/mtj9iCjet5mV9XMgoL1GIvhcdOfMeisHpq3grTbsA8xD1vJoZn3X/Snb2Sume937J1eOa7wFXU7AsNLAq3157SJZgqCb87ouE4wGtV9JlrWpRSXP7vfjjxhYuuRaHZT/lya0+n4JTZSAHFq2WOzkT6bujiB3CA1nhBzwX9VFPjTxSiZ9F9OAs47CvWh0l//m2TgIcDCQCJJlybHx7aNwwNKV0pb83QkrofzqEOEEQXmNxqINcv2ldypnYPFRFXtJtcgAtImniMgpD/9/9JPZ9WTxkUTqMLiAeK76VIjSKmyid2ANXjsyjYQswbgaR5pISei8dDuGAE=.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 6192,
+    "completion_tokens": 655,
+    "total_tokens": 6847,
+    "cost": 0.0009467,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0009467,
+      "upstream_inference_prompt_cost": 0.0006192,
+      "upstream_inference_completions_cost": 0.0003275
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 327,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 4.69
+}

@@ -1,0 +1,17 @@
+{
+  "name": "r4-ramp-bg",
+  "prompt": "Edit the reference illustration: remove the blue ball completely. Keep the ramp, its shadow, the background and the framing exactly identical.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/paths/r2-ramp-clean.png"
+  ],
+  "seconds": 88.4,
+  "job": {
+    "inference_seconds": 87.58621090000088,
+    "peak_allocated_gb": 19.092591285705566,
+    "seed": 12345
+  }
+}

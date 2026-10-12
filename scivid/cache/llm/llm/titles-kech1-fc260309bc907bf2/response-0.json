@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520488-EFSvOgM7lQ240Ay8vsL6",
+  "object": "chat.completion",
+  "created": 1791520488,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[{\"chapter\":1,\"title\":\"Some Basic Concepts of Chemistry\"},{\"chapter\":2,\"title\":\"Structure of Atom\"},{\"chapter\":3,\"title\":\"Classification of Elements and Periodicity in Properties\"},{\"chapter\":4,\"title\":\"Chemical Bonding and Molecular Structure\"},{\"chapter\":5,\"title\":\"Thermodynamics\"},{\"chapter\":6,\"title\":\"Equilibrium\"}]}\n```",
+        "refusal": null,
+        "reasoning": "The task refers to units as chapters, so I'll pull titles directly from the contents page: Some Basic Concepts of Chemistry, Structure of Atom, Classification of Elements and Periodicity in Properties, Chemical Bonding and Molecular Structure, Thermodynamics, and Equilibrium, formatting each in title case.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "The task refers to units as chapters, so I'll pull titles directly from the contents page: Some Basic Concepts of Chemistry, Structure of Atom, Classification of Elements and Periodicity in Properties, Chemical Bonding and Molecular Structure, Thermodynamics, and Equilibrium, formatting each in title case.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSkQoKEAgSGAI4AUIIdGhpbmtpbmcSDAviW7mna2xds/yyyhoMcp+rTK9mBfgPi6kdIjDNwz3Y0iwUpGppgeo8ax8JCaXoWEyEUCprJroCExw2jv5pMgzfDz6u8nkDzee2bvAqrgkz4QlBCBJqSCefV6EiSapUuwp2VCOUhV0uLDqadiMEuks1TcdO5HtWT9TnP7MCqXPKlqwgI4olZuLF8JmMAKX2OmkoLZzztEB1AzmxevGCluby29L1esJqFFcmdxT5RLMyuPDm7mkkqW4CnBYkTp873/DjhkKolh6VPzmsJOvgmEtlIm4Wh7lmodS1i4NnL2HVN+x95Dnb/NtW/F5XMEYcJzHTrCNAN/IyvEYIgGR6YxoOous5BU2673dBvqdHmW+kifJDi+KTEUZ7Q6TfMFIhGZ5Ctki4TZuRiKN8JQyibOnzcEACIzbaNcvtxX8+iBpmegAEzeZTHrXMuuzFT3OzmlmacgzNz2Rzw4J6oRJrptHXCkjMQcJJ0/nh07uJYyN5c6msjj6vLUbQOsfo4mcl6OExrmsMDdR64EXwdVvvswMC1S+PEbz0xxAvfhUlJzJc3EAbwtznH21nf6gCTs7XJnAbF+3HaL6l9hRzvHWURhtpCqZT+ASoJ9PRbAblEYylyJ2rRRQ/2CNcJHcmTtev0qpJH/cjWoCZo3JyjC6MNuzW+5bhgicr0Bk9g4l4/kPloO42lnfuLonJgcvTHlbnkajkJEt5QgCV8YNK3YyStReW0MTGQzhGZIwc5wCgp+hB2PnTqdN4HHszxBO9H7KQhVpX5Zosl753oS2zuFz7M6Fc22ZJUHpQF2pVnm0aBBgxGwm1CmbSalIbiZYN/7Vi5zyfmUNg24DAi4oB1aYIB9NwBwriKpcdDPK+YPuaup8TitWsOzbpxThqvr+fQt0p3d7xnjwLFCqkD7yGZFlMWDTrAq+JDQChwHRO7HnD6lV5VQHc9Cmd91vfvMAnCXvZjfhxKJMAWV+6DwSe78PXd2TBa6oNZuOHbhgdQ96u899CbZmPyW+b5K78FrPQ86MQ58qpBWki70b3Tzo4knyZWA6BrHlH1I3D3XRCMyRCMN0llISM10zy0+fXfKiuy88E8QfbePjDsBeqCGjcB2UDkGE7u45C4L4JV/kUIPd+VWBnX18vI/m6aFO6qoSmqQgC/ZNLVLqOvYAIw9BQDbt+pFmAU8WJGqP0bcoSCpTvpI1zMCSggu6ARcggOoJCbNkpx8zYebwhg1B3DvnOWk21e4INFrep04k9KCDw3qvgisqTz8iQf5qXtfogslvg5eyJOimwjixXubgRnGSGYLprMz1y5d71zdnwfXzse6w5Pke7cNLEjc6Fz5XR7LvWT071aTzycQbhhy8O+R3CYn3eWUhGZVCZgNcZSWExGF5l8lfQSCIyQXR0onqcl9HHQlgU1YWNYEDKLgZ1oJi7YqV62pKzvE++XfNac3qFj2cBa4PORBFc1wOTljFGiPp6yMvxTPO3v2Mq8pW7P6+Al6fuqAApZvqrKfLU8leDMP99HkXhQLpduPFk3uQICAxA0vdLjvin7E/YLB/VlAMAqgzJmzGHHk9lRRnLaOUway79T63snG1gsiZQ97k7uF/bHnHXaFpw5arLN65zOLNUt9ATruTtTcEXhSe0tum6vugjunUgOWirvDOF/GAVAF2wWQ12na2Lvirbq2o29uzQHDSLfcZQwvFyMwGdXpNzNKMEGAE=.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3493,
+    "completion_tokens": 457,
+    "total_tokens": 3950,
+    "cost": 0.0005778,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0005778,
+      "upstream_inference_prompt_cost": 0.0003493,
+      "upstream_inference_completions_cost": 0.0002285
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 289,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 5.18
+}

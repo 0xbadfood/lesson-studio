@@ -1,0 +1,77 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    3
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 3,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "5.2 NOTIONS OF WORK AND KINETIC ENERGY: THE WORK-ENERGY THEOREM",
+          "5.3 WORK"
+        ],
+        "page_summary": "This page derives the work-energy theorem from the kinematic equation for constant acceleration, defining work and kinetic energy. It includes Example 5.2, which calculates the work done by gravity and a resistive force on a falling raindrop. Section 5.3 begins by introducing the concept of work done by a constant force acting on an object undergoing displacement, illustrated by a diagram.",
+        "knowledge_points": [
+          "The kinematic relation for rectilinear motion under constant acceleration is v² - u² = 2as.",
+          "Multiplying the kinematic relation by m/2 yields 1/2 mv² - 1/2 mu² = mas = Fs.",
+          "The vector form of the kinematic relation is v² - u² = 2 a.d, where a and d are acceleration and displacement vectors.",
+          "The work-energy theorem states that the change in kinetic energy of a particle is equal to the work done on it by the net force (Kf - Ki = W).",
+          "Kinetic energy is defined as half the mass times the square of the speed (K = 1/2 mv²).",
+          "Work is defined as the product of the displacement and the component of the force along the displacement.",
+          "In Example 5.2, a raindrop of mass 1.00 g falling from 1.00 km and hitting the ground at 50.0 m/s has a change in kinetic energy of 1.25 J.",
+          "The work done by the gravitational force on the raindrop is 10.0 J.",
+          "The work done by the resistive force on the raindrop is -8.75 J.",
+          "Work is related to force and the displacement over which it acts."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Figure 5.2: A diagram showing a blue rectangular block on a horizontal surface with hatching. The block is shown at an initial position and a final position to the right. A force vector F is shown acting on the block at an angle θ to the horizontal. The displacement d is indicated by a double-headed arrow between the initial and final positions. The horizontal axis is labeled x.",
+            "text": [
+              "F",
+              "θ",
+              "d",
+              "x"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A schematic diagram illustrating a constant force F acting on an object of mass m. The object is represented as a blue rectangle on a horizontal surface. The force F is applied at an angle θ to the horizontal. The object undergoes a displacement d in the positive x-direction.",
+            "educational_role": "Illustrates the physical setup for calculating work done by a constant force acting at an angle to the displacement.",
+            "evidence": "depicted",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work-Energy Theorem",
+      "Kinetic Energy",
+      "Work done by a constant force"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 3,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"WORK, ENERGY AND POWER\",\n        \"5.2 NOTIONS OF WORK AND KINETIC ENERGY: THE WORK-ENERGY THEOREM\",\n        \"5.3 WORK\"\n      ],\n      \"page_summary\": \"This page derives the work-energy theorem from the kinematic equation for constant acceleration, defining work and kinetic energy. It includes Example 5.2, which calculates the work done by gravity and a resistive force on a falling raindrop. Section 5.3 begins by introducing the concept of work done by a constant force acting on an object undergoing displacement, illustrated by a diagram.\",\n      \"knowledge_points\": [\n        \"The kinematic relation for rectilinear motion under constant acceleration is v² - u² = 2as.\",\n        \"Multiplying the kinematic relation by m/2 yields 1/2 mv² - 1/2 mu² = mas = Fs.\",\n        \"The vector form of the kinematic relation is v² - u² = 2 a.d, where a and d are acceleration and displacement vectors.\",\n        \"The work-energy theorem states that the change in kinetic energy of a particle is equal to the work done on it by the net force (Kf - Ki = W).\",\n        \"Kinetic energy is defined as half the mass times the square of the speed (K = 1/2 mv²).\",\n        \"Work is defined as the product of the displacement and the component of the force along the displacement.\",\n        \"In Example 5.2, a raindrop of mass 1.00 g falling from 1.00 km and hitting the ground at 50.0 m/s has a change in kinetic energy of 1.25 J.\",\n        \"The work done by the gravitational force on the raindrop is 10.0 J.\",\n        \"The work done by the resistive force on the raindrop is -8.75 J.\",\n        \"Work is related to force and the displacement over which it acts.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Figure 5.2: A diagram showing a blue rectangular block on a horizontal surface with hatching. The block is shown at an initial position and a final position to the right. A force vector F is shown acting on the block at an angle θ to the horizontal. The displacement d is indicated by a double-headed arrow between the initial and final positions. The horizontal axis is labeled x.\",\n          \"text\": [\n            \"F\",\n            \"θ\",\n            \"d\",\n            \"x\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"A schematic diagram illustrating a constant force F acting on an object of mass m. The object is represented as a blue rectangle on a horizontal surface. The force F is applied at an angle θ to the horizontal. The object undergoes a displacement d in the positive x-direction.\",\n          \"educational_role\": \"Illustrates the physical setup for calculating work done by a constant force acting at an angle to the displacement.\",\n          \"evidence\": \"depicted\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work-Energy Theorem\",\n    \"Kinetic Energy\",\n    \"Work done by a constant force\"\n  ]\n,\n  \"uncertainties\": []\n}",
+  "usage": {
+    "prompt_tokens": 3398,
+    "total_tokens": 4279,
+    "completion_tokens": 881,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

@@ -1,0 +1,17 @@
+{
+  "name": "a-crankshaft",
+  "prompt": "This is an RGBA image with transparency. Extract only the crankshaft from the reference engine cutaway: the dark round crank web with its counterweight, the main shaft hub and the crank pin. Show the complete crankshaft, including the parts currently hidden behind the connecting rod. Keep its exact appearance, size and position. Remove everything else. The image has alpha channel and the background is transparent.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/inputs/engine-canvas.png"
+  ],
+  "seconds": 104.3,
+  "job": {
+    "inference_seconds": 102.27433855099662,
+    "peak_allocated_gb": 19.09352397918701,
+    "seed": 12345
+  }
+}

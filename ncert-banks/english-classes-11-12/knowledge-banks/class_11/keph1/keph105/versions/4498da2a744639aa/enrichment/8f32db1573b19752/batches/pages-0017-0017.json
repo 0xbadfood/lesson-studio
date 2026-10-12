@@ -1,0 +1,110 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    17
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 17,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "POINTS TO PONDER"
+        ],
+        "page_summary": "The page contains a summary table of physical quantities related to work, energy, and power, followed by a section titled 'Points to Ponder' which lists nine conceptual clarifications regarding the Work-Energy theorem, scalar nature of work, Newton's laws, and conservation principles.",
+        "knowledge_points": [
+          "Work is a scalar quantity that can be positive or negative, unlike mass and kinetic energy which are positive scalars.",
+          "The phrase 'calculate the work done' is incomplete without specifying the force, body, and displacement.",
+          "For two bodies, the sum of mutual forces is zero (Newton's Third Law), but the sum of work done by these forces need not be zero.",
+          "The Work-Energy (WE) theorem can be used to calculate work even if the exact nature of the force is unknown.",
+          "The WE theorem is a scalar form of Newton's Second Law and holds in all inertial frames.",
+          "The WE theorem can be extended to non-inertial frames by including pseudoforces.",
+          "Potential energy is undetermined up to a constant; the zero point is a matter of choice (e.g., ground for gravitational, equilibrium for spring).",
+          "Not every force has an associated potential energy; friction does not because work done over a closed path is not zero.",
+          "During a collision, total linear momentum is conserved at each instant, but kinetic energy conservation applies only after the collision is over."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Table summarizing physical quantities",
+            "text": [
+              "Physical Quantity",
+              "Symbol",
+              "Dimensions",
+              "Units",
+              "Remarks",
+              "Work",
+              "W",
+              "[ML²T⁻²]",
+              "J",
+              "W = F.d",
+              "Kinetic energy",
+              "K",
+              "[ML²T⁻²]",
+              "J",
+              "K = 1/2 mv²",
+              "Potential energy",
+              "V(x)",
+              "[ML²T⁻²]",
+              "J",
+              "F(x) = -dV(x)/dx",
+              "Mechanical energy",
+              "E",
+              "[ML²T⁻²]",
+              "J",
+              "E = K + V",
+              "Spring constant",
+              "k",
+              "[MT⁻²]",
+              "N m⁻¹",
+              "F = -kx",
+              "V(x) = 1/2 kx²",
+              "Power",
+              "P",
+              "[ML²T⁻³]",
+              "W",
+              "P = F.v",
+              "P = dW/dt"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "table",
+            "description": "A table with 5 columns (Physical Quantity, Symbol, Dimensions, Units, Remarks) and 6 data rows listing properties of Work, Kinetic energy, Potential energy, Mechanical energy, Spring constant, and Power.",
+            "educational_role": "Summarizes key physical quantities, their symbols, dimensions, units, and defining equations.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "table_text",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Physical Quantities Table",
+      "Points to Ponder"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 17,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"WORK, ENERGY AND POWER\",\n        \"POINTS TO PONDER\"\n      ],\n      \"page_summary\": \"The page contains a summary table of physical quantities related to work, energy, and power, followed by a section titled 'Points to Ponder' which lists nine conceptual clarifications regarding the Work-Energy theorem, scalar nature of work, Newton's laws, and conservation principles.\",\n      \"knowledge_points\": [\n        \"Work is a scalar quantity that can be positive or negative, unlike mass and kinetic energy which are positive scalars.\",\n        \"The phrase 'calculate the work done' is incomplete without specifying the force, body, and displacement.\",\n        \"For two bodies, the sum of mutual forces is zero (Newton's Third Law), but the sum of work done by these forces need not be zero.\",\n        \"The Work-Energy (WE) theorem can be used to calculate work even if the exact nature of the force is unknown.\",\n        \"The WE theorem is a scalar form of Newton's Second Law and holds in all inertial frames.\",\n        \"The WE theorem can be extended to non-inertial frames by including pseudoforces.\",\n        \"Potential energy is undetermined up to a constant; the zero point is a matter of choice (e.g., ground for gravitational, equilibrium for spring).\",\n        \"Not every force has an associated potential energy; friction does not because work done over a closed path is not zero.\",\n        \"During a collision, total linear momentum is conserved at each instant, but kinetic energy conservation applies only after the collision is over.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Table summarizing physical quantities\",\n          \"text\": [\n            \"Physical Quantity\",\n            \"Symbol\",\n            \"Dimensions\",\n            \"Units\",\n            \"Remarks\",\n            \"Work\",\n            \"W\",\n            \"[ML²T⁻²]\",\n            \"J\",\n            \"W = F.d\",\n            \"Kinetic energy\",\n            \"K\",\n            \"[ML²T⁻²]\",\n            \"J\",\n            \"K = 1/2 mv²\",\n            \"Potential energy\",\n            \"V(x)\",\n            \"[ML²T⁻²]\",\n            \"J\",\n            \"F(x) = -dV(x)/dx\",\n            \"Mechanical energy\",\n            \"E\",\n            \"[ML²T⁻²]\",\n            \"J\",\n            \"E = K + V\",\n            \"Spring constant\",\n            \"k\",\n            \"[MT⁻²]\",\n            \"N m⁻¹\",\n            \"F = -kx\",\n            \"V(x) = 1/2 kx²\",\n            \"Power\",\n            \"P\",\n            \"[ML²T⁻³]\",\n            \"W\",\n            \"P = F.v\",\n            \"P = dW/dt\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"table\",\n          \"description\": \"A table with 5 columns (Physical Quantity, Symbol, Dimensions, Units, Remarks) and 6 data rows listing properties of Work, Kinetic energy, Potential energy, Mechanical energy, Spring constant, and Power.\",\n          \"educational_role\": \"Summarizes key physical quantities, their symbols, dimensions, units, and defining equations.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"table_text\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work, Energy and Power\",\n    \"Physical Quantities Table\",\n    \"Points to Ponder\"\n  ],\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 950,
+    "prompt_tokens": 3557,
+    "total_tokens": 4507,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

@@ -1,0 +1,36 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Large Numbers Around Us"
+    },
+    {
+      "chapter": 2,
+      "title": "Arithmetic Expressions"
+    },
+    {
+      "chapter": 3,
+      "title": "A Peek Beyond the Point"
+    },
+    {
+      "chapter": 4,
+      "title": "Expressions Using Letter-Numbers"
+    },
+    {
+      "chapter": 5,
+      "title": "Parallel and Intersecting Lines"
+    },
+    {
+      "chapter": 6,
+      "title": "Number Play"
+    },
+    {
+      "chapter": 7,
+      "title": "A Tale of Three Intersecting Lines"
+    },
+    {
+      "chapter": 8,
+      "title": "Working With Fractions"
+    }
+  ]
+}

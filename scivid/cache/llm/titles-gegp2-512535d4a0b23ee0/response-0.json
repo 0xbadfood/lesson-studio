@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"Geometric Twins\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"Operations With Integers\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"Finding Common Ground\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"Another Peek Beyond The Point\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"Connecting The Dots...\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"Constructions And Tilings\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"Finding The Unknown\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791387889,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 188,
+    "prompt_tokens": 2548,
+    "total_tokens": 2736,
+    "prompt_tokens_details": {
+      "cached_tokens": 37
+    }
+  },
+  "id": "chatcmpl-cNsSZ8avSkpY2sdoXXjC4SYrFox5WCws",
+  "timings": {
+    "cache_n": 37,
+    "prompt_n": 2511,
+    "prompt_ms": 3323.227,
+    "prompt_per_token_ms": 1.3234675428116287,
+    "prompt_per_second": 755.5908759768743,
+    "predicted_n": 188,
+    "predicted_ms": 4019.14,
+    "predicted_per_token_ms": 21.378404255319147,
+    "predicted_per_second": 46.77617599785029,
+    "draft_n": 126,
+    "draft_n_accepted": 125
+  },
+  "elapsed_seconds": 8.1
+}

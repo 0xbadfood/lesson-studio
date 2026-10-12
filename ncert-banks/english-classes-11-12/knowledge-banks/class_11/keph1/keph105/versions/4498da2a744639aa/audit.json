@@ -1,0 +1,13 @@
+{
+  "schema_version": "phase1_chapter_preparation_audit_v1",
+  "document_id": "ncert:english:11:keph1:05",
+  "input_fingerprint": "4498da2a744639aa51af7c5e5ebdc8ed8c36a1f298d696bfdee6a5b19846b975",
+  "status": "prepared_pending_visual_inspection",
+  "page_count": 21,
+  "native_text_pages": 21,
+  "ocr_required_pages": 0,
+  "ocr_reason_counts": {},
+  "pages_with_embedded_images": 21,
+  "visual_inspection_required_pages": 21,
+  "extraction_issues": []
+}

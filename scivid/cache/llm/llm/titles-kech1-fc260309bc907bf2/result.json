@@ -1,0 +1,28 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Some Basic Concepts of Chemistry"
+    },
+    {
+      "chapter": 2,
+      "title": "Structure of Atom"
+    },
+    {
+      "chapter": 3,
+      "title": "Classification of Elements and Periodicity in Properties"
+    },
+    {
+      "chapter": 4,
+      "title": "Chemical Bonding and Molecular Structure"
+    },
+    {
+      "chapter": 5,
+      "title": "Thermodynamics"
+    },
+    {
+      "chapter": 6,
+      "title": "Equilibrium"
+    }
+  ]
+}

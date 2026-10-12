@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"The Ever-Evolving World of Science\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"Exploring Substances: Acidic, Basic, and Neutral\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"Electricity: Circuits and Their Components\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"The World of Metals and Non-Metals\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"Changes Around Us: Physical and Chemical\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"Adolescence: A Stage of Growth and Change\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"Heat Transfer in Nature\"\n    },\n    {\n      \"chapter\": 8,\n      \"title\": \"Measurement of Time and Motion\"\n    },\n    {\n      \"chapter\": 9,\n      \"title\": \"Life Processes in Animals\"\n    },\n    {\n      \"chapter\": 10,\n      \"title\": \"Life Processes in Plants\"\n    },\n    {\n      \"chapter\": 11,\n      \"title\": \"Light: Shadows and Reflections\"\n    },\n    {\n      \"chapter\": 12,\n      \"title\": \"Earth, Moon, and the Sun\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791387865,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 353,
+    "prompt_tokens": 3063,
+    "total_tokens": 3416,
+    "prompt_tokens_details": {
+      "cached_tokens": 37
+    }
+  },
+  "id": "chatcmpl-QbTDBx646pj0n5pC0adLKzNgoVwLEowG",
+  "timings": {
+    "cache_n": 37,
+    "prompt_n": 3026,
+    "prompt_ms": 3960.156,
+    "prompt_per_token_ms": 1.3087098479841375,
+    "prompt_per_second": 764.111312786668,
+    "predicted_n": 353,
+    "predicted_ms": 7571.662,
+    "predicted_per_token_ms": 21.44946742209632,
+    "predicted_per_second": 46.62120416891298,
+    "draft_n": 238,
+    "draft_n_accepted": 235
+  },
+  "elapsed_seconds": 12.46
+}

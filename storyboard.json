@@ -1,0 +1,145 @@
+{
+  "title": "Centripetal vs Centrifugal Force",
+  "audience": "High-school students",
+  "assumptions": [
+    "Ideal horizontal top-down view with no air resistance or vertical gravity effects.",
+    "Mass is constant and the string is massless and inextensible.",
+    "The rotating frame rotates at a constant angular velocity omega.",
+    "Diagrams are schematic and not to scale unless specified by the numerical graph."
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "title": "Why Does It Fly Out?",
+      "goal": "Pose the core question: why does an object seem to fly outward when released from circular motion?",
+      "motion": [
+        "A cyan ball moves in a circle on a dark navy background.",
+        "A red arrow points inward, labeled 'Net Force'.",
+        "The string snaps, and the ball flies off in a straight line tangent to the circle.",
+        "A ghost trail shows the path the ball would have taken if it stayed in the circle."
+      ],
+      "caption": "When the string breaks, the ball flies straight, not outward. Why?",
+      "duration_seconds": 12,
+      "physics_checks": [
+        "Velocity vector is tangent to the circle at the moment of release.",
+        "Net force vector is radial and inward before release.",
+        "Post-release trajectory is a straight line tangent to the circle."
+      ]
+    },
+    {
+      "id": "circular_motion",
+      "title": "Velocity and Acceleration Directions",
+      "goal": "Establish that in uniform circular motion, velocity is tangent and acceleration/net force is inward.",
+      "motion": [
+        "Cyan ball moves in a circle with a green velocity vector tangent to the path.",
+        "A red net force vector points radially inward toward the center.",
+        "A dashed line connects the ball to the center, labeled 'radius r'.",
+        "The ball completes two full rotations, with the vectors updating continuously."
+      ],
+      "caption": "Velocity is tangent. Net force and acceleration point inward.",
+      "duration_seconds": 15,
+      "physics_checks": [
+        "Green velocity vector is always perpendicular to the radius vector.",
+        "Red net force vector is always parallel to the radius vector and points inward.",
+        "The magnitude of the velocity vector remains constant."
+      ]
+    },
+    {
+      "id": "release",
+      "title": "Tangent Release Path",
+      "goal": "Demonstrate that upon release, the object follows the instantaneous tangent at constant speed.",
+      "motion": [
+        "The ball moves in a circle with a visible trail.",
+        "At a specific point, the string visually breaks.",
+        "The ball continues in a straight line along the tangent.",
+        "A second, ghost ball continues the circular path to contrast the two trajectories."
+      ],
+      "caption": "No outward force. The ball follows the tangent at constant speed.",
+      "duration_seconds": 14,
+      "physics_checks": [
+        "The release point is clearly marked.",
+        "The straight-line path is exactly tangent to the circle at the release point.",
+        "The speed of the released ball matches the tangential speed at release."
+      ]
+    },
+    {
+      "id": "force_law",
+      "title": "Force Depends on Speed Squared",
+      "goal": "Show the relationship F_net = m*v^2/r using a live numerical graph.",
+      "motion": [
+        "A cyan ball moves in a circle with a red inward force vector.",
+        "A live graph appears on the right, plotting Force (y-axis) vs Speed (x-axis).",
+        "As the ball's speed increases, the red force vector lengthens.",
+        "Data points appear on the graph: (2, 2), (4, 8), (6, 18) for m=1kg, r=2m.",
+        "A curve F = v^2/2 is drawn through the points."
+      ],
+      "caption": "Doubling speed quadruples the required inward force. F = m*v^2/r.",
+      "duration_seconds": 20,
+      "physics_checks": [
+        "The graph axes are labeled 'Speed (m/s)' and 'Force (N)'.",
+        "The plotted points correspond to v=2,4,6 m/s and F=2,8,18 N.",
+        "The red force vector length is proportional to the calculated force."
+      ]
+    },
+    {
+      "id": "frames",
+      "title": "Inertial vs Rotating Frames",
+      "goal": "Compare the view from an inertial frame and a rotating frame, introducing centrifugal force.",
+      "motion": [
+        "Split screen: left side shows inertial frame, right side shows rotating frame.",
+        "In the inertial frame, the ball moves in a circle with an inward red force.",
+        "In the rotating frame, the ball appears stationary.",
+        "An amber arrow points outward from the ball in the rotating frame, labeled 'Centrifugal Force'.",
+        "The amber arrow balances the red inward force in the rotating frame view."
+      ],
+      "caption": "In a rotating frame, a fictitious outward force balances the inward force.",
+      "duration_seconds": 22,
+      "physics_checks": [
+        "The rotating frame background rotates at a constant angular speed omega.",
+        "The ball is stationary relative to the rotating frame background.",
+        "The amber centrifugal force vector is radially outward.",
+        "The magnitude of the amber force equals the magnitude of the red force."
+      ]
+    },
+    {
+      "id": "car",
+      "title": "Left-Turning Car Physics",
+      "goal": "Apply the concepts to a car turning left, distinguishing real forces from fictitious ones.",
+      "motion": [
+        "Top-down view of a car turning left on a curved road.",
+        "A red friction force vector points inward on the car.",
+        "A passenger (cyan dot) is shown inside the car.",
+        "As the car turns, the passenger slides toward the right door (tangent path).",
+        "The door exerts an inward contact force on the passenger, shown as a red arrow.",
+        "An amber centrifugal force arrow is shown on the passenger in the car's rotating frame."
+      ],
+      "caption": "Friction turns the car. The door pushes the passenger inward.",
+      "duration_seconds": 18,
+      "physics_checks": [
+        "The car's path is a left turn (curving to the left).",
+        "The friction force on the car is inward (toward the center of the turn).",
+        "The passenger's initial motion is tangent to the turn.",
+        "The contact force from the door on the passenger is inward."
+      ]
+    },
+    {
+      "id": "summary",
+      "title": "Real vs Fictitious Forces",
+      "goal": "Summarize the difference between centripetal (real net force) and centrifugal (fictitious) forces.",
+      "motion": [
+        "Two side-by-side diagrams: left for inertial frame, right for rotating frame.",
+        "In the inertial frame, a red inward arrow is labeled 'Centripetal (Net Force)'.",
+        "In the rotating frame, a red inward arrow and an amber outward arrow are shown.",
+        "The amber arrow is labeled 'Centrifugal (Fictitious)'.",
+        "Text appears: 'Centripetal: Real interaction. Centrifugal: Frame-dependent effect.'"
+      ],
+      "caption": "Centripetal is a real net force. Centrifugal is a frame-dependent effect.",
+      "duration_seconds": 15,
+      "physics_checks": [
+        "The red arrow in the inertial frame is labeled as a net force.",
+        "The amber arrow in the rotating frame is labeled as fictitious.",
+        "The directions of the forces are correctly depicted (inward vs outward)."
+      ]
+    }
+  ]
+}

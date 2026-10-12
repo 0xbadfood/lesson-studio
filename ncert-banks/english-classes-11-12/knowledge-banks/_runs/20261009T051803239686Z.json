@@ -1,0 +1,32 @@
+{
+  "schema_version": "phase1_batch_enrichment_run_v1",
+  "scope_id": "english_classes_11_12_v1",
+  "catalog_fingerprint": "0e36f4e12fa03c79166f2208aa90385d884ec7adeb79b2daa89df05a977a1686",
+  "endpoint": "http://127.0.0.1:7001/v1",
+  "model": "qwen3.8-27b",
+  "filters": {
+    "classes": null,
+    "subject": null,
+    "document_ids": [
+      "ncert:english:11:keph1:05"
+    ],
+    "limit": null
+  },
+  "requested": 1,
+  "statuses": {
+    "completed": 1
+  },
+  "elapsed_seconds": 1118.216,
+  "completed_at_utc": "2026-10-09T05:18:03.239671+00:00",
+  "results": [
+    {
+      "document_id": "ncert:english:11:keph1:05",
+      "status": "completed",
+      "audit_status": "candidate_pending_independent_audit",
+      "attention_required": true,
+      "version": "b3eb7dd02b91b048",
+      "path": "/home/nitin/manim/ncert-banks/english-classes-11-12/knowledge-banks/class_11/keph1/keph105/versions/4498da2a744639aa/enrichment/b3eb7dd02b91b048",
+      "elapsed_seconds": 1118.213
+    }
+  ]
+}

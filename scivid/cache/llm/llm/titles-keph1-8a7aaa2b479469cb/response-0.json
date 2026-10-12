@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520473-0krTvk8cbARQP9qMswBj",
+  "object": "chat.completion",
+  "created": 1791520473,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "{\"chapters\":[{\"chapter\":1,\"title\":\"Units and Measurement\"},{\"chapter\":2,\"title\":\"Motion in a Straight Line\"},{\"chapter\":3,\"title\":\"Motion in a Plane\"},{\"chapter\":4,\"title\":\"Laws of Motion\"},{\"chapter\":5,\"title\":\"Work, Energy and Power\"},{\"chapter\":6,\"title\":\"System of Particles and Rotational Motion\"},{\"chapter\":7,\"title\":\"Gravitation\"}]}",
+        "refusal": null,
+        "reasoning": "I'm identifying the proper chapter titles from the contents and headers: Units and Measurement, Motion in a Straight Line, Motion in a Plane, Laws of Motion, Work Energy and Power, System of Particles and Rotational Motion, and Gravitation.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm identifying the proper chapter titles from the contents and headers: Units and Measurement, Motion in a Straight Line, Motion in a Plane, Laws of Motion, Work Energy and Power, System of Particles and Rotational Motion, and Gravitation.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQS1QkKEAgSGAI4AUIIdGhpbmtpbmcSDFMvl9cCJofc2yuO2BoMzJ+Zh+GGyE5WkCnrIjBgzA0FN+aCueoAbPEWKe83ZRUjMcH318WTY+9HXN5IK/nj0MuMR5l9yfUP7qPJqjoq8ghEgd0khQVCqXoL25m5n9KRZ3Qb0zPRyWTQarqXJCdZUy2H39Qnqj2EgbXQoNxeAMpdDdQAaZRiX3PeaoBF2A92cdhBep4FW6AWp/0auEY7XHUwF/uZ0y5Yv7ECk5HgsU/DQ5j6t4NTFYRetcU+Bet3byk+W4WVvG7hnuhfzcRa3k3/xEHWXmwuIUs33q4cp/JnaYwJaILBoHqw4GwDWe+JnYwXqQW4rxb4ac1EsWT8uDVlU0zwo1SHCfgWMrhys5++hyBXZiHqFN3qqLvhlb2pd718Lh6sSuxr1z7K4rb0lcs+J/ajclDPlv13c+RaGB9E0t5DTrUt/mOcx2sJVtPAX4BNQkK9y79v3hm8qF3dkGfC8YQjO4pXvqM5/CWEQ86ZE5Xr9wk+vSK2har2zbGMsY6BrmRQl5QhkgRWedoJ3KdzcZ6NoD32x1vFTdH2HhGw/mg6G4ir/hQQGwBSZULBCY7OpD9d44aUpiG/ajR2wfiFQ8rzNSjuPMXlRB2ymtIGWkRUYvDcWiK6qRkYrTLmmSDQVUxQve2W8zPPL3sIYlXu5przcmnkVu0bqfrs5z3wNOmzg7KgSXeja41J7YPs5dQXEPIJICkoBFs456jezSz2gupGrAaM2f+WlFGNkExt/w2/cpasxC7YSHb/J6K9CzyBL1H/ptA67lgSPHsUMOSKXwGI5ZZAIm21WQfP13rkYFjpy/tXlkR1bRvkqJr913n/AENjwviNhfikXdemDzie2bTLIOelpKxaFo0sJlJX6bMFwlEOAyjyUwW4PT+HoGJ/CU24UMwlIFrJCd02M300+NJWlKohtsD0aHm3+g122TCeWO/7qeqESXCnfztwLm3117UXR/dtXgzOm59ohCENWV+6wGA52TkO1OUpCFsAO6FmyltPJiSZv/19hpj8L/mL0ig4PBAVIMGvPkqZKyJCJivJxynr6rN49fDYjXz6bRDwqT1FkA4a3dIgm+WVT/DsrTZO97b4+9qHctQcsE8p5zy1gZVbJhvwZBnhuID9eKfStos7j2cwMavCUIKjOrfM0aoaW8EqRjnkd3uG35Xr2GKTBhkYWFHnXpUmMc49M3zy4VGfQ2jj4up+e24cfPM6iQqghFHN1aDm9+2clf5GLdS8+wO9RA3IpdrdI8nO03nibdQ9ngiBMJH2V+4AesAf9oYOH7SgpUjjCWgzfeuR8HvKrtRHdTl8Mx9FGDRA5BuyIgucbrKmbK3GXfDidFypHXB2xs+WXsgAzLaFkN+3UuigAYQo61upZwS5Km+srCKSJqVJ50hF3DTlUpqPPy5TEuj3qeiq41OPap6Dfs28Cnhj8Ef8E7Cp3XyGhaavSnpA4ntiQREJjNoe33eiUhr6L7MoL9un+W1zyYEKU8Qv6/+1gq4qxj9/+W1ezrzf5jqVZRSUj6hPsc20lOTLX00hZ0cFMc9X2wXYhlXCcRqPz6lF8uC3s8/eBGcmLpG33QRFPz1u4Q1rHX8xLBOwnyRMAQX+E1qA/HeEVLuNM9KqGAE=.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3959,
+    "completion_tokens": 473,
+    "total_tokens": 4432,
+    "cost": 0.0006324,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0006324,
+      "upstream_inference_prompt_cost": 0.0003959,
+      "upstream_inference_completions_cost": 0.0002365
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 305,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 4.56
+}

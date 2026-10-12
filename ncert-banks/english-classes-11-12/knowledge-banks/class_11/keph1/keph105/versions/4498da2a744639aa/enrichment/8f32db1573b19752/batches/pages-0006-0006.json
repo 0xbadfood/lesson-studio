@@ -1,0 +1,109 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    6
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 6,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "5.6 THE WORK-ENERGY THEOREM FOR A VARIABLE FORCE"
+        ],
+        "page_summary": "The page concludes the solution to Example 5.4 regarding work done by friction and introduces Section 5.6 on the Work-Energy Theorem for a variable force. It presents Example 5.5, which involves calculating work done by a variable applied force and a constant frictional force over a 20m displacement. The section derives the theorem by integrating Newton's second law, showing that the change in kinetic energy equals the work done by the net force.",
+        "knowledge_points": [
+          "The work done by a frictional force is calculated as the area of the rectangle under the force-displacement graph, taking into account the negative sign for opposing forces.",
+          "The Work-Energy Theorem for a variable force is derived by integrating the equation dK = Fdx from the initial position xi to the final position xf.",
+          "The theorem states that the change in kinetic energy (Kf - Ki) is equal to the integral of the force F with respect to displacement x.",
+          "The Work-Energy Theorem is an integral form of Newton's second law, meaning it relates forces to changes in energy over an interval rather than instantaneous acceleration.",
+          "In Example 5.5, the work done by the woman is the sum of the area of a rectangle (constant force) and a trapezium (linearly decreasing force).",
+          "The frictional force in Example 5.5 is constant at 50 N and acts in the opposite direction to the applied force, resulting in negative work."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Graph showing a curve F(x) versus x with a shaded region labeled 'Work' between xi and xf.",
+            "text": [
+              "F(x)",
+              "Work",
+              "0",
+              "xi",
+              "xf",
+              "x",
+              "(b)"
+            ]
+          },
+          {
+            "visual_description": "Force-displacement graph showing a trapezoidal area for applied force F and a rectangular area for frictional force f.",
+            "text": [
+              "B",
+              "F",
+              "C",
+              "E",
+              "100",
+              "50",
+              "0",
+              "A",
+              "D",
+              "I",
+              "10 m",
+              "20 m",
+              "x",
+              "f = -50",
+              "G",
+              "H",
+              "Force (N)"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "graph",
+            "description": "A graph depicting a function F(x) plotted against displacement x. A shaded region labeled 'Work' is shown between points xi and xf on the x-axis, illustrating the area under the curve for a variable force.",
+            "educational_role": "Illustrates the concept that work done by a variable force is the area under the force-displacement curve.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "graph",
+            "description": "A force-displacement graph for Example 5.5. The y-axis represents Force (N) and the x-axis represents displacement. It shows a blue line for the applied force F, which is constant at 100 N from 0 to 10 m and then decreases linearly to 50 N at 20 m. A dashed line represents the frictional force f at -50 N. The area under the applied force curve (trapezium ABCD + CEID) and the area under the frictional force curve (rectangle AGHI) are indicated.",
+            "educational_role": "Visualizes the specific forces and displacements in Example 5.5 to facilitate the calculation of work done by the applied force and friction.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work-Energy Theorem",
+      "Variable Force",
+      "Work done by Friction",
+      "Kinetic Energy",
+      "Newton's Second Law"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 6,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"5.6 THE WORK-ENERGY THEOREM FOR A VARIABLE FORCE\"\n      ],\n      \"page_summary\": \"The page concludes the solution to Example 5.4 regarding work done by friction and introduces Section 5.6 on the Work-Energy Theorem for a variable force. It presents Example 5.5, which involves calculating work done by a variable applied force and a constant frictional force over a 20m displacement. The section derives the theorem by integrating Newton's second law, showing that the change in kinetic energy equals the work done by the net force.\",\n      \"knowledge_points\": [\n        \"The work done by a frictional force is calculated as the area of the rectangle under the force-displacement graph, taking into account the negative sign for opposing forces.\",\n        \"The Work-Energy Theorem for a variable force is derived by integrating the equation dK = Fdx from the initial position xi to the final position xf.\",\n        \"The theorem states that the change in kinetic energy (Kf - Ki) is equal to the integral of the force F with respect to displacement x.\",\n        \"The Work-Energy Theorem is an integral form of Newton's second law, meaning it relates forces to changes in energy over an interval rather than instantaneous acceleration.\",\n        \"In Example 5.5, the work done by the woman is the sum of the area of a rectangle (constant force) and a trapezium (linearly decreasing force).\",\n        \"The frictional force in Example 5.5 is constant at 50 N and acts in the opposite direction to the applied force, resulting in negative work.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Graph showing a curve F(x) versus x with a shaded region labeled 'Work' between xi and xf.\",\n          \"text\": [\n            \"F(x)\",\n            \"Work\",\n            \"0\",\n            \"xi\",\n            \"xf\",\n            \"x\",\n            \"(b)\"\n          ]\n        },\n        {\n          \"visual_description\": \"Force-displacement graph showing a trapezoidal area for applied force F and a rectangular area for frictional force f.\",\n          \"text\": [\n            \"B\",\n            \"F\",\n            \"C\",\n            \"E\",\n            \"100\",\n            \"50\",\n            \"0\",\n            \"A\",\n            \"D\",\n            \"I\",\n            \"10 m\",\n            \"20 m\",\n            \"x\",\n            \"f = -50\",\n            \"G\",\n            \"H\",\n            \"Force (N)\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"graph\",\n          \"description\": \"A graph depicting a function F(x) plotted against displacement x. A shaded region labeled 'Work' is shown between points xi and xf on the x-axis, illustrating the area under the curve for a variable force.\",\n          \"educational_role\": \"Illustrates the concept that work done by a variable force is the area under the force-displacement curve.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        },\n        {\n          \"kind\": \"graph\",\n          \"description\": \"A force-displacement graph for Example 5.5. The y-axis represents Force (N) and the x-axis represents displacement. It shows a blue line for the applied force F, which is constant at 100 N from 0 to 10 m and then decreases linearly to 50 N at 20 m. A dashed line represents the frictional force f at -50 N. The area under the applied force curve (trapezium ABCD + CEID) and the area under the frictional force curve (rectangle AGHI) are indicated.\",\n          \"educational_role\": \"Visualizes the specific forces and displacements in Example 5.5 to facilitate the calculation of work done by the applied force and friction.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work-Energy Theorem\",\n    \"Variable Force\",\n    \"Work done by Friction\",\n    \"Kinetic Energy\",\n    \"Newton's Second Law\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 1127,
+    "prompt_tokens": 3830,
+    "total_tokens": 4957,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    5
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 5,
+        "readability": "readable",
+        "native_text_alignment": "mismatch",
+        "ocr_needed": false,
+        "ocr_reason": "Native text extraction is incomplete and contains significant errors (e.g., 'K (J)' instead of 'K (J)', '5x10-2' instead of '5x10-2', '10-21' instead of '10-21'). The table content is clearly legible in the image.",
+        "detected_language": "en",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "Table 5.2 Typical kinetic energies (K)",
+          "Example 5.4",
+          "5.5 WORK DONE BY A VARIABLE FORCE"
+        ],
+        "page_summary": "The page discusses kinetic energy and work done by a variable force. It includes a table of typical kinetic energies for various objects (car, athlete, bullet, stone, rain drop, air molecule). It presents Example 5.4, a ballistics problem calculating the emergent speed of a bullet after passing through plywood. It then introduces the concept of work done by a variable force, explaining it as the area under a force-displacement curve, and derives the definite integral form of work.",
+        "knowledge_points": [
+          "Kinetic energy is the capacity of an object to do work by virtue of its motion.",
+          "Table 5.2 lists typical kinetic energies for various objects.",
+          "Example 5.4 calculates the emergent speed of a bullet (mass 50.0 g, initial speed 200 m/s) after losing 90% of its kinetic energy, resulting in a final speed of 63.2 m/s.",
+          "Work done by a variable force is the area under the force-displacement curve.",
+          "The work done by a variable force can be expressed as a definite integral of force over displacement: W = ∫ F(x) dx."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Table 5.2 Typical kinetic energies (K)",
+            "text": [
+              "Object",
+              "Mass (kg)",
+              "Speed (m s⁻¹)",
+              "K (J)",
+              "Car",
+              "2000",
+              "25",
+              "6.3×10⁵",
+              "Running athlete",
+              "70",
+              "10",
+              "3.5×10³",
+              "Bullet",
+              "5×10⁻²",
+              "200",
+              "10³",
+              "Stone dropped from 10 m",
+              "1",
+              "14",
+              "10²",
+              "Rain drop at terminal speed",
+              "3.5×10⁻⁵",
+              "9",
+              "1.4×10⁻³",
+              "Air molecule",
+              "≈10⁻²⁶",
+              "500",
+              "≈10⁻²¹"
+            ]
+          },
+          {
+            "visual_description": "Fig. 5.3(a) Force-Displacement Graph",
+            "text": [
+              "F(x)",
+              "Area = ΔA = F(x)Δx",
+              "O",
+              "xᵢ",
+              "x_f",
+              "x",
+              "Fig. 5.3(a)"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "table",
+            "description": "Table 5.2 listing typical kinetic energies for various objects.",
+            "educational_role": "Provides concrete examples of kinetic energy for different objects.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "graph",
+            "description": "A graph showing a varying force F(x) plotted against displacement x. The area under the curve is shaded with rectangles, representing the work done.",
+            "educational_role": "Illustrates the concept of work done by a variable force as the area under the force-displacement curve.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Kinetic Energy",
+      "Work Done by a Variable Force",
+      "Definite Integral of Force"
+    ],
+    "uncertainties": [
+      "The native text extraction for the table is incomplete and contains errors. The image is the primary source of truth for the table content."
+    ]
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 5,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"mismatch\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": \"Native text extraction is incomplete and contains significant errors (e.g., 'K (J)' instead of 'K (J)', '5x10-2' instead of '5x10-2', '10-21' instead of '10-21'). The table content is clearly legible in the image.\",\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"WORK, ENERGY AND POWER\",\n        \"Table 5.2 Typical kinetic energies (K)\",\n        \"Example 5.4\",\n        \"5.5 WORK DONE BY A VARIABLE FORCE\"\n      ],\n      \"page_summary\": \"The page discusses kinetic energy and work done by a variable force. It includes a table of typical kinetic energies for various objects (car, athlete, bullet, stone, rain drop, air molecule). It presents Example 5.4, a ballistics problem calculating the emergent speed of a bullet after passing through plywood. It then introduces the concept of work done by a variable force, explaining it as the area under a force-displacement curve, and derives the definite integral form of work.\",\n      \"knowledge_points\": [\n        \"Kinetic energy is the capacity of an object to do work by virtue of its motion.\",\n        \"Table 5.2 lists typical kinetic energies for various objects.\",\n        \"Example 5.4 calculates the emergent speed of a bullet (mass 50.0 g, initial speed 200 m/s) after losing 90% of its kinetic energy, resulting in a final speed of 63.2 m/s.\",\n        \"Work done by a variable force is the area under the force-displacement curve.\",\n        \"The work done by a variable force can be expressed as a definite integral of force over displacement: W = ∫ F(x) dx.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Table 5.2 Typical kinetic energies (K)\",\n          \"text\": [\n            \"Object\",\n            \"Mass (kg)\",\n            \"Speed (m s⁻¹)\",\n            \"K (J)\",\n            \"Car\",\n            \"2000\",\n            \"25\",\n            \"6.3×10⁵\",\n            \"Running athlete\",\n            \"70\",\n            \"10\",\n            \"3.5×10³\",\n            \"Bullet\",\n            \"5×10⁻²\",\n            \"200\",\n            \"10³\",\n            \"Stone dropped from 10 m\",\n            \"1\",\n            \"14\",\n            \"10²\",\n            \"Rain drop at terminal speed\",\n            \"3.5×10⁻⁵\",\n            \"9\",\n            \"1.4×10⁻³\",\n            \"Air molecule\",\n            \"≈10⁻²⁶\",\n            \"500\",\n            \"≈10⁻²¹\"\n          ]\n        },\n        {\n          \"visual_description\": \"Fig. 5.3(a) Force-Displacement Graph\",\n          \"text\": [\n            \"F(x)\",\n            \"Area = ΔA = F(x)Δx\",\n            \"O\",\n            \"xᵢ\",\n            \"x_f\",\n            \"x\",\n            \"Fig. 5.3(a)\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"table\",\n          \"description\": \"Table 5.2 listing typical kinetic energies for various objects.\",\n          \"educational_role\": \"Provides concrete examples of kinetic energy for different objects.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"deterministic_renderer\"\n        },\n        {\n          \"kind\": \"graph\",\n          \"description\": \"A graph showing a varying force F(x) plotted against displacement x. The area under the curve is shaded with rectangles, representing the work done.\",\n          \"educational_role\": \"Illustrates the concept of work done by a variable force as the area under the force-displacement curve.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n  ,\n  \"batch_topics\": [\n    \"Kinetic Energy\",\n    \"Work Done by a Variable Force\",\n    \"Definite Integral of Force\"\n  ]\n  ,\n  \"uncertainties\": [\n    \"The native text extraction for the table is incomplete and contains errors. The image is the primary source of truth for the table content.\"\n  ]\n}",
+  "usage": {
+    "prompt_tokens": 3137,
+    "total_tokens": 4305,
+    "completion_tokens": 1168,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

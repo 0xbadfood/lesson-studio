@@ -1,0 +1,816 @@
+{
+ "schema": "textbook_kb_v1",
+ "chapter": {
+  "id": "keph1:05",
+  "class": 11,
+  "subject": "physics",
+  "book_title": "Physics Part I",
+  "chapter": 5,
+  "title": "Work, Energy and Power"
+ },
+ "topic": "",
+ "endpoint": "http://127.0.0.1:7001/v1",
+ "model": "qwen3.8-27b",
+ "knowledge_bank_used": true,
+ "timings_seconds": {
+  "brief": 120.7,
+  "gaps": 275.0,
+  "research": 333.6,
+  "augment": 118.2
+ },
+ "brief": {
+  "scope": "NCERT Class 11 Physics Part I, Chapter 5: Work, Energy and Power",
+  "objectives": [
+   {
+    "id": "O1",
+    "text": "Understand the scalar product of vectors as a mathematical prerequisite for defining work.",
+    "covers": [
+     "T1",
+     "T2",
+     "T3"
+    ]
+   },
+   {
+    "id": "O2",
+    "text": "Define work and kinetic energy and derive the work-energy theorem for constant and variable forces.",
+    "covers": [
+     "T4",
+     "T5",
+     "T6",
+     "T7",
+     "T8",
+     "T9",
+     "T10",
+     "T11"
+    ]
+   },
+   {
+    "id": "O3",
+    "text": "Understand potential energy for conservative forces (gravity and springs) and the conservation of mechanical energy.",
+    "covers": [
+     "T12",
+     "T13",
+     "T14",
+     "T15",
+     "T16",
+     "T17",
+     "T18"
+    ]
+   },
+   {
+    "id": "O4",
+    "text": "Define power and analyze elastic and inelastic collisions in one and two dimensions.",
+    "covers": [
+     "T19",
+     "T20",
+     "T21",
+     "T22",
+     "T23",
+     "T24",
+     "T25"
+    ]
+   }
+  ],
+  "teaches": [
+   {
+    "id": "T1",
+    "kind": "definition",
+    "title": "Scalar Product of Vectors",
+    "statement": "The scalar product or dot product of any two vectors A and B, denoted as A.B, is defined as A.B = A B cos θ, where θ is the angle between the two vectors. It is a scalar quantity.",
+    "depth": "derived",
+    "pages": [
+     1,
+     2
+    ],
+    "quote": "The scalar product or dot product of any two vectors A and B, denoted as A.B"
+   },
+   {
+    "id": "T2",
+    "kind": "formula",
+    "title": "Scalar Product in Component Form",
+    "statement": "For vectors A = Ax i + Ay j + Az k and B = Bx i + By j + Bz k, the scalar product is A.B = Ax Bx + Ay By + Az Bz. For unit vectors, i.i = j.j = k.k = 1 and i.j = j.k = k.i = 0.",
+    "depth": "derived",
+    "pages": [
+     2
+    ],
+    "quote": "From the definition of scalar product and (Eq. 5.1b) we have"
+   },
+   {
+    "id": "T3",
+    "kind": "example",
+    "title": "Angle Between Force and Displacement",
+    "statement": "Example 5.1 calculates the angle between force F = (3 i + 4 j - 5 k) unit and displacement d = (5 i + 4 j + 3 k) unit using the dot product formula, finding cos θ = 0.32.",
+    "depth": "derived",
+    "pages": [
+     2
+    ],
+    "quote": "Example 5.1 Find the angle between force F = (3 i + 4 j - 5 k) unit"
+   },
+   {
+    "id": "T4",
+    "kind": "derivation",
+    "title": "Work-Energy Theorem for Constant Force",
+    "statement": "Starting from v^2 - u^2 = 2as, multiplying by m/2 gives 1/2 mv^2 - 1/2 mu^2 = mas = Fs. This motivates defining kinetic energy K = 1/2 mv^2 and work W = Fs, leading to Kf - Ki = W.",
+    "depth": "derived",
+    "pages": [
+     3
+    ],
+    "quote": "The above equation provides a motivation for the definitions of work and kinetic energy"
+   },
+   {
+    "id": "T5",
+    "kind": "definition",
+    "title": "Work Done by a Constant Force",
+    "statement": "Work done by a force is defined as the product of the component of the force in the direction of the displacement and the magnitude of this displacement: W = (F cos θ)d = F.d.",
+    "depth": "stated",
+    "pages": [
+     4
+    ],
+    "quote": "The work done by the force is defined to be the product of component of the force"
+   },
+   {
+    "id": "T6",
+    "kind": "fact",
+    "title": "Conditions for Zero Work",
+    "statement": "No work is done if: (i) the displacement is zero, (ii) the force is zero, or (iii) the force and displacement are mutually perpendicular (θ = 90°).",
+    "depth": "stated",
+    "pages": [
+     4
+    ],
+    "quote": "No work is done if : (i) the displacement is zero as seen in the example"
+   },
+   {
+    "id": "T7",
+    "kind": "example",
+    "title": "Work Done by Friction",
+    "statement": "Example 5.3 calculates the work done by the road on a skidding cycle (negative work) and by the cycle on the road (zero work, as the road does not displace).",
+    "depth": "derived",
+    "pages": [
+     4
+    ],
+    "quote": "Example 5.3 A cyclist comes to a skidding stop in 10 m. During this process"
+   },
+   {
+    "id": "T8",
+    "kind": "definition",
+    "title": "Kinetic Energy",
+    "statement": "If an object of mass m has velocity v, its kinetic energy K is K = 1/2 mv^2. Kinetic energy is a scalar quantity and a measure of the work an object can do by virtue of its motion.",
+    "depth": "stated",
+    "pages": [
+     4
+    ],
+    "quote": "As noted earlier, if an object of mass m has velocity v, its kinetic energy K is"
+   },
+   {
+    "id": "T9",
+    "kind": "example",
+    "title": "Bullet Through Plywood",
+    "statement": "Example 5.4 calculates the emergent speed of a bullet that loses 90% of its kinetic energy passing through plywood, showing speed reduction is not proportional to energy loss.",
+    "depth": "derived",
+    "pages": [
+     5
+    ],
+    "quote": "Example 5.4 In a ballistics demonstration a police officer fires a bullet of mass 50.0 g"
+   },
+   {
+    "id": "T10",
+    "kind": "formula",
+    "title": "Work Done by a Variable Force",
+    "statement": "For a varying force F(x), the work done is the area under the force-displacement curve, expressed as the definite integral W = ∫ F(x) dx from xi to xf.",
+    "depth": "derived",
+    "pages": [
+     5,
+     6
+    ],
+    "quote": "If the displacements are allowed to approach zero, then the number of terms in the sum"
+   },
+   {
+    "id": "T11",
+    "kind": "derivation",
+    "title": "Work-Energy Theorem for Variable Force",
+    "statement": "Using dK/dt = Fv and v = dx/dt, we get dK = Fdx. Integrating from xi to xf gives Kf - Ki = ∫ Fdx = W. This proves the work-energy theorem for variable forces.",
+    "depth": "derived",
+    "pages": [
+     6
+    ],
+    "quote": "We are now familiar with the concepts of work and kinetic energy to prove the work-energy"
+   },
+   {
+    "id": "T12",
+    "kind": "definition",
+    "title": "Potential Energy",
+    "statement": "Potential energy is 'stored' energy by virtue of the position or configuration of a body. For a conservative force F(x), potential energy V(x) is defined such that F(x) = -dV/dx.",
+    "depth": "stated",
+    "pages": [
+     7,
+     8
+    ],
+    "quote": "The word potential suggests possibility or capacity for action. The term potential energy brings"
+   },
+   {
+    "id": "T13",
+    "kind": "formula",
+    "title": "Gravitational Potential Energy",
+    "statement": "Near the earth's surface, the gravitational potential energy of an object of mass m at height h is V(h) = mgh, assuming g is constant.",
+    "depth": "stated",
+    "pages": [
+     7
+    ],
+    "quote": "Gravitational potential energy of an object, as a function of the height h, is denoted by V(h)"
+   },
+   {
+    "id": "T14",
+    "kind": "law",
+    "title": "Conservation of Mechanical Energy",
+    "statement": "The total mechanical energy of a system is conserved if the forces doing work on it are conservative. K + V = constant, or Ki + V(xi) = Kf + V(xf).",
+    "depth": "derived",
+    "pages": [
+     8
+    ],
+    "quote": "The total mechanical energy of a system is conserved if the forces, doing work on it, are"
+   },
+   {
+    "id": "T15",
+    "kind": "example",
+    "title": "Bob on a String",
+    "statement": "Example 5.7 analyzes a bob completing a semi-circular trajectory, deriving the minimum velocity at the lowest point (v0 = sqrt(5gL)) and speeds at other points using energy conservation.",
+    "depth": "derived",
+    "pages": [
+     9
+    ],
+    "quote": "Example 5.7 A bob of mass m is suspended by a light string of length L . It is imparted"
+   },
+   {
+    "id": "T16",
+    "kind": "formula",
+    "title": "Spring Potential Energy",
+    "statement": "For a spring obeying Hooke's Law (Fs = -kx), the potential energy is V(x) = 1/2 kx^2. The work done by the spring force depends only on the end points, making it conservative.",
+    "depth": "derived",
+    "pages": [
+     10,
+     11
+    ],
+    "quote": "We define the potential energy V(x) of the spring to be zero when block and spring system"
+   },
+   {
+    "id": "T17",
+    "kind": "example",
+    "title": "Car Colliding with Spring",
+    "statement": "Example 5.8 calculates the maximum compression of a spring when a car collides with it, using conservation of mechanical energy (Kinetic Energy = Spring Potential Energy).",
+    "depth": "derived",
+    "pages": [
+     11
+    ],
+    "quote": "Example 5.8 To simulate car accidents, auto manufacturers study the collisions of moving cars"
+   },
+   {
+    "id": "T18",
+    "kind": "application",
+    "title": "Non-Conservative Forces and Energy",
+    "statement": "If non-conservative forces (like friction) act, the change in total mechanical energy equals the work done by non-conservative forces: Ef - Ei = Wnc. Example 5.9 applies this to a car with friction.",
+    "depth": "derived",
+    "pages": [
+     12
+    ],
+    "quote": "If the two forces on the body consist of a conservative force Fc and a non-conservative force"
+   },
+   {
+    "id": "T19",
+    "kind": "definition",
+    "title": "Power",
+    "statement": "Power is defined as the time rate at which work is done or energy is transferred. Average power Pav = W/t. Instantaneous power P = dW/dt = F.v.",
+    "depth": "stated",
+    "pages": [
+     13
+    ],
+    "quote": "Power is defined as the time rate at which work is done or energy is transferred"
+   },
+   {
+    "id": "T20",
+    "kind": "example",
+    "title": "Elevator Power",
+    "statement": "Example 5.10 calculates the minimum power delivered by an elevator motor to lift a load at constant speed, considering frictional forces.",
+    "depth": "derived",
+    "pages": [
+     13
+    ],
+    "quote": "Example 5.10 An elevator can carry a maximum load of 1800 kg (elevator + passengers) is moving"
+   },
+   {
+    "id": "T21",
+    "kind": "concept",
+    "title": "Elastic and Inelastic Collisions",
+    "statement": "In all collisions, total linear momentum is conserved. In an elastic collision, total kinetic energy is also conserved. In a completely inelastic collision, the bodies move together after collision.",
+    "depth": "stated",
+    "pages": [
+     14
+    ],
+    "quote": "In all collisions the total linear momentum is conserved; the initial momentum of the system"
+   },
+   {
+    "id": "T22",
+    "kind": "derivation",
+    "title": "One-Dimensional Elastic Collision",
+    "statement": "For a 1D elastic collision, solving momentum and energy conservation equations yields final velocities: v1f = ((m1 - m2)/(m1 + m2))v1i and v2f = (2m1/(m1 + m2))v1i.",
+    "depth": "derived",
+    "pages": [
+     14
+    ],
+    "quote": "Consider next an elastic collision. Using the above nomenclature with θ 1 = θ 2 = 0, the"
+   },
+   {
+    "id": "T23",
+    "kind": "example",
+    "title": "Neutron Moderation",
+    "statement": "Example 5.11 shows that a neutron can lose most of its kinetic energy in an elastic collision with a light nucleus like deuterium, explaining the use of moderators in nuclear reactors.",
+    "depth": "derived",
+    "pages": [
+     15
+    ],
+    "quote": "Example 5.11 Slowing down of neutrons: In a nuclear reactor a neutron of high speed"
+   },
+   {
+    "id": "T24",
+    "kind": "concept",
+    "title": "Two-Dimensional Collisions",
+    "statement": "In 2D collisions, momentum conservation provides two equations (x and y components). If the collision is elastic, a third equation (energy conservation) is available. One angle must be known to solve for the other unknowns.",
+    "depth": "stated",
+    "pages": [
+     15
+    ],
+    "quote": "The x- and y-component equations are m1v1i = m1v1f cos θ 1 + m2v2f cos θ 2"
+   },
+   {
+    "id": "T25",
+    "kind": "example",
+    "title": "Billiard Ball Collision",
+    "statement": "Example 5.12 proves that when two equal masses undergo a glancing elastic collision with one at rest, they move at right angles to each other after the collision.",
+    "depth": "derived",
+    "pages": [
+     15,
+     16
+    ],
+    "quote": "Example 5.12 Consider the collision depicted in Fig. 5.10 to be between two billiard balls"
+   }
+  ],
+  "notation": [
+   {
+    "symbol": "A.B",
+    "meaning": "Scalar product of vectors A and B",
+    "unit": "Scalar",
+    "pages": [
+     2
+    ]
+   },
+   {
+    "symbol": "W",
+    "meaning": "Work done",
+    "unit": "Joule (J)",
+    "pages": [
+     3,
+     4
+    ]
+   },
+   {
+    "symbol": "K",
+    "meaning": "Kinetic energy",
+    "unit": "Joule (J)",
+    "pages": [
+     3,
+     4
+    ]
+   },
+   {
+    "symbol": "V",
+    "meaning": "Potential energy",
+    "unit": "Joule (J)",
+    "pages": [
+     7,
+     8
+    ]
+   },
+   {
+    "symbol": "P",
+    "meaning": "Power",
+    "unit": "Watt (W)",
+    "pages": [
+     13
+    ]
+   },
+   {
+    "symbol": "k",
+    "meaning": "Spring constant",
+    "unit": "N m^-1",
+    "pages": [
+     10
+    ]
+   },
+   {
+    "symbol": "m",
+    "meaning": "Mass",
+    "unit": "kg",
+    "pages": [
+     3
+    ]
+   },
+   {
+    "symbol": "v",
+    "meaning": "Velocity",
+    "unit": "m s^-1",
+    "pages": [
+     3
+    ]
+   },
+   {
+    "symbol": "g",
+    "meaning": "Acceleration due to gravity",
+    "unit": "m s^-2",
+    "pages": [
+     7
+    ]
+   }
+  ],
+  "conventions": [
+   "The upward direction is taken as positive for gravitational potential energy calculations.",
+   "The zero of potential energy is arbitrary and chosen for convenience (e.g., ground level for gravity, equilibrium position for springs).",
+   "Friction is treated as a non-conservative force.",
+   "Collisions are analyzed assuming no external forces during the short collision time."
+  ],
+  "order": [
+   "T1",
+   "T2",
+   "T3",
+   "T4",
+   "T5",
+   "T6",
+   "T7",
+   "T8",
+   "T9",
+   "T10",
+   "T11",
+   "T12",
+   "T13",
+   "T14",
+   "T15",
+   "T16",
+   "T17",
+   "T18",
+   "T19",
+   "T20",
+   "T21",
+   "T22",
+   "T23",
+   "T24",
+   "T25"
+  ],
+  "leaves_out": [
+   "The vector product (cross product) of vectors is deferred to Chapter 6.",
+   "The three-dimensional generalization of potential energy requiring vector derivatives is outside the scope of this book.",
+   "The variation of g with height is discussed in Chapter 7 on Gravitation."
+  ]
+ },
+ "gaps": [
+  {
+   "id": "G1",
+   "type": "intuition",
+   "about": [
+    "T1",
+    "T5"
+   ],
+   "missing": "The dot product is given as AB cosθ and W=F.d, but the geometric idea that it is the projection of one vector onto the other—the component of F along d multiplied by |d|—is not developed as the reason for the formula.",
+   "why_it_matters": "Without projection intuition, students may use the full force magnitude or be unsure why the angle matters, making work seem like an arbitrary scalar product.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G2",
+   "type": "misconception",
+   "about": [
+    "T5",
+    "T6"
+   ],
+   "missing": "The zero-work conditions are listed, but the book does not directly confront everyday beliefs that muscular effort, holding a load, or pushing a stationary wall is 'work' in the physics sense.",
+   "why_it_matters": "Students often equate effort with work; clarifying that only displacement and the force component along it count prevents wrong zero-work and sign errors.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G3",
+   "type": "intuition",
+   "about": [
+    "T4",
+    "T8"
+   ],
+   "missing": "The theorem is motivated from v^2-u^2=2as, but the reason the factor 1/2 appears in K=1/2 mv^2 is not emphasized: force times distance accumulates as ∫v dv, making 1/2 mv^2 the natural quantity whose change equals work.",
+   "why_it_matters": "This turns kinetic energy from a memorized formula into the quantity that work changes, which is the core of the work-energy theorem.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G4",
+   "type": "prerequisite",
+   "about": [
+    "T10",
+    "T11"
+   ],
+   "missing": "The chapter uses definite integrals, dK/dt, and the chain rule without a brief review of what ∫F dx means as accumulated area and how d(1/2 mv^2)/dt = m v dv/dt.",
+   "why_it_matters": "Class 11 students encountering calculus for the first time may stall before the physics idea of variable-force work and variable-force energy change.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G5",
+   "type": "skipped_step",
+   "about": [
+    "T10",
+    "T11"
+   ],
+   "missing": "The move from a sum over small displacements to W=∫F dx, and then to dK=Fdx, compresses the limiting process and the substitution v=dx/dt.",
+   "why_it_matters": "Learners need the intermediate step: split displacement into dx, approximate F constant over dx, sum, then take the limit; otherwise the integral appears as a symbol rather than a method.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G6",
+   "type": "intuition",
+   "about": [
+    "T12",
+    "T16"
+   ],
+   "missing": "F=-dV/dx is stated, but the meaning of the minus sign is not developed: a conservative force points in the direction of decreasing potential energy, and V is the negative integral of the force.",
+   "why_it_matters": "Students frequently lose the sign when writing mgh or 1/2 kx^2 and cannot predict whether a force increases or decreases potential energy.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G7",
+   "type": "skipped_step",
+   "about": [
+    "T16"
+   ],
+   "missing": "The spring potential energy 1/2 kx^2 is given, but the key step that the spring force varies from 0 to kx, so the work is the area of a triangle or ∫0^x kx' dx', is not made explicit.",
+   "why_it_matters": "This is the first variable-force potential energy; without the average-force/integral step, the formula looks like another memorized result.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G8",
+   "type": "misconception",
+   "about": [
+    "T14",
+    "T18"
+   ],
+   "missing": "The book says mechanical energy is conserved only for conservative forces and gives Ef-Ei=Wnc, but it does not explicitly confront the idea that friction 'destroys' energy; it converts mechanical energy to thermal/internal energy.",
+   "why_it_matters": "This distinction is central to energy conservation and prevents students from thinking energy disappears in skidding, collisions, or friction.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G9",
+   "type": "skipped_step",
+   "about": [
+    "T22"
+   ],
+   "missing": "The 1D elastic collision formulas are presented after 'solving momentum and energy conservation', but the useful intermediate relation v1i - v2i = v2f - v1f (relative speed reversal) is not shown.",
+   "why_it_matters": "This relation is the algebraic key that turns two nonlinear equations into linear ones; without it the derivation is a black box.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G10",
+   "type": "visual",
+   "about": [
+    "T24",
+    "T25"
+   ],
+   "missing": "The right-angle result for equal-mass glancing elastic collisions is proved algebraically, but the visual vector-triangle interpretation—momentum vectors before and after forming a right triangle—is not animated or emphasized.",
+   "why_it_matters": "A motion/vector diagram shows why the two final velocity vectors must be perpendicular when one ball is initially at rest and masses are equal.",
+   "priority": "high",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G11",
+   "type": "context",
+   "about": [
+    "T17"
+   ],
+   "missing": "The car-spring example is idealized; it lacks real crash context: crumple zones, force-displacement curves, typical car mass/speed, and how much energy is absorbed by deformation.",
+   "why_it_matters": "Connecting 1/2 kx^2 to automotive safety makes energy conservation concrete and shows why springs/crumple zones reduce impact forces.",
+   "priority": "medium",
+   "resolve": "research",
+   "research_question": "What is the kinetic energy of a 1500 kg car at 50 km/h, and how much energy is typically absorbed by crumple zones in a frontal collision?"
+  },
+  {
+   "id": "G12",
+   "type": "context",
+   "about": [
+    "T23"
+   ],
+   "missing": "The neutron moderation example gives the physics but lacks real reactor context: common moderators (light water, heavy water, graphite), why light nuclei are effective, and typical neutron speed/energy reductions.",
+   "why_it_matters": "The application is a major real-world use of elastic collision energy loss; students need the connection to reactor design.",
+   "priority": "medium",
+   "resolve": "research",
+   "research_question": "Why are hydrogen, deuterium, and graphite used as neutron moderators in nuclear reactors, and what are typical neutron speed reductions after moderation?"
+  },
+  {
+   "id": "G13",
+   "type": "oversimplification",
+   "about": [
+    "T13"
+   ],
+   "missing": "V=mgh is presented as gravitational potential energy near Earth's surface, but the limitation that g is assumed constant and the formula is only a local approximation is not strongly flagged.",
+   "why_it_matters": "Students may apply mgh to satellites or large altitude changes; the lesson should teach the textbook version first while warning that Chapter 7 uses -GMm/r.",
+   "priority": "medium",
+   "resolve": "knowledge"
+  },
+  {
+   "id": "G14",
+   "type": "misconception",
+   "about": [
+    "T8",
+    "T21"
+   ],
+   "missing": "Kinetic energy is introduced as 1/2 mv^2 without emphasizing that its value depends on the reference frame, while the work-energy theorem and collision energy conservation must be applied consistently in an inertial frame.",
+   "why_it_matters": "In collisions and moving systems, students may think kinetic energy is absolute or get inconsistent energy balances by mixing frames.",
+   "priority": "medium",
+   "resolve": "knowledge"
+  }
+ ],
+ "augmentations": [
+  {
+   "gap": "G1",
+   "title": "Projection interpretation of dot product and work",
+   "content": "The dot product is best seen as projection. If a force F makes an angle θ with a displacement d, the component of F along d is F cos θ. Work is that component multiplied by the displacement magnitude: W = (F cos θ)d = F d cos θ = F·d. Geometrically, project F onto d; the length of the projection is F cos θ. If θ = 0, W = Fd; if θ = 90°, W = 0; if θ > 90°, W is negative. Example: a 10 N force acting at 60° to a 4 m displacement does W = 10 × 4 × 0.5 = 20 J. A 10 N force opposite to a 4 m displacement does W = -40 J.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Keeps the textbook's W = F·d and F d cos θ; makes the projection reason explicit."
+  },
+  {
+   "gap": "G2",
+   "title": "Effort is not always mechanical work",
+   "content": "In physics, work requires a displacement of the point where the force acts and a force component along that displacement. Holding a 50 N load stationary for 10 s does no mechanical work because d = 0, even though muscles consume chemical energy and produce heat. Pushing a rigid wall with 100 N for 5 s also does no work if the wall does not move. Carrying a 5 kg bag horizontally at constant height: the hand's upward force is about 49 N and the displacement is horizontal, so θ = 90° and the work by that force is 0 J; lifting the bag 1 m does W = mgh = 5 × 9.8 × 1 = 49 J. The correction is: tiredness or effort is not the same as mechanical work; only F·d counts.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Clarifies the textbook's zero-work conditions in T6 and the skidding-cycle example in T7."
+  },
+  {
+   "gap": "G3",
+   "title": "Why kinetic energy has the factor 1/2",
+   "content": "The factor 1/2 is not arbitrary. For a constant force, v^2 - u^2 = 2as. Multiplying by m/2 gives 1/2 m v^2 - 1/2 m u^2 = mas = Fs. For a variable force, use F = ma = m dv/dt and dW = F dx = m v dv/dt dx = m v dv. Integrating gives K = 1/2 m v^2. Thus kinetic energy is the quantity whose change equals the accumulated work. Example: a 2 kg object accelerated from rest to 3 m/s has K = 1/2 × 2 × 3^2 = 9 J; a 3 N force over 3 m also gives W = 9 J.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Explains the textbook's motivation from v^2-u^2=2as and the definition K=1/2 mv^2."
+  },
+  {
+   "gap": "G4",
+   "title": "Calculus prerequisite: integral as area and chain rule",
+   "content": "Before variable-force work, review two calculus ideas. First, a definite integral ∫_xi^xf F(x) dx is the signed area under the force-displacement graph. Area above the x-axis is positive, below is negative, and the unit is N m = J. Example: F(x)=2x N from x=0 to 3 m gives ∫0^3 2x dx = [x^2]_0^3 = 9 J. Second, for constant mass, dK/dt = d(1/2 m v^2)/dt = m v dv/dt by the chain rule. Since v = dx/dt, dK/dt = F v when F = ma, so dK = F dx. This is the bridge from power P = F·v to the work-energy theorem.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Supplies the calculus background used in T10 and T11 without changing the textbook's notation."
+  },
+  {
+   "gap": "G5",
+   "title": "From small-step sum to definite integral",
+   "content": "To see W = ∫ F dx as a method, split the displacement from xi to xf into small pieces Δx_i. Over each small piece, approximate the force as constant: ΔW_i ≈ F(x_i) Δx_i. The total work is the sum Σ F(x_i) Δx_i. As the pieces become smaller and more numerous, the sum approaches the definite integral ∫_xi^xf F(x) dx. The same limiting idea gives dK = F dx for each small step, and summing/integrating gives Kf - Ki = ∫ F dx. Example: for F=2x N from 0 to 3 m, a coarse midpoint sum with Δx=1 m gives 2(0.5)(1)+2(1.5)(1)+2(2.5)(1)=10 J; the exact integral is 9 J, and the sum improves as Δx decreases.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Fills the skipped limiting step in T10 and T11 while keeping the textbook's integral form."
+  },
+  {
+   "gap": "G6",
+   "title": "Meaning of the minus sign in F = -dV/dx",
+   "content": "The minus sign means a conservative force points toward lower potential energy. If V increases with x, dV/dx is positive, so F is negative: the force acts toward decreasing x. For gravity near Earth, take h upward, V(h)=mgh, dV/dh=g, so F_h=-mg, i.e. downward. For a spring, V(x)=1/2 kx^2, dV/dx=kx, so F=-kx, restoring toward x=0. Equivalently, dV = -F dx: when the force and displacement are in the same direction, potential energy decreases; when you move against the force, potential energy increases. Example: lifting a 2 kg mass by 1 m increases V by 19.6 J, while gravity does -19.6 J of work.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Keeps the textbook's F = -dV/dx and makes the sign physically meaningful for gravity and springs."
+  },
+  {
+   "gap": "G7",
+   "title": "Deriving spring potential energy from variable force",
+   "content": "A spring force is not constant: F_s = -kx. To stretch it slowly from x=0 to x, an external agent applies +kx. The work done by the external agent is the area under the F-x graph, a triangle with base x and height kx: W_ext = 1/2 (kx)(x) = 1/2 kx^2. In integral form, W_ext = ∫_0^x kx' dx' = 1/2 kx^2. The spring force does the negative of this work, so the stored potential energy is V(x)=1/2 kx^2, with V(0)=0. Example: k=200 N/m, x=0.10 m gives V=1/2 × 200 × 0.10^2 = 1.0 J; the average external force is 10 N over 0.10 m, also 1.0 J.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Fills the skipped average-force/integral step in T16 and keeps the textbook's zero at equilibrium."
+  },
+  {
+   "gap": "G8",
+   "title": "Friction converts mechanical energy, it does not destroy it",
+   "content": "A common misconception is that friction destroys energy. In fact, friction converts mechanical energy into internal thermal energy, sound, and deformation. For a block sliding with a friction force of 5 N over 3 m, W_f = -15 J; the block's kinetic energy decreases by 15 J, and about 15 J appears as heat in the block and surface. In a skidding car, kinetic energy becomes heat in tires and road. In an inelastic collision, the decrease in kinetic energy becomes deformation, heat, and sound. The textbook relation Ef - Ei = W_nc is therefore not a loss of total energy: if W_nc is negative, mechanical energy decreases, but total energy including thermal energy is conserved.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Refines T14 and T18 by distinguishing mechanical energy from total energy while keeping Ef - Ei = W_nc."
+  },
+  {
+   "gap": "G9",
+   "title": "Relative-speed relation in 1D elastic collisions",
+   "content": "The algebraic key is that for a 1D elastic collision the relative speed reverses: v1i - v2i = v2f - v1f, or v1i - v2i = -(v1f - v2f). This follows from combining momentum conservation with kinetic-energy conservation. If m2 is initially at rest, v2i=0, so v1i = v2f - v1f. Combine this with momentum conservation m1 v1i = m1 v1f + m2 v2f to solve linearly: v1f = ((m1 - m2)/(m1 + m2)) v1i and v2f = (2m1/(m1 + m2)) v1i. Example: equal masses, v1i=4 m/s, v2i=0 gives v1f=0 and v2f=4 m/s; the moving ball stops and the stationary ball moves off with the original speed.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Supplies the missing intermediate relation in T22 and keeps the textbook's final formulas."
+  },
+  {
+   "gap": "G10",
+   "title": "Vector-triangle picture for equal-mass glancing collisions",
+   "content": "For two equal masses with one initially at rest, momentum conservation gives m v_i = m v1f + m v2f, so v_i = v1f + v2f as a vector equation. Elastic energy conservation gives 1/2 m v_i^2 = 1/2 m v1f^2 + 1/2 m v2f^2, so v_i^2 = v1f^2 + v2f^2. These two equations say that the two final velocity vectors are the legs of a right triangle whose hypotenuse is the initial velocity vector. Therefore v1f and v2f are perpendicular. A useful drawing is: draw the initial momentum as the hypotenuse, then draw the two final momenta as the two sides meeting at a right angle. If one final velocity makes an angle θ with the initial direction on one side, the other makes 90° - θ with the initial direction on the opposite side.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Adds a visual interpretation to the algebraic proof in T25 and the 2D equations in T24."
+  },
+  {
+   "gap": "G11",
+   "title": "Real crash context for the car-spring model",
+   "content": "The textbook car-spring example is an ideal Hooke's-law model: the force is linear, the energy is stored elastically, and the car can rebound. A real frontal crash is different. A 1500 kg car at 50 km/h has speed 13.9 m/s and kinetic energy K = 1/2 m v^2 ≈ 1.45 × 10^5 J = 145 kJ. In a full frontal crash, essentially all of this energy must be dissipated. Crumple zones are the primary absorbers; a commonly cited conservative figure is that the front crumple zone absorbs about 25% of the impact energy, about 36 kJ at 50 km/h, though the actual share can be higher depending on vehicle design. The NHTSA full-frontal rigid-barrier test at 35 mph, about 56 km/h, corresponds to about 181 kJ for the same 1500 kg car. A real force-displacement curve has a peak force followed by a plateau over a crush distance of roughly 0.5 to 1 m; the work is the area under that curve, and the energy becomes heat and permanent deformation rather than recoverable spring energy. If 36 kJ is absorbed over 0.7 m, the average force associated with that portion is about 50 kN, corresponding to an average deceleration of about 3 to 4 g for that portion; the total crash deceleration depends on all energy-absorbing structures. Historically, the crumple-zone concept was developed in 20th-century automotive safety research, notably by György Barényi.",
+   "level": "extension",
+   "provenance": "web",
+   "sources": [
+    "https://www.nhtsa.gov/ratings",
+    "https://en.wikipedia.org/wiki/Crumple_zone",
+    "https://suncollision.com/why-are-cars-designed-to-crumple-in-the-front-during-collisions"
+   ],
+   "textbook_note": "Keeps the textbook's ideal spring model and energy-conservation calculation; presents real crash behaviour as an extension and refinement."
+  },
+  {
+   "gap": "G12",
+   "title": "Reactor context for neutron moderation",
+   "content": "The NCERT neutron example is a clean elastic-collision application. In real reactors, fission neutrons are fast, with mean energy about 2 MeV and speed about 20,000 km/s. They must be slowed to thermal energies, about 0.025 eV and 2.2 km/s, because U-235 fission is much more probable with slow neutrons. This is an energy reduction by about 8 × 10^7 and a speed reduction by about 10,000. Light nuclei are effective because in a head-on elastic collision the maximum fraction of the neutron's kinetic energy transferred to a stationary nucleus of mass number A is 4A/(1+A)^2: hydrogen A=1 gives 100%, deuterium A=2 gives about 89%, carbon A=12 gives about 28%, while U-235 gives only about 1.7%. Average slowing requires many collisions: roughly 17 to 18 for hydrogen, 25 to 30 for deuterium, and 90 to 115 for graphite. Common moderators are light water, heavy water, and graphite. Light water is the most common, about 75% of reactors, but ordinary hydrogen absorbs some neutrons, so light-water reactors usually need enriched uranium, about 3.5 to 5% U-235. Heavy water, about 5% of reactors, absorbs fewer neutrons and can use natural uranium, about 0.7% U-235, as in CANDU reactors. Graphite, about 20% of reactors, also has low absorption and can use natural uranium, as in RBMK and Magnox/AGR reactors. The kinetic energy lost by neutrons becomes heat in the moderator and is removed by the coolant.",
+   "level": "extension",
+   "provenance": "web",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Neutron_moderator",
+    "https://en.wikipedia.org/wiki/Neutron_temperature",
+    "https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx",
+    "https://world-nuclear.org/information-library/nuclear-power-reactors/overview/nuclear-power-reactors"
+   ],
+   "textbook_note": "Keeps the NCERT neutron-moderation example; adds reactor design context as an extension."
+  },
+  {
+   "gap": "G13",
+   "title": "Limitation of V = mgh",
+   "content": "The formula V = mgh is the near-Earth, constant-g approximation. It is valid when the height change h is small compared with Earth's radius, so g can be treated as 9.8 m/s^2. Example: a 1 kg mass raised 10 m gains 98 J. For large altitude changes, g decreases with distance from Earth's centre, and the more general gravitational potential energy is U = -GMm/r, which is treated in Chapter 7. For example, at 1000 km above Earth's surface g is noticeably smaller than 9.8 m/s^2, so mgh is no longer a good estimate for a satellite. In this chapter, keep the textbook's mgh for everyday heights and flag it as a local approximation.",
+   "level": "within",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Keeps the textbook's near-surface V=mgh and explicitly marks its domain of validity."
+  },
+  {
+   "gap": "G14",
+   "title": "Kinetic energy depends on the inertial frame",
+   "content": "Kinetic energy K = 1/2 m v^2 is not an absolute number; it depends on the inertial frame because v depends on the frame. A 1 kg ball moving at 2 m/s in the lab frame has K = 2 J, but in a frame moving with the ball its K = 0. The work-energy theorem remains valid in any inertial frame if the work and kinetic energy are both computed in that same frame. In collision problems, choose one inertial frame, usually the lab frame or the centre-of-mass frame, and use it consistently. Example: for a 1 kg ball at 4 m/s colliding elastically with an identical stationary ball, the lab-frame kinetic energy is 8 J before and after; in the centre-of-mass frame the two balls have speeds 2 m/s before and 2 m/s after, with total kinetic energy 4 J. Mixing frames, for example using lab-frame velocities with centre-of-mass work, gives incorrect energy balances.",
+   "level": "extension",
+   "provenance": "standard_knowledge",
+   "sources": [],
+   "textbook_note": "Does not change the textbook's K=1/2 mv^2; adds a frame-consistency caution for collisions and work-energy calculations."
+  }
+ ],
+ "research": {
+  "G11": {
+   "question": "What is the kinetic energy of a 1500 kg car at 50 km/h, and how much energy is typically absorbed by crumple zones in a frontal collision?\n(Context: preparing a lesson for Class 11 students in India (NCERT/CBSE) on \"Work, Energy and Power\". The point to support: The car-spring example is idealized; it lacks real crash context: crumple zones, force-displacement curves, typical car mass/speed, and how much energy is absorbed by deformation.)",
+   "answer": "Here's a teacher‑ready answer, with the physics worked out and the real‑crash context you want to add.\n\n## 1. Kinetic energy of a 1500 kg car at 50 km/h\n\nConvert speed to SI: 50 km/h = 50 ÷ 3.6 = **13.9 m/s**.\n\n$$KE = \\tfrac{1}{2}mv^2 = \\tfrac{1}{2}(1500)(13.9)^2 \\approx 1.45 \\times 10^5 \\text{ J} \\approx \\mathbf{145\\ kJ}$$\n\nSo a typical mid‑size car (1500 kg is a realistic sedan mass) at 50 km/h carries about **145 kJ** of kinetic energy — the amount that must be dissipated in a full frontal crash.\n\n## 2. How much energy the crumple zone absorbs\n\nIn a full frontal crash the car goes from v to 0, so essentially **all** of that ~145 kJ has to be absorbed somewhere: by the crumple zone (front structure), the safety cage, the seatbelts/airbags, and lost to sound and heat. The crumple zone is the **primary** absorber by design.\n\n- A commonly quoted industry figure is that the crumple zone absorbs **about 25 % of the initial impact energy** — i.e. roughly **36 kJ** of the 145 kJ at 50 km/h ([Sun Collision / Snap‑on](https://suncollision.com/why-are-cars-designed-to-crumple-in-the-front-during-collisions)).\n- The actual share is **speed‑, mass‑ and crash‑type‑dependent** and can be substantially higher; crash‑worthiness studies report the front structure taking a large fraction (often cited up to about half or more) of the energy in full‑width frontal impacts. Treat \"25 %\" as a conservative, easy‑to‑cite anchor and note the range.\n- The standard reference test is the **NHTSA full‑frontal rigid‑barrier test at 35 mph (≈ 56 km/h)**, which represents a head‑on collision between two similar vehicles each at 35 mph ([NHTSA](https://www.nhtsa.gov/ratings)). At 56 km/h the same 1500 kg car has KE ≈ **181 kJ** — a useful comparison point close to your 50 km/h.\n- Context for why the front matters: a British Motor Insurance Repair Research Centre study found **65 % of impact damage is front** impacts ([Wikipedia – Crumple zone](https://en.wikipedia.org/wiki/Crumple_zone)).\n\n## 3. Why the NCERT \"car‑spring\" example is idealized (the teaching point)\n\nThe textbook spring model assumes a **Hooke's‑law spring (F = kx)**: a straight‑line force–displacement curve, **elastic** behaviour, and the car **bouncing back** (rebound). A real crash differs in ways that map directly onto the \"Work, Energy and Power\" chapter:\n\n- **The F–x curve is not a clean straight line.** A real crumple zone shows a sharp **peak force**, then a roughly **flat plateau** (plastic crushing of the rails/crush tubes), then a rise. The work done = **area under the F–x curve** (W = ∫F dx), and a flat plateau over a limited crush distance (~0.5–1 m) is what keeps the peak force — and hence peak deceleration — survivable.\n- **Energy is dissipated, not stored.** In a spring the energy is recovered (elastic); in a crash it is converted to **heat and permanent deformation** (hysteresis). The car does **not** rebound — Δv = v, not a bounce.\n- **Crush distance is limited**, so peak force is high. Illustration (estimate, not a measured value): if ~36 kJ is absorbed over ~0.7 m of crush, average force ≈ 50 kN → average deceleration ≈ 3–4 g, with a peak several times higher — in the range NHTSA dummies are designed to tolerate.\n\nThis is the cleanest way to show students that the spring example is a *model* (linear, elastic, reversible) while a real crash is *non‑linear, hysteretic, and irreversible* — which is exactly why the work‑energy theorem (W = ΔKE) still holds, but the force–displacement relationship is very different.\n\n## Quick numbers box for your lesson\n\n| Quantity | Value |\n|---|---|\n| Car mass (typical sedan) | 1500 kg |\n| Speed | 50 km/h = 13.9 m/s |\n| Kinetic energy | **≈ 145 kJ** (1.45 × 10⁵ J) |\n| Same car at NHTSA test speed (56 km/h / 35 mph) | ≈ 181 kJ |\n| Crumple‑zone share (typical, conservative) | ~25 % → **≈ 36 kJ** (can be higher) |\n| Front impacts as share of all impacts | ~65 % |\n\n**Caveat:** the ~25 % figure is an industry estimate, not a single measured constant; the true fraction depends on speed, vehicle design, and whether the crash is full‑width or offset. Present it as \"on the order of a quarter to about half of the crash energy,\" with the crumple zone as the dominant absorber.\n\nSources:\n- [NHTSA – 5‑Star Safety Ratings (full‑frontal rigid‑barrier test at 35 mph)](https://www.nhtsa.gov/ratings)\n- [Wikipedia – Crumple zone (physics F_avg·Δt = m·Δv; 65 % front impacts; Barényi history)](https://en.wikipedia.org/wiki/Crumple_zone)\n- [Sun Collision / Snap‑on – crumple zones absorb ~25 % of the initial impact](https://suncollision.com/why-are-cars-designed-to-crumple-in-the-front-during-collisions)",
+   "cited": [
+    "https://en.wikipedia.org/wiki/Crumple_zone",
+    "https://suncollision.com/why-are-cars-designed-to-crumple-in-the-front-during-collisions",
+    "https://www.nhtsa.gov/ratings"
+   ],
+   "fetched": [
+    "https://en.wikipedia.org/wiki/Crumple_zone",
+    "https://suncollision.com/why-are-cars-designed-to-crumple-in-the-front-during-collisions",
+    "https://www.nhtsa.gov/ratings",
+    "https://www.sciencedirect.com/topics/engineering/crumple-zone"
+   ],
+   "searches_used": 2,
+   "fetches_used": 4,
+   "seconds": 123.9
+  },
+  "G12": {
+   "question": "Why are hydrogen, deuterium, and graphite used as neutron moderators in nuclear reactors, and what are typical neutron speed reductions after moderation?\n(Context: preparing a lesson for Class 11 students in India (NCERT/CBSE) on \"Work, Energy and Power\". The point to support: The neutron moderation example gives the physics but lacks real reactor context: common moderators (light water, heavy water, graphite), why light nuclei are effective, and typical neutron speed/energy reductions.)",
+   "answer": "I have enough from authoritative sources (Wikipedia's neutron pages, the IAEA graphite knowledge base, and the World Nuclear Association). Here's a lesson-ready answer.\n\n# Neutron moderation: physics + real reactor context\n\n## 1. Why a moderator is needed at all\n\nUranium-235 fission releases neutrons that are **fast**: mean energy ≈ **2 MeV**, speed ≈ **20,000 km/s (2×10⁷ m/s)** (the spectrum is broad, mode ≈ 0.75 MeV, up to ~17 MeV) [Wikipedia – Neutron temperature](https://en.wikipedia.org/wiki/Neutron_temperature). But U-235 is far more likely to fission when struck by a **slow (\"thermal\") neutron** — a neutron in thermal equilibrium with the moderator at room temperature, ≈ **0.025 eV**, speed ≈ **2.2 km/s (2200 m/s)** [Wikipedia – Neutron temperature](https://en.wikipedia.org/wiki/Neutron_temperature); [Wikipedia – Neutron moderator](https://en.wikipedia.org/wiki/Neutron_moderator). The moderator's job is to slow the fast neutrons down to thermal energies *without* absorbing them, so they can sustain the chain reaction [IAEA – Nuclear Properties](https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx).\n\n**The headline reduction:** a neutron goes from ~2 MeV / ~20,000 km/s down to ~0.025 eV / ~2.2 km/s — i.e. **energy reduced by a factor of ~8×10⁷ (≈80 million) and speed by a factor of ~10,000**.\n\n## 2. Why light nuclei are effective (the derivable physics)\n\nModeration happens by **elastic collisions** between the neutron and the moderator nuclei [IAEA – Nuclear Properties](https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx). In a head-on elastic collision of a neutron (mass *m*) with a stationary nucleus (mass *M*), the **maximum fraction of the neutron's kinetic energy it can hand over** is\n\n$$\\frac{4mM}{(m+M)^2}$$\n\nTaking *m* = 1 (neutron) and *M* = *A* (nucleus mass number):\n\n| Moderator nucleus | A | Max energy lost in one head-on hit |\n|---|---|---|\n| Hydrogen (H) | 1 | 4·1/(2)² = **100%** — a head-on hit can stop the neutron |\n| Deuterium (D) | 2 | 8/9 ≈ **89%** |\n| Carbon (graphite) | 12 | 48/169 ≈ **28%** |\n| Uranium-235 | 235 | ≈ **1.7%** |\n\nThis is the core reason **light nuclei are the best moderators**: the closer the target mass is to the neutron's mass, the more energy a single collision can remove. Heavy nuclei barely slow a neutron (they just \"recoil\" a little), which is why they make poor moderators. This is a clean, self-contained application of conservation of momentum + kinetic energy in elastic collisions — exactly the kind of result a Class 11 student can derive.\n\nBecause real collisions are rarely perfectly head-on, the *average* energy loss per collision is smaller, and it takes **many collisions** to thermalize a neutron. Standard textbook values (the average logarithmic energy decrement ξ, and the resulting number of collisions to reach thermal energy) are approximately:\n\n| Moderator | ξ (avg. energy loss per collision) | ~Collisions to thermalize a ~MeV neutron |\n|---|---|---|\n| Hydrogen (H) | 1.0 | ~17–18 |\n| Deuterium (D) | 0.725 | ~25–30 |\n| Carbon (graphite) | 0.158 | ~90–115 |\n\nSo hydrogen is the most efficient *per collision* (fewest collisions), deuterium is a little less efficient, and graphite needs the most collisions. (These ξ and collision-count figures are standard reactor-physics values that follow from the elastic-collision physics above; the IAEA's discussion of \"slowing-down power\" and \"moderating ratio\" is the formal framework [IAEA – Nuclear Properties](https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx).)\n\n## 3. The three common moderators and their real reactor context\n\nA good moderator must do **two** things: (a) slow neutrons efficiently, and (b) **not absorb** them (absorption in anything but the fuel is \"parasitic\" and wastes neutrons) [IAEA – Nuclear Properties](https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx). The three common moderators trade off these two requirements:\n\n- **Light water (H₂O) — hydrogen.** Hydrogen is the single best moderator (ξ = 1.0, fewest collisions), and water is cheap and dense. But ordinary hydrogen **absorbs a noticeable fraction of neutrons**, so a light-water reactor needs **enriched uranium** (typically ~3.5–5% U-235) to sustain the chain reaction. It is by far the most common: **~75% of the world's reactors** (PWRs and BWRs use water as both moderator and coolant) [Wikipedia – Neutron moderator](https://en.wikipedia.org/wiki/Neutron_moderator); [World Nuclear Association](https://world-nuclear.org/information-library/nuclear-power-reactors/overview/nuclear-power-reactors).\n\n- **Heavy water (D₂O) — deuterium.** Deuterium is a slightly less efficient per-collision moderator (ξ = 0.725) but has a **much smaller neutron-absorption cross-section** than hydrogen, so it preserves neutrons. This lets a heavy-water reactor run on **natural (unenriched) uranium** (~0.7% U-235) — the defining feature of the Canadian **CANDU** reactor. About **~5% of reactors** [Wikipedia – Neutron moderator](https://en.wikipedia.org/wiki/Neutron_moderator); [World Nuclear Association](https://world-nuclear.org/information-library/nuclear-power-reactors/overview/nuclear-power-reactors).\n\n- **Graphite (carbon, A = 12).** Carbon is the least efficient per collision (ξ = 0.158, needs ~90–115 collisions) but has **very low neutron absorption**, so it too can run on **natural uranium**. It is used in **~20% of reactors** (e.g. the Soviet/Russian **RBMK**, and the British **Magnox/AGR** gas-cooled reactors) [Wikipedia – Neutron moderator](https://en.wikipedia.org/wiki/Neutron_moderator); [World Nuclear Association](https://world-nuclear.org/information-library/nuclear-power-reactors/overview/nuclear-power-reactors).\n\n**The key teaching contrast:** hydrogen is the *best* at slowing neutrons but *wastes* some by absorption (→ needs enrichment); deuterium and graphite are *worse* at slowing per collision but *waste almost none* (→ can use natural uranium). That trade-off is the whole reason three different moderators exist.\n\n## 4. Tying it to \"Work, Energy and Power\"\n\n- Each elastic collision is a **transfer of kinetic energy**: the neutron does work on the moderator nucleus, giving it kinetic energy (recoil), while total kinetic energy is conserved in the collision (non-relativistic). Over ~18 (H) to ~100+ (C) collisions the neutron's kinetic energy drops from ~2 MeV to ~0.025 eV.\n- The energy the neutron loses ends up as **heat** in the moderator (the moderator is heated by the slowing-down process), which is then removed by the coolant — a direct link to energy conversion and heat transfer.\n- The \"100% vs 89% vs 28%\" head-on numbers give students a concrete, calculable illustration of why mass ratio matters in collisions.\n\n## 5. What is established vs. approximate\n\n- **Established (from the fetched sources):** fission-neutron mean ≈ 2 MeV / ~20,000 km/s; thermal neutron ≈ 0.025 eV / ~2.2 km/s; moderator must slow *and* not absorb; light water ~75% / graphite ~20% / heavy water ~5%; light water needs enrichment while heavy water and graphite can use natural uranium.\n- **Approximate / derived (present as such in class):** the per-collision energy-loss percentages (exact for head-on, from the 4A/(1+A)² formula) and the ξ values / collision counts (averages over all collision angles; order-of-magnitude). The exact collision count depends on the starting energy and the moderator, so quote it as \"~18 for H, ~25–30 for D, ~90–115 for C.\"\n\n**One caveat for accuracy:** the neutron-moderation example is *not* part of the NCERT Class 11 \"Work, Energy and Power\" chapter — it is a cross-disciplinary illustration you're adding. The physics (elastic collisions, energy transfer, conservation laws) is fully within the chapter's scope; the reactor specifics (enrichment, CANDU, RBMK) are extra context, so keep them as a short \"real-world\" box rather than exam content.\n\nSources\n- [Wikipedia – Neutron moderator](https://en.wikipedia.org/wiki/Neutron_moderator)\n- [Wikipedia – Neutron temperature](https://en.wikipedia.org/wiki/Neutron_temperature)\n- [IAEA Nuclear Graphite Knowledge Base – Nuclear Properties](https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx)\n- [World Nuclear Association – Nuclear Power Reactors](https://world-nuclear.org/information-library/nuclear-power-reactors/overview/nuclear-power-reactors)",
+   "cited": [
+    "https://en.wikipedia.org/wiki/Neutron_moderator",
+    "https://en.wikipedia.org/wiki/Neutron_temperature",
+    "https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx",
+    "https://world-nuclear.org/information-library/nuclear-power-reactors/overview/nuclear-power-reactors"
+   ],
+   "fetched": [
+    "https://en.wikipedia.org/wiki/Neutron_moderator",
+    "https://en.wikipedia.org/wiki/Neutron_temperature",
+    "https://nucleus.iaea.org/sites/graphiteknowledgebase/wiki/Wiki%20Pages/Nuclear%20Properties.aspx",
+    "https://world-nuclear.org/information-library/nuclear-power-reactors/overview/nuclear-power-reactors",
+    "https://www.nrc.gov/docs/ML1214/ML12142A083.pdf"
+   ],
+   "searches_used": 2,
+   "fetches_used": 5,
+   "seconds": 209.5
+  }
+ }
+}

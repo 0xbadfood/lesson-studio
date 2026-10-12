@@ -1,0 +1,184 @@
+{
+  "valve_L.stem_top_retainer": {
+    "model_px": [
+      552,
+      47
+    ],
+    "snapped_circle": [
+      540.5,
+      52.5,
+      14.4
+    ],
+    "moved_px": 12.7
+  },
+  "valve_L.valve_head_seat": {
+    "model_px": [
+      552,
+      198
+    ],
+    "snapped_circle": [
+      571.5,
+      190.5,
+      15.0
+    ],
+    "moved_px": 20.9
+  },
+  "valve_L.spring_seat_on_head": {
+    "model_px": [
+      552,
+      113
+    ],
+    "snapped_circle": [
+      549.5,
+      109.5,
+      19.9
+    ],
+    "moved_px": 4.3
+  },
+  "valve_R.stem_top_retainer": {
+    "model_px": [
+      736,
+      47
+    ],
+    "snapped_circle": [
+      737.5,
+      54.5,
+      17.2
+    ],
+    "moved_px": 7.6
+  },
+  "valve_R.valve_head_seat": {
+    "model_px": [
+      736,
+      198
+    ],
+    "snapped_circle": [
+      736.5,
+      206.5,
+      10.0
+    ],
+    "moved_px": 8.5
+  },
+  "valve_R.spring_seat_on_head": {
+    "model_px": [
+      736,
+      113
+    ],
+    "snapped_circle": [
+      739.5,
+      110.5,
+      11.5
+    ],
+    "moved_px": 4.3
+  },
+  "piston.crown_top": {
+    "model_px": [
+      644,
+      329
+    ],
+    "snapped_circle": null,
+    "moved_px": null
+  },
+  "piston.wrist_pin_centre": {
+    "model_px": [
+      644,
+      400
+    ],
+    "snapped_circle": [
+      644.5,
+      396.5,
+      16.6
+    ],
+    "moved_px": 3.5,
+    "manual_px": [
+      641,
+      407
+    ],
+    "model_error_px": 7.6,
+    "snapped_error_px": 11.1
+  },
+  "piston.skirt_bottom": {
+    "model_px": [
+      644,
+      454
+    ],
+    "snapped_circle": [
+      652.5,
+      459.5,
+      12.5
+    ],
+    "moved_px": 10.1
+  },
+  "conrod.small_end_centre": {
+    "model_px": [
+      644,
+      442
+    ],
+    "snapped_circle": [
+      652.5,
+      459.5,
+      12.5
+    ],
+    "moved_px": 19.5,
+    "manual_px": [
+      641,
+      407
+    ],
+    "model_error_px": 35.1,
+    "snapped_error_px": 53.7
+  },
+  "conrod.big_end_centre": {
+    "model_px": [
+      736,
+      678
+    ],
+    "snapped_circle": [
+      732.5,
+      681.5,
+      29.9
+    ],
+    "moved_px": 4.9,
+    "manual_px": [
+      735,
+      683
+    ],
+    "model_error_px": 5.1,
+    "snapped_error_px": 2.9
+  },
+  "crankshaft.main_axle_centre": {
+    "model_px": [
+      644,
+      668
+    ],
+    "snapped_circle": [
+      645.5,
+      668.5,
+      37.7
+    ],
+    "moved_px": 1.6,
+    "manual_px": [
+      641,
+      680
+    ],
+    "model_error_px": 12.4,
+    "snapped_error_px": 12.3
+  },
+  "crankshaft.crank_pin_centre": {
+    "model_px": [
+      736,
+      678
+    ],
+    "snapped_circle": [
+      732.5,
+      681.5,
+      29.9
+    ],
+    "moved_px": 4.9,
+    "manual_px": [
+      735,
+      683
+    ],
+    "model_error_px": 5.1,
+    "snapped_error_px": 2.9
+  }
+}

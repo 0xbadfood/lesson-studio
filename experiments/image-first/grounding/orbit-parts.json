@@ -1,0 +1,68 @@
+{
+  "parts": [
+    {
+      "id": "stone",
+      "role": "moving_bob",
+      "bbox": [
+        465,
+        97,
+        532,
+        170
+      ],
+      "points": {
+        "centre": [
+          498,
+          133
+        ]
+      },
+      "motion": "Swings / rotates in a circular (conical\u2011pendulum) arc, tracing a path centred on the hand's grip point.",
+      "linked_to": [
+        "hand"
+      ]
+    },
+    {
+      "id": "string",
+      "role": "moving_string",
+      "bbox": [
+        470,
+        425,
+        635,
+        780
+      ],
+      "points": {
+        "grip_end": [
+          490,
+          450
+        ],
+        "free_end": [
+          635,
+          780
+        ]
+      },
+      "motion": "Pivots rigidly about the grip point; its free end (attached to the stone) sweeps the same arc as the bob.",
+      "linked_to": [
+        "hand",
+        "stone"
+      ]
+    },
+    {
+      "id": "hand",
+      "role": "fixed_pivot",
+      "bbox": [
+        432,
+        365,
+        565,
+        780
+      ],
+      "points": {
+        "grip": [
+          490,
+          450
+        ]
+      },
+      "motion": "Stationary \u2013 serves as the fixed reference frame / pivot for the demonstration.",
+      "linked_to": []
+    }
+  ],
+  "notes": "The hand's coiled\u2011string grip point (\u2248[490,450]) is the fixed pivot. In the static frame the string is drawn trailing to the lower\u2011right, but in the animation its free end is the attachment point of the red stone, so the stone and the string are the two moving parts, both rotating/swinging relative to the hand. The hand itself does not move and is therefore the reference object for both."
+}

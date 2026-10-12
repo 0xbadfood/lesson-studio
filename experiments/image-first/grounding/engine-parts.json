@@ -1,0 +1,149 @@
+{
+  "parts": [
+    {
+      "id": "valve_L",
+      "role": "Left poppet valve (intake/exhaust) with stem, head and return spring; meters gas flow into/out of the chamber",
+      "bbox": [
+        308,
+        40,
+        352,
+        222
+      ],
+      "points": {
+        "stem_top_retainer": [
+          330,
+          50
+        ],
+        "valve_head_seat": [
+          330,
+          210
+        ],
+        "spring_seat_on_head": [
+          330,
+          120
+        ]
+      },
+      "motion": "slide up/down along vertical axis (open/close); spring compresses as stem lifts",
+      "linked_to": [
+        "cylinder_head"
+      ]
+    },
+    {
+      "id": "valve_R",
+      "role": "Right poppet valve with stem, head and return spring; meters gas flow",
+      "bbox": [
+        418,
+        40,
+        462,
+        222
+      ],
+      "points": {
+        "stem_top_retainer": [
+          440,
+          50
+        ],
+        "valve_head_seat": [
+          440,
+          210
+        ],
+        "spring_seat_on_head": [
+          440,
+          120
+        ]
+      },
+      "motion": "slide up/down along vertical axis (open/close); spring compresses as stem lifts",
+      "linked_to": [
+        "cylinder_head"
+      ]
+    },
+    {
+      "id": "piston",
+      "role": "Piston; transfers combustion pressure to the connecting rod via the wrist pin",
+      "bbox": [
+        315,
+        345,
+        456,
+        486
+      ],
+      "points": {
+        "crown_top": [
+          385,
+          350
+        ],
+        "wrist_pin_centre": [
+          385,
+          425
+        ],
+        "skirt_bottom": [
+          385,
+          482
+        ]
+      },
+      "motion": "slide up/down along vertical cylinder axis (reciprocating)",
+      "linked_to": [
+        "conrod",
+        "cylinder_bore"
+      ]
+    },
+    {
+      "id": "conrod",
+      "role": "Connecting rod; couples the reciprocating piston to the rotating crank",
+      "bbox": [
+        370,
+        465,
+        470,
+        775
+      ],
+      "points": {
+        "small_end_centre": [
+          385,
+          470
+        ],
+        "big_end_centre": [
+          440,
+          720
+        ]
+      },
+      "motion": "swing / planar linkage: small end translates with piston, big end orbits the crank pin (combined translation + rotation)",
+      "linked_to": [
+        "piston",
+        "crankshaft"
+      ]
+    },
+    {
+      "id": "crankshaft",
+      "role": "Crank disc + crank pin; converts reciprocating rod motion into continuous rotation (output shaft)",
+      "bbox": [
+        295,
+        560,
+        475,
+        875
+      ],
+      "points": {
+        "main_axle_centre": [
+          385,
+          710
+        ],
+        "crank_pin_centre": [
+          440,
+          720
+        ]
+      },
+      "motion": "rotate about main_axle_centre (continuous 360 deg)",
+      "linked_to": [
+        "conrod"
+      ]
+    }
+  ],
+  "fixed": [
+    "cylinder_block_housing",
+    "cylinder_head",
+    "cylinder_bore_wall",
+    "valve_guides",
+    "intake_port",
+    "exhaust_port",
+    "spark_plug",
+    "crankcase"
+  ],
+  "notes": "Kinematic chain: crankshaft (rotation about main_axle_centre 385,710) drives conrod big_end (440,720); conrod small_end (385,470) drives piston wrist_pin (385,425) in pure vertical translation. Valves are NOT mechanically linked to the crank in this cutaway (no camshaft/tappet drawn) - they are shown as a separate DOHC-style pair and should be animated on their own vertical cycle, typically phased so one opens while the other is closed. Spark plug is fixed (only its electrode fires, no motion). Valve springs are part of the valve assembly and should be drawn compressing/lengthening with stem travel rather than as rigid bodies. All coordinates are on a 0-1000 scale relative to image width (x) and height (y). For a 4-stroke loop: one full crank rotation (720 deg of crank = 2 revs) gives one power stroke; piston TDC ~ y=350, BDC ~ y=482."
+}

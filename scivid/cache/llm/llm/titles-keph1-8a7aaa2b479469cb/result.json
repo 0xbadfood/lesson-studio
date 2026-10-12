@@ -1,0 +1,32 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Units and Measurement"
+    },
+    {
+      "chapter": 2,
+      "title": "Motion in a Straight Line"
+    },
+    {
+      "chapter": 3,
+      "title": "Motion in a Plane"
+    },
+    {
+      "chapter": 4,
+      "title": "Laws of Motion"
+    },
+    {
+      "chapter": 5,
+      "title": "Work, Energy and Power"
+    },
+    {
+      "chapter": 6,
+      "title": "System of Particles and Rotational Motion"
+    },
+    {
+      "chapter": 7,
+      "title": "Gravitation"
+    }
+  ]
+}

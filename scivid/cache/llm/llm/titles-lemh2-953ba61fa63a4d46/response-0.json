@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520518-O32NHGfsyDNVW9K8jTp2",
+  "object": "chat.completion",
+  "created": 1791520518,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "{\"chapters\":[{\"chapter\":7,\"title\":\"Integrals\"},{\"chapter\":8,\"title\":\"Application of Integrals\"},{\"chapter\":9,\"title\":\"Differential Equations\"},{\"chapter\":10,\"title\":\"Vector Algebra\"},{\"chapter\":11,\"title\":\"Three Dimensional Geometry\"},{\"chapter\":12,\"title\":\"Linear Programming\"},{\"chapter\":13,\"title\":\"Probability\"}]}",
+        "refusal": null,
+        "reasoning": "I'm checking the contents page for the proper chapter titles, confirming \"Application of Integrals\" and \"Three Dimensional Geometry\" match the standard title case, then preparing to output the JSON.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm checking the contents page for the proper chapter titles, confirming \"Application of Integrals\" and \"Three Dimensional Geometry\" match the standard title case, then preparing to output the JSON.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQS1wcKEAgSGAI4AUIIdGhpbmtpbmcSDMqPci6RdFm3VIbSkhoMip6wl6ZyVFGYia/jIjDbJgoa0AA32vojUMuoMsufYmckyFE6mtTk/YAklMZ5yHAip1anSZniREFp+59CLGsq9AbWLFZaVJy5vWxQHH0+Ne0GfBnABTO0XM2f08UX/+8EvoM6Upcjzj3v9Fcwz+NAP+ThIVJd5j/UGUvENul0mq/mPs7tuHxjZNj3B+36yIpiHHR2ohCZDu3Tad6IVYEji+7l4n3iHtgIo8Hnk6fSwG3IFOiMjvpMJ9Hwf2tofb/83v0za5USZQs6Y9N4C74LWcZPSWUb32ne0NI6sowlLHbk3nHfx/oNmtDhub/3oT5gqvhuRQgHpw6w3jVSefAXulApEqdiurxZ8zMBPc5hO3+MV2oMb61fvRDmKMhe+FLeNLzVXRpOnV2g2XXaPatfYc5YGW2xvdx0ABkpdTKEV8wW/kpeWfyzh5TGgeYxrNF2happ/5pxz3YUDQ2IRGIfHJDEyp4X7TZR9ASA86l7a7QXTyUlw+V3Gdn2eYUH3TAVgTBavpx4zTyToWSrcrre8KV3cWJf9dX/VjTW2qA97sNZCKVO5w6QoepUFo9BCzdGuYti9Dgf8Rw5HxFfmH/gIG6f/5CIRgRA3ABEeaCQZwSMT0CiZBOB5wr6yopl/Ps/eJLnBjLORPoYs+n/3rfWYP1FS1MX0ZbvAOrnsbUHz5hu+N5iU0boy1Ll4MMIH2Rf4MgOssyoUpjZ8EOkgts70T3vSWFvz9o8S8/ONKnbb0EPKnElLDTsOdKDIHprN358zJtZXxmyzBRn7IA7+WgEsOCrx7u8kdJEakebsclM7XfDs2zKjnGSB26vvtfIcAyvq5BnMe3xaYJ8GBy5BAlP0SFJCgIoHKteDciEZQ3zu5Hl7NxdNceL1AdZ7Gph5IUhc1UC65bh99q2Vq9t6P4HHWIdcUdu+N1zvJd5J7+NDNR0oI+/IU1nhiV94jIfVxgn/zSrz3gkiy07omlynE464G3t6aHAew8W0gU/XFQQ1PS3ZEPKaSW0gZlMTITcZoLdE4L42cv85T3lrkCwVnX9HgxcxrbSSFesWN26kgobtfLBytX9L6QUTNU9mzQnUjqZVgXdepsu8dGs50C7a07qGU48WLqhrEqlaAkYaz64nKctoTMO9aer3yr1NE7YKdMeAK2Nd5pgfKHdjGHYZYC7Vo0jEhJzUCf0X+mYZEGZ6vN58ZInWld8TxKcURIihH3XtLIzpnMbV9pgF/Wb8briceHOCbMow2D5uvoK0DuCA0jVwy5CQBgB.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4672,
+    "completion_tokens": 312,
+    "total_tokens": 4984,
+    "cost": 0.0006232,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0006232,
+      "upstream_inference_prompt_cost": 0.0004672,
+      "upstream_inference_completions_cost": 0.000156
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 159,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 3.28
+}

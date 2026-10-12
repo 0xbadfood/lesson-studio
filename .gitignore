@@ -1,0 +1,34 @@
+# Runtime data and generated output (lesson runs, model settings and keys live in scivid-data/)
+scivid-data/
+api-data/
+textbook-digest/
+artifacts/
+media/
+experiments/**/*.png
+experiments/**/*.jpg
+experiments/**/*.mp4
+
+# Environments and caches
+.venv*/
+kb_research/env/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Media and logs
+*.mp4
+*.wav
+*.mp3
+*.log
+*.sqlite3
+*.sqlite3-*
+
+# Secrets
+.env
+.env.*
+*-secrets.json
+*.pem
+*.key
+
+# Third-party binaries (x86-only fetcher; installed per host)
+kb_research/obscura

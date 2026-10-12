@@ -1,0 +1,17 @@
+{
+  "name": "a-rod",
+  "prompt": "This is an RGBA image with transparency. Extract only the copper connecting rod from the reference engine cutaway, complete from the small end to the big end. Keep its exact appearance, size and position. Remove everything else. The image has alpha channel and the background is transparent.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/inputs/engine-canvas.png"
+  ],
+  "seconds": 104.3,
+  "job": {
+    "inference_seconds": 103.25150065800699,
+    "peak_allocated_gb": 19.09468936920166,
+    "seed": 12345
+  }
+}

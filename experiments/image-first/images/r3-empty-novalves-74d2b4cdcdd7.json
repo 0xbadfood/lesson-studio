@@ -1,0 +1,17 @@
+{
+  "name": "r3-empty-novalves",
+  "prompt": "Edit the reference engine cutaway: remove the two valves completely, including their stems, heads and springs, leaving the empty valve guides and open ports. Keep the empty cylinder, empty crankcase, housing, ports and spark plug exactly identical.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/registered/b-empty.png"
+  ],
+  "seconds": 99.1,
+  "job": {
+    "inference_seconds": 98.09217750901007,
+    "peak_allocated_gb": 19.10305690765381,
+    "seed": 12345
+  }
+}

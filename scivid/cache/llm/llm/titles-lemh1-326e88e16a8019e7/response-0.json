@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520513-yzfnxupWfE7glZxMP1Nk",
+  "object": "chat.completion",
+  "created": 1791520513,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "{\"chapters\":[{\"chapter\":1,\"title\":\"Relations and Functions\"},{\"chapter\":2,\"title\":\"Inverse Trigonometric Functions\"},{\"chapter\":3,\"title\":\"Matrices\"},{\"chapter\":4,\"title\":\"Determinants\"},{\"chapter\":5,\"title\":\"Continuity and Differentiability\"},{\"chapter\":6,\"title\":\"Application of Derivatives\"}]}",
+        "refusal": null,
+        "reasoning": "I'm formatting the chapter titles in proper title case and preparing the JSON output.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm formatting the chapter titles in proper title case and preparing the JSON output.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSqgYKEAgSGAI4AUIIdGhpbmtpbmcSDICU0gx/3QNgVu8FQBoMAr2d16eoGf2g6ymUIjBmk2IASnSRlJ8BHxBzktMtBZICvdEAAV4nUOZX7IlyjX7150jKd4urqWnPGwHGMz0qxwVKDivE4jpW2oGkLRtqXn3wb8g3B5He+Htjj0B5GeTSQ/Hc71NKTBEDmPnB02Nt7aO4E/EsCjNdmE4RtnYGcx/uPXScIVYPmHWTmInCufB4xsLxS8NVnAYqsgUSZhysPk3h/6XIEmDDHJNgJZC+jDQgW7t5/d6qzLvP474aHiuPBlLrTwlmZhH3pSaKPia8KBDyCdb5JRZOO0d55zy97VXcUX6ygVkvo+rg+DWYx1UaucZedf2CN2oCdxsB0w+ommsT0bDmL1yBrqIihMuk7lIOgdZ9OIKYfu7eSlonXVfIkI3ZpLvqSvM6Pd8Wxz8R+a7/YYSjH/iixxtaMjmsUCWdac0WvrVhpD1HyYcaS2doSqiW+5j6ZaqI9ogB4gK7ciWWrW7ChNb0xLJl2pBajOmqCnoEAA6Z43cIl0u3RGIhZamoVyzT7gGLfmU9YoIj3feK88syQ0VNeGS45lir8JAOnZnHrGut8+aQZee7Taajdkd+MJrJYLgVK4Ixpqqh/FbC3qCr2y3c7J5biBf694lv4v+vAHdTDTiX4Vk62owwumt6/CeHEA7hEopsS/JWFx+GkWox9VKeXEzZx3EYdZ6wn/WlCZJTllP/7PY9Zbb8TvkUB4+AeUIXzxLE9vTqr3hp1hAvqKKXTU95+0tT7MACvgeuNOcRaM3cOkJ4e2ojLKPp2fI+6Jop7OAtxGwNkKnB3nq/POms0gPLKm27B1NdACiuPLQpYJBoMT5i3vOLzCxxC/QWSRWQjWn3jUizow+wNqc76j2G2rLS7zM8q0EsYOLtY2Ri2Mrd3ycdJrNFmyylOk1JHXnX3l/R1V20xDTBpv53NShDMMf2WckMcK9qzdbBOyb92BMmO55WyfuQcOSunmm6wrODM0+ib490cZ6eogqMsqEp+JF+kzeBhBCtHITc+3bi9VM10CDuVj39U9twehCYRF4YAQ==.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4524,
+    "completion_tokens": 217,
+    "total_tokens": 4741,
+    "cost": 0.0005609,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0005609,
+      "upstream_inference_prompt_cost": 0.0004524,
+      "upstream_inference_completions_cost": 0.0001085
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 76,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 2.44
+}

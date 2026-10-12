@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%230b7a83%22/%3E%3Crect x=%228%22 y=%2219%22 width=%2216%22 height=%228%22 rx=%223%22 fill=%22%23d98a12%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div id="signin" class="signin" hidden>
+  <form id="signin-form" class="signin-card">
+    <div class="brand big"><span class="mark" aria-hidden="true"></span><span>Lesson Studio</span></div>
+    <p class="muted">Narrated science and maths lessons, grounded in your textbook.</p>
+    <label for="access-key">Access key</label>
+    <input id="access-key" type="password" autocomplete="current-password" required>
+    <p id="signin-error" class="error" hidden></p>
+    <button class="btn primary" type="submit">Sign in</button>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><span>Lesson Studio</span><em>Science &amp; Maths</em></div>
+    <div class="topbar-right">
+      <ul id="services" class="services" aria-label="Service status"></ul>
+      <button id="open-settings" class="btn ghost small">Settings</button>
+      <button id="signout" class="btn ghost small">Sign out</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="composer" aria-labelledby="new-title">
+      <form id="create" novalidate>
+        <h1 id="new-title">New lesson</h1>
+
+        <div class="field">
+          <label for="topic">What should students learn?</label>
+          <textarea id="topic" rows="3" maxlength="600" required
+            placeholder="Why does a pendulum keep steady time, and how was it used in clocks?"></textarea>
+        </div>
+
+        <div class="field">
+          <span class="label" id="mode-label">Lesson type</span>
+          <div class="segmented" role="radiogroup" aria-labelledby="mode-label">
+            <input type="radio" name="mode" id="mode-explain" value="explainer" checked><label for="mode-explain">Explain a topic</label>
+            <input type="radio" name="mode" id="mode-solve" value="solver"><label for="mode-solve">Solve a question <small>beta</small></label>
+          </div>
+        </div>
+
+        <fieldset class="grounding">
+          <legend>Ground it in</legend>
+          <div class="ground-row">
+            <div class="ground-head">
+              <span class="ground-title">Textbook chapter</span>
+              <span class="tag">NCERT</span>
+            </div>
+            <div class="chips" id="class-chips" role="radiogroup" aria-label="Class"></div>
+            <div class="chips small" id="subject-chips" role="radiogroup" aria-label="Subject"></div>
+            <label for="chapter" class="sr-only">Chapter</label>
+            <select id="chapter"></select>
+          </div>
+          <div class="ground-row">
+            <label class="switch">
+              <input type="checkbox" id="web">
+              <span class="track" aria-hidden="true"></span>
+              <span><span class="ground-title">Web research</span><br><span class="muted small-text">Adds sources from the web. With a chapter, the textbook stays primary.</span></span>
+            </label>
+          </div>
+          <p id="ground-rule" class="rule-note">Pick a chapter, turn on web research, or both.</p>
+          <div class="field" id="class-level-field">
+            <label for="class-level">Level</label>
+            <select id="class-level">
+              <option value="" id="class-from-chapter">Chapter's class</option>
+              <option value="6">Class 6</option><option value="7">Class 7</option><option value="8" selected>Class 8</option>
+              <option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option>
+              <option value="12">Class 12</option><option value="open">No level limit (full depth)</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <div class="label-row"><label for="length">Length</label><output id="length-out" for="length">about 2 min</output></div>
+          <input id="length" type="range" min="45" max="300" step="15" value="120">
+        </div>
+
+        <div class="field two">
+          <div>
+            <label for="voice">Narrator</label>
+            <select id="voice"><option value="default">Amit</option><option value="kane">Kane</option></select>
+          </div>
+          <div>
+            <label for="config">Model configuration</label>
+            <select id="config"><option value="">Current settings</option></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="switch">
+            <input type="checkbox" id="history">
+            <span class="track" aria-hidden="true"></span>
+            <span><span class="ground-title">Historical context</span><br><span class="muted small-text">The story behind the idea (who, when, why), where it fits. Shown as slides.</span></span>
+          </label>
+        </div>
+
+        <details class="notes">
+          <summary>Add notes for emphasis</summary>
+          <textarea id="notes" rows="3" maxlength="1500" placeholder="E.g. use a cricket example; mention Galileo's observation in the church."></textarea>
+        </details>
+
+        <p id="create-error" class="error" hidden></p>
+        <button id="create-btn" class="btn primary wide" type="submit">Create lesson</button>
+        <p class="muted small-text center">The voice is recorded first; pictures and animation follow.</p>
+      </form>
+    </section>
+
+    <section class="library" aria-labelledby="library-title">
+      <div class="library-head">
+        <h2 id="library-title">Lessons</h2>
+        <div class="filters" role="tablist">
+          <button role="tab" data-filter="all" aria-selected="true">All</button>
+          <button role="tab" data-filter="active" aria-selected="false">In progress</button>
+          <button role="tab" data-filter="ready" aria-selected="false">Ready</button>
+          <button role="tab" data-filter="attention" aria-selected="false">Needs attention</button>
+        </div>
+      </div>
+      <div id="cards" class="cards"></div>
+      <div id="empty" class="empty" hidden>
+        <div class="empty-art" aria-hidden="true"></div>
+        <h3>No lessons yet</h3>
+        <p class="muted">Describe a topic on the left and pick its chapter. Your first lesson will appear here with live progress.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="detail" class="detail" aria-labelledby="detail-title">
+  <div class="detail-inner">
+    <header class="detail-head">
+      <div>
+        <p id="detail-cite" class="eyebrow"></p>
+        <h2 id="detail-title"></h2>
+      </div>
+      <button class="btn ghost small" id="detail-close" aria-label="Close">Close</button>
+    </header>
+    <div class="detail-grid">
+      <div class="detail-main">
+        <div id="player" class="player"></div>
+        <div id="detail-actions" class="actions"></div>
+        <ol id="stepper" class="stepper"></ol>
+      </div>
+      <aside class="detail-side">
+        <h3>Chapters</h3>
+        <ol id="chapter-list" class="chapter-list"></ol>
+      </aside>
+    </div>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="script" aria-selected="true">Script</button>
+      <button role="tab" data-tab="sources" aria-selected="false">Sources</button>
+      <button role="tab" data-tab="checks" aria-selected="false">Checks</button>
+    </div>
+    <div id="tab-body" class="tab-body"></div>
+  </div>
+</dialog>
+<dialog id="settings" class="detail" aria-labelledby="settings-title">
+  <div class="detail-inner">
+    <header class="detail-head">
+      <div><p class="eyebrow">Models</p><h2 id="settings-title">Settings</h2></div>
+      <button class="btn ghost small" id="settings-close">Close</button>
+    </header>
+    <div class="stabs" role="tablist" id="settings-tabs">
+      <button role="tab" id="stab-workflow" data-stab="workflow" aria-controls="spanel-workflow" aria-selected="true">Workflow</button>
+      <button role="tab" id="stab-reviews" data-stab="reviews" aria-controls="spanel-reviews" aria-selected="false">Reviews</button>
+      <button role="tab" id="stab-accuracy" data-stab="accuracy" aria-controls="spanel-accuracy" aria-selected="false">Reviewer accuracy</button>
+      <button role="tab" id="stab-configs" data-stab="configs" aria-controls="spanel-configs" aria-selected="false">Configurations</button>
+      <button role="tab" id="stab-connections" data-stab="connections" aria-controls="spanel-connections" aria-selected="false">Connections</button>
+    </div>
+    <div class="settings-panel" id="spanel-workflow" role="tabpanel" aria-labelledby="stab-workflow">
+    <section class="settings-block">
+      <div class="section-head"><h3>Workflow</h3>
+        <button class="btn small primary" id="save-steps">Save settings</button></div>
+      <p class="muted small-text">Choose how chapters are animated and the model that makes each part of the lesson. Reviewers are set on the Reviews tab. New lessons use these choices; lessons already running keep the models they started with.</p>
+      <div id="options" class="options"></div>
+      <ol class="flow" id="steps-flow"></ol>
+      <p id="steps-msg" class="rule-note" hidden></p>
+    </section>
+    </div>
+    <div class="settings-panel" id="spanel-reviews" role="tabpanel" aria-labelledby="stab-reviews" hidden>
+    <section class="settings-block">
+      <div class="section-head"><h3>Reviews</h3>
+        <button class="btn small primary" id="save-reviews">Save reviews</button></div>
+      <p class="muted small-text">Each reviewer has a model and the criteria it scores from 0 to 3 (0 wrong or missing, 1 serious problem, 2 small flaw, 3 right). The reviewer never decides pass or fail: a criterion below its minimum fails the review and goes back for a fix; a score below 3 that meets the minimum becomes a note. New lessons use these choices; saved configurations keep their own.</p>
+      <div id="reviews" class="reviews"></div>
+      <p id="reviews-msg" class="rule-note" hidden></p>
+    </section>
+    </div>
+    <div class="settings-panel" id="spanel-accuracy" role="tabpanel" aria-labelledby="stab-accuracy" hidden>
+    <section class="settings-block">
+      <div class="section-head"><h3>Reviewer accuracy</h3>
+        <button class="btn small" id="audit-btn">Audit 40 unjudged findings</button></div>
+      <p class="muted small-text">Every review score below its minimum is a finding that caused a retry. Mark each one right or wrong, or let the Review auditor (set on the Reviews tab) judge the backlog; your verdict always counts over the auditor's. A finding is wrong (a false positive) when the problem is not there, is only a difference of wording, stage, detail or style, comes from a frame caught mid-animation, or would not mislead a learner.</p>
+      <p id="audit-msg" class="rule-note" hidden></p>
+      <div class="table-wrap"><table class="runs" id="accuracy"></table></div>
+      <div class="findings-bar">
+        <select id="findings-review" aria-label="Filter by review"><option value="">All reviews</option></select>
+        <label class="inline-check"><input type="checkbox" id="findings-unjudged" checked> Unjudged only</label>
+      </div>
+      <div id="findings" class="findings"></div>
+    </section>
+    </div>
+    <div class="settings-panel" id="spanel-configs" role="tabpanel" aria-labelledby="stab-configs" hidden>
+    <section class="settings-block">
+      <div class="section-head"><h3>Configurations</h3></div>
+      <p class="muted small-text">A configuration is a saved set of model choices. Apply one to make it the current settings, or pick it per lesson on the New lesson form to compare configurations on the same topic.</p>
+      <div id="presets" class="connection-grid"></div>
+      <form id="preset-form" class="preset-form" novalidate>
+        <div class="field"><label for="p-label">Save the current settings as</label><input id="p-label" type="text" maxlength="60" placeholder="e.g. Haiku scripts + Sonnet coders"></div>
+        <div class="field"><label for="p-note">Note</label><input id="p-note" type="text" maxlength="400" placeholder="What this configuration tests"></div>
+        <label class="switch"><input type="checkbox" id="p-benchmark"><span class="track" aria-hidden="true"></span><span>Benchmark (the reference other runs are compared with)</span></label>
+        <div class="actions"><button class="btn small" type="submit">Save configuration</button><span class="muted small-text" id="p-msg"></span></div>
+      </form>
+    </section>
+    <section class="settings-block">
+      <div class="section-head"><h3>Runs by configuration</h3></div>
+      <p class="muted small-text">Recent lessons with the configuration they ran, their model cost (as reported by OpenRouter; local models are free) and time.</p>
+      <div class="table-wrap"><table class="runs" id="runs"></table></div>
+    </section>
+    </div>
+    <div class="settings-panel" id="spanel-connections" role="tabpanel" aria-labelledby="stab-connections" hidden>
+    <section class="settings-block">
+      <div class="section-head"><h3>Connections</h3>
+        <button class="btn small" id="add-connection">Add connection</button></div>
+      <div id="connections" class="connection-grid"></div>
+    </section>
+    <section class="settings-block" id="connection-form-wrap" hidden>
+      <h3 id="connection-form-title">Add connection</h3>
+      <form id="connection-form" class="connection-form" novalidate>
+        <input type="hidden" id="c-id">
+        <div class="field"><label for="c-type">Type</label><select id="c-type"></select></div>
+        <div class="field"><label for="c-label">Name</label><input id="c-label" type="text" placeholder="Local · Spark GLM"></div>
+        <div class="field" id="c-url-field"><label for="c-url">URL</label><input id="c-url" type="text" placeholder="http://10.8.0.4:18080/v1"></div>
+        <div class="field" id="c-key-field"><label for="c-key">API key</label><input id="c-key" type="password" autocomplete="off" placeholder="Paste the key"><span class="muted small-text" id="c-key-note"></span></div>
+        <div class="field"><label for="c-model">Model</label>
+          <div class="model-row"><input id="c-model" type="text" placeholder="Detect or type a model id" autocomplete="off">
+          <button type="button" class="btn small" id="c-detect">Detect models</button></div>
+          <span class="muted small-text" id="c-detect-note"></span>
+          <div id="c-picker" class="model-picker" hidden>
+            <label for="c-filter" class="sr-only">Search models</label>
+            <input id="c-filter" type="search" placeholder="Search models, e.g. claude, gemini, qwen" autocomplete="off">
+            <label for="c-model-list" class="sr-only">Detected models</label>
+            <select id="c-model-list" size="8"></select>
+          </div></div>
+        <div class="field" id="c-effort-field"><label for="c-effort">Reasoning effort</label>
+          <select id="c-effort"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>
+        <label class="switch" id="c-vision-field"><input type="checkbox" id="c-vision"><span class="track" aria-hidden="true"></span><span>Can look at images (needed for frame reviews)</span></label>
+        <p id="c-error" class="error" hidden></p>
+        <div class="actions"><button class="btn primary small" type="submit">Save connection</button><button class="btn ghost small" type="button" id="c-cancel">Cancel</button></div>
+      </form>
+    </section>
+    </div>
+  </div>
+</dialog>
+<script src="/static/app.js"></script>
+</body>
+</html>

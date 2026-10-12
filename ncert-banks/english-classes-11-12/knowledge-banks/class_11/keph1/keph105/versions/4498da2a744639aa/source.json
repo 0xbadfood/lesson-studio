@@ -1,0 +1,38 @@
+{
+  "schema_version": "phase1_chapter_source_v1",
+  "contract_version": "phase1_page_evidence_v1",
+  "scope_id": "english_classes_11_12_v1",
+  "catalog_fingerprint": "0e36f4e12fa03c79166f2208aa90385d884ec7adeb79b2daa89df05a977a1686",
+  "input_fingerprint": "4498da2a744639aa51af7c5e5ebdc8ed8c36a1f298d696bfdee6a5b19846b975",
+  "prepared_at_utc": "2026-10-09T04:37:48.236148+00:00",
+  "document": {
+    "document_id": "ncert:english:11:keph1:05",
+    "chapter_id": "keph105",
+    "language": "English",
+    "class_no": 11,
+    "subject": "Physics",
+    "book_code": "keph1",
+    "book_title": "Physics Part-I",
+    "chapter_suffix": "05",
+    "chapter_number": 5,
+    "source_url": "https://ncert.nic.in/textbook/pdf/keph105.pdf",
+    "relative_path": "English/class_11/Physics/keph1-physics-part-i/keph105.pdf",
+    "document_fingerprint": "efb94294943d9d1030613aca5b07d71e88e00af17e2f0d5e5dd38169f9d7fc1f"
+  },
+  "source_pdf": {
+    "sha256": "a6d4b72b0fc10230bd54393f86e58630ccd258d54269b60de226c68d0eaa937e",
+    "bytes": 1989036,
+    "pages": 21
+  },
+  "artifacts": {
+    "pages": "pages.jsonl",
+    "page_images": "pages/"
+  },
+  "extraction": {
+    "native_text_engine": "pdftotext -layout",
+    "embedded_image_inventory_engine": "pdfimages -list",
+    "page_render_engine": "pdftoppm",
+    "page_render_max_pixels": 1800,
+    "issues": []
+  }
+}

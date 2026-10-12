@@ -1,0 +1,15 @@
+{
+  "name": "r2-ramp",
+  "prompt": "Clean educational illustration, side view, on a plain warm off-white background: a wooden skateboard half-pipe ramp with a small blue ball resting at the top of its left side. The path is drawn as a thin dashed line in pure bright magenta (#FF00FF); magenta is used nowhere else in the image. It shows the path the ball will roll along the ramp surface, down and up the other side. Soft flat colours, no text, no labels.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [],
+  "seconds": 94.2,
+  "job": {
+    "inference_seconds": 93.33063124399632,
+    "peak_allocated_gb": 16.441747188568115,
+    "seed": 12345
+  }
+}

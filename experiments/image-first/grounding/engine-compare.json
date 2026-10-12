@@ -1,0 +1,158 @@
+{
+  "per_manual_part": [
+    {
+      "manual_part": "piston",
+      "matched": "piston",
+      "mask_iou": 0.99,
+      "manual_anchors_px": {
+        "wrist_pin_px": [
+          641,
+          407
+        ],
+        "crown_y_px": 326
+      }
+    },
+    {
+      "manual_part": "connecting_rod",
+      "matched": "conrod",
+      "mask_iou": 0.989,
+      "manual_anchors_px": {
+        "wrist_pin_px": [
+          641,
+          407
+        ],
+        "crank_pin_px": [
+          735,
+          683
+        ],
+        "visible_top_occluded": true
+      }
+    },
+    {
+      "manual_part": "crankshaft",
+      "matched": "crankshaft",
+      "mask_iou": 0.982,
+      "manual_anchors_px": {
+        "main_shaft_px": [
+          641,
+          680
+        ],
+        "crank_pin_px": [
+          735,
+          683
+        ],
+        "occluded_by": "connecting_rod"
+      }
+    },
+    {
+      "manual_part": "intake_valve",
+      "matched": "valve_L",
+      "mask_iou": 0.492,
+      "manual_anchors_px": {
+        "axis_x_px": 551,
+        "closed_head_y_px": 210,
+        "spring_fixed": true
+      }
+    },
+    {
+      "manual_part": "exhaust_valve",
+      "matched": "valve_R",
+      "mask_iou": 0.503,
+      "manual_anchors_px": {
+        "axis_x_px": 733,
+        "closed_head_y_px": 210,
+        "spring_fixed": true
+      }
+    }
+  ],
+  "model_points_px": {
+    "valve_L": {
+      "stem_top_retainer": [
+        552,
+        47
+      ],
+      "valve_head_seat": [
+        552,
+        198
+      ],
+      "spring_seat_on_head": [
+        552,
+        113
+      ]
+    },
+    "valve_R": {
+      "stem_top_retainer": [
+        736,
+        47
+      ],
+      "valve_head_seat": [
+        736,
+        198
+      ],
+      "spring_seat_on_head": [
+        736,
+        113
+      ]
+    },
+    "piston": {
+      "crown_top": [
+        644,
+        329
+      ],
+      "wrist_pin_centre": [
+        644,
+        400
+      ],
+      "skirt_bottom": [
+        644,
+        454
+      ]
+    },
+    "conrod": {
+      "small_end_centre": [
+        644,
+        442
+      ],
+      "big_end_centre": [
+        736,
+        678
+      ]
+    },
+    "crankshaft": {
+      "main_axle_centre": [
+        644,
+        668
+      ],
+      "crank_pin_centre": [
+        736,
+        678
+      ]
+    }
+  },
+  "model_motion": {
+    "valve_L": "slide up/down along vertical axis (open/close); spring compresses as stem lifts",
+    "valve_R": "slide up/down along vertical axis (open/close); spring compresses as stem lifts",
+    "piston": "slide up/down along vertical cylinder axis (reciprocating)",
+    "conrod": "swing / planar linkage: small end translates with piston, big end orbits the crank pin (combined translation + rotation)",
+    "crankshaft": "rotate about main_axle_centre (continuous 360 deg)"
+  },
+  "model_links": {
+    "valve_L": [
+      "cylinder_head"
+    ],
+    "valve_R": [
+      "cylinder_head"
+    ],
+    "piston": [
+      "conrod",
+      "cylinder_bore"
+    ],
+    "conrod": [
+      "piston",
+      "crankshaft"
+    ],
+    "crankshaft": [
+      "conrod"
+    ]
+  }
+}

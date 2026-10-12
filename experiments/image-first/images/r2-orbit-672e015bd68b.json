@@ -1,0 +1,15 @@
+{
+  "name": "r2-orbit",
+  "prompt": "Clean educational illustration, top view, on a plain warm off-white background: a child's hand at the centre whirling a small red stone on a taut string. The path is drawn as a thin dashed line in pure bright magenta (#FF00FF); magenta is used nowhere else in the image. It shows the complete circular path the stone travels around the hand, passing through the stone. Soft flat colours, no text, no labels.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [],
+  "seconds": 96.2,
+  "job": {
+    "inference_seconds": 94.6261712389969,
+    "peak_allocated_gb": 16.4307222366333,
+    "seed": 12345
+  }
+}

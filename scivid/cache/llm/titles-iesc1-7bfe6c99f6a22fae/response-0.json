@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"Exploration: Entering The World Of Secondary Science\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"Cell: The Building Block Of Life\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"Tissues In Action\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"Describing Motion Around Us\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"Exploring Mixtures And Their Separation\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"How Forces Affect Motion\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"Work, Energy, And Simple Machines\"\n    },\n    {\n      \"chapter\": 8,\n      \"title\": \"Journey Inside The Atom\"\n    },\n    {\n      \"chapter\": 9,\n      \"title\": \"Atomic Foundations Of Matter\"\n    },\n    {\n      \"chapter\": 10,\n      \"title\": \"Sound Waves: Characteristics And Applications\"\n    },\n    {\n      \"chapter\": 11,\n      \"title\": \"Reproduction: How Life Continues\"\n    },\n    {\n      \"chapter\": 12,\n      \"title\": \"Patterns In Life: Diversity And Classification\"\n    },\n    {\n      \"chapter\": 13,\n      \"title\": \"Earth As A System: Energy, Matter, And Life\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791387952,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 377,
+    "prompt_tokens": 3155,
+    "total_tokens": 3532,
+    "prompt_tokens_details": {
+      "cached_tokens": 37
+    }
+  },
+  "id": "chatcmpl-oeWBJUyOxKwqfgVFchUnfcWJh5DedEIx",
+  "timings": {
+    "cache_n": 37,
+    "prompt_n": 3118,
+    "prompt_ms": 4034.067,
+    "prompt_per_token_ms": 1.293799550994227,
+    "prompt_per_second": 772.9172569518553,
+    "predicted_n": 377,
+    "predicted_ms": 7825.023,
+    "predicted_per_token_ms": 20.756029177718833,
+    "predicted_per_second": 48.178772126292785,
+    "draft_n": 252,
+    "draft_n_accepted": 251
+  },
+  "elapsed_seconds": 12.62
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    1
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 1,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "English",
+        "headings": [
+          "CHAPTER FIVE",
+          "WORK, ENERGY AND POWER",
+          "5.1 INTRODUCTION",
+          "5.1.1 The Scalar Product"
+        ],
+        "page_summary": "This page introduces Chapter 5, 'Work, Energy and Power.' It distinguishes between the everyday usage of terms like work, energy, and power and their precise definitions in physics. It introduces the concept of the scalar product (dot product) of two vectors as a mathematical prerequisite for the chapter.",
+        "knowledge_points": [
+          "In everyday language, 'work' refers to activities like ploughing, carrying bricks, or studying.",
+          "In physics, 'Work' has a definite and precise meaning.",
+          "Energy is defined as the capacity to do work.",
+          "In physics, 'power' is related to the speed at which work is done (e.g., powerful punches).",
+          "There is a loose correlation between the physical definitions of work, energy, and power and their physiological meanings.",
+          "The scalar product (or dot product) of two vectors results in a scalar.",
+          "The vector product of two vectors results in a new vector.",
+          "The scalar product is denoted as A.B."
+        ],
+        "embedded_text": [],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A QR code is located in the top left corner of the page.",
+            "educational_role": "Provides a link to supplementary digital content.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "source_reference_only"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Scalar Product of Vectors"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\"vision_input_worked\": true, \"pages\": [{\"page\": 1, \"readability\": \"readable\", \"native_text_alignment\": \"complete\", \"ocr_needed\": false, \"ocr_reason\": null, \"detected_language\": \"English\", \"headings\": [\"CHAPTER FIVE\", \"WORK, ENERGY AND POWER\", \"5.1 INTRODUCTION\", \"5.1.1 The Scalar Product\"], \"page_summary\": \"This page introduces Chapter 5, 'Work, Energy and Power.' It distinguishes between the everyday usage of terms like work, energy, and power and their precise definitions in physics. It introduces the concept of the scalar product (dot product) of two vectors as a mathematical prerequisite for the chapter.\", \"knowledge_points\": [\"In everyday language, 'work' refers to activities like ploughing, carrying bricks, or studying.\", \"In physics, 'Work' has a definite and precise meaning.\", \"Energy is defined as the capacity to do work.\", \"In physics, 'power' is related to the speed at which work is done (e.g., powerful punches).\", \"There is a loose correlation between the physical definitions of work, energy, and power and their physiological meanings.\", \"The scalar product (or dot product) of two vectors results in a scalar.\", \"The vector product of two vectors results in a new vector.\", \"The scalar product is denoted as A.B.\"], \"embedded_text\": [], \"embedded_text_complete\": true, \"human_visual_review_needed\": false, \"visuals\": [{\"kind\": \"diagram\", \"description\": \"A QR code is located in the top left corner of the page.\", \"educational_role\": \"Provides a link to supplementary digital content.\", \"evidence\": \"printed_text\", \"confidence\": \"high\", \"text_dependency\": \"none\", \"recreation_route\": \"source_reference_only\"}] }], \"batch_topics\": [\"Work, Energy and Power\", \"Scalar Product of Vectors\"], \"uncertainties\": []}",
+  "usage": {
+    "prompt_tokens": 3087,
+    "total_tokens": 3504,
+    "completion_tokens": 417,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

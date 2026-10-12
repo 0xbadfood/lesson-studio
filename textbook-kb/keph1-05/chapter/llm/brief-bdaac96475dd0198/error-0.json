@@ -1,0 +1,4 @@
+{
+  "type": "ValueError",
+  "error": "The model ran out of output budget before finishing the JSON"
+}

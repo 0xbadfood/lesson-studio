@@ -1,0 +1,32 @@
+{
+  "chapters": [
+    {
+      "chapter": 7,
+      "title": "Integrals"
+    },
+    {
+      "chapter": 8,
+      "title": "Application of Integrals"
+    },
+    {
+      "chapter": 9,
+      "title": "Differential Equations"
+    },
+    {
+      "chapter": 10,
+      "title": "Vector Algebra"
+    },
+    {
+      "chapter": 11,
+      "title": "Three Dimensional Geometry"
+    },
+    {
+      "chapter": 12,
+      "title": "Linear Programming"
+    },
+    {
+      "chapter": 13,
+      "title": "Probability"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"Exploring The Investigative World Of Science\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"The Invisible Living World: Beyond Our Naked Eye\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"Health: The Ultimate Treasure\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"Electricity: Magnetic And Heating Effects\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"Exploring Forces\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"Pressure, Winds, Storms, And Cyclones\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"Particulate Nature Of Matter\"\n    },\n    {\n      \"chapter\": 8,\n      \"title\": \"Nature Of Matter: Elements, Compounds, And Mixtures\"\n    },\n    {\n      \"chapter\": 9,\n      \"title\": \"The Amazing World Of Solutes, Solvents, And Solutions\"\n    },\n    {\n      \"chapter\": 10,\n      \"title\": \"Light: Mirrors And Lenses\"\n    },\n    {\n      \"chapter\": 11,\n      \"title\": \"Keeping Time With The Skies\"\n    },\n    {\n      \"chapter\": 12,\n      \"title\": \"How Nature Works In Harmony\"\n    },\n    {\n      \"chapter\": 13,\n      \"title\": \"Our Home: Earth, A Unique Life Sustaining Planet\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791387907,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 392,
+    "prompt_tokens": 3140,
+    "total_tokens": 3532,
+    "prompt_tokens_details": {
+      "cached_tokens": 37
+    }
+  },
+  "id": "chatcmpl-iT4qMVMSPAq9mDs67S7CMwaOvv9Li59y",
+  "timings": {
+    "cache_n": 37,
+    "prompt_n": 3103,
+    "prompt_ms": 4070.651,
+    "prompt_per_token_ms": 1.3118436996455043,
+    "prompt_per_second": 762.2859341171719,
+    "predicted_n": 392,
+    "predicted_ms": 8543.679,
+    "predicted_per_token_ms": 21.79509948979592,
+    "predicted_per_second": 45.881873605035956,
+    "draft_n": 262,
+    "draft_n_accepted": 262
+  },
+  "elapsed_seconds": 13.45
+}

@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"Chemical Reactions And Equations\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"Acids, Bases And Salts\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"Metals And Non-metals\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"Carbon And Its Compounds\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"Life Processes\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"Control And Coordination\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"How Do Organisms Reproduce?\"\n    },\n    {\n      \"chapter\": 8,\n      \"title\": \"Heredity\"\n    },\n    {\n      \"chapter\": 9,\n      \"title\": \"Light – Reflection And Refraction\"\n    },\n    {\n      \"chapter\": 10,\n      \"title\": \"The Human Eye And The Colourful World\"\n    },\n    {\n      \"chapter\": 11,\n      \"title\": \"Electricity\"\n    },\n    {\n      \"chapter\": 12,\n      \"title\": \"Magnetic Effects Of Electric Current\"\n    },\n    {\n      \"chapter\": 13,\n      \"title\": \"Our Environment\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791387986,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 357,
+    "prompt_tokens": 3705,
+    "total_tokens": 4062,
+    "prompt_tokens_details": {
+      "cached_tokens": 37
+    }
+  },
+  "id": "chatcmpl-kDQVO9nb56nMfZrJFe2fjxeXIXGFB1YY",
+  "timings": {
+    "cache_n": 37,
+    "prompt_n": 3668,
+    "prompt_ms": 4738.582,
+    "prompt_per_token_ms": 1.2918707742639042,
+    "prompt_per_second": 774.0712305917677,
+    "predicted_n": 357,
+    "predicted_ms": 7434.371,
+    "predicted_per_token_ms": 20.82456862745098,
+    "predicted_per_second": 48.02020238161372,
+    "draft_n": 238,
+    "draft_n_accepted": 237
+  },
+  "elapsed_seconds": 13.01
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "phase1_knowledge_bank_audit_v1",
+  "status": "candidate_pending_independent_audit",
+  "eligible_for_question_pipeline": false,
+  "page_count": 21,
+  "inspected_pages": 21,
+  "missing_inspection_pages": [],
+  "partial_or_unreadable_pages": [],
+  "visual_review_pages": [],
+  "visual_text_dependency_conflict_pages": [
+    5,
+    16
+  ],
+  "failed_ocr_pages": [],
+  "low_confidence_ocr_pages": [],
+  "minimum_ocr_confidence": 70.0,
+  "ocr_routing_version": "phase1_ocr_routing_v2",
+  "invalid_citation_pages": [],
+  "synthesis_drafting_status": "candidate_ready",
+  "synthesis_uncertainty_count": 1,
+  "attention_required": true,
+  "independent_audit_required": true,
+  "reason": "Extraction is internally consistent but requires an independent grounding/visual audit before question generation."
+}

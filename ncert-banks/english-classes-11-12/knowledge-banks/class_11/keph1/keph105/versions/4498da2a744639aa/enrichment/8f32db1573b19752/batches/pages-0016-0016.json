@@ -1,0 +1,132 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    16
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 16,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "English",
+        "headings": [
+          "SUMMARY"
+        ],
+        "page_summary": "The page concludes a derivation showing that in a glancing elastic collision between two equal masses (one initially at rest), the final velocities are at right angles to each other. It then introduces the concept of scattering, where particles interact via forces at a distance (e.g., comet-sun, alpha particle-nucleus). The page ends with a summary of key concepts including the work-energy theorem, conservative forces, potential energy functions, conservation of mechanical energy, and the scalar (dot) product of vectors.",
+        "knowledge_points": [
+          "In a glancing elastic collision between two equal masses where one is initially at rest, the final velocities are perpendicular (90 degrees).",
+          "Scattering is an event involving forces at a distance, such as a comet approaching the sun or an alpha particle approaching a nucleus.",
+          "The work-energy theorem states that the change in kinetic energy of a body is the work done by the net force on the body (Kf - Ki = Wnet).",
+          "A force is conservative if the work done is path-independent or zero for a closed path.",
+          "For a conservative force in one dimension, F(x) = -dV(x)/dx.",
+          "The principle of conservation of mechanical energy states that total mechanical energy remains constant if only conservative forces act.",
+          "Gravitational potential energy near Earth's surface is V(x) = mgx.",
+          "Elastic potential energy of a spring is V(x) = 1/2 kx^2.",
+          "The scalar product of two vectors A and B is A.B = AB cos θ.",
+          "Scalar products obey commutative and distributive laws."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Equation (5.31) showing the squared magnitude of the relative velocity vector",
+            "text": [
+              "= { v1f^2 + v2f^2 + 2v1f v2f cos (θ1 + 37°) } (5.31)"
+            ]
+          },
+          {
+            "visual_description": "Equation (5.32) derived from conservation of kinetic energy",
+            "text": [
+              "v1i^2 = v1f^2 + v2f^2 (5.32)"
+            ]
+          },
+          {
+            "visual_description": "Derivation steps leading to the angle θ1",
+            "text": [
+              "cos (θ1 + 37°) = 0",
+              "θ1 + 37° = 90°",
+              "θ1 = 53°"
+            ]
+          },
+          {
+            "visual_description": "Summary point 1 formula",
+            "text": [
+              "Kf - Ki = Wnet"
+            ]
+          },
+          {
+            "visual_description": "Summary point 3 formulas for conservative force and potential energy",
+            "text": [
+              "F(x) = - dV(x)/dx",
+              "Vi - Vf = ∫ F(x) dx (from xi to xf)"
+            ]
+          },
+          {
+            "visual_description": "Summary point 5 formula for gravitational potential energy",
+            "text": [
+              "V(x) = mgx"
+            ]
+          },
+          {
+            "visual_description": "Summary point 6 formula for elastic potential energy",
+            "text": [
+              "V(x) = 1/2 kx^2"
+            ]
+          },
+          {
+            "visual_description": "Summary point 7 formulas for scalar product and unit vectors",
+            "text": [
+              "A.B = AB cos θ",
+              "î · î = ĵ · ĵ = k̂ · k̂ = 1 and î · ĵ = ĵ · k̂ = k̂ · î = 0"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "Mathematical derivation block showing the relationship between velocities and angles in a collision.",
+            "educational_role": "Demonstrates the proof that final velocities are perpendicular in a specific collision scenario.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "diagram",
+            "description": "Summary section containing mathematical definitions and formulas for physics concepts.",
+            "educational_role": "Recapitulates key formulas and definitions from the chapter.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Elastic Collision",
+      "Scattering",
+      "Work-Energy Theorem",
+      "Conservative Forces",
+      "Potential Energy",
+      "Scalar Product"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 16,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"English\",\n      \"headings\": [\n        \"SUMMARY\"\n      ],\n      \"page_summary\": \"The page concludes a derivation showing that in a glancing elastic collision between two equal masses (one initially at rest), the final velocities are at right angles to each other. It then introduces the concept of scattering, where particles interact via forces at a distance (e.g., comet-sun, alpha particle-nucleus). The page ends with a summary of key concepts including the work-energy theorem, conservative forces, potential energy functions, conservation of mechanical energy, and the scalar (dot) product of vectors.\",\n      \"knowledge_points\": [\n        \"In a glancing elastic collision between two equal masses where one is initially at rest, the final velocities are perpendicular (90 degrees).\",\n        \"Scattering is an event involving forces at a distance, such as a comet approaching the sun or an alpha particle approaching a nucleus.\",\n        \"The work-energy theorem states that the change in kinetic energy of a body is the work done by the net force on the body (Kf - Ki = Wnet).\",\n        \"A force is conservative if the work done is path-independent or zero for a closed path.\",\n        \"For a conservative force in one dimension, F(x) = -dV(x)/dx.\",\n        \"The principle of conservation of mechanical energy states that total mechanical energy remains constant if only conservative forces act.\",\n        \"Gravitational potential energy near Earth's surface is V(x) = mgx.\",\n        \"Elastic potential energy of a spring is V(x) = 1/2 kx^2.\",\n        \"The scalar product of two vectors A and B is A.B = AB cos θ.\",\n        \"Scalar products obey commutative and distributive laws.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Equation (5.31) showing the squared magnitude of the relative velocity vector\",\n          \"text\": [\n            \"= { v1f^2 + v2f^2 + 2v1f v2f cos (θ1 + 37°) } (5.31)\"\n          ]\n        },\n        {\n          \"visual_description\": \"Equation (5.32) derived from conservation of kinetic energy\",\n          \"text\": [\n            \"v1i^2 = v1f^2 + v2f^2 (5.32)\"\n          ]\n        },\n        {\n          \"visual_description\": \"Derivation steps leading to the angle θ1\",\n          \"text\": [\n            \"cos (θ1 + 37°) = 0\",\n            \"θ1 + 37° = 90°\",\n            \"θ1 = 53°\"\n          ]\n        },\n        {\n          \"visual_description\": \"Summary point 1 formula\",\n          \"text\": [\n            \"Kf - Ki = Wnet\"\n          ]\n        },\n        {\n          \"visual_description\": \"Summary point 3 formulas for conservative force and potential energy\",\n          \"text\": [\n            \"F(x) = - dV(x)/dx\",\n            \"Vi - Vf = ∫ F(x) dx (from xi to xf)\"\n          ]\n        },\n        {\n          \"visual_description\": \"Summary point 5 formula for gravitational potential energy\",\n          \"text\": [\n            \"V(x) = mgx\"\n          ]\n        },\n        {\n          \"visual_description\": \"Summary point 6 formula for elastic potential energy\",\n          \"text\": [\n            \"V(x) = 1/2 kx^2\"\n          ]\n        },\n        {\n          \"visual_description\": \"Summary point 7 formulas for scalar product and unit vectors\",\n          \"text\": [\n            \"A.B = AB cos θ\",\n            \"î · î = ĵ · ĵ = k̂ · k̂ = 1 and î · ĵ = ĵ · k̂ = k̂ · î = 0\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Mathematical derivation block showing the relationship between velocities and angles in a collision.\",\n          \"educational_role\": \"Demonstrates the proof that final velocities are perpendicular in a specific collision scenario.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"deterministic_renderer\"\n        },\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Summary section containing mathematical definitions and formulas for physics concepts.\",\n          \"educational_role\": \"Recapitulates key formulas and definitions from the chapter.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Elastic Collision\",\n    \"Scattering\",\n    \"Work-Energy Theorem\",\n    \"Conservative Forces\",\n    \"Potential Energy\",\n    \"Scalar Product\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 1280,
+    "prompt_tokens": 3821,
+    "total_tokens": 5101,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

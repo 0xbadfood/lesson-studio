@@ -1,0 +1,84 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    20
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 20,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "PHYSICS"
+        ],
+        "page_summary": "The page contains a series of physics problems (5.9 through 5.16) covering topics such as power, work, kinetic energy, and collisions. It concludes with a diagram (Fig. 5.14) illustrating three possible outcomes for an elastic collision between three identical ball bearings.",
+        "knowledge_points": [
+          "Problem 5.9 asks for the proportionality of power delivered to a body with constant acceleration to time t.",
+          "Problem 5.10 asks for the proportionality of displacement to time t for a body moving under constant power.",
+          "Problem 5.11 involves calculating work done by a constant force F = -i + 2j + 3k N on a body moving 4 m along the z-axis.",
+          "Problem 5.12 compares the speeds of an electron (10 keV) and a proton (100 keV) and asks for the ratio of their speeds.",
+          "Problem 5.13 describes a rain drop falling with viscous resistance, asking for work done by gravity and resistive force.",
+          "Problem 5.14 asks about momentum conservation and elasticity for a gas molecule hitting a wall at 30 degrees.",
+          "Problem 5.15 calculates electric power consumed by a pump filling a tank of 30 m³ volume at 40 m height with 30% efficiency.",
+          "Problem 5.16 asks to identify the possible result of an elastic collision between three identical ball bearings as shown in Fig. 5.14."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Diagram showing initial state and three possible outcomes (i, ii, iii) for a collision of three ball bearings.",
+            "text": [
+              "1",
+              "2",
+              "3",
+              "V",
+              "V=0",
+              "V/2",
+              "V",
+              "V/3",
+              "(i)",
+              "(ii)",
+              "(iii)",
+              "Fig. 5.14"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A schematic diagram illustrating an elastic collision scenario. On the left, ball bearing 1 (blue) moves with velocity V towards ball bearings 2 (black) and 3 (light blue) which are in contact and at rest. Three arrows point to three possible outcomes labeled (i), (ii), and (iii). In (i), ball 1 stops (V=0) and balls 2 and 3 move together with velocity V/2. In (ii), balls 1 and 2 stop (V=0) and ball 3 moves with velocity V. In (iii), all three balls move together with velocity V/3.",
+            "educational_role": "Illustrates the conservation of momentum and kinetic energy in a 1D elastic collision involving multiple identical masses.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Collisions",
+      "Kinetic Energy",
+      "Momentum Conservation"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 20,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"PHYSICS\"\n      ],\n      \"page_summary\": \"The page contains a series of physics problems (5.9 through 5.16) covering topics such as power, work, kinetic energy, and collisions. It concludes with a diagram (Fig. 5.14) illustrating three possible outcomes for an elastic collision between three identical ball bearings.\",\n      \"knowledge_points\": [\n        \"Problem 5.9 asks for the proportionality of power delivered to a body with constant acceleration to time t.\",\n        \"Problem 5.10 asks for the proportionality of displacement to time t for a body moving under constant power.\",\n        \"Problem 5.11 involves calculating work done by a constant force F = -i + 2j + 3k N on a body moving 4 m along the z-axis.\",\n        \"Problem 5.12 compares the speeds of an electron (10 keV) and a proton (100 keV) and asks for the ratio of their speeds.\",\n        \"Problem 5.13 describes a rain drop falling with viscous resistance, asking for work done by gravity and resistive force.\",\n        \"Problem 5.14 asks about momentum conservation and elasticity for a gas molecule hitting a wall at 30 degrees.\",\n        \"Problem 5.15 calculates electric power consumed by a pump filling a tank of 30 m³ volume at 40 m height with 30% efficiency.\",\n        \"Problem 5.16 asks to identify the possible result of an elastic collision between three identical ball bearings as shown in Fig. 5.14.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Diagram showing initial state and three possible outcomes (i, ii, iii) for a collision of three ball bearings.\",\n          \"text\": [\n            \"1\",\n            \"2\",\n            \"3\",\n            \"V\",\n            \"V=0\",\n            \"V/2\",\n            \"V\",\n            \"V/3\",\n            \"(i)\",\n            \"(ii)\",\n            \"(iii)\",\n            \"Fig. 5.14\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"A schematic diagram illustrating an elastic collision scenario. On the left, ball bearing 1 (blue) moves with velocity V towards ball bearings 2 (black) and 3 (light blue) which are in contact and at rest. Three arrows point to three possible outcomes labeled (i), (ii), and (iii). In (i), ball 1 stops (V=0) and balls 2 and 3 move together with velocity V/2. In (ii), balls 1 and 2 stop (V=0) and ball 3 moves with velocity V. In (iii), all three balls move together with velocity V/3.\",\n          \"educational_role\": \"Illustrates the conservation of momentum and kinetic energy in a 1D elastic collision involving multiple identical masses.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work, Energy and Power\",\n    \"Collisions\",\n    \"Kinetic Energy\",\n    \"Momentum Conservation\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 886,
+    "prompt_tokens": 3752,
+    "total_tokens": 4638,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

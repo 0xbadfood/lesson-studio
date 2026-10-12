@@ -1,0 +1,42 @@
+{
+  "schema_version": "phase1_enrichment_run_v1",
+  "status": "running",
+  "document_id": "ncert:english:11:keph1:05",
+  "prompt_version": "phase1_multimodal_enrichment_v3",
+  "input_fingerprint": "4498da2a744639aa51af7c5e5ebdc8ed8c36a1f298d696bfdee6a5b19846b975",
+  "enrichment_fingerprint": "8f32db1573b19752504bcd6677c000eab7b4e63c7a59515e9f7da2c3db860e8e",
+  "endpoint": "http://10.8.0.5:8001/v1",
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "model_metadata": {
+    "id": "Qwen3.8-27B-Q4_K_M.gguf",
+    "aliases": [],
+    "tags": [],
+    "object": "model",
+    "created": 1791520680,
+    "owned_by": "llamacpp",
+    "meta": {
+      "vocab_type": 2,
+      "n_vocab": 248320,
+      "n_ctx": 163840,
+      "n_ctx_train": 262144,
+      "n_embd": 5120,
+      "n_params": 27320697856,
+      "size": 17095778304
+    }
+  },
+  "settings": {
+    "batch_pages": 1,
+    "page_native_chars": 5000,
+    "synthesis_native_chars": 2500,
+    "max_tokens": 6000,
+    "seed": 20260826,
+    "ocr_mode": "visual-text",
+    "ocr_language": "eng",
+    "ocr_dpi": 300,
+    "ocr_psm": 6,
+    "minimum_ocr_confidence": 70.0,
+    "ocr_routing_version": "phase1_ocr_routing_v2",
+    "model_attempts": 3
+  },
+  "started_at_utc": "2026-10-09T04:38:00.797356+00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "ball_radius_px": 29.25,
+  "start_offset_px": [
+    39.44118771072448,
+    -4.488050646884631
+  ],
+  "px_per_m": 311.5405678974157,
+  "max_speed_mps": 3.4636971560068797,
+  "assumptions": [
+    "ramp span 3 m",
+    "solid sphere rolling without slipping, no friction loss",
+    "contact path offset by measured ball radius"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Electric Charges and Fields"
+    },
+    {
+      "chapter": 2,
+      "title": "Electrostatic Potential and Capacitance"
+    },
+    {
+      "chapter": 3,
+      "title": "Current Electricity"
+    },
+    {
+      "chapter": 4,
+      "title": "Moving Charges and Magnetism"
+    },
+    {
+      "chapter": 5,
+      "title": "Magnetism and Matter"
+    },
+    {
+      "chapter": 6,
+      "title": "Electromagnetic Induction"
+    },
+    {
+      "chapter": 7,
+      "title": "Alternating Current"
+    },
+    {
+      "chapter": 8,
+      "title": "Electromagnetic Waves"
+    }
+  ]
+}

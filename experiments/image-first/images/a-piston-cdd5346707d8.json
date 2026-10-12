@@ -1,0 +1,17 @@
+{
+  "name": "a-piston",
+  "prompt": "This is an RGBA image with transparency. Extract only the piston (with its rings and wrist pin) from the reference engine cutaway. Keep its exact appearance, size and position in the frame. Remove everything else. The image has alpha channel and the background is transparent.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/inputs/engine-canvas.png"
+  ],
+  "seconds": 112.6,
+  "job": {
+    "inference_seconds": 111.17058099100541,
+    "peak_allocated_gb": 19.096935272216797,
+    "seed": 12345
+  }
+}

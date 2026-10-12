@@ -1,0 +1,24 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Solutions"
+    },
+    {
+      "chapter": 2,
+      "title": "Electrochemistry"
+    },
+    {
+      "chapter": 3,
+      "title": "Chemical Kinetics"
+    },
+    {
+      "chapter": 4,
+      "title": "The d- and f-Block Elements"
+    },
+    {
+      "chapter": 5,
+      "title": "Coordination Compounds"
+    }
+  ]
+}

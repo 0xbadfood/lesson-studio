@@ -1,0 +1,106 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    16
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 16,
+        "readability": "readable",
+        "native_text_alignment": "mismatch",
+        "ocr_needed": false,
+        "ocr_reason": "The native text extraction contains significant errors in the mathematical formulas, particularly in the Summary section (e.g., 'k' instead of 'k-hat', 'xj' instead of 'xf', 'xi' instead of 'xi'). The image is clear and legible.",
+        "detected_language": "en",
+        "headings": [
+          "SUMMARY"
+        ],
+        "page_summary": "The page concludes a derivation regarding glancing elastic collisions between equal masses, proving they move at right angles to each other. It then discusses the concept of scattering for particles interacting at a distance (like comets or alpha particles). The page ends with a summary of key concepts including the work-energy theorem, conservative forces, potential energy functions, conservation of mechanical energy, and the scalar (dot) product of vectors.",
+        "knowledge_points": [
+          "In a glancing elastic collision between two equal masses where one is initially at rest, the final velocities are perpendicular (90 degrees) to each other.",
+          "Scattering refers to events where particles interact via forces acting at a distance (e.g., comet-sun, alpha particle-nucleus), as opposed to contact collisions.",
+          "The work-energy theorem states that the change in kinetic energy of a body is equal to the work done by the net force on the body (Kf - Ki = Wnet).",
+          "A force is conservative if the work done is path-independent (depends only on endpoints) or if the work done over a closed path is zero.",
+          "For a conservative force in one dimension, the force F(x) is related to the potential energy function V(x) by F(x) = -dV(x)/dx.",
+          "The principle of conservation of mechanical energy states that total mechanical energy remains constant if only conservative forces act.",
+          "Gravitational potential energy near Earth's surface is V(x) = mgx.",
+          "Elastic potential energy of a spring is V(x) = (1/2)kx^2.",
+          "The scalar (dot) product of two vectors A and B is A.B = AB cos θ, where θ is the angle between them.",
+          "The dot product of unit vectors is: i·i = j·j = k·k = 1, and i·j = j·k = k·i = 0."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Mathematical derivation in the left column",
+            "text": [
+              "= { v1f^2 + v2f^2 + 2v1fv2f cos (θ1 + 37°) } (5.31)",
+              "Since the collision is elastic and m1 = m2 it follows from conservation of kinetic energy that",
+              "v1i^2 = v1f^2 + v2f^2 (5.32)",
+              "Comparing Eqs. (5.31) and (5.32), we get",
+              "cos (θ1 + 37°) = 0",
+              "or θ1 + 37° = 90°",
+              "Thus, θ1 = 53°",
+              "This proves the following result : when two equal masses undergo a glancing elastic collision with one of them at rest, after the collision, they will move at right angles to each other."
+            ]
+          },
+          {
+            "visual_description": "Summary section in a light blue box",
+            "text": [
+              "SUMMARY",
+              "1. The work-energy theorem states that the change in kinetic energy of a body is the work done by the net force on the body.",
+              "Kf - Ki = Wnet",
+              "2. A force is conservative if (i) work done by it on an object is path independent and depends only on the end points {xi, xf}, or (ii) the work done by the force is zero for an arbitrary closed path taken by the object such that it returns to its initial position.",
+              "3. For a conservative force in one dimension, we may define a potential energy function V(x) such that",
+              "F(x) = - dV(x)/dx",
+              "or Vi - Vf = ∫[xi to xf] F(x) dx",
+              "4. The principle of conservation of mechanical energy states that the total mechanical energy of a body remains constant if the only forces that act on the body are conservative.",
+              "5. The gravitational potential energy of a particle of mass m at a height x about the earth's surface is",
+              "V(x) = mgx",
+              "where the variation of g with height is ignored.",
+              "6. The elastic potential energy of a spring of force constant k and extension x is",
+              "V(x) = 1/2 kx^2",
+              "7. The scalar or dot product of two vectors A and B is written as A.B and is a scalar quantity given by :A.B = AB cos θ, where θ is the angle between A and B. It can be positive, negative or zero depending upon the value of θ. The scalar product of two vectors can be interpreted as the product of 1/",
+              "i·i = j·j = k·k = 1 and i·j = j·k = k·i = 0",
+              "Scalar products obey the commutative and the distributive laws."
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A light blue box containing the summary of the chapter's key points, including mathematical formulas.",
+            "educational_role": "Summarizes the main concepts and formulas of the chapter for review.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work-Energy Theorem",
+      "Conservative Forces",
+      "Potential Energy",
+      "Conservation of Mechanical Energy",
+      "Scalar (Dot) Product of Vectors",
+      "Elastic Collisions",
+      "Scattering"
+    ],
+    "uncertainties": [
+      "The native text extraction for the summary section has errors in the mathematical notation (e.g., 'k' instead of 'k-hat', 'xj' instead of 'xf'). The image is clear, so the OCR is not needed, but the native text is unreliable for these specific formulas."
+    ]
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 16,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"mismatch\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": \"The native text extraction contains significant errors in the mathematical formulas, particularly in the Summary section (e.g., 'k' instead of 'k-hat', 'xj' instead of 'xf', 'xi' instead of 'xi'). The image is clear and legible.\",\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"SUMMARY\"\n      ],\n      \"page_summary\": \"The page concludes a derivation regarding glancing elastic collisions between equal masses, proving they move at right angles to each other. It then discusses the concept of scattering for particles interacting at a distance (like comets or alpha particles). The page ends with a summary of key concepts including the work-energy theorem, conservative forces, potential energy functions, conservation of mechanical energy, and the scalar (dot) product of vectors.\",\n      \"knowledge_points\": [\n        \"In a glancing elastic collision between two equal masses where one is initially at rest, the final velocities are perpendicular (90 degrees) to each other.\",\n        \"Scattering refers to events where particles interact via forces acting at a distance (e.g., comet-sun, alpha particle-nucleus), as opposed to contact collisions.\",\n        \"The work-energy theorem states that the change in kinetic energy of a body is equal to the work done by the net force on the body (Kf - Ki = Wnet).\",\n        \"A force is conservative if the work done is path-independent (depends only on endpoints) or if the work done over a closed path is zero.\",\n        \"For a conservative force in one dimension, the force F(x) is related to the potential energy function V(x) by F(x) = -dV(x)/dx.\",\n        \"The principle of conservation of mechanical energy states that total mechanical energy remains constant if only conservative forces act.\",\n        \"Gravitational potential energy near Earth's surface is V(x) = mgx.\",\n        \"Elastic potential energy of a spring is V(x) = (1/2)kx^2.\",\n        \"The scalar (dot) product of two vectors A and B is A.B = AB cos θ, where θ is the angle between them.\",\n        \"The dot product of unit vectors is: i·i = j·j = k·k = 1, and i·j = j·k = k·i = 0.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Mathematical derivation in the left column\",\n          \"text\": [\n            \"= { v1f^2 + v2f^2 + 2v1fv2f cos (θ1 + 37°) } (5.31)\",\n            \"Since the collision is elastic and m1 = m2 it follows from conservation of kinetic energy that\",\n            \"v1i^2 = v1f^2 + v2f^2 (5.32)\",\n            \"Comparing Eqs. (5.31) and (5.32), we get\",\n            \"cos (θ1 + 37°) = 0\",\n            \"or θ1 + 37° = 90°\",\n            \"Thus, θ1 = 53°\",\n            \"This proves the following result : when two equal masses undergo a glancing elastic collision with one of them at rest, after the collision, they will move at right angles to each other.\"\n          ]\n        },\n        {\n          \"visual_description\": \"Summary section in a light blue box\",\n          \"text\": [\n            \"SUMMARY\",\n            \"1. The work-energy theorem states that the change in kinetic energy of a body is the work done by the net force on the body.\",\n            \"Kf - Ki = Wnet\",\n            \"2. A force is conservative if (i) work done by it on an object is path independent and depends only on the end points {xi, xf}, or (ii) the work done by the force is zero for an arbitrary closed path taken by the object such that it returns to its initial position.\",\n            \"3. For a conservative force in one dimension, we may define a potential energy function V(x) such that\",\n            \"F(x) = - dV(x)/dx\",\n            \"or Vi - Vf = ∫[xi to xf] F(x) dx\",\n            \"4. The principle of conservation of mechanical energy states that the total mechanical energy of a body remains constant if the only forces that act on the body are conservative.\",\n            \"5. The gravitational potential energy of a particle of mass m at a height x about the earth's surface is\",\n            \"V(x) = mgx\",\n            \"where the variation of g with height is ignored.\",\n            \"6. The elastic potential energy of a spring of force constant k and extension x is\",\n            \"V(x) = 1/2 kx^2\",\n            \"7. The scalar or dot product of two vectors A and B is written as A.B and is a scalar quantity given by :A.B = AB cos θ, where θ is the angle between A and B. It can be positive, negative or zero depending upon the value of θ. The scalar product of two vectors can be interpreted as the product of 1/\",\n            \"i·i = j·j = k·k = 1 and i·j = j·k = k·i = 0\",\n            \"Scalar products obey the commutative and the distributive laws.\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"A light blue box containing the summary of the chapter's key points, including mathematical formulas.\",\n          \"educational_role\": \"Summarizes the main concepts and formulas of the chapter for review.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n  ,\n  \"batch_topics\": [\n    \"Work-Energy Theorem\",\n    \"Conservative Forces\",\n    \"Potential Energy\",\n    \"Conservation of Mechanical Energy\",\n    \"Scalar (Dot) Product of Vectors\",\n    \"Elastic Collisions\",\n    \"Scattering\"\n  ]\n  ,\n  \"uncertainties\": [\n    \"The native text extraction for the summary section has errors in the mathematical notation (e.g., 'k' instead of 'k-hat', 'xj' instead of 'xf'). The image is clear, so the OCR is not needed, but the native text is unreliable for these specific formulas.\"\n  ]\n}",
+  "usage": {
+    "prompt_tokens": 3345,
+    "total_tokens": 4903,
+    "completion_tokens": 1558,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

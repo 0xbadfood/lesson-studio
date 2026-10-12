@@ -1,0 +1,353 @@
+{
+  "schema_version": "engine-part-calibration.v1",
+  "image_size_px": [
+    1672,
+    941
+  ],
+  "parts": {
+    "piston": {
+      "bbox_xyxy_px": [
+        523,
+        325,
+        762,
+        459
+      ],
+      "points": [
+        {
+          "xy": [
+            559,
+            382
+          ]
+        },
+        {
+          "xy": [
+            721,
+            385
+          ]
+        },
+        {
+          "xy": [
+            641,
+            405
+          ]
+        },
+        {
+          "xy": [
+            642,
+            300
+          ],
+          "label": 0
+        },
+        {
+          "xy": [
+            655,
+            466
+          ],
+          "label": 0
+        }
+      ],
+      "clip_to_box": true,
+      "source_anchors": {
+        "wrist_pin_px": [
+          641,
+          407
+        ],
+        "crown_y_px": 326
+      }
+    },
+    "connecting_rod": {
+      "bbox_xyxy_px": [
+        621,
+        438,
+        788,
+        736
+      ],
+      "points": [
+        {
+          "xy": [
+            671,
+            514
+          ]
+        },
+        {
+          "xy": [
+            700,
+            617
+          ]
+        },
+        {
+          "xy": [
+            733,
+            685
+          ]
+        },
+        {
+          "xy": [
+            599,
+            625
+          ],
+          "label": 0
+        },
+        {
+          "xy": [
+            690,
+            402
+          ],
+          "label": 0
+        }
+      ],
+      "clip_to_box": true,
+      "source_anchors": {
+        "wrist_pin_px": [
+          641,
+          407
+        ],
+        "crank_pin_px": [
+          735,
+          683
+        ],
+        "visible_top_occluded": true
+      }
+    },
+    "crankshaft": {
+      "bbox_xyxy_px": [
+        493,
+        531,
+        790,
+        825
+      ],
+      "points": [
+        {
+          "xy": [
+            550,
+            650
+          ]
+        },
+        {
+          "xy": [
+            602,
+            775
+          ]
+        },
+        {
+          "xy": [
+            638,
+            678
+          ]
+        },
+        {
+          "xy": [
+            701,
+            590
+          ],
+          "label": 0
+        },
+        {
+          "xy": [
+            736,
+            685
+          ],
+          "label": 0
+        },
+        {
+          "xy": [
+            815,
+            691
+          ],
+          "label": 0
+        }
+      ],
+      "clip_to_box": true,
+      "source_anchors": {
+        "main_shaft_px": [
+          641,
+          680
+        ],
+        "crank_pin_px": [
+          735,
+          683
+        ],
+        "occluded_by": "connecting_rod"
+      },
+      "fill_small_holes_px": 100
+    },
+    "intake_valve": {
+      "bbox_xyxy_px": [
+        518,
+        94,
+        589,
+        216
+      ],
+      "points": [
+        {
+          "xy": [
+            551,
+            153
+          ]
+        },
+        {
+          "xy": [
+            551,
+            204
+          ]
+        },
+        {
+          "xy": [
+            551,
+            77
+          ],
+          "label": 0
+        },
+        {
+          "xy": [
+            516,
+            167
+          ],
+          "label": 0
+        }
+      ],
+      "clip_to_box": true,
+      "source_anchors": {
+        "axis_x_px": 551,
+        "closed_head_y_px": 210,
+        "spring_fixed": true
+      },
+      "clip_polygon_px": [
+        [
+          545,
+          94
+        ],
+        [
+          561,
+          94
+        ],
+        [
+          561,
+          178
+        ],
+        [
+          565,
+          191
+        ],
+        [
+          581,
+          202
+        ],
+        [
+          586,
+          211
+        ],
+        [
+          585,
+          214
+        ],
+        [
+          521,
+          214
+        ],
+        [
+          521,
+          205
+        ],
+        [
+          539,
+          195
+        ],
+        [
+          545,
+          180
+        ]
+      ]
+    },
+    "exhaust_valve": {
+      "bbox_xyxy_px": [
+        695,
+        94,
+        768,
+        216
+      ],
+      "points": [
+        {
+          "xy": [
+            733,
+            152
+          ]
+        },
+        {
+          "xy": [
+            733,
+            204
+          ]
+        },
+        {
+          "xy": [
+            733,
+            78
+          ],
+          "label": 0
+        },
+        {
+          "xy": [
+            776,
+            169
+          ],
+          "label": 0
+        }
+      ],
+      "clip_to_box": true,
+      "source_anchors": {
+        "axis_x_px": 733,
+        "closed_head_y_px": 210,
+        "spring_fixed": true
+      },
+      "clip_polygon_px": [
+        [
+          725,
+          94
+        ],
+        [
+          743,
+          94
+        ],
+        [
+          743,
+          179
+        ],
+        [
+          749,
+          191
+        ],
+        [
+          764,
+          202
+        ],
+        [
+          767,
+          212
+        ],
+        [
+          766,
+          214
+        ],
+        [
+          695,
+          214
+        ],
+        [
+          696,
+          206
+        ],
+        [
+          716,
+          195
+        ],
+        [
+          725,
+          178
+        ]
+      ]
+    }
+  },
+  "inpaint_dilation_px": 7,
+  "calibration_note": "Human-inspected source boxes/points; automatic MG-Gen detector merged all engine components into one layer."
+}

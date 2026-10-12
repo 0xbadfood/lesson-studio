@@ -1,0 +1,44 @@
+{
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "Patterns in Mathematics"
+    },
+    {
+      "chapter": 2,
+      "title": "Lines and Angles"
+    },
+    {
+      "chapter": 3,
+      "title": "Number Play"
+    },
+    {
+      "chapter": 4,
+      "title": "Data Handling and Presentation"
+    },
+    {
+      "chapter": 5,
+      "title": "Prime Time"
+    },
+    {
+      "chapter": 6,
+      "title": "Perimeter and Area"
+    },
+    {
+      "chapter": 7,
+      "title": "Fractions"
+    },
+    {
+      "chapter": 8,
+      "title": "Playing with Constructions"
+    },
+    {
+      "chapter": 9,
+      "title": "Symmetry"
+    },
+    {
+      "chapter": 10,
+      "title": "The Other Side of Zero"
+    }
+  ]
+}

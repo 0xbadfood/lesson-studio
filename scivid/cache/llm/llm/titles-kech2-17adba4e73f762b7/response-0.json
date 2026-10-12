@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520495-8drj1sqwElcwe40Aosbq",
+  "object": "chat.completion",
+  "created": 1791520495,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[{\"chapter\":7,\"title\":\"Redox Reactions\"},{\"chapter\":8,\"title\":\"Organic Chemistry – Some Basic Principles and Techniques\"},{\"chapter\":9,\"title\":\"Hydrocarbons\"}]}\n```",
+        "refusal": null,
+        "reasoning": "I'm pulling the unit titles from the contents page, like Redox Reactions, Organic Chemistry basics, and Hydrocarbons, and formatting them in proper title case for the JSON output.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm pulling the unit titles from the contents page, like Redox Reactions, Organic Chemistry basics, and Hydrocarbons, and formatting them in proper title case for the JSON output.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSzgYKEAgSGAI4AUIIdGhpbmtpbmcSDDQGlLMe9DXo907sIhoMMZlGMjo//7tHGIvZIjA+VgDtKGWcDl6EOz0yZ5vKYc5xyaw3swm8l6UpZiM4qlq00vmnOxY8aYzIFpGTabgq6wUymQIV2Gwn1pPlpPtnEdWCRZgeM3tuVl6yMfAtlLL83iCqwNFOfhtu+MqGcWyCw3yJVZ8RM2SeidPu71YBCol9iEXFpjRrftam6vkiE6m4XMp7EPWo42XO9GV/6qzSmiT0/NyjNBDgHvb7uomrSRVhJYU4MnMppp1pvK2aVfFVSNX2lASszN2ZtEUVWKlj4bqga6uisCxSUD9OEEz2+hp2r4CyrKSjfggHpYctiEmZvf/2d0jwyIaT6i77TtOLALaSc8JC6H9BfECKoEXkwtVBVMUnpuf60g77+2YCGp1UKuUpjqN1eBZ3CYJh0fgmjJNbIvZu7ema15AkkyG335ojA+Dbab4sY37a2jggX4bTgCurcN/N74N/gbRtUlR+ceQH8Ro/8Ns9k/wIT9iLBq7NT31PJMz1RnmCimulMz/hjuCFA63h3XmDyjN6/K8Psry03vYZ00nNQavWVr4QoAGJfRVcxjtIYy+abX1vB88VzKY3TtgSZ32ItwtglyNeJY2Nel3BXWBk53Gp6Z4zxsKljjr3JvnghIoqFmUqeqnq0ykVuOa1UOkEsaxkSmuU6ljBEz8TCWfWzd5JceVcP/vaEwChbVQilnUC8gxbaxNMsNoS9fccgihpJFbZYZ0bkGZor/QL4xkxdFNa7mMW6jDUom5zarHnYANE1GpX1ktglHGPws8XuMnsBU1ODBITPqf/15UmbDMrOQBL4kTPLyGFNS1B8lngzoFkQlW8OoTByl5cZMONnXqTLMQdmv+UU0jFlvHIdtHXlYmYtpvfurua4IcR2X87UCEwZF2xagqv+sFcdtQn57xljE+ftdWQmOxquXd89GOl9EWoCo852J2znohTFtn/CHyQxWJviqQqc860dpyCWNO3tWaFQ2OON5asT9GPsvdmA+FA4sSvPRZ3ZS9WFcKg/QxKlCn/7TO4iMf0wfOjyuzGbCYVBpEjece2i9kMIhBLFl1KuHWBddfR3+qOgHaKU5Hgzb0YAQ==.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3360,
+    "completion_tokens": 205,
+    "total_tokens": 3565,
+    "cost": 0.0004385,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0004385,
+      "upstream_inference_prompt_cost": 0.000336,
+      "upstream_inference_completions_cost": 0.0001025
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 110,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 3.2
+}

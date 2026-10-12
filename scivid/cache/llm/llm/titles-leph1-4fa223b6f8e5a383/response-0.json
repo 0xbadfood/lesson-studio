@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520525-Y0wp8fzgk3zK1jFGP0TC",
+  "object": "chat.completion",
+  "created": 1791520525,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "{\"chapters\":[{\"chapter\":1,\"title\":\"Electric Charges and Fields\"},{\"chapter\":2,\"title\":\"Electrostatic Potential and Capacitance\"},{\"chapter\":3,\"title\":\"Current Electricity\"},{\"chapter\":4,\"title\":\"Moving Charges and Magnetism\"},{\"chapter\":5,\"title\":\"Magnetism and Matter\"},{\"chapter\":6,\"title\":\"Electromagnetic Induction\"},{\"chapter\":7,\"title\":\"Alternating Current\"},{\"chapter\":8,\"title\":\"Electromagnetic Waves\"}]}",
+        "refusal": null,
+        "reasoning": "I'm pulling together the chapter titles in title case from the contents list—Electric Charges and Fields, Electrostatic Potential and Capacitance, Current Electricity, Moving Charges and Magnetism, Magnetism and Matter, Electromagnetic Induction, Alternating Current, and Electromagnetic Waves—then formatting the result as JSON only.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm pulling together the chapter titles in title case from the contents list—Electric Charges and Fields, Electrostatic Potential and Capacitance, Current Electricity, Moving Charges and Magnetism, Magnetism and Matter, Electromagnetic Induction, Alternating Current, and Electromagnetic Waves—then formatting the result as JSON only.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSgQcKEAgSGAI4AUIIdGhpbmtpbmcSDCqWYhLfhdRqiiy6JxoMGeq8/vQFZU/6gdetIjDukCS/Lu+bRG+fGfkU6aoAzm/xcr4QDJD0ex504uClF7pULwxTEhpmx+NevIp+Y/Mqngaj51jNfRNk2zTYtp2Lvze236YxKLt59Mafk4gIR9B5vTdujXY+AXUi+4STBHUYSdKj18b8+9/wl0VObsZJQIlzYlcGSD2jnMoJPmeRMwMwFEvF6j5UupTzqoYfXnmliiqYbVUgaqWbss87i7CT7WoNqIBDLd2qqk8rBjAmNhxf3srJ33F9rQ20XEJWzg0mVy17cljZu95LNOIpo1mSzUkLO92Yb/Kzf1eRexFrXajybbzQqxGUHKo0qqhRwYzfpfUsWiMQ3LZcRrHxhK1f57PfkWfvvvvEr/VcEPMsywMtxNK6jv+JFehens/PTeQBkanIZHHkUntrQT8udiPwkFm7uHGUd9SKilDd1s3Kg6GRjMNJ71oBXcT99VmnsO6zTFa1aAxkpe/ByHxg/dYLD581/2UX5mma+K/VhcBw7O/DHp1GW6ybfWysjvvYmEFJdkuhpC7TFwPTePIr4HoYTEl29ksfp5SptmSLZxnimlawfbz8hYInDQpMupH3y1JG9QtxcdmeruMG9GnlvOUTiVdwbM826oAvlwA173xXwMslZGTLK9CoCqnDFN4AlivQPfTi+KEXpwWcdstuNUJlATLJq7+SI4+ZtgVFgrJFQKhdGumUrMiPLA8SRk9o7Jzt0gFmYn+TMChOrELRcWN4kqlrBbpKfOjSj88IOWFkUcS+NqHNmynGpwLu/w+yYJgzvYEFPKHCSnf8gZcjGxSO/D6n1gA7S+rUP3FyS67ujteYP1ZObbS63EQDY3DR/0aiElSgb7CI0VZ2xkX6ZfRZtfhMoXb5pqfIXO8CgqGvHRoanj0D9nt/JgLGiP8YotXXIyF6Cmt1cMfcL7gnJpkLFm72qrhUF+r5m5qApCEYcOcaZ4IrQm9Y/v/vYuf0UH7drv3K6OOG8l6P3+iZynMwSJXuD6H1OoJCNAttnizKHulOHKCz6i75pOiL5ohvT0StyTGpoV49zxr6ciQqwzatTNddFpaNZuYdS96GUsUbushSIUwGcmum5TD1OGLC+ypvnR5jStR8SVwSgcRvxxazQbsmCBMNFiDlZIkDXKpMAc8YAQ==.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4446,
+    "completion_tokens": 319,
+    "total_tokens": 4765,
+    "cost": 0.0006041,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0006041,
+      "upstream_inference_prompt_cost": 0.0004446,
+      "upstream_inference_completions_cost": 0.0001595
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 118,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 3.61
+}

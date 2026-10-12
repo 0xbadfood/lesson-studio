@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manim Studio</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0b1220;color:#edf3ff}*{box-sizing:border-box}body{margin:0}main{max-width:1040px;margin:48px auto;padding:0 24px}.eyebrow{color:#49d6f5;letter-spacing:.12em;font-size:12px;text-transform:uppercase}h1{font-size:38px;margin:12px 0}p{color:#aebdd3;line-height:1.6}.panel{background:#111c2e;border:1px solid #243349;border-radius:16px;padding:24px;margin:24px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}label{display:block;font-size:14px;color:#b8c8de;margin-bottom:8px}input,textarea,select{display:block;width:100%;background:#0b1220;border:1px solid #33465f;border-radius:8px;color:#edf3ff;padding:12px;font:inherit}textarea{resize:vertical;min-height:96px}button,.download{background:#49d6f5;color:#0b1220;border:0;border-radius:8px;padding:12px 18px;font:inherit;font-weight:650;cursor:pointer;display:inline-block;text-decoration:none}button:disabled{opacity:.5;cursor:wait}.secondary{background:#23354c;color:#edf3ff}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.hidden{display:none}.badge{font-size:12px;padding:5px 10px;background:#23354c;border-radius:16px}.status{display:flex;justify-content:space-between;gap:12px;align-items:center}.error{color:#ff9da4;white-space:pre-wrap}.small{font-size:13px}video{width:100%;border-radius:10px;background:#000;margin-top:20px}.job{border-top:1px solid #243349;padding:16px 0}.job-title{border:0;background:none;color:#edf3ff;padding:0;text-align:left;font-weight:600;cursor:pointer}.stage{color:#71e3a2}pre{white-space:pre-wrap;font-size:12px;max-height:260px;overflow:auto;background:#0b1220;padding:14px;border-radius:8px}@media(max-width:640px){.grid{grid-template-columns:1fr}main{margin:24px auto}h1{font-size:30px}.panel{padding:18px}}
+.usage-table{width:100%;min-width:420px;border-collapse:collapse;text-align:right;font-size:13px;margin:16px 0}.usage-table th,.usage-table td{padding:9px 6px;border-bottom:1px solid #243349}.usage-table th:first-child,.usage-table td:first-child{text-align:left}.usage-table tfoot{font-weight:650}.usage-scroll{overflow-x:auto}
+</style></head><body><main>
+<div class="eyebrow">Qwen + Luna + Manim</div><h1>Turn a topic into an explanation.</h1>
+<p>Source research, a visual plan, generated animation code and a silent MP4 with captions.</p>
+<section class="panel" id="login-panel"><label for="token">API token</label><input id="token" type="password" autocomplete="current-password" placeholder="Enter your API token"><div class="actions"><button id="login">Sign in</button></div><p id="login-error" class="error small"></p></section>
+<div id="studio" class="hidden">
+<section class="panel"><form id="create">
+<label for="topic">What should the video explain?</label><textarea id="topic" required minlength="3" maxlength="1000" placeholder="Explain centripetal and centrifugal force, including what happens when the string is cut."></textarea>
+<div class="grid" style="margin-top:18px"><div><label for="audience">Audience</label><input id="audience" value="High-school students" required minlength="3" maxlength="200"></div><div><label for="duration">Approximate length</label><select id="duration"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="90" selected>1½ minutes</option><option value="120">2 minutes</option><option value="180">3 minutes</option></select></div><div><label for="quality">Output</label><select id="quality"><option value="hd">1080p · 30 fps</option><option value="preview">480p · 15 fps preview</option></select></div><div><label for="instructions">Focus or teaching preferences</label><input id="instructions" maxlength="1500" placeholder="Use a car turning left as an example"></div></div>
+<div class="actions"><button id="submit" type="submit">Create video</button><button id="signout" class="secondary" type="button">Sign out</button><a href="/docs" class="download secondary" target="_blank" rel="noopener">API docs</a></div><p id="create-error" class="error small"></p><p class="small" id="health"></p>
+</form></section>
+<section id="current" class="panel hidden"><div class="status"><h2 id="current-title"></h2><span id="current-status" class="badge"></span></div><p id="current-stage" class="stage"></p><p id="current-error" class="error small"></p><div id="downloads" class="actions"></div><video id="video" class="hidden" controls playsinline preload="metadata"></video><div id="job-actions" class="actions"></div><details><summary>Run log</summary><pre id="log"></pre></details></section>
+<section class="panel"><div class="status"><h2>Recent videos</h2><button id="refresh" class="secondary">Refresh</button></div><div id="jobs"></div></section>
+<section id="usage-panel" class="panel hidden"><h2>Coding token usage</h2><p class="small">Includes drafts and repairs. Output includes reasoning tokens. Detailed input caching and per-call figures are in the token downloads.</p><div class="usage-scroll"><table class="usage-table"><thead><tr><th>Scene</th><th>Input</th><th>Output</th><th>Reasoning</th><th>Seconds</th></tr></thead><tbody id="usage-rows"></tbody><tfoot id="usage-total"></tfoot></table></div></section>
+</div></main><script>
+let selected=null,timer=null;
+const $=id=>document.getElementById(id);
+async function api(path,options={}){const r=await fetch(path,{...options,headers:{'Content-Type':'application/json',...options.headers}});if(!r.ok){let message;try{message=(await r.json()).detail}catch{message=r.statusText}if(r.status===401)showLogin();throw new Error(typeof message==='string'?message:JSON.stringify(message))}return r.json()}
+function showLogin(){$('login-panel').classList.remove('hidden');$('studio').classList.add('hidden');clearTimeout(timer)}
+async function openStudio(){$('login-panel').classList.add('hidden');$('studio').classList.remove('hidden');await list();try{const h=await api('/api/health');$('health').textContent=h.ready?'Services available · Coding: '+h.coding_model+' · Qwen planning and review · silent video':'Unavailable: '+Object.entries(h.services).filter(([k,v])=>!v).map(([k])=>k).join(', ')}catch(e){$('health').textContent=e.message}}
+$('login').onclick=async()=>{try{await api('/api/session',{method:'POST',body:JSON.stringify({token:$('token').value})});$('token').value='';$('login-error').textContent='';await openStudio()}catch(e){$('login-error').textContent=e.message}};
+$('signout').onclick=async()=>{await api('/api/session',{method:'DELETE'});showLogin()};
+function submissionKey(){return [...crypto.getRandomValues(new Uint8Array(16))].map(x=>x.toString(16).padStart(2,'0')).join('')}
+$('create').onsubmit=async e=>{e.preventDefault();$('submit').disabled=true;$('create-error').textContent='';try{const job=await api('/api/jobs',{method:'POST',headers:{'Idempotency-Key':submissionKey()},body:JSON.stringify({topic:$('topic').value,audience:$('audience').value,duration_seconds:Number($('duration').value),quality:$('quality').value,instructions:$('instructions').value})});selected=job.id;await showJob();await list()}catch(error){$('create-error').textContent=error.message}finally{$('submit').disabled=false}};
+async function list(){const data=await api('/api/jobs');$('jobs').replaceChildren();if(!data.jobs.length){$('jobs').textContent='Your videos will appear here.';return}for(const job of data.jobs){const row=document.createElement('div');row.className='job';const title=document.createElement('button');title.className='job-title';title.textContent=job.request.topic;title.onclick=()=>{selected=job.id;showJob()};const meta=document.createElement('p');meta.className='small';meta.textContent=job.status+' · '+new Date(job.created*1000).toLocaleString();row.append(title,meta);$('jobs').append(row)}}
+async function showTokenUsage(job){
+  $('usage-panel').classList.add('hidden');$('usage-rows').replaceChildren();$('usage-total').replaceChildren();
+  if(!job.downloads.token_usage)return;
+  try{
+    const r=await fetch(job.downloads.token_usage);if(!r.ok)return;const data=await r.json();
+    const stats=Object.entries(data.coding_by_scene||{});if(!stats.length)return;
+    function row(label,s){const tr=document.createElement('tr');for(const value of [label,s.input_tokens,s.output_tokens,s.reasoning_tokens,s.elapsed_seconds==null?null:Math.round(s.elapsed_seconds)]){const td=document.createElement('td');td.textContent=typeof value==='number'?value.toLocaleString():value==null?'—':value;tr.append(td)}return tr}
+    const total={};for(const field of ['input_tokens','output_tokens','reasoning_tokens','elapsed_seconds']){const values=stats.map(([,s])=>s[field]).filter(v=>typeof v==='number');total[field]=values.length?values.reduce((a,b)=>a+b,0):null}
+    for(const [scene,s]of stats)$('usage-rows').append(row(scene+' · '+s.calls+' call'+(s.calls===1?'':'s'),s));
+    $('usage-total').append(row('Total',total));$('usage-panel').classList.remove('hidden');
+  }catch{}
+}
+async function showJob(){
+  clearTimeout(timer);if(!selected)return;
+  try{
+    const job=await api('/api/jobs/'+selected);
+    $('current').classList.remove('hidden');$('current-title').textContent=job.request.topic;
+    $('current-status').textContent=job.status;$('current-stage').textContent=job.progress.message||job.progress.stage;
+    $('current-error').textContent=job.error||'';$('downloads').replaceChildren();
+    const names={code:'source code',token_usage:'token report',token_csv:'token CSV'};
+    for(const [kind,url]of Object.entries(job.downloads)){const a=document.createElement('a');a.href=url;a.className='download secondary';a.textContent='Download '+(names[kind]||kind);a.download='';$('downloads').append(a)}
+    $('job-actions').replaceChildren();
+    for(const [label,action]of(job.status==='running'||job.status==='queued'?[['Cancel','cancel']]:['failed','interrupted','cancelled'].includes(job.status)?[['Resume saved work','resume']]:[])){
+      const b=document.createElement('button');b.className='secondary';b.textContent=label;
+      b.onclick=async()=>{await api('/api/jobs/'+selected+'/'+action,{method:'POST'});await showJob();await list()};$('job-actions').append(b)
+    }
+    if(job.status==='succeeded'&&job.downloads.video){$('video').classList.remove('hidden');if($('video').getAttribute('src')!==job.downloads.video)$('video').src=job.downloads.video}
+    else{$('video').classList.add('hidden');$('video').removeAttribute('src')}
+    if(job.downloads.log){const r=await fetch(job.downloads.log);if(r.ok)$('log').textContent=(await r.text()).slice(-12000)}
+    await showTokenUsage(job);
+    if(['queued','running'].includes(job.status))timer=setTimeout(showJob,2500);else await list();
+  }catch(e){$('current-error').textContent=e.message}
+}
+$('refresh').onclick=list;api('/api/jobs').then(openStudio).catch(()=>{});
+</script></body></html>

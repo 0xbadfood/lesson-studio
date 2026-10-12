@@ -1,0 +1,73 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    1
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 1,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "CHAPTER FIVE",
+          "WORK, ENERGY AND POWER",
+          "5.1 INTRODUCTION",
+          "5.1.1 The Scalar Product"
+        ],
+        "page_summary": "This page introduces Chapter 5 on Work, Energy, and Power. It distinguishes between everyday usage of these terms and their precise physical definitions. It introduces the scalar product of vectors as a mathematical prerequisite for the chapter, noting that the vector product will be covered in Chapter 6.",
+        "knowledge_points": [
+          "In physics, 'Work' has a definite and precise meaning, unlike in everyday language.",
+          "Energy is defined as the capacity to do work.",
+          "The physical meaning of 'power' is related to the speed at which work is done (e.g., powerful punches delivered at great speed).",
+          "There is a loose correlation between the physical definitions of work, energy, and power and their physiological or everyday meanings.",
+          "The scalar product (or dot product) of two vectors results in a scalar.",
+          "The vector product of two vectors produces a new vector.",
+          "The vector product is covered in Chapter 6."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "QR code in the top left corner",
+            "text": [
+              "11086CH06"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A QR code located in the top left corner of the page.",
+            "educational_role": "Likely a link to supplementary digital resources for the chapter.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "source_reference_only"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Scalar Product of Vectors"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 1,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"CHAPTER FIVE\",\n        \"WORK, ENERGY AND POWER\",\n        \"5.1 INTRODUCTION\",\n        \"5.1.1 The Scalar Product\"\n      ],\n      \"page_summary\": \"This page introduces Chapter 5 on Work, Energy, and Power. It distinguishes between everyday usage of these terms and their precise physical definitions. It introduces the scalar product of vectors as a mathematical prerequisite for the chapter, noting that the vector product will be covered in Chapter 6.\",\n      \"knowledge_points\": [\n        \"In physics, 'Work' has a definite and precise meaning, unlike in everyday language.\",\n        \"Energy is defined as the capacity to do work.\",\n        \"The physical meaning of 'power' is related to the speed at which work is done (e.g., powerful punches delivered at great speed).\",\n        \"There is a loose correlation between the physical definitions of work, energy, and power and their physiological or everyday meanings.\",\n        \"The scalar product (or dot product) of two vectors results in a scalar.\",\n        \"The vector product of two vectors produces a new vector.\",\n        \"The vector product is covered in Chapter 6.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"QR code in the top left corner\",\n          \"text\": [\n            \"11086CH06\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"A QR code located in the top left corner of the page.\",\n          \"educational_role\": \"Likely a link to supplementary digital resources for the chapter.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"source_reference_only\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work, Energy and Power\",\n    \"Scalar Product of Vectors\"\n  ],\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 563,
+    "prompt_tokens": 3563,
+    "total_tokens": 4126,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

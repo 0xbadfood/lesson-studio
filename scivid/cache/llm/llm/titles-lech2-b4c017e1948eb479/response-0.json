@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520544-IfKw2tDVEPYGq0ylba5V",
+  "object": "chat.completion",
+  "created": 1791520544,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[{\"chapter\":6,\"title\":\"Haloalkanes and Haloarenes\"},{\"chapter\":7,\"title\":\"Alcohols, Phenols and Ethers\"},{\"chapter\":8,\"title\":\"Aldehydes, Ketones and Carboxylic Acids\"},{\"chapter\":9,\"title\":\"Amines\"},{\"chapter\":10,\"title\":\"Biomolecules\"}]}\n```",
+        "refusal": null,
+        "reasoning": "I'm identifying the units from the contents page—chapters 6 through 10 covering Haloalkanes and Haloarenes, Alcohols/Phenols/Ethers, Aldehydes/Ketones/Carboxylic Acids, Amines, and Biomolecules—and formatting their titles in proper title case for the JSON output.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm identifying the units from the contents page—chapters 6 through 10 covering Haloalkanes and Haloarenes, Alcohols/Phenols/Ethers, Aldehydes/Ketones/Carboxylic Acids, Amines, and Biomolecules—and formatting their titles in proper title case for the JSON output.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSxAcKEAgSGAI4AUIIdGhpbmtpbmcSDOXZvnDX4pTeCd0gAhoMK9YsEQ/CcIWiGa8iIjC7/k/Cgh17oa/aD7JD2Sw99WbqlOMjrZZ5oHyvkyXXLBKnHX3uVJFZ6adVinHP7NUq4QbN+unytHvb6rYByyCl0vxAflK9thiGfZ4GnmDsph8OM9LNerq+NkxiLI1qOTpWn7/gYzBTHKhslht7zbM31d864ylvz+hwuAYrQx1YkixPryO6zpA+AIcs3dlngg0rc7lSLisr8b7V1DJCr5UPSKWTzOk/kuIa7fZ9JEDuOFVnMb1OOrq+aHstapNuE539SugyijvC9LazBUdD1Bk6roTZGttnmJlPLb6/revrLYC0FFX5AvXg5tsFQ9SQ7TLRdOSLGLeD6SE+Rj5T4TBIh729+iIQa1vFgpI8xgNGl7a2Di3t0Y1EN4ZXQDcbWNz+DS/eqcMgG0xt+sAG5LcnQYwz4oqUCOLpAwOGe3z9sLLHO2FHpPsW3vDHqFxTS3aQM03XXQUcJnTwrvKc7yRWle/ohPBshxycTJ5XkhNLMpFIUJaHntYCcmJSTCGu1Sxm5FZHuZs2K99+BxZyRVkasprkwHsLVt+TdOBIIZhnDNW9zsfo/9uk6vGKPOtZO2rI7OLjWhTFNx72oILBTgDfrYAvq1RiE+qDqX47TwMNsZiL5mg5RL8zR8KvWoKMUedmjYpiU0xV2CGedNk9Rul4RJHLI1mOwg5u5ya7WVBKoZVqD+cx2i0/G0Gpktjuc19XLPVsedfC9mssMR3EwtNk+tQOOz94raSMo++90H6t0E0qc50upp/lrDtZMimowt5pDyXM0auJvB8X3EkwyDcg+nEZMrDighHjub9RFZhk9J73kMv3YpVmI3VFq4MnXyjQeHHlR0YAnrREwnYAQRfZt2KebVL/h0MPliy4kOxr35MpKZDI16MfziD78T2o9Lky/JDpWsh/eNU1ChY9NEt3vAqIWhJa1wR1JOpf7dTQrHNLNRcNwHuLIv4EFCSE2cMwmXKi04aGkHCIyGqMh8a2qPwfRKHewEAT6IjCWka59Ux04qv1T379UWUfHeXQXthe3xZ+lhG0WccnSjt2T1f1GoEAOVJobbfM2uy+IaLrZMT49hkkK4SAi/uqKk6kinNG/USUnRpyuPHNxOfSW2RG47ATAo9pt7oigbDjWnv+dWk8PglgQix14OonaihilIvCK0KaGVpd0Cr+Xjj/lYS+fR8cfst12wIAckyKKrvWSXiKkD5/3RtOGsaMt6Z3tOBQkSqSGAE=.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4512,
+    "completion_tokens": 321,
+    "total_tokens": 4833,
+    "cost": 0.0006117,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0006117,
+      "upstream_inference_prompt_cost": 0.0004512,
+      "upstream_inference_completions_cost": 0.0001605
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 176,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 3.63
+}

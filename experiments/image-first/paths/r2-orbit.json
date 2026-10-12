@@ -1,0 +1,22 @@
+{
+  "image": "r2-orbit-672e015bd68b.png",
+  "size": [
+    1664,
+    928
+  ],
+  "magenta_pixels": 6564,
+  "circle": {
+    "center_px": [
+      844.6,
+      457.0
+    ],
+    "radius_px": 341.5,
+    "median_residual_px": 2.97,
+    "p95_residual_px": 6.93,
+    "angular_coverage_deg": 340
+  },
+  "erase": {
+    "method": "cv2.inpaint TELEA on dilated colour mask",
+    "magenta_pixels_left": 0
+  }
+}

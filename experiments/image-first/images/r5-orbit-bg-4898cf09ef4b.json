@@ -1,0 +1,17 @@
+{
+  "name": "r5-orbit-bg",
+  "prompt": "Edit the reference illustration: remove the red stone, the string and the magenta dashed circle completely. Keep the hand, the plain background and the framing exactly identical.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/images/r2-orbit-672e015bd68b.png"
+  ],
+  "seconds": 90.5,
+  "job": {
+    "inference_seconds": 89.644194263994,
+    "peak_allocated_gb": 19.09152126312256,
+    "seed": 12345
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "gen-1791520538-143oQJZ1De9UJnyzhpqU",
+  "object": "chat.completion",
+  "created": 1791520538,
+  "model": "anthropic/claude-haiku-5.5",
+  "provider": "Claude Platform on AWS",
+  "system_fingerprint": null,
+  "service_tier": "default",
+  "choices": [
+    {
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "end_turn",
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"chapters\":[{\"chapter\":1,\"title\":\"Solutions\"},{\"chapter\":2,\"title\":\"Electrochemistry\"},{\"chapter\":3,\"title\":\"Chemical Kinetics\"},{\"chapter\":4,\"title\":\"The d- and f-Block Elements\"},{\"chapter\":5,\"title\":\"Coordination Compounds\"}]}\n```",
+        "refusal": null,
+        "reasoning": "I'm checking the contents page titles against normal title case, noticing the \"d-and f-Block Elements\" chapter has an apparent typo in the official listing and deciding whether to preserve it exactly or correct the hyphenation.\n\n",
+        "reasoning_details": [
+          {
+            "type": "reasoning.text",
+            "text": "I'm checking the contents page titles against normal title case, noticing the \"d-and f-Block Elements\" chapter has an apparent typo in the official listing and deciding whether to preserve it exactly or correct the hyphenation.\n\n",
+            "format": "anthropic-claude-v1",
+            "index": 0,
+            "signature": "CAQSywkKEAgSGAI4AUIIdGhpbmtpbmcSDLpSm/PD5eAXRZaIdRoMngGu5xjN//TvJICcIjBvcKpeWfxI3bCWkVg85Tbc7mwkwMnSmgEfZ9xt9ktAFerFzVbzRid0W7laTW6JL+kq6AjzXL+QCPFGeJc3g3QyXoW6wuqoOlnI+S9sJHQkBHpDLkZlSbLqSWhGzWE3XFHE/8gpO0FSSjNOIwUKevIYj4cA4NgxZigVRWyXaxUFUD43Cz8zc9ZjJ5cc0hh2zOeymW9QWXwiBfHj8ICtv3kTzW/+swsFiTDZFu7xFf2h1AOeSJme3BPN5/+9j8/rIDGTcxq0Ude6sJb+JoT6kFFvZakgFqZw1EVeuTNisFucmZV+SpQko2lSjxlO5wOsaPF7nNrYm3PDwkwsJL510wLxUdH8QXQcjfK/xUA9euORcImvdvWF1I3r6i6vLrTXidvJDWs8DLjohty11tKTKA/V6udt92qbvNXe1Eie6pnZ368Zt/TMeGcd+kgNp8OJ5PNs+pAq+cY/kLkYAaXW5Xyo/2i2aueTk/6TeCm+8F4mRRtQgNHaMXzhr3n8q917yOFLo3vupJ34wTO86R925vO43OgJGcYqduHewNYZZT8do4jgqskanSWH4xRYerFLOcduFSoRoy6eeMd4f71ALlHe4GTd2d5jcbtyTdYHbsSwgmVg9Uarn5+eJ2ypNzv0vUybeqjr8v1+ixBh2jmj+Vl/3pktoVFkv4S+Wphpps2+pZuxWgXa2gXbc/npnY9RRjt88zr9Z2U+eaa93s9mV0tPxS3U0kr5uCyBL1gqEKkiZA+mHBxjROq5DDCILNLY3jVqFNYPXHdU3R6PccHnmGYu6Osq3uryQfxwgvOekHzyp9+qmP9exfUcOAd/EEmcLIpcFFeiGXU49eW3kqRMY/qaqrfgpp/8oZHqO4RaS50/ZYXymPsbp55ZLnTInzFLbfu7FscrzzQqR/9hUOyAeQxD8xYDNongqtF5qcqPjYfS6yPtPIHBfDeLtUXYTgg/0vxVh7muOgldAhBGq8A45Fy2Ny5BlIWmJFA5jKpuXqgpOklcb9EnWbCOKPDuErm3ge2I9kobs5IJq2SVZkPbuPb0wBAoIvUCdU/BZSQPsX+QOL6IzXlLLvHNdEnhGZ8ymmZM/jqdZZ2dAz31aMcmn6xDLKehtOcpA8I1vmOG1A9nQInrntEeajSG9cuWsy2quacnKXccdmc/eHkUHagHq//soOIfIx3VFlohu4EPT5ELQ1oVi0gBvkCMuwmfHBjkfk6XmlEN2hOb/OArquspPOBdsz0d/TpApwCSquIq+mvrm2bRzJQV2uUeO8GItpq0C8iTwqTFZKj867ldKARHd0AgXd3s2waoabenHp/uBCzqh2JkSu/N6ASYxhVWNh3pSG6zoSXHHXvjgcHHg7cHlgrCE6A79TsZFEBWYaezIHStU+mkmyMHjeeMofb3mNYK4OncYruQnXG8ujLq1MGs79J+DviIvRmOXQSLdRAAEwjfFQj9sWp5NJ5DsJxnE9PNHkPQJRz28xTwPLTSURaqyNXhu84WtOqyYLMJuRCZkprI+8YN8e7EWeO8r//aE2klu65/r4RgqpzakuJ5+9DYFzzZIWA7Q8PIWqz4XwcYAQ==.eyJlbmRwb2ludF9zbHVnIjoiYW50aHJvcGljL2NsYXVkZS1oYWlrdS01LjUtMjAyNjEwMDd8Y2xhdWRlLW9uLWF3cyJ9"
+          }
+        ]
+      }
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4604,
+    "completion_tokens": 367,
+    "total_tokens": 4971,
+    "cost": 0.0006439,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0006439,
+      "upstream_inference_prompt_cost": 0.0004604,
+      "upstream_inference_completions_cost": 0.0001835
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 242,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "elapsed_seconds": 4.33
+}

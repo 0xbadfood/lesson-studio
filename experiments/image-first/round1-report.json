@@ -1,0 +1,198 @@
+{
+  "parts": {
+    "a-piston": {
+      "file": "a-piston-cdd5346707d8.png",
+      "mode": "RGBA",
+      "size": [
+        1664,
+        928
+      ],
+      "alpha": {
+        "opaque_fraction": 0.2089,
+        "transparent_fraction": 0.7889,
+        "soft_edge_fraction": 0.0043
+      },
+      "fake_transparency_suspect": false,
+      "vs_manual_mask": {
+        "iou": 0.087,
+        "manual_covered": 1.0,
+        "area_ratio": 11.548,
+        "centroid_offset_px": [
+          -0.8,
+          99.0
+        ],
+        "bbox_generated": [
+          373,
+          19,
+          912,
+          896
+        ],
+        "bbox_manual": [
+          524,
+          326,
+          761,
+          456
+        ],
+        "scale_ratio_wh": [
+          2.274,
+          6.746
+        ],
+        "mean_rgb_diff_in_overlap": 8.7
+      }
+    },
+    "a-crankshaft": {
+      "file": "a-crankshaft-9c1756253955.png",
+      "mode": "RGBA",
+      "size": [
+        1664,
+        928
+      ],
+      "alpha": {
+        "opaque_fraction": 0.1527,
+        "transparent_fraction": 0.8434,
+        "soft_edge_fraction": 0.0079
+      },
+      "fake_transparency_suspect": false,
+      "vs_manual_mask": {
+        "iou": 0.186,
+        "manual_covered": 0.979,
+        "area_ratio": 5.244,
+        "centroid_offset_px": [
+          33.2,
+          -200.6
+        ],
+        "bbox_generated": [
+          373,
+          19,
+          912,
+          896
+        ],
+        "bbox_manual": [
+          496,
+          531,
+          783,
+          822
+        ],
+        "scale_ratio_wh": [
+          1.878,
+          3.014
+        ],
+        "mean_rgb_diff_in_overlap": 10.9
+      }
+    },
+    "a-rod": {
+      "file": "a-rod-56d095900c5f.png",
+      "mode": "RGBA",
+      "size": [
+        1664,
+        928
+      ],
+      "alpha": {
+        "opaque_fraction": 0.1552,
+        "transparent_fraction": 0.8409,
+        "soft_edge_fraction": 0.0082
+      },
+      "fake_transparency_suspect": false,
+      "vs_manual_mask": {
+        "iou": 0.075,
+        "manual_covered": 0.994,
+        "area_ratio": 13.326,
+        "centroid_offset_px": [
+          -61.3,
+          -125.4
+        ],
+        "bbox_generated": [
+          373,
+          19,
+          912,
+          896
+        ],
+        "bbox_manual": [
+          624,
+          442,
+          782,
+          729
+        ],
+        "scale_ratio_wh": [
+          3.411,
+          3.056
+        ],
+        "mean_rgb_diff_in_overlap": 19.5
+      }
+    },
+    "a-valves": {
+      "file": "a-valves-609df74b1207.png",
+      "mode": "RGBA",
+      "size": [
+        1664,
+        928
+      ],
+      "alpha": {
+        "opaque_fraction": 0.006,
+        "transparent_fraction": 0.9929,
+        "soft_edge_fraction": 0.0021
+      },
+      "fake_transparency_suspect": false,
+      "vs_manual_mask": {
+        "iou": 0.48,
+        "manual_covered": 0.854,
+        "area_ratio": 1.635,
+        "centroid_offset_px": [
+          -3.2,
+          -41.4
+        ],
+        "bbox_generated": [
+          518,
+          43,
+          768,
+          216
+        ],
+        "bbox_manual": [
+          522,
+          94,
+          764,
+          214
+        ],
+        "scale_ratio_wh": [
+          1.033,
+          1.442
+        ],
+        "mean_rgb_diff_in_overlap": 26.8
+      }
+    }
+  },
+  "states": {
+    "b-empty": {
+      "file": "b-empty-818a86a45f53.png",
+      "mean_diff_keep_region": 4.82,
+      "changed_fraction_keep_region": 0.0379,
+      "mean_diff_moving_region": 67.15,
+      "changed_fraction_moving_region": 0.7181
+    },
+    "b-bdc": {
+      "file": "b-bdc-c4c817df9ab5.png",
+      "mean_diff_keep_region": 4.22,
+      "changed_fraction_keep_region": 0.0309,
+      "mean_diff_moving_region": 44.51,
+      "changed_fraction_moving_region": 0.5345
+    }
+  },
+  "path": {
+    "files": [
+      "c-orbit-path-381e28766c8a.png",
+      "c-orbit-clean-95a9567f0e0a.png"
+    ],
+    "diff_pixels": 6805,
+    "mean_diff_elsewhere": 1.91,
+    "circle": {
+      "center_px": [
+        827.5,
+        97.5
+      ],
+      "radius_px": 69.4,
+      "inlier_fraction": 0.005,
+      "median_residual_px": 0.57,
+      "angular_coverage_deg": 25
+    }
+  }
+}

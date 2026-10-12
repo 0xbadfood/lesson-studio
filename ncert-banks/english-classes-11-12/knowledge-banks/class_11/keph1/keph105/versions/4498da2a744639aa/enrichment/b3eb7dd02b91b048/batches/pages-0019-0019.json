@@ -1,0 +1,93 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    19
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 19,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "English",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "5.4",
+          "5.5",
+          "5.6",
+          "5.7",
+          "5.8"
+        ],
+        "page_summary": "This page contains exercises 5.4 through 5.8 from the chapter 'Work, Energy and Power'. Exercise 5.4 involves a potential energy function for simple harmonic motion and references a graph (Fig. 5.12). Exercise 5.5 asks questions about energy sources for rocket friction, work done by gravity on comets, satellite orbital decay, and work done in two scenarios involving a 15 kg mass (Fig. 5.13). Exercises 5.6, 5.7, and 5.8 are multiple-choice and true/false questions regarding conservative forces, friction, momentum, and collisions.",
+        "knowledge_points": [
+          "The potential energy function for a particle executing linear simple harmonic motion is given by V(x) = kx²/2, where k is the force constant of the oscillator.",
+          "For k = 0.5 N m⁻¹, a particle of total energy 1 J moving under this potential must 'turn back' when it reaches x = ± 2 m.",
+          "The casing of a rocket in flight burns up due to friction.",
+          "Comets move around the sun in highly elliptical orbits.",
+          "The gravitational force on the comet due to the sun is not normal to the comet's velocity in general.",
+          "The work done by the gravitational force over every complete orbit of the comet is zero.",
+          "An artificial satellite orbiting the earth in very thin atmosphere loses its energy gradually due to dissipation against atmospheric resistance.",
+          "In Fig. 5.13(i), a man walks 2 m carrying a mass of 15 kg on his hands.",
+          "In Fig. 5.13(ii), a man walks the same distance pulling a rope behind him, which goes over a pulley with a mass of 15 kg hanging at its other end.",
+          "When a conservative force does positive work on a body, the potential energy of the body decreases.",
+          "Work done by a body against friction always results in a loss of its kinetic energy.",
+          "The rate of change of total momentum of a many-particle system is proportional to the external force on the system.",
+          "In an inelastic collision of two bodies, the total linear momentum and total energy of the system of two bodies do not change after the collision.",
+          "In an elastic collision of two bodies, the momentum and energy of each body is not conserved (only total momentum and total kinetic energy are conserved).",
+          "Total energy of a system is always conserved, no matter what internal and external forces on the body are present.",
+          "Work done in the motion of a body over a closed loop is zero for every force in nature (False for non-conservative forces).",
+          "In an inelastic collision, the final kinetic energy is always less than the initial kinetic energy of the system.",
+          "In an elastic collision of two billiard balls, the total kinetic energy is not conserved during the short time of collision (when they are in contact) due to deformation.",
+          "The total linear momentum is conserved during the short time of an elastic collision of two balls."
+        ],
+        "embedded_text": [],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "graph",
+            "description": "A graph plotting V(x) on the vertical axis against x on the horizontal axis. The curve is a parabola opening upwards with its vertex at the origin. A horizontal dashed line intersects the parabola at two points, representing the total energy level.",
+            "educational_role": "Illustrates the potential energy function V(x) = kx²/2 for simple harmonic motion and the turning points where the potential energy equals the total energy.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "illustration",
+            "description": "Two scenarios labeled (i) and (ii). In (i), a person is walking to the left carrying a blue box labeled '15 kg' on their hands. In (ii), a person is walking to the left pulling a rope that goes over a pulley attached to a brick wall, with a blue box labeled '15 kg' hanging from the other end of the rope.",
+            "educational_role": "Depicts two different physical situations involving a 15 kg mass to compare the work done in each case.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "source_reference_only"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Potential Energy Function",
+      "Simple Harmonic Motion",
+      "Conservative Forces",
+      "Collisions",
+      "Work Done by Friction",
+      "Orbital Mechanics",
+      "Momentum Conservation"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\"vision_input_worked\": true, \"pages\": [{\"page\": 19, \"readability\": \"readable\", \"native_text_alignment\": \"complete\", \"ocr_needed\": false, \"ocr_reason\": null, \"detected_language\": \"English\", \"headings\": [\"WORK, ENERGY AND POWER\", \"5.4\", \"5.5\", \"5.6\", \"5.7\", \"5.8\"], \"page_summary\": \"This page contains exercises 5.4 through 5.8 from the chapter 'Work, Energy and Power'. Exercise 5.4 involves a potential energy function for simple harmonic motion and references a graph (Fig. 5.12). Exercise 5.5 asks questions about energy sources for rocket friction, work done by gravity on comets, satellite orbital decay, and work done in two scenarios involving a 15 kg mass (Fig. 5.13). Exercises 5.6, 5.7, and 5.8 are multiple-choice and true/false questions regarding conservative forces, friction, momentum, and collisions.\", \"knowledge_points\": [\"The potential energy function for a particle executing linear simple harmonic motion is given by V(x) = kx²/2, where k is the force constant of the oscillator.\", \"For k = 0.5 N m⁻¹, a particle of total energy 1 J moving under this potential must 'turn back' when it reaches x = ± 2 m.\", \"The casing of a rocket in flight burns up due to friction.\", \"Comets move around the sun in highly elliptical orbits.\", \"The gravitational force on the comet due to the sun is not normal to the comet's velocity in general.\", \"The work done by the gravitational force over every complete orbit of the comet is zero.\", \"An artificial satellite orbiting the earth in very thin atmosphere loses its energy gradually due to dissipation against atmospheric resistance.\", \"In Fig. 5.13(i), a man walks 2 m carrying a mass of 15 kg on his hands.\", \"In Fig. 5.13(ii), a man walks the same distance pulling a rope behind him, which goes over a pulley with a mass of 15 kg hanging at its other end.\", \"When a conservative force does positive work on a body, the potential energy of the body decreases.\", \"Work done by a body against friction always results in a loss of its kinetic energy.\", \"The rate of change of total momentum of a many-particle system is proportional to the external force on the system.\", \"In an inelastic collision of two bodies, the total linear momentum and total energy of the system of two bodies do not change after the collision.\", \"In an elastic collision of two bodies, the momentum and energy of each body is not conserved (only total momentum and total kinetic energy are conserved).\", \"Total energy of a system is always conserved, no matter what internal and external forces on the body are present.\", \"Work done in the motion of a body over a closed loop is zero for every force in nature (False for non-conservative forces).\", \"In an inelastic collision, the final kinetic energy is always less than the initial kinetic energy of the system.\", \"In an elastic collision of two billiard balls, the total kinetic energy is not conserved during the short time of collision (when they are in contact) due to deformation.\", \"The total linear momentum is conserved during the short time of an elastic collision of two balls.\"], \"embedded_text\": [], \"embedded_text_complete\": true, \"human_visual_review_needed\": false, \"visuals\": [{\"kind\": \"graph\", \"description\": \"A graph plotting V(x) on the vertical axis against x on the horizontal axis. The curve is a parabola opening upwards with its vertex at the origin. A horizontal dashed line intersects the parabola at two points, representing the total energy level.\", \"educational_role\": \"Illustrates the potential energy function V(x) = kx²/2 for simple harmonic motion and the turning points where the potential energy equals the total energy.\", \"evidence\": \"printed_text\", \"confidence\": \"high\", \"text_dependency\": \"labels\", \"recreation_route\": \"deterministic_renderer\"}, {\"kind\": \"illustration\", \"description\": \"Two scenarios labeled (i) and (ii). In (i), a person is walking to the left carrying a blue box labeled '15 kg' on their hands. In (ii), a person is walking to the left pulling a rope that goes over a pulley attached to a brick wall, with a blue box labeled '15 kg' hanging from the other end of the rope.\", \"educational_role\": \"Depicts two different physical situations involving a 15 kg mass to compare the work done in each case.\", \"evidence\": \"printed_text\", \"confidence\": \"high\", \"text_dependency\": \"labels\", \"recreation_route\": \"source_reference_only\"}] }], \"batch_topics\": [\"Work, Energy and Power\", \"Potential Energy Function\", \"Simple Harmonic Motion\", \"Conservative Forces\", \"Collisions\", \"Work Done by Friction\", \"Orbital Mechanics\", \"Momentum Conservation\"], \"uncertainties\": []}",
+  "usage": {
+    "prompt_tokens": 3267,
+    "total_tokens": 4378,
+    "completion_tokens": 1111,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

@@ -1,0 +1,130 @@
+{
+  "parts": [
+    {
+      "id": "piston",
+      "role": "Reciprocating mass that seals the cylinder and transmits combustion pressure to the rod",
+      "bbox": [
+        312,
+        445,
+        458,
+        595
+      ],
+      "points": {
+        "piston_pin": [
+          380,
+          535
+        ],
+        "crown_center": [
+          385,
+          452
+        ]
+      },
+      "motion": "slide along vertical cylinder axis (pure up/down translation)",
+      "linked_to": [
+        "con_rod"
+      ]
+    },
+    {
+      "id": "con_rod",
+      "role": "Connecting rod (bronze) coupling the piston pin to the crank throw",
+      "bbox": [
+        370,
+        575,
+        440,
+        865
+      ],
+      "points": {
+        "small_end": [
+          380,
+          535
+        ],
+        "big_end": [
+          408,
+          805
+        ]
+      },
+      "motion": "planar swing: small_end translates vertically with the piston while big_end orbits the crank axis; the rod both translates and rotates each cycle",
+      "linked_to": [
+        "piston",
+        "crankshaft"
+      ]
+    },
+    {
+      "id": "crankshaft",
+      "role": "Crank web + flywheel disc that converts reciprocation into rotation",
+      "bbox": [
+        288,
+        578,
+        472,
+        858
+      ],
+      "points": {
+        "crank_axis": [
+          375,
+          712
+        ],
+        "crank_pin": [
+          408,
+          805
+        ]
+      },
+      "motion": "rotate about crank_axis (continuous 360 deg spin); crank_pin traces a circle of radius = throw",
+      "linked_to": [
+        "con_rod"
+      ]
+    },
+    {
+      "id": "valve_left",
+      "role": "Left poppet valve (intake/exhaust) opening the left port",
+      "bbox": [
+        310,
+        45,
+        356,
+        225
+      ],
+      "points": {
+        "valve_head": [
+          332,
+          215
+        ],
+        "stem_top": [
+          332,
+          55
+        ]
+      },
+      "motion": "open/close = vertical translation along the stem axis (drops to open, springs back to close)",
+      "linked_to": []
+    },
+    {
+      "id": "valve_right",
+      "role": "Right poppet valve (intake/exhaust) opening the right port",
+      "bbox": [
+        414,
+        45,
+        460,
+        225
+      ],
+      "points": {
+        "valve_head": [
+          440,
+          215
+        ],
+        "stem_top": [
+          440,
+          55
+        ]
+      },
+      "motion": "open/close = vertical translation along the stem axis (drops to open, springs back to close)",
+      "linked_to": []
+    }
+  ],
+  "fixed": [
+    "cylinder_block_and_crankcase (teal housing)",
+    "cylinder_head_and_valve_guideribs",
+    "intake_and_exhaust_ports",
+    "spark_plug (threaded in, fires but does not translate)",
+    "valve_springs (deform/compress but are not rigid bodies)",
+    "mounting_bosses_and_bolt_holes"
+  ],
+  "notes": "Kinematic chain: crankshaft rotates about crank_axis -> its crank_pin drives the con_rod big_end -> con_rod small_end (= piston_pin) forces the piston to slide vertically. The two valves are NOT mechanically linked to the crank in this cutaway (no cam/tappet drawn); animate them as independent vertical lift events timed to the crank angle (e.g. left opens on intake stroke, right opens on exhaust stroke). The spark plug is fixed hardware: only its electrode 'fires' (a glow/flash effect), no rigid-body motion. Valve springs should be drawn as compressing/elongating with valve travel. All coordinates are on a 0-1000 scale relative to image width (x) and height (y); the engine sits left-of-centre with empty space on the right."
+}

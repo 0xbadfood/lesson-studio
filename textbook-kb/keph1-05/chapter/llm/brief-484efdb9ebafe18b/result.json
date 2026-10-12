@@ -1,0 +1,451 @@
+{
+  "scope": "NCERT Class 11 Physics Part I, Chapter 5: Work, Energy and Power",
+  "objectives": [
+    {
+      "id": "O1",
+      "text": "Understand the scalar product of vectors as a mathematical prerequisite for defining work.",
+      "covers": [
+        "T1",
+        "T2",
+        "T3"
+      ]
+    },
+    {
+      "id": "O2",
+      "text": "Define work and kinetic energy and derive the work-energy theorem for constant and variable forces.",
+      "covers": [
+        "T4",
+        "T5",
+        "T6",
+        "T7",
+        "T8",
+        "T9",
+        "T10",
+        "T11"
+      ]
+    },
+    {
+      "id": "O3",
+      "text": "Understand potential energy for conservative forces (gravity and springs) and the conservation of mechanical energy.",
+      "covers": [
+        "T12",
+        "T13",
+        "T14",
+        "T15",
+        "T16",
+        "T17",
+        "T18"
+      ]
+    },
+    {
+      "id": "O4",
+      "text": "Define power and analyze elastic and inelastic collisions in one and two dimensions.",
+      "covers": [
+        "T19",
+        "T20",
+        "T21",
+        "T22",
+        "T23",
+        "T24",
+        "T25"
+      ]
+    }
+  ],
+  "teaches": [
+    {
+      "id": "T1",
+      "kind": "definition",
+      "title": "Scalar Product of Vectors",
+      "statement": "The scalar product or dot product of any two vectors A and B, denoted as A.B, is defined as A.B = A B cos θ, where θ is the angle between the two vectors. It is a scalar quantity.",
+      "depth": "derived",
+      "pages": [
+        1,
+        2
+      ],
+      "quote": "The scalar product or dot product of any two vectors A and B, denoted as A.B"
+    },
+    {
+      "id": "T2",
+      "kind": "formula",
+      "title": "Scalar Product in Component Form",
+      "statement": "For vectors A = Ax i + Ay j + Az k and B = Bx i + By j + Bz k, the scalar product is A.B = Ax Bx + Ay By + Az Bz. For unit vectors, i.i = j.j = k.k = 1 and i.j = j.k = k.i = 0.",
+      "depth": "derived",
+      "pages": [
+        2
+      ],
+      "quote": "From the definition of scalar product and (Eq. 5.1b) we have"
+    },
+    {
+      "id": "T3",
+      "kind": "example",
+      "title": "Angle Between Force and Displacement",
+      "statement": "Example 5.1 calculates the angle between force F = (3 i + 4 j - 5 k) unit and displacement d = (5 i + 4 j + 3 k) unit using the dot product formula, finding cos θ = 0.32.",
+      "depth": "derived",
+      "pages": [
+        2
+      ],
+      "quote": "Example 5.1 Find the angle between force F = (3 i + 4 j - 5 k) unit"
+    },
+    {
+      "id": "T4",
+      "kind": "derivation",
+      "title": "Work-Energy Theorem for Constant Force",
+      "statement": "Starting from v^2 - u^2 = 2as, multiplying by m/2 gives 1/2 mv^2 - 1/2 mu^2 = mas = Fs. This motivates defining kinetic energy K = 1/2 mv^2 and work W = Fs, leading to Kf - Ki = W.",
+      "depth": "derived",
+      "pages": [
+        3
+      ],
+      "quote": "The above equation provides a motivation for the definitions of work and kinetic energy"
+    },
+    {
+      "id": "T5",
+      "kind": "definition",
+      "title": "Work Done by a Constant Force",
+      "statement": "Work done by a force is defined as the product of the component of the force in the direction of the displacement and the magnitude of this displacement: W = (F cos θ)d = F.d.",
+      "depth": "stated",
+      "pages": [
+        4
+      ],
+      "quote": "The work done by the force is defined to be the product of component of the force"
+    },
+    {
+      "id": "T6",
+      "kind": "fact",
+      "title": "Conditions for Zero Work",
+      "statement": "No work is done if: (i) the displacement is zero, (ii) the force is zero, or (iii) the force and displacement are mutually perpendicular (θ = 90°).",
+      "depth": "stated",
+      "pages": [
+        4
+      ],
+      "quote": "No work is done if : (i) the displacement is zero as seen in the example"
+    },
+    {
+      "id": "T7",
+      "kind": "example",
+      "title": "Work Done by Friction",
+      "statement": "Example 5.3 calculates the work done by the road on a skidding cycle (negative work) and by the cycle on the road (zero work, as the road does not displace).",
+      "depth": "derived",
+      "pages": [
+        4
+      ],
+      "quote": "Example 5.3 A cyclist comes to a skidding stop in 10 m. During this process"
+    },
+    {
+      "id": "T8",
+      "kind": "definition",
+      "title": "Kinetic Energy",
+      "statement": "If an object of mass m has velocity v, its kinetic energy K is K = 1/2 mv^2. Kinetic energy is a scalar quantity and a measure of the work an object can do by virtue of its motion.",
+      "depth": "stated",
+      "pages": [
+        4
+      ],
+      "quote": "As noted earlier, if an object of mass m has velocity v, its kinetic energy K is"
+    },
+    {
+      "id": "T9",
+      "kind": "example",
+      "title": "Bullet Through Plywood",
+      "statement": "Example 5.4 calculates the emergent speed of a bullet that loses 90% of its kinetic energy passing through plywood, showing speed reduction is not proportional to energy loss.",
+      "depth": "derived",
+      "pages": [
+        5
+      ],
+      "quote": "Example 5.4 In a ballistics demonstration a police officer fires a bullet of mass 50.0 g"
+    },
+    {
+      "id": "T10",
+      "kind": "formula",
+      "title": "Work Done by a Variable Force",
+      "statement": "For a varying force F(x), the work done is the area under the force-displacement curve, expressed as the definite integral W = ∫ F(x) dx from xi to xf.",
+      "depth": "derived",
+      "pages": [
+        5,
+        6
+      ],
+      "quote": "If the displacements are allowed to approach zero, then the number of terms in the sum"
+    },
+    {
+      "id": "T11",
+      "kind": "derivation",
+      "title": "Work-Energy Theorem for Variable Force",
+      "statement": "Using dK/dt = Fv and v = dx/dt, we get dK = Fdx. Integrating from xi to xf gives Kf - Ki = ∫ Fdx = W. This proves the work-energy theorem for variable forces.",
+      "depth": "derived",
+      "pages": [
+        6
+      ],
+      "quote": "We are now familiar with the concepts of work and kinetic energy to prove the work-energy"
+    },
+    {
+      "id": "T12",
+      "kind": "definition",
+      "title": "Potential Energy",
+      "statement": "Potential energy is 'stored' energy by virtue of the position or configuration of a body. For a conservative force F(x), potential energy V(x) is defined such that F(x) = -dV/dx.",
+      "depth": "stated",
+      "pages": [
+        7,
+        8
+      ],
+      "quote": "The word potential suggests possibility or capacity for action. The term potential energy brings"
+    },
+    {
+      "id": "T13",
+      "kind": "formula",
+      "title": "Gravitational Potential Energy",
+      "statement": "Near the earth's surface, the gravitational potential energy of an object of mass m at height h is V(h) = mgh, assuming g is constant.",
+      "depth": "stated",
+      "pages": [
+        7
+      ],
+      "quote": "Gravitational potential energy of an object, as a function of the height h, is denoted by V(h)"
+    },
+    {
+      "id": "T14",
+      "kind": "law",
+      "title": "Conservation of Mechanical Energy",
+      "statement": "The total mechanical energy of a system is conserved if the forces doing work on it are conservative. K + V = constant, or Ki + V(xi) = Kf + V(xf).",
+      "depth": "derived",
+      "pages": [
+        8
+      ],
+      "quote": "The total mechanical energy of a system is conserved if the forces, doing work on it, are"
+    },
+    {
+      "id": "T15",
+      "kind": "example",
+      "title": "Bob on a String",
+      "statement": "Example 5.7 analyzes a bob completing a semi-circular trajectory, deriving the minimum velocity at the lowest point (v0 = sqrt(5gL)) and speeds at other points using energy conservation.",
+      "depth": "derived",
+      "pages": [
+        9
+      ],
+      "quote": "Example 5.7 A bob of mass m is suspended by a light string of length L . It is imparted"
+    },
+    {
+      "id": "T16",
+      "kind": "formula",
+      "title": "Spring Potential Energy",
+      "statement": "For a spring obeying Hooke's Law (Fs = -kx), the potential energy is V(x) = 1/2 kx^2. The work done by the spring force depends only on the end points, making it conservative.",
+      "depth": "derived",
+      "pages": [
+        10,
+        11
+      ],
+      "quote": "We define the potential energy V(x) of the spring to be zero when block and spring system"
+    },
+    {
+      "id": "T17",
+      "kind": "example",
+      "title": "Car Colliding with Spring",
+      "statement": "Example 5.8 calculates the maximum compression of a spring when a car collides with it, using conservation of mechanical energy (Kinetic Energy = Spring Potential Energy).",
+      "depth": "derived",
+      "pages": [
+        11
+      ],
+      "quote": "Example 5.8 To simulate car accidents, auto manufacturers study the collisions of moving cars"
+    },
+    {
+      "id": "T18",
+      "kind": "application",
+      "title": "Non-Conservative Forces and Energy",
+      "statement": "If non-conservative forces (like friction) act, the change in total mechanical energy equals the work done by non-conservative forces: Ef - Ei = Wnc. Example 5.9 applies this to a car with friction.",
+      "depth": "derived",
+      "pages": [
+        12
+      ],
+      "quote": "If the two forces on the body consist of a conservative force Fc and a non-conservative force"
+    },
+    {
+      "id": "T19",
+      "kind": "definition",
+      "title": "Power",
+      "statement": "Power is defined as the time rate at which work is done or energy is transferred. Average power Pav = W/t. Instantaneous power P = dW/dt = F.v.",
+      "depth": "stated",
+      "pages": [
+        13
+      ],
+      "quote": "Power is defined as the time rate at which work is done or energy is transferred"
+    },
+    {
+      "id": "T20",
+      "kind": "example",
+      "title": "Elevator Power",
+      "statement": "Example 5.10 calculates the minimum power delivered by an elevator motor to lift a load at constant speed, considering frictional forces.",
+      "depth": "derived",
+      "pages": [
+        13
+      ],
+      "quote": "Example 5.10 An elevator can carry a maximum load of 1800 kg (elevator + passengers) is moving"
+    },
+    {
+      "id": "T21",
+      "kind": "concept",
+      "title": "Elastic and Inelastic Collisions",
+      "statement": "In all collisions, total linear momentum is conserved. In an elastic collision, total kinetic energy is also conserved. In a completely inelastic collision, the bodies move together after collision.",
+      "depth": "stated",
+      "pages": [
+        14
+      ],
+      "quote": "In all collisions the total linear momentum is conserved; the initial momentum of the system"
+    },
+    {
+      "id": "T22",
+      "kind": "derivation",
+      "title": "One-Dimensional Elastic Collision",
+      "statement": "For a 1D elastic collision, solving momentum and energy conservation equations yields final velocities: v1f = ((m1 - m2)/(m1 + m2))v1i and v2f = (2m1/(m1 + m2))v1i.",
+      "depth": "derived",
+      "pages": [
+        14
+      ],
+      "quote": "Consider next an elastic collision. Using the above nomenclature with θ 1 = θ 2 = 0, the"
+    },
+    {
+      "id": "T23",
+      "kind": "example",
+      "title": "Neutron Moderation",
+      "statement": "Example 5.11 shows that a neutron can lose most of its kinetic energy in an elastic collision with a light nucleus like deuterium, explaining the use of moderators in nuclear reactors.",
+      "depth": "derived",
+      "pages": [
+        15
+      ],
+      "quote": "Example 5.11 Slowing down of neutrons: In a nuclear reactor a neutron of high speed"
+    },
+    {
+      "id": "T24",
+      "kind": "concept",
+      "title": "Two-Dimensional Collisions",
+      "statement": "In 2D collisions, momentum conservation provides two equations (x and y components). If the collision is elastic, a third equation (energy conservation) is available. One angle must be known to solve for the other unknowns.",
+      "depth": "stated",
+      "pages": [
+        15
+      ],
+      "quote": "The x- and y-component equations are m1v1i = m1v1f cos θ 1 + m2v2f cos θ 2"
+    },
+    {
+      "id": "T25",
+      "kind": "example",
+      "title": "Billiard Ball Collision",
+      "statement": "Example 5.12 proves that when two equal masses undergo a glancing elastic collision with one at rest, they move at right angles to each other after the collision.",
+      "depth": "derived",
+      "pages": [
+        15,
+        16
+      ],
+      "quote": "Example 5.12 Consider the collision depicted in Fig. 5.10 to be between two billiard balls"
+    }
+  ],
+  "notation": [
+    {
+      "symbol": "A.B",
+      "meaning": "Scalar product of vectors A and B",
+      "unit": "Scalar",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "symbol": "W",
+      "meaning": "Work done",
+      "unit": "Joule (J)",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "symbol": "K",
+      "meaning": "Kinetic energy",
+      "unit": "Joule (J)",
+      "pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "symbol": "V",
+      "meaning": "Potential energy",
+      "unit": "Joule (J)",
+      "pages": [
+        7,
+        8
+      ]
+    },
+    {
+      "symbol": "P",
+      "meaning": "Power",
+      "unit": "Watt (W)",
+      "pages": [
+        13
+      ]
+    },
+    {
+      "symbol": "k",
+      "meaning": "Spring constant",
+      "unit": "N m^-1",
+      "pages": [
+        10
+      ]
+    },
+    {
+      "symbol": "m",
+      "meaning": "Mass",
+      "unit": "kg",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "symbol": "v",
+      "meaning": "Velocity",
+      "unit": "m s^-1",
+      "pages": [
+        3
+      ]
+    },
+    {
+      "symbol": "g",
+      "meaning": "Acceleration due to gravity",
+      "unit": "m s^-2",
+      "pages": [
+        7
+      ]
+    }
+  ],
+  "conventions": [
+    "The upward direction is taken as positive for gravitational potential energy calculations.",
+    "The zero of potential energy is arbitrary and chosen for convenience (e.g., ground level for gravity, equilibrium position for springs).",
+    "Friction is treated as a non-conservative force.",
+    "Collisions are analyzed assuming no external forces during the short collision time."
+  ],
+  "order": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6",
+    "T7",
+    "T8",
+    "T9",
+    "T10",
+    "T11",
+    "T12",
+    "T13",
+    "T14",
+    "T15",
+    "T16",
+    "T17",
+    "T18",
+    "T19",
+    "T20",
+    "T21",
+    "T22",
+    "T23",
+    "T24",
+    "T25"
+  ],
+  "leaves_out": [
+    "The vector product (cross product) of vectors is deferred to Chapter 6.",
+    "The three-dimensional generalization of potential energy requiring vector derivatives is outside the scope of this book.",
+    "The variation of g with height is discussed in Chapter 7 on Gravitation."
+  ]
+}

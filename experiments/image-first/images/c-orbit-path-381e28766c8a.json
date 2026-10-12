@@ -1,0 +1,15 @@
+{
+  "name": "c-orbit-path",
+  "prompt": "Clean educational illustration, top view, on a plain warm off-white background: a child's hand at the centre whirling a small red stone on a string. A dashed circular line shows the full path the stone travels around the hand. Soft flat colours, no text, no labels.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [],
+  "seconds": 96.2,
+  "job": {
+    "inference_seconds": 94.46552024199627,
+    "peak_allocated_gb": 16.404186725616455,
+    "seed": 12345
+  }
+}

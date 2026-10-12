@@ -1,0 +1,104 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    19
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 19,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "English",
+        "headings": [
+          "WORK, ENERGY AND POWER"
+        ],
+        "page_summary": "This page contains exercises 5.4 through 5.8 for the chapter 'Work, Energy and Power'. Exercise 5.4 involves a potential energy function for simple harmonic motion and references a graph (Fig. 5.12). Exercise 5.5 asks conceptual questions about work and energy in various scenarios (rocket, comet, satellite, and a man carrying/pulling a mass), referencing a diagram (Fig. 5.13). Exercises 5.6, 5.7, and 5.8 consist of multiple-choice, true/false, and reasoning questions regarding conservative forces, collisions, and energy conservation.",
+        "knowledge_points": [
+          "The potential energy function for a particle executing linear simple harmonic motion is given by V(x) = kx²/2, where k is the force constant of the oscillator.",
+          "For k = 0.5 N m⁻¹, a particle of total energy 1 J moving under the potential V(x) = kx²/2 must 'turn back' when it reaches x = ± 2 m.",
+          "The casing of a rocket in flight burns up due to friction; the heat energy required for burning is obtained from the rocket's kinetic energy.",
+          "Comets move around the sun in highly elliptical orbits; the work done by the gravitational force over every complete orbit of the comet is zero.",
+          "An artificial satellite orbiting the earth in very thin atmosphere loses energy due to atmospheric resistance, but its speed increases progressively as it comes closer to the earth.",
+          "In a scenario where a man walks 2 m carrying a mass of 15 kg on his hands versus pulling a rope over a pulley with a 15 kg mass hanging at the other end, the work done is greater in the case of pulling the rope.",
+          "When a conservative force does positive work on a body, the potential energy of the body decreases.",
+          "Work done by a body against friction always results in a loss of its kinetic energy.",
+          "The rate of change of total momentum of a many-particle system is proportional to the external force on the system.",
+          "In an inelastic collision of two bodies, the total linear momentum and total energy of the system of two bodies do not change after the collision.",
+          "In an elastic collision of two bodies, the momentum and energy of each body is not conserved individually, but the total momentum and total kinetic energy of the system are conserved.",
+          "Total energy of a system is always conserved, no matter what internal and external forces on the body are present.",
+          "Work done in the motion of a body over a closed loop is zero for every force in nature is a false statement (it is true only for conservative forces).",
+          "In an inelastic collision, the final kinetic energy is always less than the initial kinetic energy of the system.",
+          "In an elastic collision of two billiard balls, the total kinetic energy is not conserved during the short time of collision when they are in contact (it is converted to potential energy of deformation).",
+          "The total linear momentum is conserved during the short time of an elastic collision of two balls."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "A graph showing a parabolic curve representing potential energy V(x) versus position x. The curve is symmetric about the y-axis, with a minimum at the origin. A horizontal dashed line intersects the curve at two points, indicating the turning points for a specific energy level.",
+            "text": [
+              "V(x)",
+              "x",
+              "Fig. 5.12"
+            ]
+          },
+          {
+            "visual_description": "A diagram illustrating two scenarios involving a man and a 15 kg mass. In part (i), a man is walking to the left carrying a 15 kg mass on his hands. In part (ii), the man is walking to the right pulling a rope that goes over a pulley, with a 15 kg mass hanging at the other end of the rope.",
+            "text": [
+              "15 kg",
+              "15 kg",
+              "(i)",
+              "(ii)",
+              "Fig. 5.13"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "graph",
+            "description": "A graph of potential energy V(x) versus position x for a particle in simple harmonic motion. The graph shows a parabolic curve with a minimum at the origin. A horizontal dashed line indicates the total energy level, intersecting the curve at the turning points.",
+            "educational_role": "Illustrates the relationship between potential energy and position for a simple harmonic oscillator, showing the turning points where the particle's kinetic energy becomes zero.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          },
+          {
+            "kind": "illustration",
+            "description": "A diagram showing two scenarios: (i) a man carrying a 15 kg mass on his hands while walking, and (ii) a man pulling a rope over a pulley with a 15 kg mass hanging at the other end while walking.",
+            "educational_role": "Illustrates two different ways of doing work with the same mass and distance, highlighting the difference in work done due to the direction of force and displacement.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "source_reference_only"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Potential Energy Function",
+      "Simple Harmonic Motion",
+      "Conservative Forces",
+      "Inelastic and Elastic Collisions",
+      "Energy Conservation"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 19,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"English\",\n      \"headings\": [\n        \"WORK, ENERGY AND POWER\"\n      ],\n      \"page_summary\": \"This page contains exercises 5.4 through 5.8 for the chapter 'Work, Energy and Power'. Exercise 5.4 involves a potential energy function for simple harmonic motion and references a graph (Fig. 5.12). Exercise 5.5 asks conceptual questions about work and energy in various scenarios (rocket, comet, satellite, and a man carrying/pulling a mass), referencing a diagram (Fig. 5.13). Exercises 5.6, 5.7, and 5.8 consist of multiple-choice, true/false, and reasoning questions regarding conservative forces, collisions, and energy conservation.\",\n      \"knowledge_points\": [\n        \"The potential energy function for a particle executing linear simple harmonic motion is given by V(x) = kx²/2, where k is the force constant of the oscillator.\",\n        \"For k = 0.5 N m⁻¹, a particle of total energy 1 J moving under the potential V(x) = kx²/2 must 'turn back' when it reaches x = ± 2 m.\",\n        \"The casing of a rocket in flight burns up due to friction; the heat energy required for burning is obtained from the rocket's kinetic energy.\",\n        \"Comets move around the sun in highly elliptical orbits; the work done by the gravitational force over every complete orbit of the comet is zero.\",\n        \"An artificial satellite orbiting the earth in very thin atmosphere loses energy due to atmospheric resistance, but its speed increases progressively as it comes closer to the earth.\",\n        \"In a scenario where a man walks 2 m carrying a mass of 15 kg on his hands versus pulling a rope over a pulley with a 15 kg mass hanging at the other end, the work done is greater in the case of pulling the rope.\",\n        \"When a conservative force does positive work on a body, the potential energy of the body decreases.\",\n        \"Work done by a body against friction always results in a loss of its kinetic energy.\",\n        \"The rate of change of total momentum of a many-particle system is proportional to the external force on the system.\",\n        \"In an inelastic collision of two bodies, the total linear momentum and total energy of the system of two bodies do not change after the collision.\",\n        \"In an elastic collision of two bodies, the momentum and energy of each body is not conserved individually, but the total momentum and total kinetic energy of the system are conserved.\",\n        \"Total energy of a system is always conserved, no matter what internal and external forces on the body are present.\",\n        \"Work done in the motion of a body over a closed loop is zero for every force in nature is a false statement (it is true only for conservative forces).\",\n        \"In an inelastic collision, the final kinetic energy is always less than the initial kinetic energy of the system.\",\n        \"In an elastic collision of two billiard balls, the total kinetic energy is not conserved during the short time of collision when they are in contact (it is converted to potential energy of deformation).\",\n        \"The total linear momentum is conserved during the short time of an elastic collision of two balls.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"A graph showing a parabolic curve representing potential energy V(x) versus position x. The curve is symmetric about the y-axis, with a minimum at the origin. A horizontal dashed line intersects the curve at two points, indicating the turning points for a specific energy level.\",\n          \"text\": [\n            \"V(x)\",\n            \"x\",\n            \"Fig. 5.12\"\n          ]\n        },\n        {\n          \"visual_description\": \"A diagram illustrating two scenarios involving a man and a 15 kg mass. In part (i), a man is walking to the left carrying a 15 kg mass on his hands. In part (ii), the man is walking to the right pulling a rope that goes over a pulley, with a 15 kg mass hanging at the other end of the rope.\",\n          \"text\": [\n            \"15 kg\",\n            \"15 kg\",\n            \"(i)\",\n            \"(ii)\",\n            \"Fig. 5.13\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"graph\",\n          \"description\": \"A graph of potential energy V(x) versus position x for a particle in simple harmonic motion. The graph shows a parabolic curve with a minimum at the origin. A horizontal dashed line indicates the total energy level, intersecting the curve at the turning points.\",\n          \"educational_role\": \"Illustrates the relationship between potential energy and position for a simple harmonic oscillator, showing the turning points where the particle's kinetic energy becomes zero.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        },\n        {\n          \"kind\": \"illustration\",\n          \"description\": \"A diagram showing two scenarios: (i) a man carrying a 15 kg mass on his hands while walking, and (ii) a man pulling a rope over a pulley with a 15 kg mass hanging at the other end while walking.\",\n          \"educational_role\": \"Illustrates two different ways of doing work with the same mass and distance, highlighting the difference in work done due to the direction of force and displacement.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"source_reference_only\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work, Energy and Power\",\n    \"Potential Energy Function\",\n    \"Simple Harmonic Motion\",\n    \"Conservative Forces\",\n    \"Inelastic and Elastic Collisions\",\n    \"Energy Conservation\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 1434,
+    "prompt_tokens": 3743,
+    "total_tokens": 5177,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

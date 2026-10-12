@@ -1,0 +1,8 @@
+{
+  "schema_version": "phase1_current_enrichment_v1",
+  "enrichment_fingerprint": "b3eb7dd02b91b04870a1fca6e176a0fce7432d06b61f636ccd983de70353f4cd",
+  "version": "b3eb7dd02b91b048",
+  "version_path": "enrichment/b3eb7dd02b91b048",
+  "status": "candidate_pending_independent_audit",
+  "updated_at_utc": "2026-10-09T05:18:03.238211+00:00"
+}

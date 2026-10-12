@@ -1,0 +1,17 @@
+{
+  "name": "b-empty",
+  "prompt": "Edit the reference engine cutaway: remove the piston, the connecting rod and the crankshaft, leaving the empty cylinder bore and the empty crankcase cavity with clean walls. Keep the engine housing, ports, valves, springs and spark plug exactly identical and in the same position.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/inputs/engine-canvas.png"
+  ],
+  "seconds": 104.3,
+  "job": {
+    "inference_seconds": 103.14649898000062,
+    "peak_allocated_gb": 19.095105171203613,
+    "seed": 12345
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    15
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 15,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "WORK, ENERGY AND POWER",
+          "5.11.3 Collisions in Two Dimensions"
+        ],
+        "page_summary": "The page discusses the slowing down of neutrons in nuclear reactors (Example 5.11) and the physics of collisions in two dimensions. It derives the fractional kinetic energy lost by a neutron in an elastic collision with a moderator (deuterium or carbon) and presents the vector equations for momentum conservation in 2D collisions (Eqs. 5.28-5.30). It concludes with Example 5.12 regarding a collision between two billiard balls.",
+        "knowledge_points": [
+          "In a nuclear reactor, a neutron of high speed (typically 10^7 m s^-1) must be slowed to 10^3 m s^-1 to interact with isotope 235/92 U and cause fission.",
+          "A neutron can lose most of its kinetic energy in an elastic collision with a light nucleus like deuterium or carbon.",
+          "The material making up the light nuclei (heavy water D2O or graphite) is called a moderator.",
+          "The fractional kinetic energy lost by a neutron in an elastic collision is f1 = ((m1 - m2) / (m1 + m2))^2.",
+          "The fractional kinetic energy gained by the moderating nuclei is f2 = 1 - f1 = 4m1m2 / (m1 + m2)^2.",
+          "For deuterium (m2 = 2m1), f1 = 1/9 and f2 = 8/9, meaning almost 90% of the neutron's energy is transferred to deuterium.",
+          "For carbon, f1 = 71.6% and f2 = 28.4%.",
+          "In a two-dimensional collision, linear momentum is conserved, implying three equations for directions {x, y, z}.",
+          "The conservation of the z-component of linear momentum implies the entire collision is in the x-y plane.",
+          "The x-component equation for momentum conservation is m1v1i = m1v1f cos θ1 + m2v2f cos θ2 (Eq. 5.28).",
+          "The y-component equation for momentum conservation is 0 = m1v1f sin θ1 - m2v2f sin θ2 (Eq. 5.29).",
+          "For an elastic collision, kinetic energy is conserved: 1/2 m1v1i^2 = 1/2 m1v1f^2 + 1/2 m2v2f^2 (Eq. 5.30).",
+          "To solve for the four unknowns {v1f, v2f, θ1, θ2}, at least one angle (e.g., θ1) must be known.",
+          "Example 5.12 considers a collision between two billiard balls with equal masses (m1 = m2), where the target ball is at an angle θ2 = 37°."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Example 5.11 text box",
+            "text": [
+              "Example 5.11 Slowing down of neutrons:",
+              "In a nuclear reactor a neutron of high speed (typically 10^7 m s^-1) must be slowed to 10^3 m s^-1 so that it can have a high probability of interacting with isotope 235/92 U and causing it to fission. Show that a neutron can lose most of its kinetic energy in an elastic collision with a light nucle",
+              "like deuterium or carbon which has a mass of only a few times the neutron mass. The material making up the light nuclei, usually heavy water (D2O) or graphite, is called a moderator."
+            ]
+          },
+          {
+            "visual_description": "Example 5.12 text box",
+            "text": [
+              "Example 5.12 Consider the collision depicted in Fig. 5.10 to be between two billiard balls with equal masses m1 = m2. The first ball is called the cue while the second ball is called the target. The billiard player wants to 'sink' the target ball in a corner pocket, which is at an angle θ2 = 37°. A",
+              "Assume that the collision is elastic and that friction and rotational motion are not important. Obtain θ1."
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "Example 5.11 text box",
+            "educational_role": "Illustrates the concept of neutron slowing down in a nuclear reactor and defines the moderator.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "source_reference_only"
+          },
+          {
+            "kind": "diagram",
+            "description": "Example 5.12 text box",
+            "educational_role": "Poses a problem about a collision between two billiard balls.",
+            "evidence": "printed_text",
+            "confidence": "high",
+            "text_dependency": "none",
+            "recreation_route": "source_reference_only"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Work, Energy and Power",
+      "Collisions in Two Dimensions",
+      "Neutron Moderation"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 15,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"WORK, ENERGY AND POWER\",\n        \"5.11.3 Collisions in Two Dimensions\"\n      ],\n      \"page_summary\": \"The page discusses the slowing down of neutrons in nuclear reactors (Example 5.11) and the physics of collisions in two dimensions. It derives the fractional kinetic energy lost by a neutron in an elastic collision with a moderator (deuterium or carbon) and presents the vector equations for momentum conservation in 2D collisions (Eqs. 5.28-5.30). It concludes with Example 5.12 regarding a collision between two billiard balls.\",\n      \"knowledge_points\": [\n        \"In a nuclear reactor, a neutron of high speed (typically 10^7 m s^-1) must be slowed to 10^3 m s^-1 to interact with isotope 235/92 U and cause fission.\",\n        \"A neutron can lose most of its kinetic energy in an elastic collision with a light nucleus like deuterium or carbon.\",\n        \"The material making up the light nuclei (heavy water D2O or graphite) is called a moderator.\",\n        \"The fractional kinetic energy lost by a neutron in an elastic collision is f1 = ((m1 - m2) / (m1 + m2))^2.\",\n        \"The fractional kinetic energy gained by the moderating nuclei is f2 = 1 - f1 = 4m1m2 / (m1 + m2)^2.\",\n        \"For deuterium (m2 = 2m1), f1 = 1/9 and f2 = 8/9, meaning almost 90% of the neutron's energy is transferred to deuterium.\",\n        \"For carbon, f1 = 71.6% and f2 = 28.4%.\",\n        \"In a two-dimensional collision, linear momentum is conserved, implying three equations for directions {x, y, z}.\",\n        \"The conservation of the z-component of linear momentum implies the entire collision is in the x-y plane.\",\n        \"The x-component equation for momentum conservation is m1v1i = m1v1f cos θ1 + m2v2f cos θ2 (Eq. 5.28).\",\n        \"The y-component equation for momentum conservation is 0 = m1v1f sin θ1 - m2v2f sin θ2 (Eq. 5.29).\",\n        \"For an elastic collision, kinetic energy is conserved: 1/2 m1v1i^2 = 1/2 m1v1f^2 + 1/2 m2v2f^2 (Eq. 5.30).\",\n        \"To solve for the four unknowns {v1f, v2f, θ1, θ2}, at least one angle (e.g., θ1) must be known.\",\n        \"Example 5.12 considers a collision between two billiard balls with equal masses (m1 = m2), where the target ball is at an angle θ2 = 37°.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Example 5.11 text box\",\n          \"text\": [\n            \"Example 5.11 Slowing down of neutrons:\",\n            \"In a nuclear reactor a neutron of high speed (typically 10^7 m s^-1) must be slowed to 10^3 m s^-1 so that it can have a high probability of interacting with isotope 235/92 U and causing it to fission. Show that a neutron can lose most of its kinetic energy in an elastic collision with a light nucle\",\n            \"like deuterium or carbon which has a mass of only a few times the neutron mass. The material making up the light nuclei, usually heavy water (D2O) or graphite, is called a moderator.\"\n          ]\n        },\n        {\n          \"visual_description\": \"Example 5.12 text box\",\n          \"text\": [\n            \"Example 5.12 Consider the collision depicted in Fig. 5.10 to be between two billiard balls with equal masses m1 = m2. The first ball is called the cue while the second ball is called the target. The billiard player wants to 'sink' the target ball in a corner pocket, which is at an angle θ2 = 37°. A\",\n            \"Assume that the collision is elastic and that friction and rotational motion are not important. Obtain θ1.\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Example 5.11 text box\",\n          \"educational_role\": \"Illustrates the concept of neutron slowing down in a nuclear reactor and defines the moderator.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"source_reference_only\"\n        },\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"Example 5.12 text box\",\n          \"educational_role\": \"Poses a problem about a collision between two billiard balls.\",\n          \"evidence\": \"printed_text\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"none\",\n          \"recreation_route\": \"source_reference_only\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Work, Energy and Power\",\n    \"Collisions in Two Dimensions\",\n    \"Neutron Moderation\"\n  ]\n,\n  \"uncertainties\": []\n}\n",
+  "usage": {
+    "completion_tokens": 1368,
+    "prompt_tokens": 3981,
+    "total_tokens": 5349,
+    "prompt_tokens_details": {
+      "cached_tokens": 93
+    }
+  },
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}

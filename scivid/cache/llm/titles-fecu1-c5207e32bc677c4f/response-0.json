@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"The Wonderful World of Science\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"Diversity in the Living World\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"Mindful Eating: A Path to a Healthy Body\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"Exploring Magnets\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"Measurement of Length and Motion\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"Materials Around Us\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"Temperature and Its Measurement\"\n    },\n    {\n      \"chapter\": 8,\n      \"title\": \"A Journey through States of Water\"\n    },\n    {\n      \"chapter\": 9,\n      \"title\": \"Methods of Separation in Everyday Life\"\n    },\n    {\n      \"chapter\": 10,\n      \"title\": \"Living Creatures: Exploring Their Characteristics\"\n    },\n    {\n      \"chapter\": 11,\n      \"title\": \"Nature's Treasures\"\n    },\n    {\n      \"chapter\": 12,\n      \"title\": \"Beyond Earth\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791387833,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 332,
+    "prompt_tokens": 4620,
+    "total_tokens": 4952,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-QP3L2POd8s96dpviO7mJ7OUCw9qUIE3W",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 4620,
+    "prompt_ms": 5999.118,
+    "prompt_per_token_ms": 1.2985103896103898,
+    "prompt_per_second": 770.1132066413762,
+    "predicted_n": 332,
+    "predicted_ms": 6970.947,
+    "predicted_per_token_ms": 20.996828313253012,
+    "predicted_per_second": 47.62624073888382,
+    "draft_n": 222,
+    "draft_n_accepted": 222
+  },
+  "elapsed_seconds": 13.96
+}

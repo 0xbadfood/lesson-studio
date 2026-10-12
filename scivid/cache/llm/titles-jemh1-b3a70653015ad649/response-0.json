@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"chapters\": [\n    {\n      \"chapter\": 1,\n      \"title\": \"Real Numbers\"\n    },\n    {\n      \"chapter\": 2,\n      \"title\": \"Polynomials\"\n    },\n    {\n      \"chapter\": 3,\n      \"title\": \"Pair Of Linear Equations In Two Variables\"\n    },\n    {\n      \"chapter\": 4,\n      \"title\": \"Quadratic Equations\"\n    },\n    {\n      \"chapter\": 5,\n      \"title\": \"Arithmetic Progressions\"\n    },\n    {\n      \"chapter\": 6,\n      \"title\": \"Triangles\"\n    },\n    {\n      \"chapter\": 7,\n      \"title\": \"Coordinate Geometry\"\n    },\n    {\n      \"chapter\": 8,\n      \"title\": \"Introduction To Trigonometry\"\n    },\n    {\n      \"chapter\": 9,\n      \"title\": \"Some Applications Of Trigonometry\"\n    },\n    {\n      \"chapter\": 10,\n      \"title\": \"Circles\"\n    },\n    {\n      \"chapter\": 11,\n      \"title\": \"Areas Related To Circles\"\n    },\n    {\n      \"chapter\": 12,\n      \"title\": \"Surface Areas And Volumes\"\n    },\n    {\n      \"chapter\": 13,\n      \"title\": \"Statistics\"\n    },\n    {\n      \"chapter\": 14,\n      \"title\": \"Probability\"\n    }\n  ]\n}"
+      }
+    }
+  ],
+  "created": 1791388002,
+  "model": "Qwen3.8-27B-Q4_K_M.gguf",
+  "system_fingerprint": "b9592-ac4cddeb0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 361,
+    "prompt_tokens": 3680,
+    "total_tokens": 4041,
+    "prompt_tokens_details": {
+      "cached_tokens": 37
+    }
+  },
+  "id": "chatcmpl-7FsgJ0aF7lLXElSwO3zOiOhxdKoOPHmw",
+  "timings": {
+    "cache_n": 37,
+    "prompt_n": 3643,
+    "prompt_ms": 4691.26,
+    "prompt_per_token_ms": 1.28774636288773,
+    "prompt_per_second": 776.5504363433278,
+    "predicted_n": 361,
+    "predicted_ms": 7510.537,
+    "predicted_per_token_ms": 20.804811634349033,
+    "predicted_per_second": 48.06580408298368,
+    "draft_n": 240,
+    "draft_n_accepted": 240
+  },
+  "elapsed_seconds": 13.04
+}

@@ -1,0 +1,17 @@
+{
+  "name": "c-orbit-clean",
+  "prompt": "Edit the reference illustration: remove only the dashed circular path line. Keep the hand, string, stone, background and framing exactly identical.",
+  "width": 1664,
+  "height": 944,
+  "steps": 30,
+  "seed": 12345,
+  "references": [
+    "/home/nitin/manim/experiments/image-first/images/c-orbit-path-381e28766c8a.png"
+  ],
+  "seconds": 102.3,
+  "job": {
+    "inference_seconds": 101.37544940999942,
+    "peak_allocated_gb": 19.101996421813965,
+    "seed": 12345
+  }
+}

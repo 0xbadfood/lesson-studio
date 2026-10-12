@@ -1,0 +1,55 @@
+{
+  "mechanism_check": {
+    "throw_drawn_px": 97.3,
+    "throw_used_px": 78.5,
+    "throw_adapted_for_clearance": true,
+    "rod_length_error_px": 5.684341886080802e-14,
+    "stroke_px": 157.02345460417405,
+    "tdc_wrist_y": 302.59002222144534,
+    "bdc_wrist_y": 459.6134768256194
+  },
+  "clearance": {
+    "chamber_roof_y": 213,
+    "tdc_crown_y": 228.7,
+    "clearance_px": 15.7,
+    "geometric_compression_ratio": 11.0
+  },
+  "schedule_issues": [],
+  "crank_keys": [
+    [
+      0.0,
+      2.4
+    ],
+    [
+      1.835,
+      2.4
+    ],
+    [
+      3.67,
+      -90.0
+    ],
+    [
+      3.87,
+      -90.0
+    ],
+    [
+      16.19,
+      90.0
+    ],
+    [
+      20.473,
+      90.0
+    ],
+    [
+      27.343,
+      270.0
+    ],
+    [
+      31.96,
+      270.0
+    ]
+  ],
+  "duration": 31.959999999999997,
+  "audio_offset": 27.113333333333333,
+  "cues": 14
+}

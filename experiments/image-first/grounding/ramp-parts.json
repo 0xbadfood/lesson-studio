@@ -1,0 +1,51 @@
+{
+  "parts": [
+    {
+      "id": "ball",
+      "role": "moving_object",
+      "bbox": [
+        167,
+        337,
+        203,
+        399
+      ],
+      "points": {
+        "centre": [
+          185,
+          368
+        ]
+      },
+      "motion": "Rolls/swings along the concave track surface like a pendulum: starts at rest on the left rim, accelerates down the left curve, crosses the bottom, climbs the right curve to the right rim, then oscillates back and forth (energy gradually lost to friction).",
+      "linked_to": [
+        "track"
+      ]
+    },
+    {
+      "id": "track",
+      "role": "fixed_reference",
+      "bbox": [
+        145,
+        392,
+        845,
+        747
+      ],
+      "points": {
+        "centre": [
+          495,
+          660
+        ],
+        "left_rim": [
+          203,
+          398
+        ],
+        "right_rim": [
+          797,
+          398
+        ]
+      },
+      "motion": "fixed (stationary U-shaped wooden track / half-pipe; the ball's motion is measured relative to its surface)",
+      "linked_to": []
+    }
+  ],
+  "notes": "Only the blue sphere moves; the wooden U-track is the static frame of reference. The ball's path is constrained to the inner concave surface, so its motion is a pendulum-like oscillation between the two rims (left_rim and right_rim mark the turning points, centre marks the lowest point of the curve). No string, hand, or other moving parts are present."
+}

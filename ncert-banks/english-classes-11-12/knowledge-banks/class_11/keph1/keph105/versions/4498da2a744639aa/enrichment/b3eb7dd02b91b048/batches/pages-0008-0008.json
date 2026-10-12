@@ -1,0 +1,74 @@
+{
+  "schema_version": "phase1_page_inspection_batch_v1",
+  "pages": [
+    8
+  ],
+  "parsed": {
+    "vision_input_worked": true,
+    "pages": [
+      {
+        "page": 8,
+        "readability": "readable",
+        "native_text_alignment": "complete",
+        "ocr_needed": false,
+        "ocr_reason": null,
+        "detected_language": "en",
+        "headings": [
+          "5.8 THE CONSERVATION OF MECHANICAL ENERGY"
+        ],
+        "page_summary": "The page defines conservative forces and the conservation of mechanical energy. It establishes that for a conservative force, the work done depends only on the endpoints, and the total mechanical energy (K + V) remains constant. It includes a diagram (Fig. 5.5) illustrating a ball falling from a cliff, showing the conversion of potential energy to kinetic energy.",
+        "knowledge_points": [
+          "A force F(x) is conservative if it can be written as F(x) = -dV/dx.",
+          "The work done by a conservative force depends only on the initial and final positions.",
+          "The dimensions of potential energy are [ML²T⁻²] and the unit is joule (J).",
+          "The change in potential energy is equal to the negative of the work done by the force: ΔV = -F(x)Δx (Eq. 5.9).",
+          "For a conservative force, the sum of kinetic and potential energy is constant: Δ(K + V) = 0 (Eq. 5.10).",
+          "The total mechanical energy is conserved if the forces doing work are conservative.",
+          "A force is conservative if the work done in a closed path is zero."
+        ],
+        "embedded_text": [
+          {
+            "visual_description": "Fig. 5.5: A diagram showing a ball falling from a cliff of height H.",
+            "text": [
+              "x",
+              "v = 0",
+              "v = vh",
+              "v = vf",
+              "h",
+              "H"
+            ]
+          }
+        ],
+        "embedded_text_complete": true,
+        "human_visual_review_needed": false,
+        "visuals": [
+          {
+            "kind": "diagram",
+            "description": "A diagram illustrating a ball of mass m being dropped from a cliff of height H. It shows the ball at three positions: at the top (v=0), at an intermediate height h (v=vh), and at the bottom (v=vf). The vertical axis is labeled 'x'.",
+            "educational_role": "Illustrates the conversion of potential energy to kinetic energy as a ball falls.",
+            "evidence": "depicted",
+            "confidence": "high",
+            "text_dependency": "labels",
+            "recreation_route": "deterministic_renderer"
+          }
+        ]
+      }
+    ],
+    "batch_topics": [
+      "Conservative forces",
+      "Conservation of mechanical energy",
+      "Potential and kinetic energy"
+    ],
+    "uncertainties": []
+  },
+  "response_text": "{\n  \"vision_input_worked\": true,\n  \"pages\": [\n    {\n      \"page\": 8,\n      \"readability\": \"readable\",\n      \"native_text_alignment\": \"complete\",\n      \"ocr_needed\": false,\n      \"ocr_reason\": null,\n      \"detected_language\": \"en\",\n      \"headings\": [\n        \"5.8 THE CONSERVATION OF MECHANICAL ENERGY\"\n      ],\n      \"page_summary\": \"The page defines conservative forces and the conservation of mechanical energy. It establishes that for a conservative force, the work done depends only on the endpoints, and the total mechanical energy (K + V) remains constant. It includes a diagram (Fig. 5.5) illustrating a ball falling from a cliff, showing the conversion of potential energy to kinetic energy.\",\n      \"knowledge_points\": [\n        \"A force F(x) is conservative if it can be written as F(x) = -dV/dx.\",\n        \"The work done by a conservative force depends only on the initial and final positions.\",\n        \"The dimensions of potential energy are [ML²T⁻²] and the unit is joule (J).\",\n        \"The change in potential energy is equal to the negative of the work done by the force: ΔV = -F(x)Δx (Eq. 5.9).\",\n        \"For a conservative force, the sum of kinetic and potential energy is constant: Δ(K + V) = 0 (Eq. 5.10).\",\n        \"The total mechanical energy is conserved if the forces doing work are conservative.\",\n        \"A force is conservative if the work done in a closed path is zero.\"\n      ],\n      \"embedded_text\": [\n        {\n          \"visual_description\": \"Fig. 5.5: A diagram showing a ball falling from a cliff of height H.\",\n          \"text\": [\n            \"x\",\n            \"v = 0\",\n            \"v = vh\",\n            \"v = vf\",\n            \"h\",\n            \"H\"\n          ]\n        }\n      ],\n      \"embedded_text_complete\": true,\n      \"human_visual_review_needed\": false,\n      \"visuals\": [\n        {\n          \"kind\": \"diagram\",\n          \"description\": \"A diagram illustrating a ball of mass m being dropped from a cliff of height H. It shows the ball at three positions: at the top (v=0), at an intermediate height h (v=vh), and at the bottom (v=vf). The vertical axis is labeled 'x'.\",\n          \"educational_role\": \"Illustrates the conversion of potential energy to kinetic energy as a ball falls.\",\n          \"evidence\": \"depicted\",\n          \"confidence\": \"high\",\n          \"text_dependency\": \"labels\",\n          \"recreation_route\": \"deterministic_renderer\"\n        }\n      ]\n    }\n  ]\n,\n  \"batch_topics\": [\n    \"Conservative forces\",\n    \"Conservation of mechanical energy\",\n    \"Potential and kinetic energy\"\n  ]\n,\n  \"uncertainties\": []\n}",
+  "usage": {
+    "prompt_tokens": 3397,
+    "total_tokens": 4092,
+    "completion_tokens": 695,
+    "prompt_tokens_details": null
+  },
+  "model": "qwen3.8-27b",
+  "attempt_count": 1,
+  "rejected_attempt_errors": []
+}
