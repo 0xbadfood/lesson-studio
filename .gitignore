@@ -32,3 +32,4 @@ __pycache__/
 
 # Third-party binaries (x86-only fetcher; installed per host)
 kb_research/obscura
+.service.env
