@@ -151,17 +151,19 @@ def main(argv=None):
         return 0
 
     amd = Amd(log)
-    lanes = [('spark', SPARK_LLM)]
-    if not args.no_amd and amd.borrow():
-        lanes.append(('amd', AMD_LLM))
     todo = queue.Queue()
     for ref in refs:
         todo.put(ref)
-    stop, results = threading.Event(), []
-    threads = [threading.Thread(target=lane, args=(name, url, todo, deadline, stop, results, log), daemon=True)
-               for name, url in lanes]
-    for t in threads:
-        t.start()
+    stop, results, lanes, threads = threading.Event(), [], [], []
+
+    def start(name, url):
+        lanes.append((name, url))
+        threads.append(threading.Thread(target=lane, args=(name, url, todo, deadline, stop, results, log), daemon=True))
+        threads[-1].start()
+
+    start('spark', SPARK_LLM)                         # the Spark works while the amdserver loads (~7 min)
+    if len(refs) > 1 and not args.no_amd and amd.borrow() and not todo.empty():
+        start('amd', AMD_LLM)
     try:
         while any(t.is_alive() for t in threads):
             time.sleep(30)
