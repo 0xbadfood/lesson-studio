@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import queue
+import signal
 import sqlite3
 import sys
 import threading
@@ -36,6 +37,7 @@ AMD_LLM = 'http://192.168.0.103:8001/v1'
 FILM_QUEUE = Path('/home/nitin/remotion/artifacts/interface/queue.sqlite3')
 QUEUE_FILE = HERE / 'digest-queue.txt'
 LOGS = digest.OUT / 'nightly'
+BORROWED = LOGS / 'amd-borrowed'      # present while this job holds the amdserver in LLM mode (survives a restart)
 
 
 def film_busy(path=FILM_QUEUE):
@@ -61,8 +63,19 @@ def http(url, method='GET', timeout=10):
 class Amd:
     """The amdserver's mode, borrowed for the night and given back."""
 
-    def __init__(self, log):
-        self.log, self.switched = log, False
+    def __init__(self, log, marker=BORROWED):
+        self.log, self.marker = log, marker
+
+    @property
+    def switched(self):
+        return self.marker.exists()
+
+    def mark(self, held):
+        if held:
+            self.marker.parent.mkdir(parents=True, exist_ok=True)
+            self.marker.write_text(datetime.now().isoformat(timespec='seconds'))
+        else:
+            self.marker.unlink(missing_ok=True)
 
     def status(self):
         try:
@@ -81,7 +94,7 @@ class Amd:
                 return False
             if status.get('target') != 'llm':
                 http(AMD_MODE + '/mode/llm', 'POST')
-            self.switched = status['mode'] == 'image' or status.get('target') == 'llm'
+            self.mark(self.switched or status['mode'] == 'image' or status.get('target') == 'llm')
             self.log('amd: switching to LLM mode')
             started = time.monotonic()
             while time.monotonic() - started < wait:
@@ -99,7 +112,7 @@ class Amd:
     def give_back(self):
         if not self.switched:
             return
-        self.switched = False
+        self.mark(False)
         try:
             http(AMD_MODE + '/mode/image', 'POST')
             self.log('amd: switched back to image mode')
@@ -148,9 +161,11 @@ def main(argv=None):
         return 0
     if film_busy():
         log('an infofilm job is queued or running: skipping tonight')
+        Amd(log).give_back()                          # left in LLM mode by an interrupted night
         return 0
 
     amd = Amd(log)
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))   # systemctl stop: still give the amdserver back
     todo = queue.Queue()
     for ref in refs:
         todo.put(ref)

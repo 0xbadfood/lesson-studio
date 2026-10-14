@@ -256,14 +256,22 @@ RESEARCH_PROMPT = search_agent.SYSTEM_PROMPT.replace(
     'bodies, encyclopaedias and textbooks. Give concrete values with units and say what they depend on.\n')
 
 
+def obscura():
+    """The page fetcher: beside this file on the AI server, in the kbagent folder on the Spark."""
+    local = HERE / 'obscura'
+    return (local if local.is_file() else Path(Settings.from_env().kbagent_root) / 'obscura').resolve()
+
+
 def run_research(gap, chapter, out, qwen_url, model_id, api_key, tavily_key, log):
     path = out / 'research' / f'{gap["id"]}.json'
     if path.exists():
-        return json.loads(path.read_text())
+        saved = json.loads(path.read_text())
+        if not (saved.get('error') and not saved.get('fetched')):     # nothing fetched: try again
+            return saved
     question = (f'{gap["research_question"]}\n(Context: preparing a lesson for {audience(chapter["class"])} on '
                 f'"{chapter["title"]}". The point to support: {gap["missing"]})')
     tools = search_agent.ResearchTools(tavily=search_agent.TavilyClient(api_key=tavily_key),
-                                       obscura_path=(HERE / 'obscura').resolve(), max_searches=2, max_fetches=5)
+                                       obscura_path=obscura(), max_searches=2, max_fetches=5)
     qwen = search_agent.QwenClient(qwen_url, model_id, api_key, timeout=600)
     started = time.monotonic()
     try:

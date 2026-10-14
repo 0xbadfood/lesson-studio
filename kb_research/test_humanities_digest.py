@@ -62,6 +62,24 @@ class NightlyTests(unittest.TestCase):
         (self.root / 'jess3-01').mkdir(); (self.root / 'jess3-01' / 'digest.json').write_text('{}')
         self.assertEqual(nightly.wanted(queue, self.root), ['jess3:02'])
 
+    def test_borrow_marker_survives_a_restart(self):
+        from unittest.mock import patch
+        marker, calls = self.root / 'amd-borrowed', []
+        amd = nightly.Amd(print, marker)
+        statuses = iter([{'mode': 'image', 'services': {'llm': 'down'}},
+                         {'mode': 'llm', 'services': {'llm': 'up'}}])
+        with patch.object(nightly, 'http', lambda url, method='GET', timeout=10: calls.append(url) or {}), \
+                patch.object(nightly.Amd, 'status', lambda self: next(statuses)), patch.object(nightly.time, 'sleep'):
+            self.assertTrue(amd.borrow())
+            self.assertTrue(nightly.Amd(print, marker).switched)          # a restarted job knows it holds it
+            nightly.Amd(print, marker).give_back()
+        self.assertFalse(marker.exists())
+        self.assertEqual([u.rsplit('/', 2)[-1] for u in calls], ['llm', 'image'])
+
+    def test_empty_calculation_entry_is_ignored(self):
+        self.assertEqual(d.calculation_errors({'content': 'Gandhi reached Dandi in April 1930.',
+                                               'calculations': [{'expr': None, 'value': None}]}), [])
+
 
 if __name__ == '__main__':
     unittest.main()

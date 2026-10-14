@@ -766,6 +766,8 @@ def calculation_errors(addition):
     errors = []
     values = []
     for c in addition.get('calculations') or []:
+        if isinstance(c, dict) and str(c.get('expr') or '').strip() in ('', 'None', 'null'):
+            continue                                # an empty entry (a model writes null when nothing is computed)
         try:
             got = evaluate(c.get('expr', ''))
         except (ValueError, SyntaxError, TypeError, ZeroDivisionError, OverflowError) as exc:
