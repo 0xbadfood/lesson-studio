@@ -1,0 +1,7 @@
+# Chapters the nightly digest job builds (systemd user timer nightly-digest.timer); done ones are skipped.
+# Pilot 2026-10-14: Class 10 History, India and the Contemporary World II.
+jess3:01
+jess3:02
+jess3:03
+jess3:04
+jess3:05

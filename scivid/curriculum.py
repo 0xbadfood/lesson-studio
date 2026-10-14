@@ -132,10 +132,71 @@ def clean_titles(root, chat):
 
 
 def find(root, chapter_ref):
-    for c in catalog(str(root)):
+    for c in catalog(str(root)) + humanities_catalog(str(root)):
         if c['id'] == chapter_ref:
             return c
     raise KeyError(f'Unknown chapter {chapter_ref}')
+
+
+# Humanities books (infofilm digests, not Lesson Studio): Classes 8-10 have Social Science books, Classes 11-12 one
+# folder per subject. A Social Science book's subject comes from its title; the new integrated books (Exploring
+# Society, Understanding Society) mix subjects and stay "social_science".
+HUMANITIES_CLASSES = ['08', '09', '10', '11', '12']
+HUMANITIES_FOLDERS = {'Social Science': None, 'History': 'history', 'Geography': 'geography',
+                      'Political Science': 'political_science', 'Economics': 'economics', 'Sociology': 'sociology'}
+SOCIAL_SCIENCE_TITLES = [('india-and-the-contemporary-world', 'history'), ('our-pasts', 'history'),
+                         ('contemporary-india', 'geography'), ('resources-and-development', 'geography'),
+                         ('economic', 'economics'), ('democratic-politics', 'political_science'),
+                         ('social-and-political-life', 'political_science')]
+HUMANITIES_SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology', 'social_science'}
+
+
+def contents_titles(prelims):
+    """{chapter number: title} from a humanities book's contents page, where chapters are listed as roman numerals
+    ("II. Nationalism in India") or plain numbers ("2. Nationalism in India")."""
+    if not Path(prelims).exists():
+        return {}
+    text = subprocess.run(['pdftotext', str(prelims), '-'], capture_output=True, text=True, timeout=60).stdout
+    start = [m.end() for m in re.finditer(r'(?mi)^\s*contents\s*$', text)]
+    if not start:
+        return {}
+    text = text[start[-1]:start[-1] + 3000]          # the contents page only (forewords list numbered people)
+    roman = {'I': 1, 'V': 5, 'X': 10}
+    to_int = lambda r: sum(-roman[a] if roman[a] < roman.get(b, 0) else roman[a]  # noqa: E731
+                           for a, b in zip(r, r[1:] + ' '))
+    titles = {}
+    for m in re.finditer(r'(?m)^\s*([IVX]{1,5}|\d{1,2})\.\s+([A-Z][^\n]{2,90}?)\s*$', text):
+        number = int(m.group(1)) if m.group(1).isdigit() else to_int(m.group(1))
+        titles.setdefault(number, m.group(2).strip())
+    return titles
+
+
+@lru_cache(maxsize=1)
+def humanities_catalog(root):
+    """Humanities chapters of Classes 8-12, cached like the science catalog."""
+    cache = Path(__file__).resolve().parent / 'cache' / 'humanities-catalog.json'
+    if cache.exists():
+        return json.loads(cache.read_text())
+    chapters = []
+    for cls in HUMANITIES_CLASSES:
+        for folder, subject in HUMANITIES_FOLDERS.items():
+            base = Path(root) / f'class_{cls}' / folder
+            for book_dir in sorted(base.iterdir()) if base.is_dir() else []:
+                if not book_dir.is_dir() or '-' not in book_dir.name:
+                    continue
+                book, slug = book_dir.name.split('-', 1)
+                book_subject = subject or next((s for key, s in SOCIAL_SCIENCE_TITLES if key in slug), 'social_science')
+                titles = contents_titles(book_dir / f'{book}ps.pdf')
+                for pdf in sorted(book_dir.glob(f'{book}[0-9][0-9].pdf')):
+                    number = int(pdf.stem[-2:])
+                    title = titles.get(number)
+                    chapters.append({'id': chapter_id(book, number), 'class': int(cls), 'subject': book_subject,
+                                     'book': book, 'book_title': slug.replace('-', ' ').title(), 'chapter': number,
+                                     'title': title or chapter_title(pdf, number),
+                                     'title_source': 'contents' if title else 'first_page', 'pdf': str(pdf)})
+    cache.parent.mkdir(exist_ok=True)
+    cache.write_text(json.dumps(chapters, indent=1))
+    return chapters
 
 
 def chapter_pages(chapter):

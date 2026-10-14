@@ -27,6 +27,7 @@ import math
 import operator
 import os
 import re
+import shutil
 from fractions import Fraction
 import subprocess
 import sys
@@ -54,19 +55,47 @@ DPI = 150
 BLOCK_TYPES = ('definition', 'law', 'principle', 'theorem', 'fact', 'equation', 'derivation', 'proof',
                'worked_example', 'figure', 'table', 'activity', 'experiment', 'box', 'summary_point',
                'ponder_point', 'exercise')
+# Humanities chapters (history, geography, political science, economics): narrative, people, places, dates, maps
+# and primary sources instead of equations and derivations.
+HUMANITIES_TYPES = ('fact', 'event', 'person', 'place', 'key_term', 'source', 'figure', 'map', 'table', 'timeline',
+                    'box', 'activity', 'discuss', 'summary_point', 'exercise')
 PROSE = {'definition', 'law', 'principle', 'theorem', 'fact', 'derivation', 'proof', 'worked_example', 'activity',
-         'experiment', 'box', 'summary_point', 'ponder_point'}
-DEPTHS = ('mentioned', 'stated', 'derived', 'applied')
+         'experiment', 'box', 'summary_point', 'ponder_point', 'event', 'person', 'place', 'key_term', 'source',
+         'discuss'}
+DEPTHS = ('mentioned', 'stated', 'derived', 'applied', 'explained')
+HUMANITIES_GAP_TYPES = ('term', 'chronology', 'causation', 'geography', 'person', 'prerequisite', 'context', 'visual')
 DIFFICULTY = ('foundation', 'core', 'advanced')
 TIERS = ('official', 'academic', 'reference', 'other')
 SYSTEM = kb.SYSTEM
+HUMANITIES_SYSTEM = ('You are an expert history and social science teacher and curriculum analyst for Indian schools. '
+                     'The textbook is the authority: you never contradict it and you add no opinions of your own. '
+                     'Reply with JSON only.')
+
+
+def humanities(chapter):
+    return chapter.get('subject') in curriculum.HUMANITIES_SUBJECTS
+
+
+def numbering(chapter):
+    """How sections are numbered: science books prefix the chapter (5.2, 5.11.2); humanities books number their
+    own sections (1, 2.1). None stands for the humanities form in the helpers below."""
+    return None if humanities(chapter) else chapter['chapter']
+
+
+def section_pattern(chapter_no):
+    return rf'{chapter_no}(?:\.\d+){{1,3}}' if chapter_no is not None else r'\d{1,2}(?:\.\d+){0,2}'
+
+
+def system_for(chapter):
+    return HUMANITIES_SYSTEM if humanities(chapter) else SYSTEM
 
 
 # ------------------------------------------------------------------ inventory (code)
 def headings(text, chapter_no):
     """Numbered section headings of this chapter found in the text: [(id, title)]."""
     found = []
-    for m in re.finditer(rf'(?m)^\s*({chapter_no}(?:\.\d+){{1,3}})\s*\n*\s*([A-Z][^\n]{{2,90}})$', text):
+    space = r'\s*\n*\s*' if chapter_no is not None else r'[ \t]+'     # "1 The French Revolution ..." on one line
+    for m in re.finditer(rf'(?m)^\s*({section_pattern(chapter_no)}){space}([A-Z][^\n]{{2,90}})$', text):
         found.append((m.group(1), m.group(2).strip()))
     return found
 
@@ -80,6 +109,11 @@ def inventory(text, chapter_no):
         'theorem': {m.group(1) for m in re.finditer(r'(?m)^\s*Theorem\s+(\d+(?:\.\d+)?)\b', text)},
         'fig': {m.group(1) for m in re.finditer(rf'(?m)^\s*Fig(?:ure)?\.?\s*({chapter_no}\.\d+)\b', text)},
     }
+    if chapter_no is None:                  # humanities: Fig. 3, Source A, Box 1
+        found = {'activity': set(),
+                 'fig': {m.group(1) for m in re.finditer(r'(?m)^\s*Fig(?:ure)?\.?\s*(\d+)\b', text)},
+                 'source': {m.group(1) for m in re.finditer(r'(?m)^\s*Source\s+([A-Z])\s*$', text)},
+                 'box': {m.group(1) for m in re.finditer(r'(?m)^\s*Box\s+(\d+)\s*$', text)}}
     return {k: sorted(v) for k, v in found.items() if v}
 
 
@@ -118,7 +152,8 @@ def ref_present(block, kind, number):
     blob = json.dumps(block, ensure_ascii=False)
     if kind == 'eq':
         return number in blob
-    name = {'example': r'Example', 'activity': r'Activity', 'theorem': r'Theorem', 'fig': r'Fig(?:ure)?\.?'}[kind]
+    name = {'example': r'Example', 'activity': r'Activity', 'theorem': r'Theorem', 'fig': r'Fig(?:ure)?\.?',
+            'source': r'Source', 'box': r'Box'}[kind]
     return re.search(rf'{name}\s*\(?{re.escape(number)}(?![\d])', blob) is not None
 
 
@@ -156,6 +191,21 @@ PAGE_SCHEMA = '''{"headings":[{"id":"5.6","title":str (complete, as printed)}] (
  "quote":str (6-20 consecutive words of prose copied exactly from the PAGE TEXT below)}]}
 Omit fields that do not apply.'''
 
+HUMANITIES_PAGE_SCHEMA = '''{"headings":[{"id":"2.1","title":str (complete, as printed)}] (section headings printed on this page),
+"blocks":[{"type":"fact|event|person|place|key_term|source|figure|map|table|timeline|box|activity|discuss|summary_point|exercise",
+ "section":"2.1" (the book's section number the block is in; "intro" before the first numbered section; "end" for the end-of-chapter questions and project),
+ "title":str, "text":str (what the book says, in its words where possible),
+ "ref":[str] (the book's labels, e.g. "Fig. 3", "Source A", "Box 1", "Write in brief Q2", "Discuss Q4", "Project"),
+ "date":str, "place":str, "actors":[str], "causes":[str], "effects":[str] (event: as the book gives them),
+ "name":str, "role":str, "dates":str (person: who they were, as the book says),
+ "term":str, "meaning":str (key_term: the book's "New words" and terms it defines),
+ "author":str, "year":str, "kind":str (source: speech|letter|essay|report|poem|poster|other; exercise: short|long|discuss|project|map),
+ "caption":str, "shows":str (figure/map/table: what it depicts, enough to redraw it; a map: the places, routes and borders on it; table: its rows),
+ "items":[str] (timeline entries "1848: ..."; lists in facts),
+ "continued":bool (the block began on the previous page), "continues":bool (it runs onto the next page),
+ "quote":str (6-20 consecutive words of prose copied exactly from the PAGE TEXT below)}]}
+Omit fields that do not apply.'''
+
 
 def anchored(block, pages, page):
     """The block is tied to the page text: its quote is there, or failing that some 8-word run of its own text
@@ -180,13 +230,15 @@ def page_errors(result, page, pages, chapter_no, required):
     if not isinstance(blocks, list):
         return ['"blocks" must be a list']
     misses = []                             # quotes not found: tolerated unless many (the image is the evidence)
-    section_re = re.compile(rf'^({chapter_no}(\.\d+){{1,3}}|intro|end)$')
+    section_re = re.compile(rf'^({section_pattern(chapter_no)}|intro|end)$')
+    types = BLOCK_TYPES if chapter_no is not None else HUMANITIES_TYPES
+    example = f'{chapter_no}.2' if chapter_no is not None else '2 or 2.1'
     for n, b in enumerate(blocks, 1):
         tag = f'block {n} ({b.get("type")}, "{str(b.get("title", ""))[:40]}")'
-        if b.get('type') not in BLOCK_TYPES:
-            errors.append(f'{tag}: type must be one of {list(BLOCK_TYPES)}')
+        if b.get('type') not in types:
+            errors.append(f'{tag}: type must be one of {list(types)}')
         if not section_re.match(str(b.get('section', ''))):
-            errors.append(f'{tag}: section must be a section number like {chapter_no}.2, or "intro" or "end"')
+            errors.append(f'{tag}: section must be a section number like {example}, or "intro" or "end"')
         if not all(balanced(x) for x in latex_fields(b) if x):
             errors.append(f'{tag}: LaTeX has unbalanced braces or \\left/\\right')
         if b.get('type') in ('derivation', 'proof') and not b.get('steps') and not b.get('continued'):
@@ -209,7 +261,8 @@ def page_errors(result, page, pages, chapter_no, required):
             continue                          # figures are counted over the chapter (captions can sit on a neighbour)
         for number in numbers:
             if not any(ref_present(b, kind, number) for b in blocks):
-                label = {'example': 'Example', 'eq': 'Eq.', 'activity': 'Activity', 'theorem': 'Theorem'}[kind]
+                label = {'example': 'Example', 'eq': 'Eq.', 'activity': 'Activity', 'theorem': 'Theorem',
+                         'source': 'Source', 'box': 'Box'}[kind]
                 errors.append(f'{label} {number} is on this page but in no block; include it (with its number in "ref")')
     return errors
 
@@ -227,6 +280,8 @@ def ocr_text(pdf, page, folder):
     """Text for a page whose PDF has no usable text layer (some NCERT pages are outlines only): tesseract on a
     300 dpi render, cached beside the page images."""
     path = folder / f'p-{page:02d}.ocr.txt'
+    if not path.exists() and not shutil.which('tesseract'):
+        return ''                                   # no OCR on this host (the Spark): the page image is read anyway
     if not path.exists():
         folder.mkdir(parents=True, exist_ok=True)
         image = folder / f'p-{page:02d}-300'
@@ -253,25 +308,47 @@ def with_text_layer(pdf, pages, folder, min_words=30):
 
 def read_page(model, chapter, pages, page, section_at_start, note=''):
     text = next(p['text'] for p in pages if p['page'] == page)
-    required = inventory(text, chapter['chapter'])
+    required = inventory(text, numbering(chapter))
     expected = '; '.join(f'{k}: {", ".join(v)}' for k, v in required.items())
-    prompt = (
-        f'The image is page {page} of NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter '
-        f'{chapter["chapter"]} "{chapter["title"]}". Transcribe what this page teaches as blocks, in reading order '
-        '(left column top to bottom, then the right column). Be complete and faithful: every definition, law, '
-        'equation, derivation, worked example, figure, table, activity, box, summary point and exercise question on '
-        'the page, in the book\'s words. Read equations from the image and write them in LaTeX; derivations and '
-        'worked examples step by step exactly as printed. Each exercise question is its own block. Do not add '
-        'anything the page does not say. Running headers, page numbers and footers are not blocks.\n'
-        f'The page starts in section {section_at_start}.'
-        + (f' Numbered items code found on this page: {expected}.' if expected else '')
-        + (f'\n{note}' if note else '') +
-        f'\nReturn JSON: {PAGE_SCHEMA}\n'
-        f'PAGE TEXT (extracted from the PDF: columns may be interleaved and equations garbled; use it for exact '
-        f'wording and quotes, and the image for equations and layout):\n{text}')
+    if humanities(chapter):
+        prompt = humanities_page_prompt(chapter, page, section_at_start, expected, note, text)
+    else:
+        prompt = (
+            f'The image is page {page} of NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter '
+            f'{chapter["chapter"]} "{chapter["title"]}". Transcribe what this page teaches as blocks, in reading order '
+            '(left column top to bottom, then the right column). Be complete and faithful: every definition, law, '
+            'equation, derivation, worked example, figure, table, activity, box, summary point and exercise question on '
+            'the page, in the book\'s words. Read equations from the image and write them in LaTeX; derivations and '
+            'worked examples step by step exactly as printed. Each exercise question is its own block. Do not add '
+            'anything the page does not say. Running headers, page numbers and footers are not blocks.\n'
+            f'The page starts in section {section_at_start}.'
+            + (f' Numbered items code found on this page: {expected}.' if expected else '')
+            + (f'\n{note}' if note else '') +
+            f'\nReturn JSON: {PAGE_SCHEMA}\n'
+            f'PAGE TEXT (extracted from the PDF: columns may be interleaved and equations garbled; use it for exact '
+            f'wording and quotes, and the image for equations and layout):\n{text}')
     image = render(chapter['pdf'], page, model.root / 'pages')
     return model.call(f'page-{page:02d}', prompt, images=[image], thinking=0, max_tokens=12000, attempts=3,
-                      validate=lambda r: kb.raise_if(page_errors(r, page, pages, chapter['chapter'], required)))
+                      validate=lambda r: kb.raise_if(page_errors(r, page, pages, numbering(chapter), required)))
+
+
+def humanities_page_prompt(chapter, page, section_at_start, expected, note, text):
+    return (
+        f'The image is page {page} of NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter '
+        f'{chapter["chapter"]} "{chapter["title"]}" ({chapter["subject"].replace("_", " ")}). Transcribe what this '
+        'page teaches as blocks, in reading order (the main text first, then the margin and side boxes in the order '
+        'they sit beside it). Be complete and faithful, in the book\'s words: every fact and argument, event (with '
+        'its date, place, actors, causes and effects as the book gives them), person, place, key term (the "New '
+        'words" boxes are key_term blocks), primary source (each "Source A" box: author, year, and the quoted text), '
+        'figure and map (caption and what it shows, enough to redraw it), table, timeline, box, activity, "Discuss" '
+        'question and end-of-chapter question. Each question is its own block. Do not add anything the page does not '
+        'say, and do not explain or judge it. Running headers, page numbers and footers are not blocks.\n'
+        f'The page starts in section {section_at_start}.'
+        + (f' Labelled items code found on this page: {expected}.' if expected else '')
+        + (f'\n{note}' if note else '') +
+        f'\nReturn JSON: {HUMANITIES_PAGE_SCHEMA}\n'
+        f'PAGE TEXT (extracted from the PDF: the main text and side boxes may be interleaved; use it for exact '
+        f'wording and quotes, and the image for layout, maps and pictures):\n{text}')
 
 
 def join_blocks(per_page):
@@ -305,7 +382,7 @@ def join_blocks(per_page):
     return blocks
 
 
-END_MATTER = re.compile(r'(?m)^\s*(SUMMARY|Summary|POINTS TO PONDER|EXERCISES|Exercises)\s*$')
+END_MATTER = re.compile(r'(?m)^\s*(SUMMARY|Summary|POINTS TO PONDER|EXERCISES|Exercises|Write in brief)\s*$')
 
 
 def make_outline(pages, chapter_no, per_page):
@@ -323,7 +400,7 @@ def make_outline(pages, chapter_no, per_page):
             if sid in code and title and (len(title) >= len(code[sid]['title']) - 3 or        # code title cut off,
                                           code[sid]['title'].lower().startswith(title.lower())):   # or run into text
                 code[sid]['title'] = h['title']
-            elif sid not in code and re.match(rf'^{chapter_no}(\.\d+){{1,3}}$', sid):
+            elif sid not in code and re.match(rf'^{section_pattern(chapter_no)}$', sid):
                 code[sid] = {'id': sid, 'title': h.get('title', ''), 'pages': [page], 'source': 'image'}
     key = lambda s: [int(x) for x in s.split('.')]   # noqa: E731
     outline = [code[s] for s in sorted(code, key=key)]
@@ -334,7 +411,7 @@ def make_outline(pages, chapter_no, per_page):
 
 
 def read_pages(model, chapter, pages, log):
-    chapter_no = chapter['chapter']
+    chapter_no = numbering(chapter)
     per_page, section = [], 'intro'
     started = time.monotonic()
     for p in pages:
@@ -411,7 +488,7 @@ def uncovered(concepts, blocks):
     return [b for b in blocks if b['id'] not in covered]
 
 
-CONTEXT_TYPES = {'box', 'figure', 'fact'}   # may stay chapter-level: epigraphs, portraits, whole-chapter history
+CONTEXT_TYPES = {'box', 'figure', 'fact', 'map', 'source'}   # may stay chapter-level: epigraphs, portraits, whole-chapter history
 
 
 def assign_errors(result, left, concepts, blocks_total):
@@ -440,6 +517,8 @@ def compact(block, words=28):
 
 
 def make_concepts(model, chapter, blocks, outline):
+    if humanities(chapter):
+        return make_humanities_concepts(model, chapter, blocks, outline)
     prompt = (
         f'Below are the blocks of NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter {chapter["chapter"]} '
         f'"{chapter["title"]}" in book order, and its sections. Group them into the CONCEPTS the chapter teaches: '
@@ -473,14 +552,53 @@ def make_concepts(model, chapter, blocks, outline):
     return concepts
 
 
+def make_humanities_concepts(model, chapter, blocks, outline):
+    """The same concept step with history and social science wording; leftovers are placed as for science."""
+    prompt = (
+        f'Below are the blocks of NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter {chapter["chapter"]} '
+        f'"{chapter["title"]}" in book order, and its sections. Group them into the CONCEPTS the chapter teaches: '
+        'the units a teacher or a student would choose to study or film ("The Napoleonic Code and its effects", '
+        '"The Salt March"). A concept is an event, process, idea or development with its causes and consequences: '
+        'bigger than one fact, smaller than a whole section when the section holds several. Follow the book\'s own '
+        'framing and words. Every block must belong to at least one concept: sources, figures, maps, key terms and '
+        'questions go with the concept they illustrate or practise. Depth is how far the book goes: mentioned, '
+        'stated (told without causes or evidence), explained (causes, consequences or evidence given), applied (used '
+        'in sources or questions). Prerequisites are ideas the concept needs, from this chapter or earlier.\n'
+        f'Return JSON: {CONCEPT_SCHEMA}\n'
+        'SECTIONS:\n' + '\n'.join(f'{s["id"]} {s["title"]}' for s in outline) +
+        '\nBLOCKS:\n' + '\n'.join(compact(b) for b in blocks))
+    result = model.call('concepts', prompt, thinking=0, max_tokens=16000, attempts=3, system=HUMANITIES_SYSTEM,
+                        validate=lambda r: kb.raise_if(concept_errors(r, blocks, outline, tolerate=0.15)))
+    concepts = result['concepts']
+    if left := uncovered(concepts, blocks):
+        prompt = ('Assign each block below to the concept(s) of this chapter it belongs to (a question to the '
+                  'concepts it practises). Use [] only for chapter-level context that teaches no concept: an '
+                  'opening picture, an epigraph, a note about the whole chapter.\nReturn JSON {"assign":{"B12":["C3"],...}}\nCONCEPTS:\n' +
+                  '\n'.join(f'{c["id"]} {c["name"]}: {c.get("summary", "")}' for c in concepts) +
+                  '\nBLOCKS:\n' + '\n'.join(compact(b, 60) for b in left))
+        assign = model.call('concepts-assign', prompt, thinking=0, max_tokens=3000, attempts=3,
+                            system=HUMANITIES_SYSTEM,
+                            validate=lambda r: kb.raise_if(assign_errors(r, left, concepts, len(blocks))))['assign']
+        by_id = {c['id']: c for c in concepts}
+        for b in left:
+            for cid in assign[b['id']]:
+                by_id[cid]['blocks'].append(b['id'])
+        order = {b['id']: n for n, b in enumerate(blocks)}
+        for c in concepts:
+            c['blocks'] = sorted(set(c['blocks']), key=order.get)
+    return concepts
+
+
 # ------------------------------------------------------------------ 3. gaps
 GAP_SCHEMA = '''{"gaps":[{"concept":"C3","blocks":["B12"],"type":"intuition|skipped_step|prerequisite|misconception|context|visual|oversimplification|history",
 "missing":str (what exactly a learner does not get from the book here),"why_it_matters":str,"priority":"high|medium|low",
 "resolve":"knowledge|research","research_question":str (research only: specific and searchable)}]}'''
 
 
-def gap_errors(result, group, blocks):
+def gap_errors(result, group, blocks, humanities_mode=False):
     errors = []
+    gap_types = HUMANITIES_GAP_TYPES if humanities_mode else kb.GAP_TYPES
+    facts = ('chronology', 'geography', 'person') if humanities_mode else ('context', 'history')
     gaps = result.get('gaps') or []
     cids = {c['id'] for c in group}
     known = {b['id'] for b in blocks}
@@ -495,16 +613,17 @@ def gap_errors(result, group, blocks):
             errors.append(f'{tag}: concept must be one of {sorted(cids)}')
         if any(x not in known for x in g.get('blocks') or []):
             errors.append(f'{tag}: unknown block ids')
-        if g.get('type') not in kb.GAP_TYPES:
-            errors.append(f'{tag}: type must be one of {list(kb.GAP_TYPES)}')
+        if g.get('type') not in gap_types:
+            errors.append(f'{tag}: type must be one of {list(gap_types)}')
         if g.get('resolve') not in ('knowledge', 'research'):
             errors.append(f'{tag}: resolve must be "knowledge" or "research"')
-        if g.get('type') in ('context', 'history') and g.get('resolve') != 'research':
+        if g.get('type') in facts and g.get('resolve') != 'research':
             errors.append(f'{tag}: {g.get("type")} gaps need real values or facts: resolve "research" with a question')
         if g.get('resolve') == 'research' and len(str(g.get('research_question', '')).split()) < 5:
             errors.append(f'{tag}: a research gap needs a specific research_question')
     if sum(g.get('resolve') == 'research' for g in gaps) > 2:
-        errors.append('at most 2 gaps in this group may need research: keep the 2 most useful context/history gaps')
+        errors.append('at most 2 gaps in this group may need research: keep the 2 most useful '
+                      + ('chronology/geography/person gaps' if humanities_mode else 'context/history gaps'))
     return errors
 
 
@@ -521,6 +640,8 @@ def concept_view(concepts, blocks):
 
 
 def make_gaps(model, chapter, group, blocks, n):
+    if humanities(chapter):
+        return make_humanities_gaps(model, chapter, group, blocks, n)
     prompt = (
         f'These concepts are from NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter {chapter["chapter"]} '
         f'"{chapter["title"]}", with everything the book says about them. The textbook defines what must be taught '
@@ -541,6 +662,36 @@ def make_gaps(model, chapter, group, blocks, n):
         f'Return JSON: {GAP_SCHEMA}\nCONCEPTS:\n{concept_view(group, blocks)}')
     return model.call(f'gaps-{n}', prompt, thinking=4000, max_tokens=16000, attempts=3, system=SYSTEM,
                       validate=lambda r: kb.raise_if(gap_errors(r, group, blocks)))
+
+
+HUMANITIES_GAP_SCHEMA = GAP_SCHEMA.replace(
+    'intuition|skipped_step|prerequisite|misconception|context|visual|oversimplification|history',
+    '|'.join(HUMANITIES_GAP_TYPES))
+
+
+def make_humanities_gaps(model, chapter, group, blocks, n):
+    """Gaps only where the book is visibly incomplete; the book's coverage and framing are never second-guessed."""
+    prompt = (
+        f'These concepts are from NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter {chapter["chapter"]} '
+        f'"{chapter["title"]}", with everything the book says about them. The book is the authority: what it says '
+        'and how it frames it stay as they are. Report a gap ONLY where the book is visibly incomplete for a student '
+        'meeting the topic for the first time:\n'
+        '- term: a word or idea the book uses but never explains;\n'
+        '- chronology: a date, order or duration the narrative needs but does not give;\n'
+        '- causation: a jump in a cause-and-effect chain, where the book says what happened but a step is missing;\n'
+        '- geography: a place, region or route the text assumes the student can locate;\n'
+        '- person: a person named without saying who they were;\n'
+        '- prerequisite: an earlier event or idea the book assumes;\n'
+        '- context: a fact (a number, a scale) without which the point is hard to grasp;\n'
+        '- visual: something a map or timeline would show far better than words.\n'
+        'Do not report a different interpretation, a debate among historians, or something the book chose to '
+        'leave out: those are not gaps. Cite the blocks concerned, at most 3 gaps per concept; a concept the book '
+        'treats fully has none. Chronology, geography and person gaps need real dates, places or facts: resolve them '
+        'by "research" with a specific, searchable question (at most 2 research gaps in this group, the most '
+        'useful). Other gaps are resolved from "knowledge".\n'
+        f'Return JSON: {HUMANITIES_GAP_SCHEMA}\nCONCEPTS:\n{concept_view(group, blocks)}')
+    return model.call(f'gaps-{n}', prompt, thinking=4000, max_tokens=16000, attempts=3, system=HUMANITIES_SYSTEM,
+                      validate=lambda r: kb.raise_if(gap_errors(r, group, blocks, humanities_mode=True)))
 
 
 # ------------------------------------------------------------------ 5. additions + calculation check
@@ -676,8 +827,17 @@ def addition_errors(result, gaps, research, lenient=False):
     return errors
 
 
+HUMANITIES_RULES = (
+    'For this history / social science chapter: fill only what the gap names, briefly; never contradict the book or '
+    'reframe it. If a research finding disagrees with the book (a date, a number, an interpretation), leave that '
+    'claim out rather than correct the book. Neutral wording: no opinions, praise or blame beyond what the book '
+    'says. Dates, places and figures only from the research findings or certain standard knowledge. '
+    'Calculations are needed only for numbers you compute (durations, totals); otherwise give [].\n')
+
+
 def make_additions(model, chapter, group, blocks, gaps, research, n):
     findings = {gid: {k: r.get(k) for k in ('answer', 'cited', 'fetched', 'error')} for gid, r in research.items()}
+    rules = HUMANITIES_RULES if humanities(chapter) else ''
     prompt = (
         f'Fill each gap in this NCERT chapter for {kb.audience(chapter["class"])}. For each gap write what a teacher '
         'adds: the missing intuition, the skipped steps worked in full, the prerequisite in brief, the misconception '
@@ -690,7 +850,7 @@ def make_additions(model, chapter, group, blocks, gaps, research, n):
         'rest a figure on an "other" source alone. For the other gaps use standard knowledge (no sources). If a '
         'finding is missing or unreliable, use standard knowledge and do not invent figures. Every number you '
         'compute in the content must also appear in "calculations" as plain arithmetic with its value; code checks '
-        'them.\n'
+        'them.\n' + rules +
         f'Return JSON: {ADDITION_SCHEMA}\nCONCEPTS:\n{concept_view(group, blocks)}\n'
         f'GAPS:\n{json.dumps(gaps, ensure_ascii=False)}\nRESEARCH FINDINGS:\n{json.dumps(findings, ensure_ascii=False)}')
     seen = []
@@ -699,7 +859,7 @@ def make_additions(model, chapter, group, blocks, gaps, research, n):
         seen.append(1)
         kb.raise_if(addition_errors(result, gaps, research, lenient=len(seen) >= 3))
 
-    return model.call(f'additions-{n}', prompt, thinking=0, max_tokens=12000, attempts=4, system=SYSTEM,
+    return model.call(f'additions-{n}', prompt, thinking=0, max_tokens=12000, attempts=4, system=system_for(chapter),
                       validate=validate)
 
 
@@ -745,7 +905,8 @@ def audit_group(model, chapter, group, blocks, gaps, additions, research, n):
         f'You are auditing a digest of NCERT Class {chapter["class"]} {chapter["book_title"]}, Chapter '
         f'{chapter["chapter"]} "{chapter["title"]}". The BLOCKS are what the textbook says (transcribed from its '
         'pages). Another model wrote the CONCEPTS (summaries and objectives), the GAPS (where the book falls short) '
-        'and the ADDITIONS (what a teacher adds). Check that work against the book and against established science:\n'
+        'and the ADDITIONS (what a teacher adds). Check that work against the book and against established '
+        + ('scholarship; the book wins over any outside source' if humanities(chapter) else 'science') + ':\n'
         '- contradicts_book: a summary, objective or addition says something the book contradicts;\n'
         '- factual_error: a statement that is wrong;\n- wrong_number: a value, unit or calculation that is wrong;\n'
         '- unsupported: a specific figure in a web addition that its research findings do not support;\n'
@@ -810,7 +971,8 @@ def repair_addition(model, chapter, addition, gap, concept_blocks, findings, res
         result['addition'] = fixed
         kb.raise_if(addition_errors({'additions': [fixed]}, [gap], found))
 
-    return model.call(f'repair-{addition["id"]}', prompt, thinking=4000, max_tokens=8000, attempts=3, system=SYSTEM,
+    return model.call(f'repair-{addition["id"]}', prompt, thinking=4000, max_tokens=8000, attempts=3,
+                      system=system_for(chapter),
                       validate=validate)['addition']
 
 
