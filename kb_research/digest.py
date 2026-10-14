@@ -397,8 +397,10 @@ def make_outline(pages, chapter_no, per_page):
         for h in result.get('headings') or []:
             sid = str(h.get('id', ''))
             title = str(h.get('title', '')).strip()
-            if sid in code and title and (len(title) >= len(code[sid]['title']) - 3 or        # code title cut off,
-                                          code[sid]['title'].lower().startswith(title.lower())):   # or run into text
+            known = code.get(sid, {}).get('title', '').lower()
+            if sid in code and title and (title.lower().startswith(known[:max(8, len(known) - 3)]) or  # cut off,
+                                          known.startswith(title.lower())):                       # or run on
+                # (a different title under the same number is the model mislabelling a heading: the text wins)
                 code[sid]['title'] = h['title']
             elif sid not in code and re.match(rf'^{section_pattern(chapter_no)}$', sid):
                 code[sid] = {'id': sid, 'title': h.get('title', ''), 'pages': [page], 'source': 'image'}

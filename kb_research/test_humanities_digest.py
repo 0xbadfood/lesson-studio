@@ -22,6 +22,14 @@ class HumanitiesTests(unittest.TestCase):
         self.assertEqual([h[0] for h in d.headings(PAGE, None)], ['1', '2.1'])   # not "1. Write", not "1848"
         self.assertEqual(d.inventory(PAGE, None), {'fig': ['2'], 'source': ['A'], 'box': ['1']})
 
+    def test_mislabelled_heading_does_not_replace_the_printed_title(self):
+        pages = [{'page': 9, 'text': '2.3 Swaraj in the Plantations\nWorkers too had their own understanding'},
+                 {'page': 10, 'text': '3 Towards Civil Disobedience\nIn February 1922'}]
+        read = [(10, {'headings': [{'id': '2.3', 'title': 'Towards Civil Disobedience'},
+                                   {'id': '3', 'title': 'Towards Civil Disobedience'}]})]
+        self.assertEqual([(s['id'], s['title']) for s in d.make_outline(pages, None, read)],
+                         [('2.3', 'Swaraj in the Plantations'), ('3', 'Towards Civil Disobedience')])
+
     def test_page_check_wants_the_source_box_and_humanities_types(self):
         pages = [{'page': 4, 'text': PAGE}]
         fact = {'type': 'fact', 'section': '1', 'title': 'Nationalism', 'quote': 'The first clear expression of '
