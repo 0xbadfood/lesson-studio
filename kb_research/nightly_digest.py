@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import queue
 import signal
 import sqlite3
@@ -85,6 +86,10 @@ class Amd:
 
     def borrow(self, wait=1200):
         status = self.status()
+        started = time.monotonic()
+        while status and status.get('target') not in (None, 'llm') and time.monotonic() - started < wait:
+            time.sleep(20)                            # another switch is running (409 until it ends): let it finish
+            status = self.status()
         if status is None:
             self.log('amd: not reachable, Spark only')
             return False
@@ -165,7 +170,13 @@ def main(argv=None):
         return 0
 
     amd = Amd(log)
-    signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))   # systemctl stop: still give the amdserver back
+
+    def stopped(*_):                                  # systemctl stop: give the amdserver back, then exit at once
+        log('stopped: giving the amdserver back')      # (the digest's worker threads would hold up a normal exit;
+        amd.give_back()                               # finished model calls are cached, so nothing is lost)
+        os._exit(143)
+
+    signal.signal(signal.SIGTERM, stopped)
     todo = queue.Queue()
     for ref in refs:
         todo.put(ref)
