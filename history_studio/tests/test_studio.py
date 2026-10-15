@@ -64,6 +64,11 @@ class CatalogTests(unittest.TestCase):
         self.assertTrue(catalog.SHORTEST <= record['seconds'] <= catalog.LONGEST and record['seconds'] % 15 == 0)
         self.assertFalse(catalog.filmable(DIGEST, DIGEST['concepts'][1]))
 
+    def test_length_matches_the_measured_films(self):
+        # Unification of Italy (2026-10-15): 561 book words, one accepted addition, 305 s of narration.
+        italy = {**DIGEST, 'blocks': [{**DIGEST['blocks'][0], 'text': 'word ' * 561}]}
+        self.assertEqual(catalog.film_seconds(italy, {'id': 'C1', 'blocks': ['B1']}), 300)
+
     def test_long_concepts_stop_at_six_minutes(self):
         big = {**DIGEST, 'blocks': [{**DIGEST['blocks'][0], 'text': 'word ' * 4000}]}
         self.assertEqual(catalog.film_seconds(big, {'id': 'C1', 'blocks': ['B1']}), catalog.LONGEST)

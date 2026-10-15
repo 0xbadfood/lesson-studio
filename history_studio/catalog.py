@@ -18,7 +18,7 @@ SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology
 SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_science': 'Political Science',
                  'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science'}
 NOT_TAUGHT = {'exercise', 'discuss', 'activity'}       # questions practise a concept; they are not narrated
-WORDS_PER_MINUTE = 140                                  # the studio narrator, roughly
+WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)
 SHORTEST, LONGEST = 90, 360                             # a concept film runs 1.5-6 minutes
 NCERT_PDF = 'https://ncert.nic.in/textbook/pdf/{code}.pdf'
 
@@ -48,9 +48,10 @@ def filmable(digest, concept):
 
 
 def film_seconds(digest, concept):
-    """Length from coverage: the narration needs a little over half the book's words for the concept (pictures carry
-    the rest), plus room for each gap the film fills and for an opening and a close."""
-    narration = .55 * words(teaching_blocks(digest, concept)) + 30 * len(additions_for(digest, concept)) + 60
+    """Length from coverage: the narration runs about as long as the book's own text for the concept (measured 0.95x on
+    the first two films: 459 s predicted vs 456 s, 304 s vs 305 s), plus room for each gap the film fills and for an
+    opening and a close."""
+    narration = .95 * words(teaching_blocks(digest, concept)) + 30 * len(additions_for(digest, concept)) + 60
     seconds = narration / WORDS_PER_MINUTE * 60
     return int(min(LONGEST, max(SHORTEST, round(seconds / 15) * 15)))
 
