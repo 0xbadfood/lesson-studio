@@ -149,7 +149,8 @@ class Films:
 
 def voices():
     """The narrators viewers can choose: Kane (the studio default), then the voices in history-data/voices.json."""
-    out = [{'id': 'kane', 'label': 'Kane (studio narrator)', **VOICE, 'reference_transcript': kane_transcript()}]
+    out = [{'id': 'kane', 'label': 'Kane (studio narrator)', 'gender': 'male', **VOICE,
+            'reference_transcript': kane_transcript()}]
     listed = json.loads(VOICES.read_text()) if VOICES.exists() else []
     return out + [v for v in listed if v['id'] != 'kane' and Path(v['reference_audio']).is_file()]
 
@@ -353,7 +354,17 @@ def build(queue=None, access=None, data=DATA):
     @app.get('/api/voices')
     def get_voices(request: Request):
         signed_in(request)
-        return {'voices': [{'id': v['id'], 'label': v['label']} for v in voices()]}
+        return {'voices': [{'id': v['id'], 'label': v['label'], 'gender': v.get('gender') or 'other',
+                            'sample': f'/api/voices/{v["id"]}/sample'} for v in voices()]}
+
+    @app.get('/api/voices/{voice}/sample')
+    def voice_sample(voice: str, request: Request):
+        signed_in(request)
+        chosen = next((v for v in voices() if v['id'] == voice), None)
+        if chosen is None:
+            raise HTTPException(404)
+        return FileResponse(chosen['reference_audio'], media_type='audio/wav',
+                            headers={'Cache-Control': 'private, max-age=86400'})
 
     @app.get('/api/films/{film}')
     def film_progress(film: str, request: Request):

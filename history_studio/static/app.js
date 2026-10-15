@@ -139,10 +139,16 @@ async function confirmFilm(chapter, concept) {
         <li>Runs ${minutes(concept.minutes)}, narrated, with illustrated scenes.</li>
         <li>Takes a while to make. You can watch it take shape, or come back later.</li>
       </ul>
-      ${voices.length ? `<label class="chapter-no" for="voice">Narrator</label>
-        <select class="field" id="voice" style="text-align:left;letter-spacing:0;margin-top:8px">
-          ${voices.map((v) => `<option value="${esc(v.id)}">${esc(v.label)}</option>`).join('')}
-        </select>` : ''}
+      ${voices.length ? `<label class="chapter-no" for="voice">Narrator · ${voices.length} voices</label>
+        <div class="voice-row">
+          <select class="field" id="voice">
+            ${['male', 'female', 'other'].filter((g) => voices.some((v) => v.gender === g)).map((g) => `
+              <optgroup label="${g === 'male' ? 'Male voices' : g === 'female' ? 'Female voices' : 'Other voices'}">
+                ${voices.filter((v) => v.gender === g).map((v) => `<option value="${esc(v.id)}">${esc(v.label)}</option>`).join('')}
+              </optgroup>`).join('')}
+          </select>
+          <button class="btn ghost listen" type="button" data-listen aria-label="Play a sample of this voice">▶ Listen</button>
+        </div>` : ''}
       <p class="error" id="sheet-error"></p>
       <div class="actions">
         <button class="btn ghost" data-close>Not now</button>
@@ -150,7 +156,21 @@ async function confirmFilm(chapter, concept) {
       </div>
     </div>`;
   document.body.appendChild(back);
-  const close = () => back.remove();
+  const sample = new Audio();
+  const close = () => { sample.pause(); back.remove(); };
+  const listen = back.querySelector('[data-listen]');
+  if (listen) {
+    const select = back.querySelector('#voice');
+    const reset = () => { listen.textContent = '▶ Listen'; };
+    sample.addEventListener('ended', reset);
+    select.addEventListener('change', () => { sample.pause(); reset(); });
+    listen.addEventListener('click', () => {
+      if (!sample.paused) { sample.pause(); reset(); return; }
+      sample.src = voices.find((v) => v.id === select.value).sample;
+      sample.play();
+      listen.textContent = '■ Stop';
+    });
+  }
   back.addEventListener('click', (e) => { if (e.target === back || e.target.hasAttribute('data-close')) close(); });
   back.querySelector('[data-make]').addEventListener('click', async (e) => {
     e.target.disabled = true;

@@ -106,6 +106,17 @@ class AppTests(unittest.TestCase):
         self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'})
         self.assertEqual(len(self.queue.jobs), 2)
 
+    def test_chosen_narrator_reaches_the_film_request(self):
+        studio.voices = lambda: [{'id': 'kane', 'label': 'Kane (studio narrator)', 'reference_audio': '/r/kane.wav'},
+                                 {'id': 'in-abc', 'label': 'Clear Anchor (female, V1)', 'reference_audio': '/r/abc.wav',
+                                  'reference_transcript': 'A quiet morning.', 'gender': 'female'}]
+        self.client.post('/api/login', json={'code': self.access.code})
+        self.assertEqual(self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1', 'voice': 'nobody'}).status_code, 404)
+        self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1', 'voice': 'in-abc'})
+        request = self.queue.jobs['job1']['request']
+        self.assertEqual((request['voice_id'], request['reference_audio'], request['narrator_label']),
+                         ('in-abc', '/r/abc.wav', 'Clear Anchor'))
+
     def test_media_only_from_the_films_own_folder(self):
         self.client.post('/api/login', json={'code': self.access.code})
         film = self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'}).json()['film']

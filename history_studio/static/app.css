@@ -196,3 +196,7 @@ audio { width: 100%; margin-top: 12px; }
   .mark { width: 30px; height: 30px; font-size: 16px; }
   .top nav a, .link { padding: 6px 8px; font-size: 14px; white-space: nowrap; }
 }
+
+.voice-row { display: flex; gap: 10px; align-items: center; margin: 8px 0 12px; }
+.voice-row .field { margin: 0; text-align: left; letter-spacing: 0; font-size: 15px; flex: 1; min-width: 0; }
+.listen { flex: none; padding: 12px 16px; }
