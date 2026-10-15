@@ -27,6 +27,10 @@ class FakeQueue:
     def get(self, job_id):
         return self.jobs[job_id]
 
+    def resume(self, job_id):
+        self.jobs[job_id]['status'] = 'queued'
+        return self.jobs[job_id]
+
     def list(self):
         return list(self.jobs.values())
 
@@ -102,9 +106,9 @@ class AppTests(unittest.TestCase):
         self.assertEqual((progress['status'], progress['concept'], progress['chapter_id']),
                          ('waiting', 'The Salt March', 'jess3-02'))
         self.assertTrue(progress['passages'][0].startswith('Gandhi walked to Dandi'))
-        self.queue.jobs['job1']['status'] = 'failed'                              # a failed film can be made again
-        self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'})
-        self.assertEqual(len(self.queue.jobs), 2)
+        self.queue.jobs['job1']['status'] = 'failed'              # a failed film is made again from its saved run
+        again = self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'}).json()['film']
+        self.assertEqual((again, len(self.queue.jobs), self.queue.jobs['job1']['status']), (film, 1, 'queued'))
 
     def test_chosen_narrator_reaches_the_film_request(self):
         studio.voices = lambda: [{'id': 'kane', 'label': 'Kane (studio narrator)', 'reference_audio': '/r/kane.wav'},
@@ -116,6 +120,9 @@ class AppTests(unittest.TestCase):
         request = self.queue.jobs['job1']['request']
         self.assertEqual((request['voice_id'], request['reference_audio'], request['narrator_label']),
                          ('in-abc', '/r/abc.wav', 'Clear Anchor'))
+        self.queue.jobs['job1']['status'] = 'failed'              # another narrator after a failure: a new recording
+        self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1', 'voice': 'kane'})
+        self.assertEqual((len(self.queue.jobs), self.queue.jobs['job2']['request']['voice_id']), (2, 'kane'))
 
     def test_media_only_from_the_films_own_folder(self):
         self.client.post('/api/login', json={'code': self.access.code})

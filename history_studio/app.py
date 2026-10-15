@@ -121,7 +121,11 @@ class Films:
         with self.lock:
             films = self.load()
             existing = films.get(key)
-            if existing and (job := self.job(existing['job'])) and job['status'] not in ('failed', 'interrupted'):
+            job = self.job(existing['job']) if existing else None
+            if job and job['status'] not in ('failed', 'interrupted'):
+                return existing['film']
+            if job and job['request'].get('voice_id') == narrator(voice)['voice_id']:
+                self.queue.resume(job['id'])        # same narrator: carry on from the saved run, not from scratch
                 return existing['film']
             built = catalog.film_request(digest, concept)
             request = {'subject': built['subject'], 'durations': [built['record']['seconds']],
