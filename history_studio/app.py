@@ -124,6 +124,8 @@ class Films:
             job = self.job(existing['job']) if existing else None
             if job and job['status'] not in ('failed', 'interrupted'):
                 return existing['film']
+            if job and voice is None:                # "make it again" keeps the narrator the film was started with
+                voice = job['request'].get('voice_id')
             if job and job['request'].get('voice_id') == narrator(voice)['voice_id']:
                 self.queue.resume(job['id'])        # same narrator: carry on from the saved run, not from scratch
                 return existing['film']
@@ -140,6 +142,10 @@ class Films:
                           'created': time.time()}
             self.save(films)
             return film
+
+    def cancel(self, film):
+        """Stop a queued or running film (started by mistake). It can be made again later from its saved stages."""
+        self.queue.cancel(self.find(film)['job'])
 
     def find(self, film):
         for key, value in self.load().items():
@@ -238,7 +244,9 @@ def progress(queue, record):
     if delivery and delivery.get('outputs'):
         video = f'/media/{record["film"]}/video'
     return {
-        'film': record['film'], 'chapter_id': record['chapter'], 'status': 'failed' if status in ('failed', 'interrupted') else
+        'film': record['film'], 'chapter_id': record['chapter'], 'concept_id': record['concept'],
+        'status': 'stopped' if status == 'interrupted' and str(job.get('error') or '').startswith('Cancelled') else
+        'failed' if status in ('failed', 'interrupted') else
         'done' if status == 'succeeded' else 'waiting' if status == 'queued' else 'making',
         'ahead': ahead, 'phase': phase, 'phases': [{'key': k, 'title': t, 'line': l} for k, t, l in PHASES],
         'concept': curriculum.get('concept'), 'summary': curriculum.get('summary'),
@@ -369,6 +377,17 @@ def build(queue=None, access=None, data=DATA):
             raise HTTPException(404)
         return FileResponse(chosen['reference_audio'], media_type='audio/wav',
                             headers={'Cache-Control': 'private, max-age=86400'})
+
+    @app.post('/api/films/{film}/cancel')
+    def cancel_film(film: str, request: Request):
+        signed_in(request)
+        try:
+            films.cancel(film)
+        except KeyError:
+            raise HTTPException(404, 'No such film')
+        except ValueError:
+            raise HTTPException(409, 'This film is not being made')
+        return progress(queue, films.find(film))
 
     @app.get('/api/films/{film}')
     def film_progress(film: str, request: Request):

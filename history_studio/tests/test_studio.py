@@ -28,7 +28,13 @@ class FakeQueue:
         return self.jobs[job_id]
 
     def resume(self, job_id):
-        self.jobs[job_id]['status'] = 'queued'
+        self.jobs[job_id].update(status='queued', error=None)
+        return self.jobs[job_id]
+
+    def cancel(self, job_id):
+        if self.jobs[job_id]['status'] not in ('queued', 'running'):
+            raise ValueError('not active')
+        self.jobs[job_id].update(status='interrupted', error="Cancelled at the user's request.")
         return self.jobs[job_id]
 
     def list(self):
@@ -128,6 +134,18 @@ class AppTests(unittest.TestCase):
         self.queue.jobs['job1']['status'] = 'failed'              # another narrator after a failure: a new recording
         self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1', 'voice': 'kane'})
         self.assertEqual((len(self.queue.jobs), self.queue.jobs['job2']['request']['voice_id']), (2, 'kane'))
+
+    def test_a_film_started_by_mistake_can_be_stopped_and_made_again_with_its_narrator(self):
+        studio.voices = lambda: [{'id': 'kane', 'label': 'Kane (studio narrator)', 'reference_audio': '/r/kane.wav'},
+                                 {'id': 'in-abc', 'label': 'Clear Anchor (female, V1)', 'reference_audio': '/r/abc.wav'}]
+        self.client.post('/api/login', json={'code': self.access.code})
+        film = self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1', 'voice': 'in-abc'}).json()['film']
+        stopped = self.client.post(f'/api/films/{film}/cancel').json()
+        self.assertEqual(stopped['status'], 'stopped')
+        self.assertEqual(self.client.post(f'/api/films/{film}/cancel').status_code, 409)      # already stopped
+        again = self.client.post('/api/films', json={'chapter': stopped['chapter_id'], 'concept': stopped['concept_id']}).json()
+        self.assertEqual((again['film'], len(self.queue.jobs), self.queue.jobs['job1']['status']), (film, 1, 'queued'))
+        self.assertEqual(self.client.get(f'/api/films/{film}').json()['status'], 'waiting')
 
     def test_media_only_from_the_films_own_folder(self):
         self.client.post('/api/login', json={'code': self.access.code})

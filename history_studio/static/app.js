@@ -192,20 +192,23 @@ async function confirmFilm(chapter, concept) {
 function stepsHtml(f) {
   const keys = f.phases.map((p) => p.key);
   const at = f.status === 'done' ? keys.length : Math.max(0, keys.indexOf(f.phase));
-  return `<aside class="steps"><h3>${f.status === 'done' ? 'Your film is ready' : f.status === 'waiting' ? 'Waiting to start' : 'Making your film'}</h3>
+  return `<aside class="steps"><h3>${f.status === 'done' ? 'Your film is ready' : f.status === 'waiting' ? 'Waiting to start' : f.status === 'stopped' ? 'Stopped' : 'Making your film'}</h3>
     ${f.phases.map((p, i) => {
-      const cls = f.status === 'waiting' ? '' : i < at ? 'done' : i === at && f.status === 'making' ? 'now' : '';
+      const cls = f.status === 'waiting' || f.status === 'stopped' ? '' : i < at ? 'done' : i === at && f.status === 'making' ? 'now' : '';
       return `<div class="step ${cls}"><span class="ring">✓</span><span><b>${esc(p.title)}</b>${cls === 'now' ? `<span>${esc(p.line)}</span>` : ''}</span></div>`;
     }).join('')}</aside>`;
 }
 
 function nowPanel(f) {
   if (f.status === 'failed') return `<div class="panel"><h2>This film hit a snag</h2><p class="sub">Something went wrong while making it. The studio team will look at it; you can try another idea meanwhile.</p></div>`;
-  if (f.status === 'waiting') return `<div class="panel now-line"><div class="spinner"></div><div><h2>In the queue</h2><p class="sub">${f.ahead ? `${f.ahead} film${f.ahead > 1 ? 's' : ''} ahead of yours. ` : ''}Films are made one at a time; yours starts soon.</p></div></div>`;
+  if (f.status === 'stopped') return `<div class="panel"><h2>You stopped this film</h2><p class="sub">Nothing is lost: making it again carries on from where it stopped.</p>
+      <button class="btn" id="again" type="button">Make it again</button></div>`;
+  const stop = '<button class="btn ghost stop" id="stop" type="button">Stop</button>';
+  if (f.status === 'waiting') return `<div class="panel now-line"><div class="spinner"></div><div><h2>In the queue</h2><p class="sub">${f.ahead ? `${f.ahead} film${f.ahead > 1 ? 's' : ''} ahead of yours. ` : ''}Films are made one at a time; yours starts soon.</p></div>${stop}</div>`;
   if (f.status !== 'making') return '';
   const p = f.phases.find((x) => x.key === f.phase) || f.phases[0];
   const n = f.phases.indexOf(p) + 1;
-  return `<div class="panel now-line"><div class="spinner"></div><div><span class="step-count">Step ${n} of ${f.phases.length}</span><h2>${esc(p.title)}</h2><p class="sub">${esc(p.line)}</p></div></div>`;
+  return `<div class="panel now-line"><div class="spinner"></div><div><span class="step-count">Step ${n} of ${f.phases.length}</span><h2>${esc(p.title)}</h2><p class="sub">${esc(p.line)}</p></div>${stop}</div>`;
 }
 
 function filmHtml(f) {
@@ -251,6 +254,22 @@ async function showFilm(id) {
           <h1>${esc(f.concept)}</h1><p>${esc(f.summary)}</p></section>
         <div class="film">${stepsHtml(f)}<div class="stage">${filmHtml(f)}</div></div>`;
       first = false;
+      const stop = document.getElementById('stop');
+      if (stop) stop.onclick = async () => {
+        if (!confirm('Stop making this film? You can make it again later; it carries on from where it stopped.')) return;
+        stop.disabled = true;
+        try { await api(`/api/films/${id}/cancel`, { method: 'POST' }); } catch (err) { alert(err.message); }
+        clearTimeout(state.timer); tick();
+      };
+      const again = document.getElementById('again');
+      if (again) again.onclick = async () => {
+        again.disabled = true;
+        try {
+          const made = await api('/api/films', { method: 'POST', body: JSON.stringify({ chapter: f.chapter_id, concept: f.concept_id }) });
+          if (made.film !== id) { location.hash = `#/film/${made.film}`; return; }
+        } catch (err) { alert(err.message); again.disabled = false; return; }
+        clearTimeout(state.timer); tick();
+      };
     }
     if (f.status === 'waiting' || f.status === 'making') state.timer = setTimeout(tick, 5000);
   };
