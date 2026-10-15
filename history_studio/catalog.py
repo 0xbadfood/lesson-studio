@@ -3,7 +3,7 @@
 The unit of a film is one concept of a textbook digest (textbook-digest/<chapter>/digest.json). The film is rooted in
 the book: its first source is the book's own text for the concept, read whole; the other sources are the digest's
 accepted additions (gaps the book leaves, each checked). Coverage points come from what the book teaches about the
-concept, and the film's length comes from how much there is to cover, not from the viewer.
+concept, and the film's length comes from how much there is to cover, not from the viewer, with no upper cap.
 """
 from __future__ import annotations
 
@@ -19,7 +19,8 @@ SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_scie
                  'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science'}
 NOT_TAUGHT = {'exercise', 'discuss', 'activity'}       # questions practise a concept; they are not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)
-SHORTEST, LONGEST = 90, 360                             # a concept film runs 1.5-6 minutes
+SHORTEST = 90                                           # a concept film runs at least 1.5 minutes; no upper cap:
+                                                        # it runs as long as its coverage needs (user, 2026-10-15)
 NCERT_PDF = 'https://ncert.nic.in/textbook/pdf/{code}.pdf'
 
 
@@ -53,7 +54,7 @@ def film_seconds(digest, concept):
     opening and a close."""
     narration = .95 * words(teaching_blocks(digest, concept)) + 30 * len(additions_for(digest, concept)) + 60
     seconds = narration / WORDS_PER_MINUTE * 60
-    return int(min(LONGEST, max(SHORTEST, round(seconds / 15) * 15)))
+    return int(max(SHORTEST, round(seconds / 15) * 15))
 
 
 @lru_cache(maxsize=64)

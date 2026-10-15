@@ -61,7 +61,7 @@ class CatalogTests(unittest.TestCase):
         self.assertTrue(sources[0]['url'].endswith('/jess302.pdf') and sources[0]['complete'])
         self.assertNotIn('Why was salt chosen', sources[0]['raw_content'])          # questions are not narrated
         self.assertEqual(sources[1]['url'], 'https://example.org/dandi')
-        self.assertTrue(catalog.SHORTEST <= record['seconds'] <= catalog.LONGEST and record['seconds'] % 15 == 0)
+        self.assertTrue(catalog.SHORTEST <= record['seconds'] and record['seconds'] % 15 == 0)
         self.assertFalse(catalog.filmable(DIGEST, DIGEST['concepts'][1]))
 
     def test_length_matches_the_measured_films(self):
@@ -69,9 +69,9 @@ class CatalogTests(unittest.TestCase):
         italy = {**DIGEST, 'blocks': [{**DIGEST['blocks'][0], 'text': 'word ' * 561}]}
         self.assertEqual(catalog.film_seconds(italy, {'id': 'C1', 'blocks': ['B1']}), 300)
 
-    def test_long_concepts_stop_at_six_minutes(self):
-        big = {**DIGEST, 'blocks': [{**DIGEST['blocks'][0], 'text': 'word ' * 4000}]}
-        self.assertEqual(catalog.film_seconds(big, {'id': 'C1', 'blocks': ['B1']}), catalog.LONGEST)
+    def test_long_concepts_run_as_long_as_their_coverage_needs(self):
+        big = {**DIGEST, 'blocks': [{**DIGEST['blocks'][0], 'text': 'word ' * 1500}]}
+        self.assertEqual(catalog.film_seconds(big, {'id': 'C1', 'blocks': ['B1']}), 735)     # about 12 min, no cap
 
 
 class AppTests(unittest.TestCase):
