@@ -48,9 +48,10 @@ PHASES = [('reading', 'Reading the chapter', 'Turning the pages of your textbook
           ('story', 'Writing the story', 'Shaping the ideas into a story worth watching'),
           ('voice', 'Recording the voice', 'Our narrator is in the recording booth'),
           ('scenes', 'Painting the scenes', 'Illustrating each moment of the story'),
+          ('motion', 'Bringing the scenes to life', 'Each illustration gently comes alive'),
           ('cut', 'Final cut', 'Putting pictures, voice and titles together')]
 STAGE_PHASE = {'research': 'reading', 'evidence': 'ideas', 'creative': 'story', 'script': 'story',
-               'narration': 'voice', 'timing': 'voice', 'scenes': 'scenes', 'images': 'scenes', 'music': 'cut',
+               'narration': 'voice', 'timing': 'voice', 'scenes': 'scenes', 'images': 'scenes', 'clips': 'motion', 'music': 'cut',
                'video': 'cut'}
 
 
@@ -191,7 +192,7 @@ def events(project):
     try:
         with sqlite3.connect(f'file:{path}?mode=ro', uri=True, timeout=3) as db:
             return [(stage, state, json.loads(detail or '{}')) for stage, state, detail in
-                    db.execute("SELECT stage, state, detail FROM events WHERE stage LIKE 'pipeline:%' OR stage = 'images' "
+                    db.execute("SELECT stage, state, detail FROM events WHERE stage LIKE 'pipeline:%' OR stage IN ('images', 'clips') "
                                'ORDER BY id')]
     except sqlite3.Error:
         return []
