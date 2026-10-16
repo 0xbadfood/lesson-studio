@@ -66,7 +66,7 @@ async function showHome() {
   const current = data.classes.find((c) => c.class === state.cls);
   view.innerHTML = `
     <section class="hero">
-      <div class="eyebrow">NCERT · Classes 8 to 12</div>
+      <div class="eyebrow">NCERT · Classes 6 to 12</div>
       <h1>Every chapter, told as a story.</h1>
       <p>Choose your class and a chapter, then pick an idea. We turn it into a short narrated film, true to your textbook.</p>
     </section>
