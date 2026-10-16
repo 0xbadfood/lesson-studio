@@ -103,5 +103,22 @@ class GarbledTextLayerTests(unittest.TestCase):
         self.assertFalse(garbled("too short to judge"))
 
 
+class SettleFactGapsTests(unittest.TestCase):
+    def test_extra_fact_gaps_are_settled_by_code_not_left_to_fail_the_chapter(self):
+        q = 'When and where was this person born exactly'
+        result = {'gaps': [
+            {'concept': 'C1', 'type': 'person', 'resolve': 'research', 'research_question': q, 'priority': 'low'},
+            {'concept': 'C1', 'type': 'person', 'resolve': 'research', 'research_question': q, 'priority': 'high'},
+            {'concept': 'C2', 'type': 'chronology', 'resolve': 'research', 'research_question': q, 'priority': 'medium'},
+            {'concept': 'C2', 'type': 'person', 'resolve': 'knowledge', 'priority': 'high'},
+            {'concept': 'C2', 'type': 'term', 'resolve': 'knowledge', 'priority': 'low'}]}
+        d.settle_fact_gaps(result, humanities_mode=True)
+        kinds = [(g['type'], g['priority']) for g in result['gaps']]
+        self.assertEqual(kinds, [('person', 'high'), ('chronology', 'medium'), ('term', 'low')])
+        self.assertEqual(sum(g['resolve'] == 'research' for g in result['gaps']), 2)
+        group = [{'id': 'C1'}, {'id': 'C2'}]
+        self.assertFalse([e for e in d.gap_errors(result, group, [], humanities_mode=True) if 'research' in e])
+
+
 if __name__ == '__main__':
     unittest.main()

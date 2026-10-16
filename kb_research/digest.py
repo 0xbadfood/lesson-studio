@@ -617,6 +617,26 @@ GAP_SCHEMA = '''{"gaps":[{"concept":"C3","blocks":["B12"],"type":"intuition|skip
 "resolve":"knowledge|research","research_question":str (research only: specific and searchable)}]}'''
 
 
+def settle_fact_gaps(result, humanities_mode=False):
+    """Code settles what the model can only get wrong by luck (Class 11 History chapter 6, 2026-10-16): fact gaps
+    (chronology, geography, person; context and history in science) must be researched, yet a group allows at most
+    2 research gaps. A fact gap marked "knowledge" becomes research if it has a question and is dropped otherwise;
+    research gaps beyond 2 are dropped, keeping the highest priority."""
+    facts = ('chronology', 'geography', 'person') if humanities_mode else ('context', 'history')
+    rank = {'high': 0, 'medium': 1, 'low': 2}
+    gaps = [g for g in result.get('gaps') or [] if isinstance(g, dict)]
+    for g in gaps:
+        if g.get('type') in facts and g.get('resolve') != 'research':
+            g['resolve'] = 'research' if len(str(g.get('research_question', '')).split()) >= 5 else 'drop'
+    research = sorted((g for g in gaps if g.get('resolve') == 'research'),
+                      key=lambda g: rank.get(g.get('priority'), 3))
+    dropped = {id(g) for g in research[2:]} | {id(g) for g in gaps if g.get('resolve') == 'drop'}
+    if dropped:
+        result['gaps'] = [g for g in gaps if id(g) not in dropped]
+        result.setdefault('settled', []).append(f'{len(dropped)} fact gap(s) dropped by code')
+    return result
+
+
 def gap_errors(result, group, blocks, humanities_mode=False):
     errors = []
     gap_types = HUMANITIES_GAP_TYPES if humanities_mode else kb.GAP_TYPES
@@ -683,7 +703,7 @@ def make_gaps(model, chapter, group, blocks, n):
         'from "knowledge": explanations a good teacher knows.\n'
         f'Return JSON: {GAP_SCHEMA}\nCONCEPTS:\n{concept_view(group, blocks)}')
     return model.call(f'gaps-{n}', prompt, thinking=4000, max_tokens=16000, attempts=3, system=SYSTEM,
-                      validate=lambda r: kb.raise_if(gap_errors(r, group, blocks)))
+                      validate=lambda r: kb.raise_if(gap_errors(settle_fact_gaps(r), group, blocks)))
 
 
 HUMANITIES_GAP_SCHEMA = GAP_SCHEMA.replace(
@@ -713,7 +733,7 @@ def make_humanities_gaps(model, chapter, group, blocks, n):
         'useful). Other gaps are resolved from "knowledge".\n'
         f'Return JSON: {HUMANITIES_GAP_SCHEMA}\nCONCEPTS:\n{concept_view(group, blocks)}')
     return model.call(f'gaps-{n}', prompt, thinking=4000, max_tokens=16000, attempts=3, system=HUMANITIES_SYSTEM,
-                      validate=lambda r: kb.raise_if(gap_errors(r, group, blocks, humanities_mode=True)))
+                      validate=lambda r: kb.raise_if(gap_errors(settle_fact_gaps(r, humanities_mode=True), group, blocks, humanities_mode=True)))
 
 
 # ------------------------------------------------------------------ 5. additions + calculation check
