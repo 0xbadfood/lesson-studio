@@ -281,7 +281,7 @@ def ocr_text(pdf, page, folder):
     300 dpi render, cached beside the page images."""
     path = folder / f'p-{page:02d}.ocr.txt'
     if not path.exists() and not shutil.which('tesseract'):
-        return ''                                   # no OCR on this host (the Spark): the page image is read anyway
+        return ''                                   # no OCR on this host: the page image is read anyway
     if not path.exists():
         folder.mkdir(parents=True, exist_ok=True)
         image = folder / f'p-{page:02d}-300'
@@ -294,13 +294,33 @@ def ocr_text(pdf, page, folder):
     return path.read_text()
 
 
+SHORT_WORDS = set('a an as at be by do go he if in is it me my no of oh on or so to up us we am i ok'.split())
+
+
+def fragment_ratio(text):
+    words = re.findall(r'[A-Za-z]+', text)
+    return sum(len(w) <= 2 and w.lower() not in SHORT_WORDS for w in words) / len(words) if words else 0.0
+
+
+def garbled(text, limit=.04):
+    """A text layer whose fonts lost letters in extraction ("he vast plains of the n ab toda" for "The vast plains of
+    the Punjab (today"; Class 6-9 NCERT 2025 prints, 2026-10-16): many one- and two-letter fragments that are not
+    words. Clean prose stays well under 4%; the damaged pages measured 4-12%. Map labels spread across artwork also
+    trip it, which is why OCR replaces such a page only when it is clearly cleaner (with_text_layer)."""
+    return len(re.findall(r'[A-Za-z]+', text)) >= 15 and fragment_ratio(text) > limit
+
+
 def with_text_layer(pdf, pages, folder, min_words=30):
-    """Pages with almost no extractable words get OCR text instead (marked "ocr")."""
+    """Pages with almost no extractable words, or a garbled text layer, get OCR text instead (marked "ocr"), so
+    quotes copied from the page image can be verified."""
     out = []
     for p in pages:
-        if len(re.findall(r'[A-Za-z]{3,}', p['text'])) < min_words:
+        if len(re.findall(r'[A-Za-z]{3,}', p['text'])) < min_words or garbled(p['text']):
             text = ocr_text(pdf, p['page'], folder)
-            if len(re.findall(r'[A-Za-z]{3,}', text)) >= min_words:
+            have = len(re.findall(r'[A-Za-z]{3,}', p['text']))
+            got = len(re.findall(r'[A-Za-z]{3,}', text))
+            if (got >= min(min_words, max(have, 1))
+                    and (not garbled(p['text']) or fragment_ratio(text) < fragment_ratio(p['text']) / 2)):
                 p = {**p, 'text': text.strip(), 'ocr': True}
         out.append(p)
     return out

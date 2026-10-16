@@ -89,5 +89,19 @@ class NightlyTests(unittest.TestCase):
                                                'calculations': [{'expr': None, 'value': None}]}), [])
 
 
+class GarbledTextLayerTests(unittest.TestCase):
+    def test_damaged_text_layers_are_caught_and_clean_prose_is_not(self):
+        from digest import garbled
+        damaged = ("he vast plains of the n ab toda divided between ndia and a istan and indh now in a istan are watered b "
+                   "the nd s iver and its tributaries his made those plains fertile and, therefore, favo rable to agric lt re "
+                   "little f rther east, a few millenni ms ago, another river, the arasvat , sed to ow from the foothills")
+        clean = ("The vast plains of the Punjab (today divided between India and Pakistan) and Sindh (now in Pakistan) are "
+                 "watered by the Indus River and its tributaries. This made those plains fertile and, therefore, favourable "
+                 "to agriculture. A little further east, a few millenniums ago, another river, the Sarasvati, used to flow.")
+        self.assertTrue(garbled(damaged))
+        self.assertFalse(garbled(clean))
+        self.assertFalse(garbled("too short to judge"))
+
+
 if __name__ == '__main__':
     unittest.main()
