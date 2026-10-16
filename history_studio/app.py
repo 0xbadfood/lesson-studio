@@ -354,7 +354,7 @@ def build(queue=None, access=None, data=DATA):
                         job = films.job(record['job']) if record else None
                         concept['film'] = record['film'] if job and job['status'] not in ('failed', 'interrupted') else None
                         concept['ready'] = bool(job and job['status'] == 'succeeded')
-        return {'classes': out, 'all_classes': [8, 9, 10, 11, 12]}
+        return {'classes': out, 'all_classes': [6, 7, 8, 9, 10, 11, 12]}
 
     @app.post('/api/films', status_code=202)
     def make_film(body: FilmAsk, request: Request):

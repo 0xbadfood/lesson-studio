@@ -1,5 +1,379 @@
 [
  {
+  "id": "fees1:01",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 1,
+  "title": "Locating",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees101.pdf"
+ },
+ {
+  "id": "fees1:02",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 2,
+  "title": "Oceans",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees102.pdf"
+ },
+ {
+  "id": "fees1:03",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 3,
+  "title": "Landforms",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees103.pdf"
+ },
+ {
+  "id": "fees1:04",
+  "class": 6,
+  "subject": "history",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 4,
+  "title": "Timeline and Sources of History",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees104.pdf"
+ },
+ {
+  "id": "fees1:05",
+  "class": 6,
+  "subject": "history",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 5,
+  "title": "India, That Is Bharat",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees105.pdf"
+ },
+ {
+  "id": "fees1:06",
+  "class": 6,
+  "subject": "history",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 6,
+  "title": "The Beginnings of Indian Civilisation",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees106.pdf"
+ },
+ {
+  "id": "fees1:07",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 7,
+  "title": "India's",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees107.pdf"
+ },
+ {
+  "id": "fees1:08",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 8,
+  "title": "Unity",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees108.pdf"
+ },
+ {
+  "id": "fees1:09",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 9,
+  "title": "Family",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees109.pdf"
+ },
+ {
+  "id": "fees1:10",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 10,
+  "title": "Grassroots",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees110.pdf"
+ },
+ {
+  "id": "fees1:11",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 11,
+  "title": "Grassroots",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees111.pdf"
+ },
+ {
+  "id": "fees1:12",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 12,
+  "title": "Grassroots",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees112.pdf"
+ },
+ {
+  "id": "fees1:13",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 13,
+  "title": "The",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees113.pdf"
+ },
+ {
+  "id": "fees1:14",
+  "class": 6,
+  "subject": "social_science",
+  "book": "fees1",
+  "book_title": "Exploring Society India And Beyond",
+  "chapter": 14,
+  "title": "Economic",
+  "title_source": "contents",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_06/Social Science/fees1-exploring-society-india-and-beyond/fees114.pdf"
+ },
+ {
+  "id": "gees1:01",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 1,
+  "title": "Geographical Diversity",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees101.pdf"
+ },
+ {
+  "id": "gees1:02",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 2,
+  "title": "Understanding",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees102.pdf"
+ },
+ {
+  "id": "gees1:03",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 3,
+  "title": "Climates of India",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees103.pdf"
+ },
+ {
+  "id": "gees1:04",
+  "class": 7,
+  "subject": "history",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 4,
+  "title": "New Beginnings: Cities and States",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees104.pdf"
+ },
+ {
+  "id": "gees1:05",
+  "class": 7,
+  "subject": "history",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 5,
+  "title": "The Rise of Empires",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees105.pdf"
+ },
+ {
+  "id": "gees1:06",
+  "class": 7,
+  "subject": "history",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 6,
+  "title": "The Age of Reorganisation",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees106.pdf"
+ },
+ {
+  "id": "gees1:07",
+  "class": 7,
+  "subject": "history",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 7,
+  "title": "The Gupta Era: An Age of Tireless Creativity",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees107.pdf"
+ },
+ {
+  "id": "gees1:08",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 8,
+  "title": "How the Land Becomes Sacred",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees108.pdf"
+ },
+ {
+  "id": "gees1:09",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 9,
+  "title": "From the Rulers to",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees109.pdf"
+ },
+ {
+  "id": "gees1:10",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 10,
+  "title": "The Constitution of India \u2014 An Introduction",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees110.pdf"
+ },
+ {
+  "id": "gees1:11",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 11,
+  "title": "From Barter to Money",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees111.pdf"
+ },
+ {
+  "id": "gees1:12",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees1",
+  "book_title": "Exploring Society India And Beyond Part I",
+  "chapter": 12,
+  "title": "Understanding Markets",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees1-exploring-society-india-and-beyond-part-i/gees112.pdf"
+ },
+ {
+  "id": "gees2:01",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 1,
+  "title": "The Story of Indian Farming",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees201.pdf"
+ },
+ {
+  "id": "gees2:02",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 2,
+  "title": "India and Her Neighbours",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees202.pdf"
+ },
+ {
+  "id": "gees2:03",
+  "class": 7,
+  "subject": "history",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 3,
+  "title": "Empires and Kingdoms: 6th to 10th Centuries",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees203.pdf"
+ },
+ {
+  "id": "gees2:04",
+  "class": 7,
+  "subject": "history",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 4,
+  "title": "Turning Tides: 11th and 12th Centuries",
+  "title_source": "curated",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees204.pdf"
+ },
+ {
+  "id": "gees2:05",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 5,
+  "title": "India",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees205.pdf"
+ },
+ {
+  "id": "gees2:06",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 6,
+  "title": "The State, the Government, and You",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees206.pdf"
+ },
+ {
+  "id": "gees2:07",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 7,
+  "title": "Infrastructure: Engine",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees207.pdf"
+ },
+ {
+  "id": "gees2:08",
+  "class": 7,
+  "subject": "social_science",
+  "book": "gees2",
+  "book_title": "Exploring Society India And Beyond Part Ii",
+  "chapter": 8,
+  "title": "Banks and the Magic of Finance",
+  "title_source": "first_page",
+  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_07/Social Science/gees2-exploring-society-india-and-beyond-part-ii/gees208.pdf"
+ },
+ {
   "id": "hees1:01",
   "class": 8,
   "subject": "social_science",
@@ -13,34 +387,34 @@
  {
   "id": "hees1:02",
   "class": 8,
-  "subject": "social_science",
+  "subject": "history",
   "book": "hees1",
   "book_title": "Exploring Society India And Beyond Part I",
   "chapter": 2,
-  "title": "Reshaping India\u2019s Political Map",
-  "title_source": "first_page",
+  "title": "Reshaping India's Political Map",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_08/Social Science/hees1-exploring-society-india-and-beyond-part-i/hees102.pdf"
  },
  {
   "id": "hees1:03",
   "class": 8,
-  "subject": "social_science",
+  "subject": "history",
   "book": "hees1",
   "book_title": "Exploring Society India And Beyond Part I",
   "chapter": 3,
   "title": "The Rise of the Marathas",
-  "title_source": "first_page",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_08/Social Science/hees1-exploring-society-india-and-beyond-part-i/hees103.pdf"
  },
  {
   "id": "hees1:04",
   "class": 8,
-  "subject": "social_science",
+  "subject": "history",
   "book": "hees1",
   "book_title": "Exploring Society India And Beyond Part I",
   "chapter": 4,
   "title": "The Colonial Era in India",
-  "title_source": "first_page",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_08/Social Science/hees1-exploring-society-india-and-beyond-part-i/hees104.pdf"
  },
  {
@@ -90,12 +464,12 @@
  {
   "id": "hees2:02",
   "class": 8,
-  "subject": "social_science",
+  "subject": "history",
   "book": "hees2",
   "book_title": "Exploring Society India And Beyond Part Ii",
   "chapter": 2,
-  "title": "India\u2019s Long Road",
-  "title_source": "first_page",
+  "title": "India's Long Road to Independence",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_08/Social Science/hees2-exploring-society-india-and-beyond-part-ii/hees202.pdf"
  },
  {
@@ -156,12 +530,12 @@
  {
   "id": "hees2:08",
   "class": 8,
-  "subject": "social_science",
+  "subject": "history",
   "book": "hees2",
   "book_title": "Exploring Society India And Beyond Part Ii",
   "chapter": 8,
   "title": "Cultural Currents: 13th to 17th Centuries",
-  "title_source": "first_page",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_08/Social Science/hees2-exploring-society-india-and-beyond-part-ii/hees208.pdf"
  },
  {
@@ -200,23 +574,23 @@
  {
   "id": "iest1:04",
   "class": 9,
-  "subject": "social_science",
+  "subject": "history",
   "book": "iest1",
   "book_title": "Understanding Society India And Beyond Part I",
   "chapter": 4,
-  "title": "Early Humans and Beginning",
-  "title_source": "first_page",
+  "title": "Early Humans and Beginning of Civilisation",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_09/Social Science/iest1-understanding-society-india-and-beyond-part-i/iest104.pdf"
  },
  {
   "id": "iest1:05",
   "class": 9,
-  "subject": "social_science",
+  "subject": "history",
   "book": "iest1",
   "book_title": "Understanding Society India And Beyond Part I",
   "chapter": 5,
-  "title": "State and Society",
-  "title_source": "first_page",
+  "title": "State and Society up to 1000 CE",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_09/Social Science/iest1-understanding-society-india-and-beyond-part-i/iest105.pdf"
  },
  {
@@ -512,8 +886,8 @@
   "book": "kehs1",
   "book_title": "Themes In World History",
   "chapter": 1,
-  "title": "early societies",
-  "title_source": "first_page",
+  "title": "Writing and City Life",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_11/History/kehs1-themes-in-world-history/kehs101.pdf"
  },
  {
@@ -523,20 +897,9 @@
   "book": "kehs1",
   "book_title": "Themes In World History",
   "chapter": 2,
-  "title": "29",
-  "title_source": "first_page",
+  "title": "An Empire Across Three Continents; Nomadic Empires",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_11/History/kehs1-themes-in-world-history/kehs102.pdf"
- },
- {
-  "id": "kehs1:03",
-  "class": 11,
-  "subject": "history",
-  "book": "kehs1",
-  "book_title": "Themes In World History",
-  "chapter": 3,
-  "title": "77 CHANGING TRADITIONS",
-  "title_source": "first_page",
-  "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_11/History/kehs1-themes-in-world-history/kehs103.pdf"
  },
  {
   "id": "kehs1:04",
@@ -545,8 +908,8 @@
   "book": "kehs1",
   "book_title": "Themes In World History",
   "chapter": 4,
-  "title": "THEME 86 THEMES IN WORLD HISTORY THE THREE ORDERS",
-  "title_source": "first_page",
+  "title": "The Three Orders",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_11/History/kehs1-themes-in-world-history/kehs104.pdf"
  },
  {
@@ -556,8 +919,8 @@
   "book": "kehs1",
   "book_title": "Themes In World History",
   "chapter": 5,
-  "title": "THEME 106 THEMES IN WORLD H ISTORY Changing Cultural Traditions",
-  "title_source": "first_page",
+  "title": "Changing Cultural Traditions",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_11/History/kehs1-themes-in-world-history/kehs105.pdf"
  },
  {
@@ -567,8 +930,8 @@
   "book": "kehs1",
   "book_title": "Themes In World History",
   "chapter": 6,
-  "title": "123 TOWARDS Modernisation",
-  "title_source": "first_page",
+  "title": "Displacing Indigenous Peoples",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_11/History/kehs1-themes-in-world-history/kehs106.pdf"
  },
  {
@@ -578,8 +941,8 @@
   "book": "kehs1",
   "book_title": "Themes In World History",
   "chapter": 7,
-  "title": "153 THEME Paths to Modernisation",
-  "title_source": "first_page",
+  "title": "Paths to Modernisation",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_11/History/kehs1-themes-in-world-history/kehs107.pdf"
  },
  {
@@ -1359,8 +1722,8 @@
   "book": "lehs1",
   "book_title": "Themes In Indian History I",
   "chapter": 1,
-  "title": "THEME Bricks, Beads and Bones ONE The Harappan Civilisation The Harappan seal (Fig.1.1) is possibly the most",
-  "title_source": "first_page",
+  "title": "Bricks, Beads and Bones: The Harappan Civilisation",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs1-themes-in-indian-history-i/lehs101.pdf"
  },
  {
@@ -1370,8 +1733,8 @@
   "book": "lehs1",
   "book_title": "Themes In Indian History I",
   "chapter": 2,
-  "title": "28 THEMES IN INDIAN HISTORY THEME THEME TWO Kings, Farmers and Towns",
-  "title_source": "first_page",
+  "title": "Kings, Farmers and Towns: Early States and Economies",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs1-themes-in-indian-history-i/lehs102.pdf"
  },
  {
@@ -1381,8 +1744,8 @@
   "book": "lehs1",
   "book_title": "Themes In Indian History I",
   "chapter": 3,
-  "title": "53 THEME THEME TWO Kinship, Caste and Class THREE Earl Ear ly Socie ties",
-  "title_source": "first_page",
+  "title": "Kinship, Caste and Class: Early Societies",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs1-themes-in-indian-history-i/lehs103.pdf"
  },
  {
@@ -1392,8 +1755,8 @@
   "book": "lehs1",
   "book_title": "Themes In Indian History I",
   "chapter": 4,
-  "title": "82 THEMES IN INDIAN HISTORY THEME Thinkers, Beliefs and Buildings",
-  "title_source": "first_page",
+  "title": "Thinkers, Beliefs and Buildings: Cultural Developments",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs1-themes-in-indian-history-i/lehs104.pdf"
  },
  {
@@ -1403,8 +1766,8 @@
   "book": "lehs2",
   "book_title": "Themes In Indian History Ii",
   "chapter": 1,
-  "title": "115 THEME Through the Eyes of Travellers FIVE Perceptions of Society",
-  "title_source": "first_page",
+  "title": "Through the Eyes of Travellers: Perceptions of Society",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs2-themes-in-indian-history-ii/lehs201.pdf"
  },
  {
@@ -1414,8 +1777,8 @@
   "book": "lehs2",
   "book_title": "Themes In Indian History Ii",
   "chapter": 2,
-  "title": "140 THEMES IN INDIAN HISTORY \u2013 PART II Bhakti - Sufi Traditions",
-  "title_source": "first_page",
+  "title": "Bhakti-Sufi Traditions",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs2-themes-in-indian-history-ii/lehs202.pdf"
  },
  {
@@ -1425,8 +1788,8 @@
   "book": "lehs2",
   "book_title": "Themes In Indian History Ii",
   "chapter": 3,
-  "title": "170 THEMES IN INDIAN HISTORY \u2013 PART II THEME An Imperial Capital",
-  "title_source": "first_page",
+  "title": "An Imperial Capital: Vijayanagara",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs2-themes-in-indian-history-ii/lehs203.pdf"
  },
  {
@@ -1436,8 +1799,8 @@
   "book": "lehs2",
   "book_title": "Themes In Indian History Ii",
   "chapter": 4,
-  "title": "196 THEMES IN INDIAN HISTORY \u2013 PART II Peasants, Zamindars THEME",
-  "title_source": "first_page",
+  "title": "Peasants, Zamindars and the State",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs2-themes-in-indian-history-ii/lehs204.pdf"
  },
  {
@@ -1447,8 +1810,8 @@
   "book": "lehs3",
   "book_title": "Themes In Indian History Iii",
   "chapter": 1,
-  "title": "227 Colonialism and the THEME Countryside NINE Explor ing Of Exploring Offf icial Ar",
-  "title_source": "first_page",
+  "title": "Colonialism and the Countryside",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs3-themes-in-indian-history-iii/lehs301.pdf"
  },
  {
@@ -1458,8 +1821,8 @@
   "book": "lehs3",
   "book_title": "Themes In Indian History Iii",
   "chapter": 2,
-  "title": "258 THEMES IN INDIAN HISTORY \u2013 PART III Rebels and the Raj THEME",
-  "title_source": "first_page",
+  "title": "Rebels and the Raj",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs3-themes-in-indian-history-iii/lehs302.pdf"
  },
  {
@@ -1469,8 +1832,8 @@
   "book": "lehs3",
   "book_title": "Themes In Indian History Iii",
   "chapter": 3,
-  "title": "286 THEMES IN INDIAN HISTORY \u2013 PART III Mahatma Gandhi and THEME",
-  "title_source": "first_page",
+  "title": "Mahatma Gandhi and the Nationalist Movement",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs3-themes-in-indian-history-iii/lehs303.pdf"
  },
  {
@@ -1480,8 +1843,8 @@
   "book": "lehs3",
   "book_title": "Themes In Indian History Iii",
   "chapter": 4,
-  "title": "THEME Framing the Constitution The Beginning of a N Nee w Er Eraa",
-  "title_source": "first_page",
+  "title": "Framing the Constitution",
+  "title_source": "curated",
   "pdf": "/home/nitin/story_generator/ncert_downloader/ncert_official_books/English/class_12/History/lehs3-themes-in-indian-history-iii/lehs304.pdf"
  },
  {

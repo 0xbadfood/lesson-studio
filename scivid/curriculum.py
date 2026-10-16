@@ -141,13 +141,40 @@ def find(root, chapter_ref):
 # Humanities books (infofilm digests, not Lesson Studio): Classes 8-10 have Social Science books, Classes 11-12 one
 # folder per subject. A Social Science book's subject comes from its title; the new integrated books (Exploring
 # Society, Understanding Society) mix subjects and stay "social_science".
-HUMANITIES_CLASSES = ['08', '09', '10', '11', '12']
+HUMANITIES_CLASSES = ['06', '07', '08', '09', '10', '11', '12']
 HUMANITIES_FOLDERS = {'Social Science': None, 'History': 'history', 'Geography': 'geography',
                       'Political Science': 'political_science', 'Economics': 'economics', 'Sociology': 'sociology'}
 SOCIAL_SCIENCE_TITLES = [('india-and-the-contemporary-world', 'history'), ('our-pasts', 'history'),
                          ('contemporary-india', 'geography'), ('resources-and-development', 'geography'),
                          ('economic', 'economics'), ('democratic-politics', 'political_science'),
                          ('social-and-political-life', 'political_science')]
+# History chapters with their printed titles (2026-10-16). Classes 6-9 use NCERT's integrated social-science books, where
+# history is the "Tapestry of the Past" chapters (plus Class 8's "Cultural Currents"); Classes 11-12 print chapter
+# titles only inside the themes, so the contents and first pages give junk. kehs1:03 is only a 9-page section
+# introduction and is left out; kehs1:02 holds two themes.
+HISTORY_TITLES = {
+    'fees1:04': 'Timeline and Sources of History', 'fees1:05': 'India, That Is Bharat',
+    'fees1:06': 'The Beginnings of Indian Civilisation',
+    'gees1:04': 'New Beginnings: Cities and States', 'gees1:05': 'The Rise of Empires',
+    'gees1:06': 'The Age of Reorganisation', 'gees1:07': 'The Gupta Era: An Age of Tireless Creativity',
+    'gees2:03': 'Empires and Kingdoms: 6th to 10th Centuries', 'gees2:04': 'Turning Tides: 11th and 12th Centuries',
+    'hees1:02': "Reshaping India's Political Map", 'hees1:03': 'The Rise of the Marathas',
+    'hees1:04': 'The Colonial Era in India',
+    'hees2:02': "India's Long Road to Independence", 'hees2:08': 'Cultural Currents: 13th to 17th Centuries',
+    'iest1:04': 'Early Humans and Beginning of Civilisation', 'iest1:05': 'State and Society up to 1000 CE',
+    'kehs1:01': 'Writing and City Life', 'kehs1:02': 'An Empire Across Three Continents; Nomadic Empires',
+    'kehs1:04': 'The Three Orders', 'kehs1:05': 'Changing Cultural Traditions',
+    'kehs1:06': 'Displacing Indigenous Peoples', 'kehs1:07': 'Paths to Modernisation',
+    'lehs1:01': 'Bricks, Beads and Bones: The Harappan Civilisation',
+    'lehs1:02': 'Kings, Farmers and Towns: Early States and Economies',
+    'lehs1:03': 'Kinship, Caste and Class: Early Societies',
+    'lehs1:04': 'Thinkers, Beliefs and Buildings: Cultural Developments',
+    'lehs2:01': 'Through the Eyes of Travellers: Perceptions of Society', 'lehs2:02': 'Bhakti-Sufi Traditions',
+    'lehs2:03': 'An Imperial Capital: Vijayanagara', 'lehs2:04': 'Peasants, Zamindars and the State',
+    'lehs3:01': 'Colonialism and the Countryside', 'lehs3:02': 'Rebels and the Raj',
+    'lehs3:03': 'Mahatma Gandhi and the Nationalist Movement', 'lehs3:04': 'Framing the Constitution',
+}
+HISTORY_SKIP = {'kehs1:03'}
 HUMANITIES_SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology', 'social_science'}
 
 
@@ -173,7 +200,7 @@ def contents_titles(prelims):
 
 @lru_cache(maxsize=1)
 def humanities_catalog(root):
-    """Humanities chapters of Classes 8-12, cached like the science catalog."""
+    """Humanities chapters of Classes 6-12, cached like the science catalog."""
     cache = Path(__file__).resolve().parent / 'cache' / 'humanities-catalog.json'
     if cache.exists():
         return json.loads(cache.read_text())
@@ -189,11 +216,15 @@ def humanities_catalog(root):
                 titles = contents_titles(book_dir / f'{book}ps.pdf')
                 for pdf in sorted(book_dir.glob(f'{book}[0-9][0-9].pdf')):
                     number = int(pdf.stem[-2:])
-                    title = titles.get(number)
-                    chapters.append({'id': chapter_id(book, number), 'class': int(cls), 'subject': book_subject,
+                    cid = chapter_id(book, number)
+                    if cid in HISTORY_SKIP:
+                        continue
+                    title = HISTORY_TITLES.get(cid) or titles.get(number)
+                    chapters.append({'id': cid, 'class': int(cls), 'subject': 'history' if cid in HISTORY_TITLES else book_subject,
                                      'book': book, 'book_title': slug.replace('-', ' ').title(), 'chapter': number,
                                      'title': title or chapter_title(pdf, number),
-                                     'title_source': 'contents' if title else 'first_page', 'pdf': str(pdf)})
+                                     'title_source': 'curated' if cid in HISTORY_TITLES else 'contents' if title else 'first_page',
+                                     'pdf': str(pdf)})
     cache.parent.mkdir(exist_ok=True)
     cache.write_text(json.dumps(chapters, indent=1))
     return chapters
