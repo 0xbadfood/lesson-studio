@@ -92,6 +92,13 @@ class Access:
 
 
 # ------------------------------------------------------------------ films
+def same_book(job, curriculum):
+    """Whether a saved run was planned from the book text the catalog gives now (the queue keeps it as files)."""
+    project = Path(job['project'])
+    return (read_json(project / 'curriculum.json') == curriculum['record']
+            and read_json(project / 'curriculum-sources.json') == curriculum['sources'])
+
+
 class Films:
     """Concept -> film job, kept in history-data/films.json. One film per concept: asking again shows the same film
     unless the earlier attempt failed."""
@@ -127,16 +134,18 @@ class Films:
                 return existing['film']
             if job and voice is None:                # "make it again" keeps the narrator the film was started with
                 voice = job['request'].get('voice_id')
-            if job and job['request'].get('voice_id') == narrator(voice)['voice_id']:
-                self.queue.resume(job['id'])        # same narrator: carry on from the saved run, not from scratch
-                return existing['film']
             built = catalog.film_request(digest, concept)
+            curriculum = {'record': built['record'], 'sources': built['sources']}
+            if (job and job['request'].get('voice_id') == narrator(voice)['voice_id']
+                    and same_book(job, curriculum)):
+                self.queue.resume(job['id'])        # same narrator and book text: carry on from the saved run
+                return existing['film']
             request = {'subject': built['subject'], 'durations': [built['record']['seconds']],
                        'generation_mode': 'short', 'orientation': 'landscape', 'review_mode': 'experimental',
                        'image_review': True, 'premium_rescue': False, 'tts_engine': 'vibevoice', 'mood': 'auto',
                        'mood_intensity': 'restrained', 'visual_balance': 'auto', 'music_engine': 'none',
                        **narrator(voice),
-                       'curriculum': {'record': built['record'], 'sources': built['sources']}}
+                       'curriculum': curriculum}
             job = self.queue.submit(request, f'history-{uuid.uuid4().hex}')
             film = uuid.uuid4().hex[:12]
             films[key] = {'film': film, 'job': job['id'], 'chapter': chapter_id, 'concept': concept_id,

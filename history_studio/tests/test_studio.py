@@ -165,6 +165,15 @@ class AppTests(unittest.TestCase):
         again = self.client.post('/api/films', json={'chapter': stopped['chapter_id'], 'concept': stopped['concept_id']}).json()
         self.assertEqual((again['film'], len(self.queue.jobs), self.queue.jobs['job1']['status']), (film, 1, 'queued'))
         self.assertEqual(self.client.get(f'/api/films/{film}').json()['status'], 'waiting')
+        # the book text changed since (a digest or catalog fix): the saved run would plan from the old text, so start anew
+        self.client.post(f'/api/films/{film}/cancel')
+        changed = json.loads(json.dumps(DIGEST)); changed['blocks'][0]['text'] += ' He reached Dandi on 6 April.'
+        (catalog.DIGESTS / 'jess3-02' / 'digest.json').write_text(json.dumps(changed))
+        fresh = self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'}).json()['film']
+        self.assertNotEqual(fresh, film)
+        self.assertEqual((len(self.queue.jobs), self.queue.jobs['job2']['request']['voice_id']),
+                         (2, self.queue.jobs['job1']['request']['voice_id']))                    # same narrator
+        self.assertIn('6 April', self.queue.jobs['job2']['request']['curriculum']['sources']['results'][0]['raw_content'])
 
     def test_media_only_from_the_films_own_folder(self):
         self.client.post('/api/login', json={'code': self.access.code})
