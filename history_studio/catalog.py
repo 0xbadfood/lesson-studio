@@ -24,9 +24,41 @@ SHORTEST = 90                                           # a concept film runs at
 NCERT_PDF = 'https://ncert.nic.in/textbook/pdf/{code}.pdf'
 
 
-def teaching_blocks(digest, concept):
+def _says(block):
+    return ' '.join(str(block.get(k, '')) for k in ('title', 'term', 'name', 'quote', 'text')).lower()
+
+
+def linked_blocks(digest, concept, own):
+    """Blocks elsewhere in the chapter that the concept's objectives need: an alias the objectives name that none of
+    the concept's own blocks mention, found in another block's title or quote (at most 3 per term). The digest assigns
+    each block to one concept, so 'from the Zollverein to the German Empire' (Unification of Germany) had no
+    Zollverein text and the film's evidence review could never pass (2026-10-17)."""
+    objectives = ' '.join(concept.get('objectives') or []).lower()
+    said = ' '.join(_says(b) for b in own)
+    have = {b['id'] for b in own}
+    out = []
+    for alias in concept.get('aliases') or []:
+        term = alias.lower().strip()
+        if len(term) < 4 or term not in objectives or term in said:
+            continue
+        hits = [b for b in digest['blocks'] if b['id'] not in have and b['type'] not in NOT_TAUGHT
+                and term in (str(b.get('title', '')) + ' ' + str(b.get('quote', ''))).lower()]
+        for b in hits[:3]:
+            have.add(b['id'])
+            out.append(b)
+    return out
+
+
+def teaching_blocks(digest, concept, linked=True):
     by_id = {b['id']: b for b in digest['blocks']}
-    return [by_id[x] for x in concept['blocks'] if x in by_id and by_id[x]['type'] not in NOT_TAUGHT]
+    own = [by_id[x] for x in concept['blocks'] if x in by_id and by_id[x]['type'] not in NOT_TAUGHT]
+    if not linked:
+        return own
+    extra = linked_blocks(digest, concept, own)
+    if not extra:
+        return own
+    order = {b['id']: n for n, b in enumerate(digest['blocks'])}
+    return sorted(own + extra, key=lambda b: order[b['id']])          # the book's reading order
 
 
 def teaching_ids(digest, concept):
@@ -84,7 +116,8 @@ def catalog(root=None):
     for d in digests(root):
         s = d['source']
         order = {b['id']: n for n, b in enumerate(d['blocks'])}
-        first = lambda c: min((order.get(x, 1e9) for x in teaching_ids(d, c)), default=1e9)  # noqa: E731
+        first = lambda c: min((order.get(b['id'], 1e9) for b in teaching_blocks(d, c, linked=False)),  # noqa: E731
+                              default=1e9)
         concepts = [{'id': c['id'], 'name': c['name'], 'summary': c.get('summary', ''),
                      'minutes': round(film_seconds(d, c) / 60, 1), 'sections': c.get('sections', [])}
                     for c in sorted(d['concepts'], key=first) if filmable(d, c)]       # in the book's order

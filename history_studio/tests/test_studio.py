@@ -79,6 +79,25 @@ class CatalogTests(unittest.TestCase):
         big = {**DIGEST, 'blocks': [{**DIGEST['blocks'][0], 'text': 'word ' * 1500}]}
         self.assertEqual(catalog.film_seconds(big, {'id': 'C1', 'blocks': ['B1']}), 735)     # about 12 min, no cap
 
+    def test_objective_terms_bring_their_book_text_from_elsewhere_in_the_chapter(self):
+        # Unification of Germany (2026-10-17): the objective names the Zollverein, whose block belongs to another
+        # concept; without it the evidence review rejected every candidate.
+        digest = {**DIGEST, 'blocks': [
+            {'id': 'B1', 'type': 'event', 'title': 'Formation of the Zollverein', 'date': '1834', 'pages': [10],
+             'text': 'In 1834, a customs union or zollverein was formed at the initiative of Prussia.'},
+            {'id': 'B2', 'type': 'event', 'title': 'Proclamation of the German Empire', 'pages': [20],
+             'text': 'In January 1871 William I was proclaimed German Emperor at Versailles.'},
+            {'id': 'B3', 'type': 'exercise', 'title': 'Zollverein question', 'text': 'What was the Zollverein?'}]}
+        germany = {'id': 'C8', 'name': 'The Unification of Germany', 'blocks': ['B2'], 'aliases': ['Zollverein', 'Bismarck'],
+                   'objectives': ['Trace German unification from the Zollverein to the German Empire.']}
+        self.assertEqual(catalog.teaching_ids(digest, germany), ['B1', 'B2'])            # book order, no questions
+        self.assertIn('customs union', catalog.book_text(digest, germany))
+        self.assertIn('Event: Formation of the Zollverein (1834)', ' '.join(k['point'] for k in catalog.coverage(digest, germany)))
+        named = {**germany, 'blocks': ['B1', 'B2']}
+        self.assertEqual(catalog.teaching_ids(digest, named), ['B1', 'B2'])              # nothing added twice
+        unnamed = {**germany, 'objectives': ['Explain the proclamation.']}
+        self.assertEqual(catalog.teaching_ids(digest, unnamed), ['B2'])                  # only terms objectives name
+
 
 class AppTests(unittest.TestCase):
     def setUp(self):
