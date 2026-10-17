@@ -98,6 +98,14 @@ class CatalogTests(unittest.TestCase):
         unnamed = {**germany, 'objectives': ['Explain the proclamation.']}
         self.assertEqual(catalog.teaching_ids(digest, unnamed), ['B2'])                  # only terms objectives name
 
+    def test_key_terms_bring_their_meaning_into_the_book_text(self):
+        # Human Evolution (2026-10-17): 'Fossil' had only a meaning, so the book text showed a bare heading while
+        # coverage asked for the definition, and the evidence review rejected every candidate.
+        digest = {**DIGEST, 'blocks': [{'id': 'B1', 'type': 'key_term', 'title': 'Fossil', 'term': 'Fossil', 'pages': [6],
+                                        'meaning': 'The preserved remains of plants, animals, or humans.'}]}
+        concept = {'id': 'C2', 'name': 'Human Evolution', 'blocks': ['B1']}
+        self.assertIn('[Key term, p.6] Fossil\nThe preserved remains', catalog.book_text(digest, concept))
+
 
 class AppTests(unittest.TestCase):
     def setUp(self):

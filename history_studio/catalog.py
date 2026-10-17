@@ -158,7 +158,7 @@ def book_text(digest, concept):
         label = {'source': 'Primary source', 'figure': 'Figure', 'map': 'Map', 'key_term': 'Key term',
                  'box': 'Box'}.get(b['type'], b['type'].replace('_', ' ').title())
         head = f'[{label}, p.{",".join(map(str, b.get("pages", [])))}] {b.get("title", "")}'.strip()
-        body = b.get('text') or b.get('caption') or ''
+        body = b.get('text') or b.get('meaning') or b.get('caption') or ''   # some key terms carry only 'meaning'
         if b['type'] in ('figure', 'map') and b.get('shows'):
             body = f'{b.get("caption", "")} Shows: {b["shows"]}'
         if b['type'] == 'source' and b.get('author'):

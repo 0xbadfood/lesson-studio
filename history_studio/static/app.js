@@ -192,9 +192,9 @@ async function confirmFilm(chapter, concept) {
 function stepsHtml(f) {
   const keys = f.phases.map((p) => p.key);
   const at = f.status === 'done' ? keys.length : Math.max(0, keys.indexOf(f.phase));
-  return `<aside class="steps"><h3>${f.status === 'done' ? 'Your film is ready' : f.status === 'waiting' ? 'Waiting to start' : f.status === 'stopped' ? 'Stopped' : 'Making your film'}</h3>
+  return `<aside class="steps"><h3>${f.status === 'done' ? 'Your film is ready' : f.status === 'waiting' ? 'Waiting to start' : f.status === 'stopped' ? 'Stopped' : f.status === 'failed' ? 'Could not finish' : 'Making your film'}</h3>
     ${f.phases.map((p, i) => {
-      const cls = f.status === 'waiting' || f.status === 'stopped' ? '' : i < at ? 'done' : i === at && f.status === 'making' ? 'now' : '';
+      const cls = ['waiting', 'stopped', 'failed'].includes(f.status) ? '' : i < at ? 'done' : i === at && f.status === 'making' ? 'now' : '';
       return `<div class="step ${cls}"><span class="ring">✓</span><span><b>${esc(p.title)}</b>${cls === 'now' ? `<span>${esc(p.line)}</span>` : ''}</span></div>`;
     }).join('')}</aside>`;
 }
