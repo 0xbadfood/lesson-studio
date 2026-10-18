@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Nightly digest job: builds the chapters listed in digest-queue.txt that have no digest yet.
 
-Runs on the Spark (systemd user timer `nightly-digest.timer`). Two lanes when the amdserver is free:
-  - spark: Qwen 27B (vision) on the Spark's own llama.cpp, :8001;
-  - amd:   the amdserver switched to LLM mode through its gpu-mode API (:8099), Qwen 27B FP8 on vLLM, :8001.
+Runs on the Spark (systemd user timer `nightly-digest.timer`). Three lanes when the amdserver is free:
+  - spark:      Qwen 27B (vision) on the Spark's own llama.cpp, :8001;
+  - amd0, amd1: the amdserver switched to LLM mode through its gpu-mode API (:8099): one Lucebox Qwen3.8-27B
+                server per R9700 (DFlash2 drafter, vision), :8001 and :8002, about 8 s a page each.
 The amdserver is borrowed only while no infofilm job is queued or running (films need its image factory), and it
 is switched back to image mode when the job ends, or at once if a film job appears. The job also skips the night
 when a film is running, since the Spark's Qwen and GPU are shared. No new chapter starts after the deadline; a
@@ -34,7 +35,7 @@ import digest  # noqa: E402
 
 SPARK_LLM = 'http://127.0.0.1:8001/v1'
 AMD_MODE = 'http://192.168.0.103:8099'
-AMD_LLM = 'http://192.168.0.103:8001/v1'
+AMD_LLMS = {'amd0': 'http://192.168.0.103:8001/v1', 'amd1': 'http://192.168.0.103:8002/v1'}
 FILM_QUEUE = Path('/home/nitin/remotion/artifacts/interface/queue.sqlite3')
 QUEUE_FILE = HERE / 'digest-queue.txt'
 LOGS = digest.OUT / 'nightly'
@@ -187,9 +188,11 @@ def main(argv=None):
         threads.append(threading.Thread(target=lane, args=(name, url, todo, deadline, stop, results, log), daemon=True))
         threads[-1].start()
 
-    start('spark', SPARK_LLM)                         # the Spark works while the amdserver loads (~7 min)
-    if len(refs) > 1 and not args.no_amd and amd.borrow() and not todo.empty():
-        start('amd', AMD_LLM)
+    start('spark', SPARK_LLM)                         # the Spark works while the amdserver loads (~1 min)
+    if len(refs) > 1 and not args.no_amd and amd.borrow():
+        for name, url in AMD_LLMS.items():
+            if not todo.empty():
+                start(name, url)
     try:
         while any(t.is_alive() for t in threads):
             time.sleep(30)

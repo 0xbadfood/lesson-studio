@@ -1189,7 +1189,12 @@ def chat(endpoint, out, label, timeout):
     key = api_key_for(endpoint)
     model = Chat(endpoint, out, api_key=key)._model(search_agent.httpx.Client(
         timeout=30, headers={'Authorization': f'Bearer {key}'} if key else {}))
-    return guarded(Chat(endpoint, out, label=label, model=model, api_key=key, local=True, timeout=timeout))
+    # Temperature 0: the amdserver's Lucebox servers (model id 'luce') decode speculatively (DFlash2) only when
+    # greedy, and greedy suits page extraction anyway. A JSON grammar would force Lucebox back to one token at a time
+    # (about 4x slower), so its calls go unconstrained and rely on the parse/validate retry. Neither setting is part
+    # of the cache key, so earlier cached calls stay valid.
+    return guarded(Chat(endpoint, out, label=label, model=model, api_key=key, local=True, timeout=timeout,
+                        temperature=0, constrained=model != 'luce'))
 
 
 def guarded(client):

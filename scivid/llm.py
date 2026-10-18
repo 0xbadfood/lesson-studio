@@ -49,9 +49,11 @@ def parse_json(text):
 
 
 class Chat:
-    def __init__(self, url, root, *, timeout=600, label='qwen', model=None, api_key=None, local=True):
+    def __init__(self, url, root, *, timeout=600, label='qwen', model=None, api_key=None, local=True, temperature=.2,
+                 constrained=True):
         self.url, self.root, self.timeout, self.label = url.rstrip('/'), Path(root), timeout, label
-        self.model, self.api_key, self.local = model, api_key, local
+        self.model, self.api_key, self.local, self.temperature = model, api_key, local, temperature
+        self.constrained = constrained   # False: no response_format grammar; parse, validate and retry instead
 
     def _model(self, client):
         if self.model is None:
@@ -76,7 +78,7 @@ class Chat:
             content.append({'type': 'image_url', 'image_url': {'url': f'data:{mime};base64,{data}'}})
         headers = {'Authorization': 'Bearer ' + self.api_key} if self.api_key else {}
         with httpx.Client(timeout=self.timeout, headers=headers) as client:
-            body = {'model': self._model(client), 'temperature': .2, 'max_tokens': max_tokens,
+            body = {'model': self._model(client), 'temperature': self.temperature, 'max_tokens': max_tokens,
                     'messages': [{'role': 'system', 'content': system},
                                  {'role': 'user', 'content': content if images else prompt}]}
             if self.local:   # llama.cpp / vLLM reasoning controls; hosted APIs reject unknown fields
@@ -96,8 +98,9 @@ class Chat:
                 # leave room for the answer on top of it.
                 body['reasoning'] = {'max_tokens': thinking} if thinking else {'effort': 'low'}
                 body['max_tokens'] = max(8000, max_tokens + (thinking or 2000) + 4000)
-            body['response_format'] = ({'type': 'json_schema', 'json_schema': {'name': 'result', 'schema': schema}}
-                                       if schema else {'type': 'json_object'})
+            if self.constrained:
+                body['response_format'] = ({'type': 'json_schema', 'json_schema': {'name': 'result', 'schema': schema}}
+                                           if schema else {'type': 'json_object'})
             _write(folder / 'request.json', {'provider': self.label, 'name': name, 'url': self.url, 'model': self.model,
                                              'prompt': prompt, 'images': [str(p) for p in images],
                                              'thinking': thinking, 'max_tokens': max_tokens})
