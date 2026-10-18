@@ -15,6 +15,7 @@ chapter cut short keeps its cached model calls, so the next night resumes it.
 from __future__ import annotations
 
 import argparse
+import fcntl
 import json
 import os
 import queue
@@ -145,6 +146,12 @@ def main(argv=None):
     parser.add_argument('--queue', type=Path, default=QUEUE_FILE)
     args = parser.parse_args(argv)
     LOGS.mkdir(parents=True, exist_ok=True)
+    instance = (LOGS / 'running.lock').open('w')     # one run at a time: a manual run and the 01:00 timer would
+    try:                                              # build the same chapters and double the load on every server
+        fcntl.flock(instance, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        print('another digest run is in progress: exiting', flush=True)
+        return 0
     stamp = datetime.now().strftime('%Y-%m-%d-%H%M')
     log_file = (LOGS / f'{stamp}.log').open('a')
     lock = threading.Lock()

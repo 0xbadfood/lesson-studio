@@ -64,6 +64,11 @@ class PageTests(unittest.TestCase):
         for text in ('Example 5.6 is on this page', 'unbalanced', 'is not in the page text'):
             self.assertIn(text, errors)
 
+    def test_lettered_subsection_is_its_section(self):
+        block = {**self.block(), 'section': '5.2(d)'}
+        self.assertEqual(d.page_errors({'blocks': [block]}, 7, PAGES, 5, {}), [])
+        self.assertEqual(block['section'], '5.2')
+
     def test_one_missed_quote_is_flagged_not_fatal(self):
         miss = self.block(title='other', quote='momentum is conserved in every collision here')
         self.assertEqual(d.page_errors({'blocks': [self.block(), miss]}, 7, PAGES, 5, {}), [])
@@ -137,12 +142,19 @@ class ConceptTests(unittest.TestCase):
                 'blocks': blocks, **over}
 
     def test_every_block_covered(self):
-        concepts = [self.concept(1, ['B1']), self.concept(2, ['B2']), self.concept(3, ['B3', 'B9'], sections=['7.1'])]
+        concepts = [self.concept(1, ['B1']), self.concept(2, ['B2']), self.concept(3, ['B9'], sections=['7.1'])]
         errors = ' '.join(d.concept_errors({'concepts': concepts}, self.blocks, self.outline))
-        for text in ('not covered: [\'B4\']', 'unknown: [\'B9\']', 'C3: sections'):
+        for text in ('not covered: [\'B3\', \'B4\']', 'unknown: [\'B9\']', 'C3: sections'):
             self.assertIn(text, errors)
         concepts = [self.concept(1, ['B1', 'B4']), self.concept(2, ['B2']), self.concept(3, ['B3'])]
         self.assertEqual(d.concept_errors({'concepts': concepts}, self.blocks, self.outline), [])
+
+    def test_an_invented_block_id_is_dropped(self):
+        concepts = [{'id': 'C1', 'name': 'a', 'blocks': ['B1', 'B2', 'B99'], 'depth': 'stated', 'difficulty': 'core',
+                     'sections': ['5.1']}]
+        errors = ' '.join(d.concept_errors({'concepts': concepts}, self.blocks, self.outline, tolerate=1))
+        self.assertNotIn('unknown', errors)
+        self.assertEqual(concepts[0]['blocks'], ['B1', 'B2'])
 
     def test_a_few_uncovered_blocks_are_tolerated_then_assigned(self):
         concepts = [self.concept(1, ['B1']), self.concept(2, ['B2']), self.concept(3, ['B3'])]
@@ -174,6 +186,16 @@ class TextLayerTest(unittest.TestCase):
         self.assertIn('law of areas', pages[0]['text'])
         self.assertNotIn('ocr', pages[1])
 
+    def test_formula_pages_take_ocr_prose_despite_its_fragments(self):
+        real = d.ocr_text
+        d.ocr_text = lambda pdf, page, folder: ('In cyclic compounds the bond-line formulas may be given ' * 6 +
+                                                'H,C C H CH, ' * 20)
+        try:
+            pages = d.with_text_layer('x.pdf', [{'page': 4, 'text': 'solution c c ho ch ch ch ch hoch b e e ' * 2}], None)
+        finally:
+            d.ocr_text = real
+        self.assertTrue(pages[0].get('ocr'))
+
 
 class ChapterContextTest(unittest.TestCase):
     concepts = [{'id': 'C1'}]
@@ -189,6 +211,10 @@ class ChapterContextTest(unittest.TestCase):
     def test_a_survey_chapter_keeps_its_chapter_wide_pieces(self):
         left = [{'id': f'B{n}', 'type': t} for n, t in enumerate(['source', 'fact', 'figure', 'map', 'map', 'box'])]
         self.assertEqual(d.assign_errors({'assign': {b['id']: [] for b in left}}, left, self.concepts, 140), [])
+
+    def test_reference_tables_after_a_chapter_may_stay_unassigned(self):
+        left = [{'id': f'B{n}', 'type': 'table'} for n in range(372, 376)]
+        self.assertEqual(d.assign_errors({'assign': {b['id']: [] for b in left}}, left, self.concepts, 375), [])
 
     def test_too_many_unassigned(self):
         left = [{'id': f'B{n}', 'type': 'fact'} for n in range(10)]

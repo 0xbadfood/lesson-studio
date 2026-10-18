@@ -235,6 +235,8 @@ def page_errors(result, page, pages, chapter_no, required):
     example = f'{chapter_no}.2' if chapter_no is not None else '2 or 2.1'
     for n, b in enumerate(blocks, 1):
         tag = f'block {n} ({b.get("type")}, "{str(b.get("title", ""))[:40]}")'
+        if isinstance(b.get('section'), str):         # "5.6(d)": the lettered parts of a section are the section
+            b['section'] = re.sub(r'\s*\([a-z]\)$', '', b['section'].strip())
         if b.get('type') not in types:
             errors.append(f'{tag}: type must be one of {list(types)}')
         if not section_re.match(str(b.get('section', ''))):
@@ -319,8 +321,11 @@ def with_text_layer(pdf, pages, folder, min_words=30):
             text = ocr_text(pdf, p['page'], folder)
             have = len(re.findall(r'[A-Za-z]{3,}', p['text']))
             got = len(re.findall(r'[A-Za-z]{3,}', text))
+            # A page of structural formulas (Class 11 organic chemistry) has a few words and "ch ch" fragments in its
+            # text layer and OCR full of "H,C" fragments: with that few words, OCR's prose wins on its own.
             if (got >= min(min_words, max(have, 1))
-                    and (not garbled(p['text']) or fragment_ratio(text) < fragment_ratio(p['text']) / 2)):
+                    and (have < min_words < got or not garbled(p['text'])
+                         or fragment_ratio(text) < fragment_ratio(p['text']) / 2)):
                 p = {**p, 'text': text.strip(), 'ocr': True}
         out.append(p)
     return out
@@ -487,6 +492,8 @@ def concept_errors(result, blocks, outline, tolerate=0.0):
     for c in concepts:
         cid = c.get('id')
         bad = [x for x in c.get('blocks') or [] if x not in known]
+        if bad and len(bad) < len(c['blocks']):       # one id past the last block (B150 of 149): drop it, keep the rest
+            c['blocks'], bad = [x for x in c['blocks'] if x in known], []
         if bad or not c.get('blocks'):
             errors.append(f'{cid}: "blocks" must list block ids (unknown: {bad[:5]})')
         covered |= set(c.get('blocks') or [])
@@ -510,7 +517,8 @@ def uncovered(concepts, blocks):
     return [b for b in blocks if b['id'] not in covered]
 
 
-CONTEXT_TYPES = {'box', 'figure', 'fact', 'map', 'source'}   # may stay chapter-level: epigraphs, portraits, whole-chapter history
+CONTEXT_TYPES = {'box', 'figure', 'fact', 'map', 'source',   # may stay chapter-level: epigraphs, portraits, whole-chapter history,
+                 'table'}                                      # reference tables printed after a chapter (log and antilog tables)
 
 
 def assign_errors(result, left, concepts, blocks_total):
@@ -522,7 +530,8 @@ def assign_errors(result, left, concepts, blocks_total):
             context.append(b['id'])
         elif not isinstance(got, list) or not got or any(c not in known for c in got):
             errors.append(f'{b["id"]}: give the concept ids it belongs to (from {sorted(known)})' +
-                          (' or [] if it is chapter-level context such as an epigraph, a portrait or a history note'
+                          (' or [] if it is chapter-level context such as an epigraph, a portrait, a history note or a '
+                           'reference table'
                            if b.get('type') in CONTEXT_TYPES else ''))
     # A survey chapter has several chapter-wide pieces (Class 8 architecture: epigraph, introduction, a timeline and
     # two maps of every monument, a roundup box - 6 of ~150 blocks, 2026-10-18).
@@ -561,7 +570,8 @@ def make_concepts(model, chapter, blocks, outline):
     if left := uncovered(concepts, blocks):        # a few blocks left out: place them without redoing everything
         prompt = ('Assign each block below to the concept(s) of this chapter it belongs to (an exercise to the '
                   'concepts it practises). Use [] only for chapter-level context that teaches no concept: an '
-                  'epigraph, a portrait, a history note about the whole chapter.\nReturn JSON {"assign":{"B12":["C3"],...}}\nCONCEPTS:\n' +
+                  'epigraph, a portrait, a history note about the whole chapter, a reference table printed after it '
+                  '(log tables).\nReturn JSON {"assign":{"B12":["C3"],...}}\nCONCEPTS:\n' +
                   '\n'.join(f'{c["id"]} {c["name"]}: {c.get("summary", "")}' for c in concepts) +
                   '\nBLOCKS:\n' + '\n'.join(compact(b, 60) for b in left))
         assign = model.call('concepts-assign', prompt, thinking=0, max_tokens=3000, attempts=3, system=SYSTEM,
