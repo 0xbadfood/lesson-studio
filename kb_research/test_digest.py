@@ -186,6 +186,10 @@ class ChapterContextTest(unittest.TestCase):
         left = [{'id': 'B5', 'type': 'worked_example'}]
         self.assertTrue(d.assign_errors({'assign': {'B5': []}}, left, self.concepts, 177))
 
+    def test_a_survey_chapter_keeps_its_chapter_wide_pieces(self):
+        left = [{'id': f'B{n}', 'type': t} for n, t in enumerate(['source', 'fact', 'figure', 'map', 'map', 'box'])]
+        self.assertEqual(d.assign_errors({'assign': {b['id']: [] for b in left}}, left, self.concepts, 140), [])
+
     def test_too_many_unassigned(self):
         left = [{'id': f'B{n}', 'type': 'fact'} for n in range(10)]
         self.assertTrue(d.assign_errors({'assign': {b['id']: [] for b in left}}, left, self.concepts, 100))

@@ -524,7 +524,9 @@ def assign_errors(result, left, concepts, blocks_total):
             errors.append(f'{b["id"]}: give the concept ids it belongs to (from {sorted(known)})' +
                           (' or [] if it is chapter-level context such as an epigraph, a portrait or a history note'
                            if b.get('type') in CONTEXT_TYPES else ''))
-    if len(context) > max(4, blocks_total // 25):
+    # A survey chapter has several chapter-wide pieces (Class 8 architecture: epigraph, introduction, a timeline and
+    # two maps of every monument, a roundup box - 6 of ~150 blocks, 2026-10-18).
+    if len(context) > max(6, blocks_total // 20):
         errors.append(f'{len(context)} blocks left without a concept ({", ".join(context)}): only epigraphs, portraits '
                       'and notes about the whole chapter may stay unassigned')
     return errors
