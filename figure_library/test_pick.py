@@ -28,6 +28,10 @@ class PickTests(unittest.TestCase):
         found = pick.candidates('cathode ray tube discharge', index=INDEX)
         self.assertEqual([f['id'] for f in found], ['c'])
 
+    def test_vetted_figures_with_foreign_svg_text_are_left_out(self):
+        blank = record('e', 'Cathode ray tube diagram-te', 'CRT', ['రుణధ్రువం'], {**GOOD, 'shows': 'A cathode ray tube'})
+        self.assertEqual(pick.candidates('cathode ray tube', index=[blank]), [])
+
     def test_weak_matches_are_left_out(self):
         self.assertEqual(pick.candidates('quantum numbers of orbitals', index=INDEX), [])
 

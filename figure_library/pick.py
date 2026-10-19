@@ -23,11 +23,12 @@ def tokens(text):
 
 
 def usable(record):
-    """Vetted records must have passed; unvetted ones are offered only when their printed words are English."""
+    """The SVG's own words must be English (cairosvg draws Telugu or Devanagari labels as blanks, so the vision check
+    can miss them, 2026-10-19), and a vetted record must have passed."""
+    if any(re.search(r'[^\x00-\x7f°±×·→←θβαγλνμφΦ]', label) for label in record.get('labels') or []):
+        return False
     vet = record.get('vet')
-    if vet is not None:
-        return bool(vet.get('usable'))
-    return not any(re.search(r'[^\x00-\x7f°±×·→←θβαγλνμ]', label) for label in record.get('labels') or [])
+    return vet is None or bool(vet.get('usable'))
 
 
 def describe(record):

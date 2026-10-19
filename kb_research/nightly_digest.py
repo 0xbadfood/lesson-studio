@@ -119,12 +119,13 @@ class Amd:
     def give_back(self):
         if not self.switched:
             return
-        self.mark(False)
         try:
             http(AMD_MODE + '/mode/image', 'POST')
-            self.log('amd: switched back to image mode')
-        except OSError as exc:
+        except OSError as exc:                        # keep the marker: the next run gives it back
             self.log(f'amd: could not switch back to image mode: {exc}')
+            return
+        self.mark(False)
+        self.log('amd: switched back to image mode')
 
 
 def lane(name, endpoint, todo, deadline, stop, results, log):

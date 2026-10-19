@@ -828,7 +828,7 @@ def calculation_errors(addition):
         if isinstance(c, dict) and str(c.get('expr') or '').strip() in ('', 'None', 'null'):
             continue                                # an empty entry (a model writes null when nothing is computed)
         try:
-            got = evaluate(c.get('expr', ''))
+            got = float(evaluate(c.get('expr', '')))  # an exact int too big for a float raises OverflowError here
         except (ValueError, SyntaxError, TypeError, ZeroDivisionError, OverflowError) as exc:
             errors.append(f'calculation "{c.get("expr")}" cannot be evaluated ({exc}); write plain arithmetic')
             continue

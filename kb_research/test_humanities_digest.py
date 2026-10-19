@@ -84,6 +84,17 @@ class NightlyTests(unittest.TestCase):
         self.assertFalse(marker.exists())
         self.assertEqual([u.rsplit('/', 2)[-1] for u in calls], ['llm', 'image'])
 
+    def test_marker_kept_when_the_switch_back_fails(self):
+        from unittest.mock import patch
+        marker = self.root / 'amd-borrowed'
+        marker.write_text('x')
+
+        def down(url, method='GET', timeout=10):
+            raise OSError('hung')
+        with patch.object(nightly, 'http', down):
+            nightly.Amd(print, marker).give_back()
+        self.assertTrue(marker.exists())                                  # the next run still gives it back
+
     def test_empty_calculation_entry_is_ignored(self):
         self.assertEqual(d.calculation_errors({'content': 'Gandhi reached Dandi in April 1930.',
                                                'calculations': [{'expr': None, 'value': None}]}), [])

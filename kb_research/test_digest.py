@@ -259,6 +259,10 @@ class RealPowerTest(unittest.TestCase):
         errors = d.calculation_errors({'calculations': [{'expr': '(-4)**0.5', 'value': 2}], 'content': ''})
         self.assertIn('cannot be evaluated', errors[0])
 
+    def test_an_exact_result_too_big_for_a_float_is_an_error_not_a_crash(self):
+        errors = d.calculation_errors({'calculations': [{'expr': '10**400', 'value': 1}], 'content': ''})
+        self.assertIn('cannot be evaluated', errors[0])
+
 
 if __name__ == '__main__':
     unittest.main()
