@@ -228,6 +228,13 @@ class ChapterContextTest(unittest.TestCase):
         left = [{'id': f'B{n}', 'type': 'table'} for n in range(372, 376)]
         self.assertEqual(d.assign_errors({'assign': {b['id']: [] for b in left}}, left, self.concepts, 375), [])
 
+    def test_a_section_no_concept_teaches_is_context(self):
+        concepts = [{'id': 'C1', 'sections': ['8.2']}]
+        left = [{'id': 'B5', 'type': 'equation', 'section': '8.1'}]
+        self.assertEqual(d.assign_errors({'assign': {'B5': []}}, left, concepts, 282), [])
+        left = [{'id': 'B9', 'type': 'equation', 'section': '8.2'}]
+        self.assertTrue(d.assign_errors({'assign': {'B9': []}}, left, concepts, 282))
+
     def test_too_many_unassigned(self):
         left = [{'id': f'B{n}', 'type': 'fact'} for n in range(10)]
         self.assertTrue(d.assign_errors({'assign': {b['id']: [] for b in left}}, left, self.concepts, 100))

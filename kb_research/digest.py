@@ -525,10 +525,13 @@ CONTEXT_TYPES = {'box', 'figure', 'fact', 'map', 'source',   # may stay chapter-
 
 def assign_errors(result, left, concepts, blocks_total):
     known = {c['id'] for c in concepts}
+    taught = {s for c in concepts for s in c.get('sections') or []}
     errors, context = [], []
     for b in left:
         got = (result.get('assign') or {}).get(b['id'])
-        if got == [] and b.get('type') in CONTEXT_TYPES:
+        # a section no concept teaches is context as a whole (8.1, the history of organic chemistry: Wohler's urea
+        # equation included, Class 11 chemistry 2026-10-19)
+        if got == [] and (b.get('type') in CONTEXT_TYPES or taught and b.get('section') not in taught):
             context.append(b['id'])
         elif not isinstance(got, list) or not got or any(c not in known for c in got):
             errors.append(f'{b["id"]}: give the concept ids it belongs to (from {sorted(known)})' +
