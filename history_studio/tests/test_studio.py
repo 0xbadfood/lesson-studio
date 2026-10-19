@@ -197,5 +197,67 @@ class AppTests(unittest.TestCase):
         self.assertEqual(self.client.get(f'/media/{film}/scene/..%2f..').status_code, 404)
 
 
+
+CHEM = {'source': {'id': 'kech1-02', 'class': 11, 'subject': 'chemistry', 'book': 'kech1', 'chapter': 2,
+                   'book_title': 'Chemistry Part I', 'title': 'Structure of Atom', 'pdf': '/books/kech102.pdf'},
+        'blocks': [{'id': 'B1', 'type': 'fact', 'title': 'Scattering experiment', 'pages': [6],
+                    'text': ' '.join(['Alpha particles were directed at a thin gold foil.'] * 40)},
+                   {'id': 'B2', 'type': 'equation', 'title': 'Mass number', 'latex': 'A = Z + n', 'ref': ['Eq. 2.4'],
+                    'pages': [7], 'text': 'Mass number is the sum of protons and neutrons.'},
+                   {'id': 'B3', 'type': 'definition', 'title': 'Isotopes', 'pages': [7],
+                    'text': 'Atoms with the same atomic number but different mass number.'},
+                   {'id': 'B4', 'type': 'worked_example', 'title': 'Problem 2.1', 'pages': [8],
+                    'problem': 'Find the neutrons in Br-80', 'given': ['Z = 35', 'A = 80'],
+                    'steps': [{'latex': 'n = A - Z = 45'}], 'answer': '45 neutrons', 'text': 'Find the neutrons'}],
+        'concepts': [{'id': 'C1', 'name': "Rutherford's Nuclear Model", 'summary': 'Gold foil and the nucleus.',
+                      'blocks': ['B1', 'B2', 'B3', 'B4'], 'objectives': ['Explain the scattering experiment.']}],
+        'gaps': [], 'additions': []}
+
+
+class ChemistryStudioTests(unittest.TestCase):
+    def setUp(self):
+        folder = tempfile.TemporaryDirectory(); self.addCleanup(folder.cleanup); root = Path(folder.name)
+        for d in (DIGEST, CHEM):
+            (root / 'digests' / d['source']['id']).mkdir(parents=True)
+            (root / 'digests' / d['source']['id'] / 'digest.json').write_text(json.dumps(d))
+        self.addCleanup(setattr, catalog, 'DIGESTS', catalog.DIGESTS)
+        catalog.DIGESTS = root / 'digests'
+        self.queue = FakeQueue(root)
+        self.access = studio.Access(root / 'chem-data')
+        self.addCleanup(setattr, studio, 'voices', studio.voices)
+        studio.voices = lambda: [{'id': 'kane', 'label': 'Kane (studio narrator)', 'reference_audio': '/r/kane.wav',
+                                  'reference_transcript': 'hello'}]
+        self.client = TestClient(studio.build(self.queue, self.access, root / 'chem-data',
+                                              catalog.PROFILES['chemistry']))
+
+    def test_only_chemistry_is_offered_and_the_page_is_named_for_it(self):
+        page = self.client.get('/').text
+        self.assertIn('<title>Chemistry Studio</title>', page)
+        self.assertIn('"subject": "chemistry"', page)
+        self.client.post('/api/login', json={'code': self.access.code})
+        subjects = [s['id'] for c in self.client.get('/api/catalog').json()['classes'] for s in c['subjects']]
+        self.assertEqual(subjects, ['chemistry'])
+
+    def test_a_chemistry_film_carries_its_equations_and_figures(self):
+        self.client.post('/api/login', json={'code': self.access.code})
+        self.client.post('/api/films', json={'chapter': 'kech1-02', 'concept': 'C1'})
+        job = self.queue.jobs['job1']
+        record = job['request']['curriculum']['record']
+        points = [k['point'] for k in record['coverage']]
+        self.assertIn('Equation Eq. 2.4: Mass number - A = Z + n', points)
+        self.assertTrue(any(p.startswith('Definition: Isotopes') for p in points))
+        self.assertIn('figures', record)
+        self.assertEqual(record['figures']['code_root'], str(catalog.ROOT))
+        book = job['request']['curriculum']['sources']['results'][0]['raw_content']
+        self.assertIn('[Equation: A = Z + n]', book)
+        self.assertIn('Working: n = A - Z = 45 Answer: 45 neutrons', book)
+        self.assertEqual(self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'}).status_code,
+                         404)                                      # history is not this studio's
+
+    def test_history_films_get_no_figures(self):
+        record = catalog.film_request(DIGEST, DIGEST['concepts'][0])['record']
+        self.assertNotIn('figures', record)
+
+
 if __name__ == '__main__':
     unittest.main()

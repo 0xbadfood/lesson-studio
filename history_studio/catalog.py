@@ -1,4 +1,5 @@
-"""What History Studio offers, and how one concept becomes a film request.
+"""What History Studio (and Chemistry Studio, the same code with another profile) offers, and how one concept becomes a
+film request.
 
 The unit of a film is one concept of a textbook digest (textbook-digest/<chapter>/digest.json). The film is rooted in
 the book: its first source is the book's own text for the concept, read whole; the other sources are the digest's
@@ -16,8 +17,17 @@ ROOT = Path(__file__).resolve().parents[1]
 DIGESTS = ROOT / 'textbook-digest'
 SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology', 'social_science'}
 SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_science': 'Political Science',
-                 'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science'}
-NOT_TAUGHT = {'exercise', 'discuss', 'activity'}       # questions practise a concept; they are not narrated
+                 'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science',
+                 'chemistry': 'Chemistry'}
+# A studio is one profile of this code: its subjects, its own data folder (access code, films), cookie and job names.
+# Chemistry films also get exact figures (code-drawn chemistry and credited Commons diagrams, 2026-10-19).
+PROFILES = {
+    'history': {'name': 'History Studio', 'mark': 'H', 'subjects': SUBJECTS, 'data': 'history-data',
+                'cookie': 'history_session', 'job': 'history', 'figures': False},
+    'chemistry': {'name': 'Chemistry Studio', 'mark': 'C', 'subjects': {'chemistry'}, 'data': 'chemistry-data',
+                  'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True},
+}
+NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)
 SHORTEST = 90                                           # a concept film runs at least 1.5 minutes; no upper cap:
                                                         # it runs as long as its coverage needs (user, 2026-10-15)
@@ -94,26 +104,26 @@ def _load(path, mtime):
     return json.loads(Path(path).read_text())
 
 
-def digests(root=None):
+def digests(root=None, subjects=SUBJECTS):
     out = []
     for path in sorted(Path(root or DIGESTS).glob('*/digest.json')):
         d = _load(str(path), path.stat().st_mtime)
-        if d['source'].get('subject') in SUBJECTS:
+        if d['source'].get('subject') in subjects:
             out.append(d)
     return out
 
 
-def digest_for(chapter_id, root=None):
-    for d in digests(root):
+def digest_for(chapter_id, root=None, subjects=SUBJECTS):
+    for d in digests(root, subjects):
         if d['source']['id'] == chapter_id:
             return d
     raise KeyError(chapter_id)
 
 
-def catalog(root=None):
+def catalog(root=None, subjects=SUBJECTS):
     """Classes -> subjects -> chapters -> concepts, for the chooser."""
     classes = {}
-    for d in digests(root):
+    for d in digests(root, subjects):
         s = d['source']
         order = {b['id']: n for n, b in enumerate(d['blocks'])}
         first = lambda c: min((order.get(b['id'], 1e9) for b in teaching_blocks(d, c, linked=False)),  # noqa: E731
@@ -143,6 +153,11 @@ def coverage(digest, concept):
             points.append(f'Event: {b.get("title")}{when} - {b.get("text", "")[:160]}')
         elif b['type'] == 'person':
             points.append(f'Person: {b.get("name") or b.get("title")} - {b.get("role") or b.get("text", "")[:120]}')
+        elif b['type'] in ('definition', 'law', 'principle', 'theorem'):       # science chapters
+            points.append(f'{b["type"].title()}: {b.get("title")} - {b.get("text", "")[:160]}')
+        elif b['type'] == 'equation' and b.get('latex'):
+            ref = ', '.join(b.get('ref') or [])
+            points.append(f'Equation{" " + ref if ref else ""}: {b.get("title")} - {b["latex"]}')
     seen, unique = set(), []
     for p in points:
         if p.lower() not in seen:
@@ -163,14 +178,21 @@ def book_text(digest, concept):
             body = f'{b.get("caption", "")} Shows: {b["shows"]}'
         if b['type'] == 'source' and b.get('author'):
             head += f' ({b["author"]}{", " + str(b["year"]) if b.get("year") else ""})'
+        if b.get('latex'):                                   # science: the book's equation, as printed
+            body += f' [Equation: {b["latex"]}]'
+        if b['type'] == 'worked_example' and b.get('problem'):
+            steps = ' '.join(str(x.get('latex', '')) for x in b.get('steps') or [] if isinstance(x, dict))
+            body = (f'Problem: {b["problem"]} Given: {"; ".join(map(str, b.get("given") or []))} '
+                    f'Working: {steps} Answer: {b.get("answer", "")}').strip()
         if b.get('items'):
             body += ' ' + '; '.join(map(str, b['items']))
         lines.append(f'{head}\n{body}'.strip())
     return '\n\n'.join(lines)
 
 
-def film_request(digest, concept):
-    """The curriculum record and sources History Studio submits to the film queue."""
+def film_request(digest, concept, figures=False):
+    """The curriculum record and sources the studio submits to the film queue. `figures`: give the film exact figures
+    (Chemistry Studio): code-drawn chemistry and the Commons diagrams that match this concept."""
     s = digest['source']
     code = Path(s['pdf']).stem
     record = {'kind': 'textbook_concept', 'chapter_id': s['id'], 'concept_id': concept['id'],
@@ -179,6 +201,12 @@ def film_request(digest, concept):
               'book': f'Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], s["subject"])}: {s["book_title"]}',
               'chapter_no': s['chapter'], 'chapter': s['title'], 'coverage': coverage(digest, concept),
               'seconds': film_seconds(digest, concept)}
+    if figures:
+        from figure_library import pick
+        about = ' '.join([concept['name'], concept.get('summary', '')] + [
+            f'{b.get("title", "")} {b.get("caption", "")} {b.get("shows", "")}' for b in teaching_blocks(digest, concept)])
+        record['figures'] = {'code_root': str(ROOT), 'library_root': str(pick.LIBRARY),
+                             'library': pick.candidates(about)}
     pages = sorted({p for b in teaching_blocks(digest, concept) for p in b.get('pages', [])})
     sources = [{'url': NCERT_PDF.format(code=code), 'complete': True,
                 'title': f'NCERT {record["book"]}, Chapter {s["chapter"]} "{s["title"]}", pages {", ".join(map(str, pages))}',

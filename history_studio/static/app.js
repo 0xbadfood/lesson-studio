@@ -1,4 +1,5 @@
 'use strict';
+const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'history'};
 const view = document.getElementById('view');
 const state = { catalog: null, voices: null, cls: null, timer: null };
 
@@ -27,9 +28,9 @@ function showLogin() {
   chrome(false);
   view.innerHTML = `
     <div class="login"><form class="sheet" id="login">
-      <div class="mark">H</div>
-      <h1>History Studio</h1>
-      <p>Short films for every idea in your history textbook. Enter your access code to begin.</p>
+      <div class="mark">${STUDIO.mark}</div>
+      <h1>${STUDIO.name}</h1>
+      <p>Short films for every idea in your ${STUDIO.subject} textbook. Enter your access code to begin.</p>
       <input class="field" id="code" autocomplete="one-time-code" placeholder="xxxx-xxxx-xxxx" aria-label="Access code" required>
       <p class="error" id="error"></p>
       <button class="btn" style="width:100%">Enter the studio</button>

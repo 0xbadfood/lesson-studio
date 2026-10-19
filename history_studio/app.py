@@ -35,11 +35,10 @@ sys.path.insert(0, str(REMOTION))
 from infofilm.queue import Queue  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-DATA = catalog.ROOT / 'history-data'
+DATA = catalog.ROOT / 'history-data'     # History Studio's; another profile has its own (catalog.PROFILES)
 QUEUE_ROOT = REMOTION / 'artifacts' / 'interface'
 VOICE = {'reference_audio': str(REMOTION / 'references' / 'kane.wav'), 'voice_id': 'kane', 'narrator_label': 'Kane'}
-VOICES = DATA / 'voices.json'     # narrators offered: [{id, label, reference_audio, reference_transcript}]
-COOKIE = 'history_session'
+VOICES = DATA / 'voices.json'     # narrators offered (every studio): [{id, label, reference_audio, reference_transcript}]
 SESSION_DAYS = 30
 
 # What the viewer sees instead of the pipeline's steps: (key, title, line shown while it runs).
@@ -100,11 +99,12 @@ def same_book(job, curriculum):
 
 
 class Films:
-    """Concept -> film job, kept in history-data/films.json. One film per concept: asking again shows the same film
+    """Concept -> film job, kept in <studio data>/films.json. One film per concept: asking again shows the same film
     unless the earlier attempt failed."""
 
-    def __init__(self, queue, root=DATA):
+    def __init__(self, queue, root=DATA, profile=None):
         self.queue, self.path, self.lock = queue, Path(root) / 'films.json', threading.Lock()
+        self.profile = profile or catalog.PROFILES['history']
 
     def load(self):
         return json.loads(self.path.read_text()) if self.path.exists() else {}
@@ -121,7 +121,7 @@ class Films:
             return None
 
     def make(self, chapter_id, concept_id, voice=None):
-        digest = catalog.digest_for(chapter_id)
+        digest = catalog.digest_for(chapter_id, subjects=self.profile['subjects'])
         concept = next((c for c in digest['concepts'] if c['id'] == concept_id), None)
         if concept is None or not catalog.filmable(digest, concept):
             raise KeyError(concept_id)
@@ -134,7 +134,7 @@ class Films:
                 return existing['film']
             if job and voice is None:                # "make it again" keeps the narrator the film was started with
                 voice = job['request'].get('voice_id')
-            built = catalog.film_request(digest, concept)
+            built = catalog.film_request(digest, concept, figures=self.profile['figures'])
             curriculum = {'record': built['record'], 'sources': built['sources']}
             if (job and job['request'].get('voice_id') == narrator(voice)['voice_id']
                     and same_book(job, curriculum)):
@@ -146,7 +146,7 @@ class Films:
                        'mood_intensity': 'restrained', 'visual_balance': 'auto', 'music_engine': 'none',
                        **narrator(voice),
                        'curriculum': curriculum}
-            job = self.queue.submit(request, f'history-{uuid.uuid4().hex}')
+            job = self.queue.submit(request, f'{self.profile["job"]}-{uuid.uuid4().hex}')
             film = uuid.uuid4().hex[:12]
             films[key] = {'film': film, 'job': job['id'], 'chapter': chapter_id, 'concept': concept_id,
                           'created': time.time()}
@@ -249,6 +249,8 @@ def progress(queue, record):
         if value.get('file') and Path(value['file']).is_file():
             scenes.append({'src': f'/media/{record["film"]}/scene/{selected.parent.name}',
                            'caption': value.get('visual_message', '')})
+    for drawn in sorted((project / 'figures').glob('*.png'), key=lambda p: p.stat().st_mtime):
+        scenes.append({'src': f'/media/{record["film"]}/figure/{drawn.stem}', 'caption': ''})
     delivery = read_json(project / 'delivery.json')
     video = None
     if delivery and delivery.get('outputs'):
@@ -280,6 +282,8 @@ def media_path(queue, record, kind, item=None):
     if kind == 'scene' and item and re.fullmatch(r'[0-9a-f]{8,40}', item):
         value = read_json(project / 'images' / item / 'selected.json') or {}
         path = Path(value.get('file', ''))
+    elif kind == 'figure' and item and re.fullmatch(r'[0-9a-f]{20}', item):
+        path = project / 'figures' / f'{item}.png'
     elif kind == 'narration':
         path = Path((read_json(project / f'film-{curriculum.get("seconds")}' / 'audio-selection.json') or {}).get('audio', ''))
     elif kind == 'video':
@@ -304,19 +308,32 @@ class Login(BaseModel):
     code: str = Field(min_length=1, max_length=80)
 
 
-def build(queue=None, access=None, data=DATA):
+def page(profile):
+    """The single page, named for the studio (History Studio's page is unchanged)."""
+    subject = profile['job']
+    studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject})
+    text = (HERE / 'static' / 'index.html').read_text()
+    text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {subject} textbook')
+    text = text.replace('<span class="mark">H</span>', f'<span class="mark">{profile["mark"]}</span>')
+    return text.replace('</head>', f'  <script>window.STUDIO = {studio};</script>\n</head>', 1)
+
+
+def build(queue=None, access=None, data=None, profile=None):
+    profile = profile or catalog.PROFILES['history']
+    data = Path(data or catalog.ROOT / profile['data'])
+    cookie = profile['cookie']
     queue = queue or Queue(QUEUE_ROOT, REMOTION / 'config.json')
     access = access or Access(data)
-    films = Films(queue, data)
+    films = Films(queue, data, profile)
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
     def signed_in(request):
-        if not access.valid(request.cookies.get(COOKIE)):
+        if not access.valid(request.cookies.get(cookie)):
             raise HTTPException(401, 'Sign in first')
 
     @app.get('/', response_class=HTMLResponse)
     def index():
-        return FileResponse(HERE / 'static' / 'index.html', headers={'Cache-Control': 'no-cache'})
+        return HTMLResponse(page(profile), headers={'Cache-Control': 'no-cache'})
 
     @app.get('/static/{name}')
     def static(name: str):
@@ -331,7 +348,7 @@ def build(queue=None, access=None, data=DATA):
 
     @app.get('/api/session')
     def session(request: Request):
-        return {'signed_in': access.valid(request.cookies.get(COOKIE))}
+        return {'signed_in': access.valid(request.cookies.get(cookie))}
 
     @app.post('/api/login')
     def login(body: Login, request: Request):
@@ -339,21 +356,21 @@ def build(queue=None, access=None, data=DATA):
             time.sleep(1)
             raise HTTPException(403, 'That code is not right')
         response = JSONResponse({'signed_in': True})
-        response.set_cookie(COOKIE, access.token(), max_age=SESSION_DAYS * 86400, httponly=True, samesite='lax',
+        response.set_cookie(cookie, access.token(), max_age=SESSION_DAYS * 86400, httponly=True, samesite='lax',
                             secure=request.headers.get('x-forwarded-proto', request.url.scheme) == 'https')
         return response
 
     @app.post('/api/logout')
     def logout():
         response = JSONResponse({'signed_in': False})
-        response.delete_cookie(COOKIE)
+        response.delete_cookie(cookie)
         return response
 
     @app.get('/api/catalog')
     def get_catalog(request: Request):
         signed_in(request)
         made = films.by_concept()
-        out = catalog.catalog()
+        out = catalog.catalog(subjects=profile['subjects'])
         for cls in out:
             for subject in cls['subjects']:
                 for chapter in subject['chapters']:
@@ -437,9 +454,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', default='0.0.0.0')
     parser.add_argument('--port', type=int, default=18620)
+    parser.add_argument('--profile', default='history', choices=sorted(catalog.PROFILES))
     args = parser.parse_args()
     import uvicorn
-    uvicorn.run(build(), host=args.host, port=args.port, proxy_headers=True, forwarded_allow_ips='10.8.0.1',
+    uvicorn.run(build(profile=catalog.PROFILES[args.profile]), host=args.host, port=args.port, proxy_headers=True, forwarded_allow_ips='10.8.0.1',
                 log_level='warning')
 
 
