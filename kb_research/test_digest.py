@@ -264,6 +264,22 @@ class RealPowerTest(unittest.TestCase):
         self.assertIn('cannot be evaluated', errors[0])
 
 
+    def test_science_allows_more_gaps_per_concept_than_history(self):
+        gap = {'concept': 'C1', 'blocks': ['B1'], 'type': 'intuition', 'resolve': 'knowledge'}
+        group, blocks = [{'id': 'C1'}], [{'id': 'B1'}]
+        self.assertEqual(d.gap_errors({'gaps': [dict(gap)] * 5}, group, blocks), [])
+        self.assertIn('keep the 5', ' '.join(d.gap_errors({'gaps': [dict(gap)] * 6}, group, blocks)))
+        history = {**gap, 'type': 'term'}
+        self.assertIn('keep the 3', ' '.join(d.gap_errors({'gaps': [history] * 4}, group, blocks,
+                                                          humanities_mode=True)))
+
+    def test_science_keeps_three_research_gaps_per_group(self):
+        research = [{'concept': 'C1', 'type': 'context', 'resolve': 'research', 'priority': p,
+                     'research_question': 'how much ammonia does India make each year'} for p in ('high',) * 4]
+        self.assertEqual(len(d.settle_fact_gaps({'gaps': research})['gaps']), 3)
+        self.assertEqual(len(d.settle_fact_gaps({'gaps': [dict(g) for g in research]}, humanities_mode=True)['gaps']), 2)
+
+
 if __name__ == '__main__':
     unittest.main()
 

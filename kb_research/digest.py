@@ -634,11 +634,17 @@ GAP_SCHEMA = '''{"gaps":[{"concept":"C3","blocks":["B12"],"type":"intuition|skip
 "resolve":"knowledge|research","research_question":str (research only: specific and searchable)}]}'''
 
 
+# Science concepts are denser than history ones: at 3 gaps a concept, 199 of 268 Class 11-12 chemistry concepts hit
+# the cap (2026-10-19), so science allows more. History keeps the limits its chapters were built with.
+GAPS_PER_CONCEPT = {False: 5, True: 3}          # keyed by humanities_mode
+RESEARCH_PER_GROUP = {False: 3, True: 2}
+
+
 def settle_fact_gaps(result, humanities_mode=False):
     """Code settles what the model can only get wrong by luck (Class 11 History chapter 6, 2026-10-16): fact gaps
     (chronology, geography, person; context and history in science) must be researched, yet a group allows at most
-    2 research gaps. A fact gap marked "knowledge" becomes research if it has a question and is dropped otherwise;
-    research gaps beyond 2 are dropped, keeping the highest priority."""
+    RESEARCH_PER_GROUP research gaps. A fact gap marked "knowledge" becomes research if it has a question and is
+    dropped otherwise; research gaps beyond the limit are dropped, keeping the highest priority."""
     facts = ('chronology', 'geography', 'person') if humanities_mode else ('context', 'history')
     rank = {'high': 0, 'medium': 1, 'low': 2}
     gaps = [g for g in result.get('gaps') or [] if isinstance(g, dict)]
@@ -647,7 +653,7 @@ def settle_fact_gaps(result, humanities_mode=False):
             g['resolve'] = 'research' if len(str(g.get('research_question', '')).split()) >= 5 else 'drop'
     research = sorted((g for g in gaps if g.get('resolve') == 'research'),
                       key=lambda g: rank.get(g.get('priority'), 3))
-    dropped = {id(g) for g in research[2:]} | {id(g) for g in gaps if g.get('resolve') == 'drop'}
+    dropped = {id(g) for g in research[RESEARCH_PER_GROUP[humanities_mode]:]} | {id(g) for g in gaps if g.get('resolve') == 'drop'}
     if dropped:
         result['gaps'] = [g for g in gaps if id(g) not in dropped]
         result.setdefault('settled', []).append(f'{len(dropped)} fact gap(s) dropped by code')
@@ -664,8 +670,8 @@ def gap_errors(result, group, blocks, humanities_mode=False):
     if not gaps:
         errors.append('give at least one gap')
     for cid in sorted(cids):
-        if (n := sum(g.get('concept') == cid for g in gaps)) > 3:
-            errors.append(f'{cid} has {n} gaps: keep the 3 that matter most')
+        if (n := sum(g.get('concept') == cid for g in gaps)) > (most := GAPS_PER_CONCEPT[humanities_mode]):
+            errors.append(f'{cid} has {n} gaps: keep the {most} that matter most')
     for n, g in enumerate(gaps, 1):
         tag = f'gap {n}'
         if g.get('concept') not in cids:
@@ -680,8 +686,8 @@ def gap_errors(result, group, blocks, humanities_mode=False):
             errors.append(f'{tag}: {g.get("type")} gaps need real values or facts: resolve "research" with a question')
         if g.get('resolve') == 'research' and len(str(g.get('research_question', '')).split()) < 5:
             errors.append(f'{tag}: a research gap needs a specific research_question')
-    if sum(g.get('resolve') == 'research' for g in gaps) > 2:
-        errors.append('at most 2 gaps in this group may need research: keep the 2 most useful '
+    if sum(g.get('resolve') == 'research' for g in gaps) > (most := RESEARCH_PER_GROUP[humanities_mode]):
+        errors.append(f'at most {most} gaps in this group may need research: keep the {most} most useful '
                       + ('chronology/geography/person gaps' if humanities_mode else 'context/history gaps'))
     return errors
 
@@ -714,9 +720,9 @@ def make_gaps(model, chapter, group, blocks, n):
         '- visual: something that only motion or change over time shows well;\n'
         '- oversimplification: a statement simplified in a way that can mislead later;\n'
         '- history: how the idea was discovered, only where it helps understanding.\n'
-        'Report real, specific gaps, not generic advice, citing the blocks concerned: at most 3 per concept, the '
+        f'Report real, specific gaps, not generic advice, citing the blocks concerned: at most {GAPS_PER_CONCEPT[False]} per concept, the '
         'ones that matter most for understanding. A concept the book treats well may have no gap. Context and history gaps need real values, applications or dates: resolve them by "research" with a '
-        'specific, searchable question (at most 2 such gaps in this group, the most useful). Other gaps are resolved '
+        f'specific, searchable question (at most {RESEARCH_PER_GROUP[False]} such gaps in this group, the most useful). Other gaps are resolved '
         'from "knowledge": explanations a good teacher knows.\n'
         f'Return JSON: {GAP_SCHEMA}\nCONCEPTS:\n{concept_view(group, blocks)}')
     return model.call(f'gaps-{n}', prompt, thinking=4000, max_tokens=16000, attempts=3, system=SYSTEM,
