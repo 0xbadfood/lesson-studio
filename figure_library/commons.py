@@ -64,6 +64,16 @@ def labels(svg_bytes):
     return out
 
 
+def short_author(author):
+    """'File:X.svg : Drawn by User:Fastfission in Illustrator and Inkscape. -- Fastfission' -> 'Fastfission': the
+    user name when Commons gives one, else the text up to the first sentence, at most 60 characters."""
+    users = re.findall(r'User:([^\s,;.()]+)', author)
+    if users:
+        return users[-1].replace('_', ' ')
+    first = re.split(r'(?<=[a-z])\. | -- ', author)[0].strip()
+    return first if len(first) <= 60 else first[:57].rsplit(' ', 1)[0] + '...'
+
+
 def slug(title):
     stem = re.sub(r'^File:', '', title)
     stem = re.sub(r'\.svg$', '', stem, flags=re.I)
@@ -127,7 +137,7 @@ def record_for(page, origin):
             'licence_url': plain(value('LicenseUrl')), 'restrictions': plain(value('Restrictions')),
             'categories': [c for c in plain(value('Categories')).split('|') if c][:20],
             'width': info.get('width'), 'height': info.get('height'), 'origin': origin,
-            'credit': f'{re.sub(r"^File:", "", title)} by {author[:120]}, {licence}, via Wikimedia Commons'}
+            'credit': f'{re.sub(r"^File:", "", title)} by {short_author(author)}, {licence}, via Wikimedia Commons'}
 
 
 def preview(svg_path, png_path, width=1024):
