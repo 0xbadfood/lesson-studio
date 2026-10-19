@@ -36,3 +36,6 @@ kb_research/obscura
 
 # History Studio runtime data (access code, session key, films, voices)
 history-data/
+
+# Figure library downloads (Commons SVGs, previews, index)
+figure-library/
