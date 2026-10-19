@@ -62,7 +62,7 @@ def render(settings, work, code, duration, background=None):
         shutil.rmtree(work)
     work.mkdir(parents=True)
     (work / 'scene.py').write_text(code)
-    for name in ('scene_entry.py', 'scene_kit.py', 'scene_check.py'):
+    for name in ('scene_entry.py', 'scene_kit.py', 'scene_check.py', 'chem_kit.py'):
         shutil.copy2(HERE / name, work / name)
     if background:   # the lesson theme (validated #rrggbb) replaces the kit's default background
         with (work / 'scene_kit.py').open('a') as kit:
@@ -222,8 +222,9 @@ def apply_edits(source, edits):
 
 
 # ------------------------------------------------------------------ one chapter
-def code_chapter(job, plan, chapter, sc, timing, cues, duration, evidence_text, folder, extra=''):
-    """Code, render and review one chapter. Returns (video, record)."""
+def code_chapter(job, plan, chapter, sc, timing, cues, duration, evidence_text, folder, extra='', kit=KIT):
+    """Code, render and review one chapter. Returns (video, record). `kit` is the coder's instructions (KIT, or KIT
+    plus a subject kit such as chem_kit.KIT_DOC)."""
     folder = Path(folder)
     folder.mkdir(parents=True, exist_ok=True)
     accepted = folder / 'accepted.json'
@@ -234,7 +235,7 @@ def code_chapter(job, plan, chapter, sc, timing, cues, duration, evidence_text, 
     n = chapter['id'][1:]
     tier = chapter.get('complexity') if chapter.get('complexity') in TIERS else 'involved'
     brief, clock = chapter_brief(plan, chapter), timeline(sc, timing, cues, duration)
-    prompt = (KIT + '\nCHAPTER PLAN:\n' + brief + '\nTIMELINE:\n' + clock + '\nEVIDENCE:\n' + evidence_text +
+    prompt = (kit + '\nCHAPTER PLAN:\n' + brief + '\nTIMELINE:\n' + clock + '\nEVIDENCE:\n' + evidence_text +
               (f'\nTEACHER REQUEST FOR THIS VERSION: {extra}' if extra else ''))
     attempts = job.settings.code_attempts + ESCALATE_AFTER   # room for one escalation, more if tiers allow
     code, feedback, failures, history, best = None, '', 0, [], None

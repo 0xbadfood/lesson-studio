@@ -190,6 +190,12 @@ def book_text(digest, concept):
     return '\n\n'.join(lines)
 
 
+# Animated beats are coded by Lesson Studio's coder in its sandbox, with the Manim environment its service uses
+# (lesson-studio.service: SCIVID_MANIM_PYTHON, SCIVID_PYTHON_BASE) and its model settings (user, 2026-10-20).
+ANIMATION = {'manim_python': str(ROOT / '.venv' / 'bin' / 'python'), 'python_base': '/home/nitin/.pyenv/versions/3.11.15',
+             'scivid_data': str(ROOT / 'scivid-data'), 'kits': ['chem']}
+
+
 def film_request(digest, concept, figures=False):
     """The curriculum record and sources the studio submits to the film queue. `figures`: give the film exact figures
     (Chemistry Studio): code-drawn chemistry and the Commons diagrams that match this concept."""
@@ -206,7 +212,7 @@ def film_request(digest, concept, figures=False):
         about = ' '.join([concept['name'], concept.get('summary', '')] + [
             f'{b.get("title", "")} {b.get("caption", "")} {b.get("shows", "")}' for b in teaching_blocks(digest, concept)])
         record['figures'] = {'code_root': str(ROOT), 'library_root': str(pick.LIBRARY),
-                             'library': pick.candidates(about)}
+                             'library': pick.candidates(about), 'animation': ANIMATION}
     pages = sorted({p for b in teaching_blocks(digest, concept) for p in b.get('pages', [])})
     sources = [{'url': NCERT_PDF.format(code=code), 'complete': True,
                 'title': f'NCERT {record["book"]}, Chapter {s["chapter"]} "{s["title"]}", pages {", ".join(map(str, pages))}',
