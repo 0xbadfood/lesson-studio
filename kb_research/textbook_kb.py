@@ -91,7 +91,7 @@ def quoted(quote, page_text):
 def find_quote(quote, pages, cited):
     """The page a quote is really on: a cited page or a neighbour (models cite worked examples one page off), with
     neighbouring pages joined so a sentence running onto the next page still matches. None when not found."""
-    by_page = {p['page']: p['text'] for p in pages}
+    by_page = {p['page']: p['text'] + ('\n' + p['ocr_text'] if p.get('ocr_text') else '') for p in pages}
     for page in cited:
         if quoted(quote, by_page.get(page, '')):
             return page

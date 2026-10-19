@@ -174,7 +174,19 @@ class BalancedTest(unittest.TestCase):
         self.assertFalse(d.balanced(r'\frac{a}{b'))
 
 
+class ReplyRepairTest(unittest.TestCase):
+    def test_latex_value_missing_its_opening_quote(self):
+        from scivid.llm import parse_json
+        reply = '{"blocks": [{"latex": \\\\text{2-bromobutane} \\\\rightarrow x", "ref": []}]}'
+        self.assertEqual(parse_json(reply)['blocks'][0]['ref'], [])
+
+
 class TextLayerTest(unittest.TestCase):
+    def test_quotes_are_found_in_rejected_ocr(self):
+        pages = [{'page': 10, 'text': 'a l s s p p iupac', 'ocr_text': 'The name of such branched chain alkyl group is '
+                  'placed in parenthesis while naming the compound.'}]
+        self.assertEqual(d.kb.find_quote('such branched chain alkyl group is placed in parenthesis', pages, [10]), 10)
+
     def test_textless_pages_use_ocr(self):
         real = d.ocr_text
         d.ocr_text = lambda pdf, page, folder: 'The law of areas can be understood as a consequence ' * 5

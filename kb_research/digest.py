@@ -327,6 +327,8 @@ def with_text_layer(pdf, pages, folder, min_words=30):
                     and (have < min_words < got or not garbled(p['text'])
                          or fragment_ratio(text) < fragment_ratio(p['text']) / 2)):
                 p = {**p, 'text': text.strip(), 'ocr': True}
+            elif text.strip():
+                p = {**p, 'ocr_text': text.strip()}   # quotes are checked against it too (a column-shredded layer)
         out.append(p)
     return out
 

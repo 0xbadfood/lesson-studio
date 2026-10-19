@@ -42,7 +42,15 @@ def parse_json(text):
     if not text.startswith('{'):
         start, end = text.find('{'), text.rfind('}')
         text = text[start:end + 1] if start >= 0 else text
-    value = json.loads(text)
+    try:
+        value = json.loads(text)
+    except json.JSONDecodeError:
+        # "latex": \\text{...}" - a LaTeX value missing its opening quote (Lucebox at temperature 0 repeats it on
+        # every retry, so repair it rather than ask again)
+        repaired = re.sub(r'(":\s*)(\\\\[^"\n]*"\s*[,}\]])', r'\1"\2', text)
+        if repaired == text:
+            raise
+        value = json.loads(repaired)
     if not isinstance(value, dict):
         raise ValueError('Expected a JSON object')
     return value
