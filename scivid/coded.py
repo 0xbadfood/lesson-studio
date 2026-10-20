@@ -224,7 +224,7 @@ def apply_edits(source, edits):
 # ------------------------------------------------------------------ one chapter
 def code_chapter(job, plan, chapter, sc, timing, cues, duration, evidence_text, folder, extra='', kit=KIT):
     """Code, render and review one chapter. Returns (video, record). `kit` is the coder's instructions (KIT, or KIT
-    plus a subject kit such as chem_kit.KIT_DOC)."""
+    plus a subject kit such as kit_docs.CHEM)."""
     folder = Path(folder)
     folder.mkdir(parents=True, exist_ok=True)
     accepted = folder / 'accepted.json'
