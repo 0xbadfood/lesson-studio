@@ -30,7 +30,8 @@ TASK = (
     "hard or get wrong, in the order a student should watch them. Do not list mere facts or definitions; a key idea "
     "is something to understand. For each give id ('I1'...), title (a short question or statement a student would "
     "click on, at most 9 words), why (one sentence: why students find it hard), understanding (one or two sentences: "
-    "what the learner should understand after the film, in plain words), questions (2-3 short questions a learner "
+    "what the learner should be able to say after the film, in the everyday words of a 15-year-old who finds science "
+    "hard: no symbols, formulas or numbers), questions (2-3 short questions a learner "
     "who understood it could answer from the film), minutes ({shortest}-{longest}, from how much the idea needs), "
     "research (one web search question for simple explanations, analogies and common misconceptions of this idea). "
     "Return {{ideas:[...]}}.")
