@@ -299,6 +299,15 @@ class KeyIdeaTests(ChemistryStudioTests):
         concepts = self.client.get('/api/catalog').json()['classes'][0]['subjects'][0]['chapters'][0]['concepts']
         self.assertEqual(next(c for c in concepts if c['id'] == 'C1')['film'], film)    # the concept keeps its film
         self.assertEqual(self.client.post(f'/api/films/{film}/ideas/I9', json={}).status_code, 404)
+        path = next(Path(p) for p in [self.queue.root / 'chem-data' / 'films.json'] if Path(p).exists())
+        saved = json.loads(path.read_text())
+        old = saved.pop('kech1-02:C1:I2')                            # retire version 1 to make the idea again
+        saved['kech1-02:C1:I2:v1'] = {**old, 'retired': True}
+        path.write_text(json.dumps(saved))
+        self.assertIsNone(self.client.get(f'/api/films/{film}/ideas').json()['ideas'][1]['film'])
+        remade = self.client.post(f'/api/films/{film}/ideas/I2', json={}).json()['film']
+        self.assertNotEqual(remade, made)
+        self.assertEqual(self.client.get(f'/api/films/{made}').json()['idea']['title'], 'Idea number 2 made simple')
         self.assertEqual(self.client.get(f'/api/films/{made}/ideas').status_code, 409)  # no ideas of ideas
 
     def test_ideas_come_only_from_a_finished_film(self):

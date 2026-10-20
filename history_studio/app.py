@@ -183,7 +183,7 @@ class Films:
         """film id and state of each key-idea film made from this film: {idea id: (film, job status)}."""
         out = {}
         for value in self.load().values():
-            if value.get('parent') == parent_film:
+            if value.get('parent') == parent_film and not value.get('retired'):   # retired: an earlier version
                 job = self.job(value['job'])
                 if job and job['status'] not in ('failed', 'interrupted'):
                     out[value['idea']] = (value['film'], job['status'])
