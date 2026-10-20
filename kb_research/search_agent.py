@@ -100,6 +100,8 @@ class ResearchTools:
     search_results: int = 10
     fetch_timeout: int = 60
     max_chars: int = 16000
+    total_chars: int | None = None      # all fetched pages together, so the conversation fits the model's context
+    chars_used: int = 0
     searches_used: int = 0
     fetches_used: int = 0
     fetched_urls: set[str] = field(default_factory=set)
@@ -154,6 +156,9 @@ class ResearchTools:
         if self.fetches_used >= self.max_fetches:
             return {"error": f"fetch budget exhausted ({self.max_fetches}/{self.max_fetches})"}
 
+        room = self.max_chars if self.total_chars is None else min(self.max_chars, self.total_chars - self.chars_used)
+        if room < 2000:
+            return {"error": "page text budget exhausted: answer from the pages already fetched"}
         self.fetches_used += 1
         try:
             completed = subprocess.run(
@@ -171,8 +176,9 @@ class ResearchTools:
             return {"error": f"Obscura fetch failed: {detail}"}
 
         content = completed.stdout
-        if len(content) > self.max_chars:
-            content = content[: self.max_chars] + f"\n\n[... page truncated at {self.max_chars} characters]"
+        if len(content) > room:
+            content = content[:room] + f"\n\n[... page truncated at {room} characters]"
+        self.chars_used += len(content)
         self.fetch_cache[normalized] = content
         self.fetched_urls.add(normalized)
         return {
@@ -191,8 +197,10 @@ class ResearchTools:
 
 
 class QwenClient:
-    def __init__(self, base_url: str, model: str | None, api_key: str | None = None, timeout: float = 180.0) -> None:
+    def __init__(self, base_url: str, model: str | None, api_key: str | None = None, timeout: float = 180.0,
+                 max_tokens: int = 4096) -> None:
         self.base_url = base_url.rstrip("/")
+        self.max_tokens = max_tokens
         self.model = model
         headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
         self.client = httpx.Client(timeout=timeout, headers=headers)
@@ -216,6 +224,7 @@ class QwenClient:
             "model": self.discover_model(),
             "messages": messages,
             "temperature": 0.1,
+            "max_tokens": self.max_tokens,     # unset, a server may reserve its whole context for the reply
         }
         if tools:
             payload.update({"tools": tools, "tool_choice": "auto"})

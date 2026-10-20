@@ -271,7 +271,8 @@ def run_research(gap, chapter, out, qwen_url, model_id, api_key, tavily_key, log
     question = (f'{gap["research_question"]}\n(Context: preparing a lesson for {audience(chapter["class"])} on '
                 f'"{chapter["title"]}". The point to support: {gap["missing"]})')
     tools = search_agent.ResearchTools(tavily=search_agent.TavilyClient(api_key=tavily_key),
-                                       obscura_path=obscura(), max_searches=2, max_fetches=5)
+                                       obscura_path=obscura(), max_searches=2, max_fetches=5,
+                                       total_chars=48000)     # ~20k tokens: fits a 32k context
     qwen = search_agent.QwenClient(qwen_url, model_id, api_key, timeout=600)
     started = time.monotonic()
     try:

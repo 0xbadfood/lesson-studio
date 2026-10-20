@@ -31,6 +31,15 @@ class ResearchToolsTests(unittest.TestCase):
         self.assertEqual(tools.fetches_used, 1)
         run.assert_called_once()
 
+    @patch("search_agent.subprocess.run")
+    def test_total_page_text_is_capped_to_fit_the_context(self, run):
+        run.return_value = subprocess.CompletedProcess([], 0, stdout="x" * 10000, stderr="")
+        tools = self.make_tools(max_chars=8000, total_chars=12000)
+        self.assertEqual(tools.fetch("https://a.gov/1")["content"].count("x"), 8000)
+        self.assertLess(tools.fetch("https://a.gov/2")["content"].count("x"), 4000)     # what is left of the budget
+        self.assertIn("budget exhausted", tools.fetch("https://a.gov/3")["error"])
+        self.assertEqual(tools.fetches_used, 2)
+
     def test_only_fetched_urls_count_as_citations(self):
         fetched = {canonical_url("https://example.gov/fact")}
         answer = "Supported by [the agency](https://example.gov/fact). Not https://blog.example/x"

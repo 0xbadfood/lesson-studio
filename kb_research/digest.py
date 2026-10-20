@@ -235,8 +235,8 @@ def page_errors(result, page, pages, chapter_no, required):
     example = f'{chapter_no}.2' if chapter_no is not None else '2 or 2.1'
     for n, b in enumerate(blocks, 1):
         tag = f'block {n} ({b.get("type")}, "{str(b.get("title", ""))[:40]}")'
-        if isinstance(b.get('section'), str):         # "5.6(d)": the lettered parts of a section are the section
-            b['section'] = re.sub(r'\s*\([a-z]\)$', '', b['section'].strip())
+        if isinstance(b.get('section'), str):         # "5.6(d)", "9.4.1B": the lettered parts of a section are the section
+            b['section'] = re.sub(r'(?<=\d)\s*(\([A-Za-z]\)|[A-Za-z])$', '', b['section'].strip())
         if b.get('type') not in types:
             errors.append(f'{tag}: type must be one of {list(types)}')
         if not section_re.match(str(b.get('section', ''))):

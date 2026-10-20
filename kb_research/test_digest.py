@@ -68,6 +68,10 @@ class PageTests(unittest.TestCase):
         block = {**self.block(), 'section': '5.2(d)'}
         self.assertEqual(d.page_errors({'blocks': [block]}, 7, PAGES, 5, {}), [])
         self.assertEqual(block['section'], '5.2')
+        for lettered in ('5.2B', '5.2 (B)'):                # iesc1:09 page 9 wrote "9.4.1B" three times
+            block = {**self.block(), 'section': lettered}
+            self.assertEqual(d.page_errors({'blocks': [block]}, 7, PAGES, 5, {}), [], lettered)
+            self.assertEqual(block['section'], '5.2')
 
     def test_one_missed_quote_is_flagged_not_fatal(self):
         miss = self.block(title='other', quote='momentum is conserved in every collision here')
