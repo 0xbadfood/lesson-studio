@@ -259,5 +259,81 @@ class ChemistryStudioTests(unittest.TestCase):
         self.assertNotIn('figures', record)
 
 
+IDEAS = [{'id': f'I{n}', 'title': f'Idea number {n} made simple', 'why': 'Students mix up the two pictures.',
+          'understanding': 'Mass number counts protons and neutrons together.', 'questions': ['Q one?', 'Q two?'],
+          'minutes': 3 + n / 2, 'research': 'simple analogy for mass number and isotopes'} for n in (1, 2, 3)]
+
+
+class KeyIdeaTests(ChemistryStudioTests):
+    """Key ideas, made simple (2026-10-20): a finished concept film offers short simplified films of its key ideas."""
+
+    def finished_film(self):
+        self.client.post('/api/login', json={'code': self.access.code})
+        film = self.client.post('/api/films', json={'chapter': 'kech1-02', 'concept': 'C1', 'voice': 'kane'}).json()['film']
+        self.queue.jobs['job1']['status'] = 'succeeded'
+        return film, Path(self.queue.jobs['job1']['project'])
+
+    def test_ideas_are_listed_and_each_becomes_its_own_short_film(self):
+        film, project = self.finished_film()
+        self.assertEqual(self.client.get(f'/api/films/{film}/ideas').json(), {'state': 'none', 'ideas': []})
+        (project / 'key-ideas').mkdir()
+        (project / 'key-ideas' / 'ideas.json').write_text(json.dumps(IDEAS))
+        listed = self.client.get(f'/api/films/{film}/ideas').json()
+        self.assertEqual((listed['state'], [i['id'] for i in listed['ideas']]), ('ready', ['I1', 'I2', 'I3']))
+        made = self.client.post(f'/api/films/{film}/ideas/I2', json={}).json()['film']
+        again = self.client.post(f'/api/films/{film}/ideas/I2', json={}).json()['film']
+        self.assertEqual((made, len(self.queue.jobs)), (again, 2))
+        request = self.queue.jobs['job2']['request']
+        record = request['curriculum']['record']
+        self.assertEqual((record['kind'], record['seconds'], record['coverage']), ('key_idea', 240, []))
+        self.assertEqual(record['idea']['questions'], ['Q one?', 'Q two?'])
+        self.assertEqual(record['research'], 'simple analogy for mass number and isotopes')
+        self.assertIn('figures', record)                             # same exact chemistry as the concept film
+        self.assertEqual(request['voice_id'], 'kane')               # the concept film's narrator
+        self.assertTrue(request['subject'].startswith('Idea number 2 made simple (key idea of'))
+        progress = self.client.get(f'/api/films/{made}').json()
+        self.assertEqual((progress['kind'], progress['idea']['title'], progress['parent']),
+                         ('key_idea', 'Idea number 2 made simple', film))
+        listed = self.client.get(f'/api/films/{film}/ideas').json()['ideas']
+        self.assertEqual([i['film'] for i in listed], [None, made, None])
+        concepts = self.client.get('/api/catalog').json()['classes'][0]['subjects'][0]['chapters'][0]['concepts']
+        self.assertEqual(next(c for c in concepts if c['id'] == 'C1')['film'], film)    # the concept keeps its film
+        self.assertEqual(self.client.post(f'/api/films/{film}/ideas/I9', json={}).status_code, 404)
+        self.assertEqual(self.client.get(f'/api/films/{made}/ideas').status_code, 409)  # no ideas of ideas
+
+    def test_ideas_come_only_from_a_finished_film(self):
+        self.client.post('/api/login', json={'code': self.access.code})
+        film = self.client.post('/api/films', json={'chapter': 'kech1-02', 'concept': 'C1'}).json()['film']
+        self.assertEqual(self.client.post(f'/api/films/{film}/ideas').status_code, 409)
+
+    def test_the_planner_finds_ideas_once_and_they_are_checked(self):
+        from history_studio import ideas
+        self.assertIn('I1: minutes must be 3-5', ' '.join(ideas.errors({'ideas': [{**IDEAS[0], 'minutes': 9}] + IDEAS[1:]})))
+        self.assertIn('Give 3-6 key ideas', ideas.errors({'ideas': IDEAS[:2]}))
+        self.assertEqual(ideas.errors({'ideas': IDEAS}), [])
+        _, project = self.finished_film()
+        (project / 'film-90').mkdir()
+        (project / 'film-90' / 'script.json').write_text(json.dumps({'points': [{'heading': 'H', 'narration': 'N'}]}))
+        (project / 'evidence-final.json').write_text(json.dumps({'facts': [{'claim': 'A = Z + n'}]}))
+
+        class Models:
+            seen = []
+
+            def loop(self, stage, task, context, validator):
+                self.seen.append((stage, context))
+                return {'ideas': [{**i, 'extra': 'dropped'} for i in IDEAS]}
+        found = ideas.find(project, {'seconds': 90, 'concept': 'Isotopes', 'coverage': []}, Models())
+        self.assertEqual(found, IDEAS)
+        self.assertEqual(ideas.saved(project), IDEAS)
+        self.assertEqual(Models.seen[0][1]['facts'], ['A = Z + n'])
+
+
+class HistoryHasNoKeyIdeasTests(AppTests):
+    def test_history_studio_offers_no_key_ideas(self):
+        self.client.post('/api/login', json={'code': self.access.code})
+        film = self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'}).json()['film']
+        self.assertEqual(self.client.get(f'/api/films/{film}/ideas').status_code, 404)
+
+
 if __name__ == '__main__':
     unittest.main()

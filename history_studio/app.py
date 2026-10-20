@@ -28,7 +28,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from history_studio import catalog
+from history_studio import catalog, ideas
 
 REMOTION = Path('/home/nitin/remotion')
 sys.path.insert(0, str(REMOTION))
@@ -140,18 +140,54 @@ class Films:
                     and same_book(job, curriculum)):
                 self.queue.resume(job['id'])        # same narrator and book text: carry on from the saved run
                 return existing['film']
-            request = {'subject': built['subject'], 'durations': [built['record']['seconds']],
-                       'generation_mode': 'short', 'orientation': 'landscape', 'review_mode': 'experimental',
-                       'image_review': True, 'premium_rescue': False, 'tts_engine': 'vibevoice', 'mood': 'auto',
-                       'mood_intensity': 'restrained', 'visual_balance': 'auto', 'music_engine': 'none',
-                       **narrator(voice),
-                       'curriculum': curriculum}
-            job = self.queue.submit(request, f'{self.profile["job"]}-{uuid.uuid4().hex}')
+            job = self.queue.submit(job_request(built, voice), f'{self.profile["job"]}-{uuid.uuid4().hex}')
             film = uuid.uuid4().hex[:12]
             films[key] = {'film': film, 'job': job['id'], 'chapter': chapter_id, 'concept': concept_id,
                           'created': time.time()}
             self.save(films)
             return film
+
+    def make_idea(self, parent_film, idea_id, voice=None):
+        """A short simplified film of one key idea of a finished concept film (one film per idea, like concepts)."""
+        parent = self.find(parent_film)
+        job = self.job(parent['job'])
+        found = next((i for i in ideas.saved(job['project']) or [] if i['id'] == idea_id), None) if job else None
+        if found is None:
+            raise KeyError(idea_id)
+        digest = catalog.digest_for(parent['chapter'], subjects=self.profile['subjects'])
+        concept = next(c for c in digest['concepts'] if c['id'] == parent['concept'])
+        key = f'{parent["chapter"]}:{parent["concept"]}:{idea_id}'
+        with self.lock:
+            films = self.load()
+            existing = films.get(key)
+            previous = self.job(existing['job']) if existing else None
+            if previous and previous['status'] not in ('failed', 'interrupted'):
+                return existing['film']
+            if previous and voice is None:
+                voice = previous['request'].get('voice_id')
+            if voice is None:                       # the concept film's narrator, unless another is chosen
+                voice = job['request'].get('voice_id')
+            built = ideas.key_idea_record(catalog.film_request(digest, concept, figures=self.profile['figures']),
+                                          found, parent_film)
+            if previous and previous['request'].get('voice_id') == narrator(voice)['voice_id']:
+                self.queue.resume(previous['id'])
+                return existing['film']
+            made = self.queue.submit(job_request(built, voice), f'{self.profile["job"]}-idea-{uuid.uuid4().hex}')
+            film = uuid.uuid4().hex[:12]
+            films[key] = {'film': film, 'job': made['id'], 'chapter': parent['chapter'], 'concept': parent['concept'],
+                          'idea': idea_id, 'parent': parent_film, 'created': time.time()}
+            self.save(films)
+            return film
+
+    def ideas_of(self, parent_film):
+        """film id and state of each key-idea film made from this film: {idea id: (film, job status)}."""
+        out = {}
+        for value in self.load().values():
+            if value.get('parent') == parent_film:
+                job = self.job(value['job'])
+                if job and job['status'] not in ('failed', 'interrupted'):
+                    out[value['idea']] = (value['film'], job['status'])
+        return out
 
     def cancel(self, film):
         """Stop a queued or running film (started by mistake). It can be made again later from its saved stages."""
@@ -164,7 +200,17 @@ class Films:
         raise KeyError(film)
 
     def by_concept(self):
-        return {k: v for k, v in self.load().items()}
+        return {k: v for k, v in self.load().items() if not v.get('idea')}
+
+
+def job_request(built, voice):
+    """The film queue request for a concept or key-idea film."""
+    return {'subject': built['subject'], 'durations': [built['record']['seconds']],
+            'generation_mode': 'short', 'orientation': 'landscape', 'review_mode': 'experimental',
+            'image_review': True, 'premium_rescue': False, 'tts_engine': 'vibevoice', 'mood': 'auto',
+            'mood_intensity': 'restrained', 'visual_balance': 'auto', 'music_engine': 'none',
+            **narrator(voice),
+            'curriculum': {'record': built['record'], 'sources': built['sources']}}
 
 
 def voices():
@@ -255,8 +301,16 @@ def progress(queue, record):
     video = None
     if delivery and delivery.get('outputs'):
         video = f'/media/{record["film"]}/video'
+    idea = curriculum.get('idea') if curriculum.get('kind') == 'key_idea' else None
+    landing = read_json(project / f'learner-check-{seconds}.json') if idea else None
     return {
         'film': record['film'], 'chapter_id': record['chapter'], 'concept_id': record['concept'],
+        'kind': 'key_idea' if idea else 'concept', 'idea': idea and {'title': idea['title'], 'why': idea.get('why'),
+                                                                      'understanding': idea.get('understanding')},
+        'parent': record.get('parent'),
+        'landed': landing and {'landed': landing['landed'],
+                               'score': (landing['rounds'][-1].get('verdict') or {}).get('score'),
+                               'rounds': len(landing['rounds'])},
         'status': 'stopped' if status == 'interrupted' and str(job.get('error') or '').startswith('Cancelled') else
         'failed' if status in ('failed', 'interrupted') else
         'done' if status == 'succeeded' else 'waiting' if status == 'queued' else 'making',
@@ -298,6 +352,10 @@ def media_path(queue, record, kind, item=None):
 
 
 # ------------------------------------------------------------------ app
+class IdeaAsk(BaseModel):
+    voice: str | None = Field(default=None, max_length=80)
+
+
 class FilmAsk(BaseModel):
     chapter: str = Field(pattern=r'^[a-z0-9]+-\d{2}$')
     concept: str = Field(pattern=r'^C\d{1,3}$')
@@ -311,7 +369,8 @@ class Login(BaseModel):
 def page(profile):
     """The single page, named for the studio (History Studio's page is unchanged)."""
     subject = profile['job']
-    studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject})
+    studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject,
+                         'key_ideas': bool(profile.get('key_ideas'))})
     text = (HERE / 'static' / 'index.html').read_text()
     text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {subject} textbook')
     text = text.replace('<span class="mark">H</span>', f'<span class="mark">{profile["mark"]}</span>')
@@ -325,6 +384,7 @@ def build(queue=None, access=None, data=None, profile=None):
     queue = queue or Queue(QUEUE_ROOT, REMOTION / 'config.json')
     access = access or Access(data)
     films = Films(queue, data, profile)
+    finder = ideas.Finder()
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
     def signed_in(request):
@@ -424,6 +484,54 @@ def build(queue=None, access=None, data=None, profile=None):
         except KeyError:
             raise HTTPException(404, 'No such film')
 
+    def parent_of(film):
+        """A finished concept film whose key ideas can be found and made (profiles with key ideas only)."""
+        if not profile.get('key_ideas'):
+            raise HTTPException(404, 'Key ideas are not offered here')
+        try:
+            record = films.find(film)
+        except KeyError:
+            raise HTTPException(404, 'No such film')
+        job = films.job(record['job'])
+        if record.get('idea') or not job or job['status'] != 'succeeded':
+            raise HTTPException(409, 'Key ideas come from a finished concept film')
+        return record, job
+
+    def ideas_state(film, job):
+        project = Path(job['project'])
+        made = films.ideas_of(film)
+        listed = ideas.saved(project) or []
+        return {'state': finder.state(project),
+                'ideas': [{**{k: i[k] for k in ('id', 'title', 'why', 'understanding', 'minutes')},
+                           'film': made.get(i['id'], (None, None))[0],
+                           'ready': made.get(i['id'], (None, None))[1] == 'succeeded'} for i in listed]}
+
+    @app.get('/api/films/{film}/ideas')
+    def get_ideas(film: str, request: Request):
+        signed_in(request)
+        record, job = parent_of(film)
+        return ideas_state(film, job)
+
+    @app.post('/api/films/{film}/ideas', status_code=202)
+    def find_ideas(film: str, request: Request):
+        signed_in(request)
+        record, job = parent_of(film)
+        project = Path(job['project'])
+        if finder.state(project) in ('none', 'failed'):
+            finder.start(project, read_json(project / 'curriculum.json') or {})
+        return ideas_state(film, job)
+
+    @app.post('/api/films/{film}/ideas/{idea}', status_code=202)
+    def make_idea_film(film: str, idea: str, body: IdeaAsk, request: Request):
+        signed_in(request)
+        parent_of(film)
+        if not re.fullmatch(r'I\d{1,2}', idea):
+            raise HTTPException(404, 'No such key idea')
+        try:
+            return {'film': films.make_idea(film, idea, body.voice)}
+        except KeyError:
+            raise HTTPException(404, 'No such key idea or narrator')
+
     @app.get('/api/library')
     def library(request: Request):
         signed_in(request)
@@ -433,7 +541,8 @@ def build(queue=None, access=None, data=None, profile=None):
             if not job or job['status'] in ('failed', 'interrupted'):
                 continue
             item = progress(queue, record)
-            out.append({k: item[k] for k in ('film', 'status', 'concept', 'chapter', 'chapter_no', 'book', 'minutes')}
+            out.append({k: item[k] for k in ('film', 'status', 'concept', 'chapter', 'chapter_no', 'book', 'minutes',
+                                             'kind', 'idea')}
                        | {'cover': item['scenes'][0]['src'] if item['scenes'] else None})
         return {'films': out}
 

@@ -205,3 +205,15 @@ audio { width: 100%; margin-top: 12px; }
 
 .now-line .stop { margin-left: auto; padding: 8px 16px; align-self: center; }
 @media (max-width: 400px) { .brand span:last-child { display: none; } }
+
+/* key ideas, made simple */
+.key-ideas { display: grid; gap: 12px; margin-top: 8px; }
+.key-idea { display: flex; gap: 16px; align-items: center; justify-content: space-between; padding: 14px 16px;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.key-idea h3 { margin: 0 0 4px; font-size: 1.02rem; }
+.key-idea .sub { margin: 0 0 6px; }
+.key-idea .btn { flex: none; }
+.landing { font-weight: 600; margin: 8px 0 0; }
+.landing.ok { color: var(--ok); }
+.landing.miss { color: var(--accent); }
+@media (max-width: 640px) { .key-idea { flex-direction: column; align-items: stretch; } }

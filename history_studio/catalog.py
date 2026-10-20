@@ -25,7 +25,8 @@ PROFILES = {
     'history': {'name': 'History Studio', 'mark': 'H', 'subjects': SUBJECTS, 'data': 'history-data',
                 'cookie': 'history_session', 'job': 'history', 'figures': False},
     'chemistry': {'name': 'Chemistry Studio', 'mark': 'C', 'subjects': {'chemistry'}, 'data': 'chemistry-data',
-                  'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True},
+                  'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True,
+                  'key_ideas': True},            # simplified films of a finished film's key ideas (2026-10-20)
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)

@@ -1,7 +1,7 @@
 'use strict';
-const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'history'};
+const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'history', key_ideas: false};
 const view = document.getElementById('view');
-const state = { catalog: null, voices: null, cls: null, timer: null };
+const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const minutes = (m) => (m < 1.25 ? 'about a minute' : `about ${Math.round(m)} min`);
@@ -20,7 +20,7 @@ function chrome(on, nav) {
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === nav));
 }
 
-function stopPolling() { clearTimeout(state.timer); state.timer = null; }
+function stopPolling() { clearTimeout(state.timer); state.timer = null; clearTimeout(state.ideaTimer); state.ideaTimer = null; }
 
 /* ---------------------------------------------------------------- sign in */
 function showLogin() {
@@ -216,6 +216,10 @@ function filmHtml(f) {
   const parts = [];
   if (f.video) parts.push(`<div class="player"><video controls preload="metadata" src="${f.video}" ${f.scenes[0] ? `poster="${f.scenes[0].src}"` : ''}></video></div>`);
   parts.push(nowPanel(f));
+  if (f.kind === 'key_idea' && f.idea) parts.push(`<div class="panel"><h2>What this film makes simple</h2>
+      <p class="sub">${esc(f.idea.why || '')}</p><p>${esc(f.idea.understanding || '')}</p>
+      ${f.landed ? `<p class="landing ${f.landed.landed ? 'ok' : 'miss'}">${f.landed.landed ? 'A test learner got the idea' : 'A test learner did not fully get the idea'}${f.landed.score != null ? ` · ${f.landed.score}/100` : ''}${f.landed.rounds > 1 ? ` · after ${f.landed.rounds - 1} rewrite${f.landed.rounds > 2 ? 's' : ''}` : ''}</p>` : ''}</div>`);
+  if (f.kind !== 'key_idea' && STUDIO.key_ideas && f.status === 'done') parts.push('<div class="panel" id="key-ideas"></div>');
   if (f.scenes.length || (f.phase === 'scenes' && f.scenes_total)) {
     const total = f.scenes_total || f.scenes.length;
     const blanks = f.status === 'making' && f.phase === 'scenes' ? Math.max(0, Math.min(3, total - f.scenes.length)) : 0;
@@ -251,10 +255,14 @@ async function showFilm(id) {
       view.dataset.signature = signature;
       view.innerHTML = `
         <nav class="crumbs"><a href="#/">Chapters</a><span>›</span><a href="#/chapter/${esc(f.chapter_id || '')}">${esc(f.chapter)}</a></nav>
-        <section class="film-head"><span class="chapter-no">Chapter ${f.chapter_no} · ${minutes(f.minutes)}</span>
-          <h1>${esc(f.concept)}</h1><p>${esc(f.summary)}</p></section>
+        <section class="film-head">${f.kind === 'key_idea'
+          ? `<span class="chapter-no">Key idea, made simple · ${minutes(f.minutes)} · from <a href="#/film/${esc(f.parent || '')}">${esc(f.concept)}</a></span>
+             <h1>${esc(f.idea?.title)}</h1>`
+          : `<span class="chapter-no">Chapter ${f.chapter_no} · ${minutes(f.minutes)}</span>
+             <h1>${esc(f.concept)}</h1><p>${esc(f.summary)}</p>`}</section>
         <div class="film">${stepsHtml(f)}<div class="stage">${filmHtml(f)}</div></div>`;
       first = false;
+      if (document.getElementById('key-ideas')) showIdeas(id);
       const stop = document.getElementById('stop');
       if (stop) stop.onclick = async () => {
         if (!confirm('Stop making this film? You can make it again later; it carries on from where it stopped.')) return;
@@ -277,6 +285,45 @@ async function showFilm(id) {
   await tick();
 }
 
+/* ---------------------------------------------------------------- key ideas, made simple */
+async function showIdeas(film) {
+  const box = document.getElementById('key-ideas');
+  if (!box) return;
+  clearTimeout(state.ideaTimer);
+  let data;
+  try { data = await api(`/api/films/${film}/ideas`); } catch (err) { box.remove(); return; }
+  const head = `<h2>Key ideas, made simple</h2><p class="sub">Short films that drill down one idea at a time, with analogies and everyday pictures</p>`;
+  if (data.state === 'finding') {
+    box.innerHTML = `${head}<div class="now-line"><div class="spinner"></div><p class="sub">Finding the ideas students most need made simple…</p></div>`;
+    state.ideaTimer = setTimeout(() => showIdeas(film), 5000);
+    return;
+  }
+  if (!data.ideas.length) {
+    box.innerHTML = `${head}${data.state === 'failed' ? '<p class="error">Could not find the key ideas this time.</p>' : ''}
+      <button class="btn" id="find-ideas" type="button">${data.state === 'failed' ? 'Try again' : 'Find key ideas'}</button>`;
+    box.querySelector('#find-ideas').onclick = async (e) => {
+      e.target.disabled = true;
+      try { await api(`/api/films/${film}/ideas`, { method: 'POST' }); } catch (err) { alert(err.message); }
+      showIdeas(film);
+    };
+    return;
+  }
+  box.innerHTML = `${head}<div class="key-ideas">${data.ideas.map((i) => `
+    <div class="key-idea">
+      <div><h3>${esc(i.title)}</h3><p class="sub">${esc(i.why)}</p><span class="meta"><span>${minutes(i.minutes)}</span>${i.ready ? '<span class="badge ready">Ready</span>' : i.film ? '<span class="badge making"><i class="dot"></i>Being made</span>' : ''}</span></div>
+      ${i.film ? `<a class="btn ghost" href="#/film/${i.film}">${i.ready ? 'Watch ›' : 'See progress ›'}</a>`
+               : `<button class="btn" type="button" data-idea="${esc(i.id)}">Make this film</button>`}
+    </div>`).join('')}</div>`;
+  box.querySelectorAll('[data-idea]').forEach((b) => b.addEventListener('click', async () => {
+    if (!confirm(`Make a short simplified film: "${data.ideas.find((i) => i.id === b.dataset.idea).title}"?`)) return;
+    b.disabled = true; b.textContent = 'Starting…';
+    try {
+      const made = await api(`/api/films/${film}/ideas/${b.dataset.idea}`, { method: 'POST', body: '{}' });
+      location.hash = `#/film/${made.film}`;
+    } catch (err) { alert(err.message); b.disabled = false; b.textContent = 'Make this film'; }
+  }));
+}
+
 /* ---------------------------------------------------------------- library */
 async function showLibrary() {
   chrome(true, 'library');
@@ -288,8 +335,8 @@ async function showLibrary() {
       <a class="card" href="#/film/${f.film}">
         <div class="cover" ${f.cover ? `style="background-image:url('${f.cover}')"` : ''}></div>
         <span class="chapter-no">Chapter ${f.chapter_no} · ${esc(f.chapter)}</span>
-        <h3>${esc(f.concept)}</h3>
-        <div class="meta"><span>${minutes(f.minutes)}</span>${f.status === 'done' ? '<span class="badge ready">Ready</span>' : '<span class="badge making"><i class="dot"></i>Being made</span>'}</div>
+        <h3>${esc(f.kind === 'key_idea' ? f.idea?.title : f.concept)}</h3>
+        <div class="meta">${f.kind === 'key_idea' ? '<span class="badge">Key idea</span>' : ''}<span>${minutes(f.minutes)}</span>${f.status === 'done' ? '<span class="badge ready">Ready</span>' : '<span class="badge making"><i class="dot"></i>Being made</span>'}</div>
       </a>`).join('')}</div>` : '<p class="empty">No films yet. Pick a chapter and make the first one.</p>'}`;
 }
 
