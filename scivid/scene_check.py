@@ -15,7 +15,24 @@ FORBIDDEN = {'open', 'eval', 'exec', 'compile', '__import__', 'getattr', 'setatt
              'set_start_and_end_points', 'set_camera_orientation', 'begin_ambient_camera_rotation'}
 CLASS = 'ChapterScene'
 BODY = (-6.6, -2.7, 6.6, 2.9)     # x0, y0, x1, y1: between the heading and the burned-in subtitles (scene_kit.BODY)
-MIN_FILL = .15                    # the share of the body a scene's content must cover at its fullest
+MIN_FILL = .15                    # the share of the body a scene's content must cover at its fullest...
+MIN_SPAN = .6                     # ...unless it spans this share of the body's width or height (a reaction row)
+NEAR = .35                        # text this close to the drawing is part of it (atom labels), not a caption
+
+
+def picture(sample):
+    """The sample's drawing box grown by the labels on or beside it (they may chain along a molecule)."""
+    box = list(sample['content'])
+    labels = [(l['min'], l['max']) for l in sample.get('labels', [])]
+    grew = True
+    while grew:
+        grew = False
+        for (lx0, ly0), (lx1, ly1) in labels:
+            near = lx1 >= box[0] - NEAR and lx0 <= box[2] + NEAR and ly1 >= box[1] - NEAR and ly0 <= box[3] + NEAR
+            bigger = [min(box[0], lx0), min(box[1], ly0), max(box[2], lx1), max(box[3], ly1)]
+            if near and bigger != box:
+                box, grew = bigger, True
+    return box
 
 
 def validate_code(code, manim_module=None):
@@ -123,19 +140,22 @@ def geometry_defects(data):
     if data.get('off_frame'):
         defects.append('Objects leave the visible frame (x beyond ±7.1 or y beyond ±4): ' + str(data['off_frame'][:3]))
     # A scene that never fills a fair part of the body reads as an empty frame (S13 of the molecular-models film
-    # drew three small circles in a frame they covered ~5% of); judged at its fullest moment.
-    boxes = [s['content'] for s in data.get('samples', []) if s.get('content')]
-    if boxes:
+    # drew three small circles in a frame they covered ~5% of); judged at its fullest moment. The picture is the
+    # drawing plus the words on or beside it (atom labels like H3C, CH2 are text: the alkenes film's S25 molecule
+    # was measured as its bond lines alone); a caption standing apart stays out. A long row (a reaction) passes by
+    # its width, a tall stack by its height.
+    pictures = [picture(s) for s in data.get('samples', []) if s.get('content')]
+    if pictures:
         x0, y0, x1, y1 = BODY
-        def share(b):
-            w = max(0, min(b[2], x1) - max(b[0], x0))
-            h = max(0, min(b[3], y1) - max(b[1], y0))
-            return w * h / ((x1 - x0) * (y1 - y0))
-        fullest = max(share(b) for b in boxes)
-        if fullest < MIN_FILL:
-            defects.append(f'The picture fills only {fullest:.0%} of the body area at its fullest; scale the main '
+        def measure(b):
+            w = max(0, min(b[2], x1) - max(b[0], x0)) / (x1 - x0)
+            h = max(0, min(b[3], y1) - max(b[1], y0)) / (y1 - y0)
+            return w * h, w, h
+        area, width, height = (max(m[i] for m in map(measure, pictures)) for i in range(3))
+        if area < MIN_FILL and width < MIN_SPAN and height < MIN_SPAN:
+            defects.append(f'The picture fills only {area:.0%} of the body area at its fullest; scale the main '
                            f'objects up and centre them so they use at least {MIN_FILL:.0%} of the space between the '
-                           'heading and the subtitles (x -6.6..6.6, y -2.7..2.9)')
+                           'heading and the subtitles (x -6.6..6.6, y -2.7..2.9), or span most of its width')
     late = [x for x in data.get('late', []) if x['reached_at'] - x['cue_time'] > .6]
     if late:
         defects.append('Animations ran past the start of later cues, so the picture lags the narration; shorten the '

@@ -139,6 +139,16 @@ class DrawingTests(unittest.TestCase):
         full = {'samples': [{'time': 1, 'labels': [], 'content': [-4, -2, 4, 2]}], 'duration': 5, 'elapsed': 5}
         self.assertIn('fills only 1%', geometry_defects(tiny)[0])
         self.assertEqual(geometry_defects(full), [])
+        # Alkenes S25: a condensed-formula molecule is mostly labels; they belong to the picture, a far caption does not
+        bonds = {'time': 1, 'content': [-4, .4, 5, .9], 'labels': [
+            {'text': 'H3C', 'min': [-4.6, .1], 'max': [-3.6, .5]}, {'text': 'CH', 'min': [-.3, 1.0], 'max': [.4, 1.5]},
+            {'text': 'Br', 'min': [5.1, .9], 'max': [5.8, 1.4]}]}
+        self.assertEqual(geometry_defects({'samples': [bonds], 'duration': 5, 'elapsed': 5}), [])
+        caption = {'time': 1, 'content': [-.3, -.3, .3, .3], 'labels': [
+            {'text': 'a long caption far below', 'min': [-3, -2.5], 'max': [3, -2.1]}]}
+        self.assertTrue(geometry_defects({'samples': [caption], 'duration': 5, 'elapsed': 5}))
+        row = {'time': 1, 'content': [-5.5, -.4, 5.5, .4], 'labels': []}     # a reaction row: wide and short
+        self.assertEqual(geometry_defects({'samples': [row], 'duration': 5, 'elapsed': 5}), [])
 
     def test_scenes_may_import_the_kit(self):
         code = ('import manim as m\nfrom scene_kit import begin, at, finish\nfrom mol_kit import Molecule\n\n\n'
