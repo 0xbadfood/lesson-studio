@@ -204,7 +204,8 @@ function stepsHtml(f) {
 }
 
 function nowPanel(f) {
-  if (f.status === 'failed') return `<div class="panel"><h2>This film hit a snag</h2><p class="sub">Something went wrong while making it. The studio team will look at it; you can try another idea meanwhile.</p></div>`;
+  if (f.status === 'failed') return `<div class="panel"><h2>This film hit a snag</h2><p class="sub">Something went wrong while making it. Making it again carries on from where it stopped, with any fixes made since; Behind the scenes shows what went wrong.</p>
+      <button class="btn" id="again" type="button">Make it again</button></div>`;
   if (f.status === 'stopped') return `<div class="panel"><h2>You stopped this film</h2><p class="sub">Nothing is lost: making it again carries on from where it stopped.</p>
       <button class="btn" id="again" type="button">Make it again</button></div>`;
   const stop = '<button class="btn ghost stop" id="stop" type="button">Stop</button>';
@@ -280,7 +281,9 @@ async function showFilm(id) {
       if (again) again.onclick = async () => {
         again.disabled = true;
         try {
-          const made = await api('/api/films', { method: 'POST', body: JSON.stringify({ chapter: f.chapter_id, concept: f.concept_id }) });
+          const made = f.kind === 'key_idea'                // a key idea is made again from its concept film
+            ? await api(`/api/films/${f.parent}/ideas/${f.idea.id}`, { method: 'POST', body: '{}' })
+            : await api('/api/films', { method: 'POST', body: JSON.stringify({ chapter: f.chapter_id, concept: f.concept_id }) });
           if (made.film !== id) { location.hash = `#/film/${made.film}`; return; }
         } catch (err) { alert(err.message); again.disabled = false; return; }
         clearTimeout(state.timer); tick();

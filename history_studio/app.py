@@ -305,7 +305,7 @@ def progress(queue, record):
     landing = read_json(project / f'learner-check-{seconds}.json') if idea else None
     return {
         'film': record['film'], 'chapter_id': record['chapter'], 'concept_id': record['concept'],
-        'kind': 'key_idea' if idea else 'concept', 'idea': idea and {'title': idea['title'], 'why': idea.get('why'),
+        'kind': 'key_idea' if idea else 'concept', 'idea': idea and {'id': idea.get('id'), 'title': idea['title'], 'why': idea.get('why'),
                                                                       'understanding': idea.get('understanding')},
         'parent': record.get('parent'),
         'landed': landing and {'landed': landing['landed'],
