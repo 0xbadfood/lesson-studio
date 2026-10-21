@@ -322,6 +322,17 @@ def _label_carbons(mol):
         atom.SetProp('atomLabel', label)
 
 
+def _radical_dots(mol, coords):
+    """A clear dot beside each unpaired electron, up and to the right of its atom's label (RDKit's own radical
+    marks are specks, and its labels cannot carry a bullet character)."""
+    dots = []
+    for atom in mol.GetAtoms():
+        for k in range(atom.GetNumRadicalElectrons()):
+            x, y = coords[atom.GetIdx()]
+            dots.append(f"<circle cx='{x + 26 + 12 * k:.1f}' cy='{y - 16:.1f}' r='5' fill='{INK}'/>")
+    return ''.join(dots)
+
+
 def labelled(mols):
     return max(m.GetNumHeavyAtoms() for m in mols) <= SMALL
 
@@ -335,10 +346,13 @@ def _panel(mol, x, y, pad=60, labels=False):
     width, height = round(w / BOND * BOND_PX + 2 * pad), round(h / BOND * BOND_PX + 2 * pad)
     drawer = _drawer(width, height)
     drawer.drawOptions().fixedBondLength = BOND_PX
+    drawer.drawOptions().includeRadicals = False          # drawn below as clear dots
     drawer.DrawMolecule(mol)
     drawer.FinishDrawing()
     body = re.sub(r'^<\?xml[^>]*>\s*', '', drawer.GetDrawingText())
-    coords = [(x + p.x, y + p.y) for p in (drawer.GetDrawCoords(i) for i in range(mol.GetNumAtoms()))]
+    local = [(p.x, p.y) for p in (drawer.GetDrawCoords(i) for i in range(mol.GetNumAtoms()))]
+    coords = [(x + px, y + py) for px, py in local]
+    body = body.replace('</svg>', _radical_dots(mol, local) + '</svg>')
     return body.replace('<svg ', f"<svg x='{x:.1f}' y='{y:.1f}' ", 1), width, height, coords
 
 

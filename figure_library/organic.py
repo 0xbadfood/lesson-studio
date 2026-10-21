@@ -76,65 +76,92 @@ def push(species, arrows):
 
 
 def pushed(species, arrows):
-    """Apply curly arrows to a stage: returns the resulting molecule (atoms keep their indices in the stage's species,
-    combined in order, so each atom can be followed) or raises
-    ValueError with what is wrong, phrased for the planner. Each arrow moves one electron pair:
-      from [a]     a lone pair on atom a        to [a, x]  a new or stronger bond a-x
-      from [a, b]  the bond a-b                 to [a] or [b] (a lone pair there), or a bond [a, x] / [b, x]
-    Formal charges follow: losing a lone pair +2, losing a bonding pair +1 on each end, gaining a lone pair -2,
-    gaining a bond -1 on each end."""
+    """Apply curly and fish-hook arrows to a stage: returns the resulting molecule (atoms keep their indices in the
+    stage's species, combined in order, so each atom can be followed) or raises ValueError with what is wrong,
+    phrased for the planner. An arrow moves an electron pair ("electrons": 2, the default curly arrow) or one
+    electron ("electrons": 1, a fish-hook arrow, for radical steps):
+      from [a]     a lone pair (or, for one electron, the unpaired electron) on atom a
+      from [a, b]  the bond a-b
+      to [a, x]    a new or stronger bond a-x          to [b]  an unshared electron (pair) on b
+    Code keeps the books in electrons: bond orders change in half-steps that must add up to whole bonds (a bond
+    broken by fish-hooks needs both of its electrons moved), formal charges follow from each atom's unshared
+    electrons and bonds (charge = valence electrons - unshared - bonds), and one-electron moves set the radicals."""
     from rdkit import Chem
     _, mol = _combined(species)
     index = {a.GetAtomMapNum(): a.GetIdx() for a in mol.GetAtoms() if a.GetAtomMapNum()}
     if len(index) != sum(1 for a in mol.GetAtoms() if a.GetAtomMapNum()):
         raise ValueError('every atom number must be used once in a stage')
-    charge = Counter()
-    lone_pairs = {i: _lone_electrons(mol.GetAtomWithIdx(i)) for i in index.values()}
+    shared, unshared, unpaired = Counter(), Counter(), Counter()   # electrons gained (+) or given (-)
+    key = lambda x, y: (min(x, y), max(x, y))  # noqa: E731
     for n, arrow in enumerate(arrows, 1):
         src, dst = _ends(arrow)
         if src is None:
             raise ValueError(f'arrow {n}: give "from" and "to" as lists of 1 or 2 atom numbers')
+        e = arrow.get('electrons', 2)
+        if e not in (1, 2):
+            raise ValueError(f'arrow {n}: "electrons" is 2 (a curly arrow, the default) or 1 (a fish-hook arrow)')
         missing = [m for m in src + dst if m not in index]
         if missing:
             raise ValueError(f'arrow {n}: atom numbers {missing} are not in this stage\'s SMILES (write them as [C:1])')
         s, d = [index[m] for m in src], [index[m] for m in dst]
         if len(s) == 1:
-            if lone_pairs[s[0]] < 2:
+            atom = mol.GetAtomWithIdx(s[0])
+            radicals = atom.GetNumRadicalElectrons() + unpaired[s[0]]
+            if e == 2 and _lone_electrons(atom) + unshared[s[0]] - radicals < 2:
                 raise ValueError(f'arrow {n}: atom {src[0]} has no lone pair to give')
+            if e == 1 and radicals < 1:
+                raise ValueError(f'arrow {n}: atom {src[0]} has no unpaired electron; a fish-hook arrow from an atom '
+                                 'starts at a radical')
             if len(d) != 2 or s[0] not in d:
-                raise ValueError(f'arrow {n}: a lone pair on {src[0]} must go to a bond from it, "to": [{src[0]}, x]')
-            lone_pairs[s[0]] -= 2
-            charge[s[0]] += 2
+                raise ValueError(f'arrow {n}: electrons on {src[0]} go to a bond from it, "to": [{src[0]}, x]')
+            unshared[s[0]] -= e
+            unpaired[s[0]] -= e == 1
         else:
             bond = mol.GetBondBetweenAtoms(*s)
-            if bond is None:
-                raise ValueError(f'arrow {n}: there is no bond between atoms {src[0]} and {src[1]}')
+            held = (round(bond.GetBondTypeAsDouble()) * 2 if bond else 0) + shared[key(*s)]
+            if held < e:
+                raise ValueError(f'arrow {n}: there is no bond (or no electrons left in it) between atoms '
+                                 f'{src[0]} and {src[1]}')
             if len(d) == 1 and d[0] not in s:
                 raise ValueError(f'arrow {n}: a bond\'s electrons go to one of its own atoms ({src}) or to a bond '
                                  'from one of them')
             if len(d) == 2 and not set(d) & set(s):
                 raise ValueError(f'arrow {n}: a bond\'s electrons go to a bond that shares an atom with it')
-            _change_bond(mol, *s, -1)
-            charge[s[0]] += 1
-            charge[s[1]] += 1
+            shared[key(*s)] -= e
         if len(d) == 1:
-            lone_pairs[d[0]] += 2
-            charge[d[0]] -= 2
+            unshared[d[0]] += e
+            unpaired[d[0]] += e == 1
         else:
             if d[0] == d[1]:
                 raise ValueError(f'arrow {n}: a bond needs two different atoms')
-            _change_bond(mol, *d, +1)
-            charge[d[0]] -= 1
-            charge[d[1]] -= 1
-    for i, change in charge.items():
+            shared[key(*d)] += e
+    bonds = Counter()
+    for (a, b), change in shared.items():
+        if change % 2:
+            raise ValueError(f'the bond between atoms {_number(mol, a)} and {_number(mol, b)} is left with half an '
+                             'electron pair: a bond broken by fish-hook arrows needs both of its electrons moved, and '
+                             'a new bond needs two')
+        if change:
+            _change_bond(mol, a, b, change // 2)
+            bonds[a] += change // 2
+            bonds[b] += change // 2
+    for i in set(unshared) | set(bonds) | set(unpaired):
         atom = mol.GetAtomWithIdx(i)
-        atom.SetFormalCharge(atom.GetFormalCharge() + change)
+        atom.SetFormalCharge(atom.GetFormalCharge() - unshared[i] - bonds[i])
+        radicals = atom.GetNumRadicalElectrons() + unpaired[i]
+        if radicals < 0:
+            raise ValueError(f'atom {_number(mol, i)} would have fewer than no unpaired electrons')
+        atom.SetNumRadicalElectrons(radicals)
     try:
         Chem.SanitizeMol(mol)
     except Exception as exc:                                        # noqa: BLE001 - an impossible structure
         raise ValueError(f'the arrows give an impossible structure ({str(exc).splitlines()[0][:90]}); is an arrow '
                          'missing, such as the leaving group taking its bond?')
     return mol.GetMol()
+
+
+def _number(mol, i):
+    return mol.GetAtomWithIdx(i).GetAtomMapNum() or i
 
 
 def _change_bond(mol, a, b, step):
@@ -188,8 +215,9 @@ def mechanism_errors(spec):
     return errors
 
 
-def _bezier(p0, p1, bow):
-    """A curly arrow from p0 to p1, bowed to one side (screen up for bow > 0), with a full (electron pair) head."""
+def _bezier(p0, p1, bow, single=False):
+    """A curly arrow from p0 to p1, bowed to one side (screen up for bow > 0), with a full (electron pair) head, or
+    a half head (a fish-hook: one electron) when single."""
     (x0, y0), (x1, y1) = p0, p1
     dx, dy = x1 - x0, y1 - y0
     length = math.hypot(dx, dy) or 1
@@ -207,8 +235,9 @@ def _bezier(p0, p1, bow):
     right = (x1 - tx * head + ty * half, y1 - ty * head - tx * half)
     return (f"<path d='M{x0:.1f},{y0:.1f} C{c0[0]:.1f},{c0[1]:.1f} {c1[0]:.1f},{c1[1]:.1f} {x1:.1f},{y1:.1f}' "
             f"fill='none' stroke='{ACCENT}' stroke-width='3.5'/>"
-            f"<path d='M{x1:.1f},{y1:.1f} L{left[0]:.1f},{left[1]:.1f} L{right[0]:.1f},{right[1]:.1f} z' "
-            f"fill='{ACCENT}'/>")
+            f"<path d='M{x1:.1f},{y1:.1f} L{left[0]:.1f},{left[1]:.1f} "
+            + (f"L{x1 - tx * head:.1f},{y1 - ty * head:.1f}" if single else f"L{right[0]:.1f},{right[1]:.1f}")
+            + f" z' fill='{ACCENT}'/>")
 
 
 def _toward(p, q, px):
@@ -324,7 +353,7 @@ def _curly(arrow, where):
             far = dst[1] if dst[0] in shared else dst[0]
             near = dst[0] if far == dst[1] else dst[1]
             end = _toward(pos(far), pos(near), 30)
-    return _bezier(start, end, 1)
+    return _bezier(start, end, 1, single=arrow.get('electrons', 2) == 1)
 
 
 # ------------------------------------------------------------------ Newman and sawhorse projections

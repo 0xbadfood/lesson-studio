@@ -31,6 +31,28 @@ class MechanismTests(unittest.TestCase):
             {'type': 'mechanism', 'stages': [{'species': ['[OH-:1]', 'CBr'], 'arrows': [{'from': [1], 'to': [1, 2]}]},
                                              SN2['stages'][1]]})[0])
 
+    def test_radical_steps_with_fish_hook_arrows(self):
+        # Alkenes S25 (the peroxide effect) had no kit support: radical steps are now pushed and checked like pairs.
+        hook = lambda a, b: {'from': a, 'to': b, 'electrons': 1}  # noqa: E731
+        homolysis = {'type': 'mechanism', 'stages': [{'species': ['[Br:1][Br:2]'], 'arrows': [hook([1, 2], [1]),
+                                                                                           hook([1, 2], [2])]},
+                                                     {'species': ['[Br:1]', '[Br:2]']}]}
+        addition = {'type': 'mechanism', 'stages': [
+            {'species': ['[Br:1]', '[CH2:2]=[CH:3][CH3:4]'], 'arrows': [hook([1], [1, 2]), hook([2, 3], [1, 2]),
+                                                                       hook([2, 3], [3])]},
+            {'species': ['[Br:1][CH2:2][CH:3][CH3:4]']}]}
+        self.assertEqual(chem.figure_errors(homolysis), [])
+        self.assertEqual(chem.figure_errors(addition), [])
+        half = {'type': 'mechanism', 'stages': [{'species': ['[Br:1][Br:2]'], 'arrows': [hook([1, 2], [1])]},
+                                                {'species': ['[Br:1]', '[Br:2]']}]}
+        self.assertIn('half an electron pair', chem.figure_errors(half)[0])
+        wrong = {'type': 'mechanism', 'stages': [addition['stages'][0], {'species': ['[Br:1][CH:2]([CH3:4])[CH2:3]']}]}
+        self.assertIn('these arrows make', chem.figure_errors(wrong)[0])           # the radical on the wrong carbon
+        no_radical = {'type': 'mechanism', 'stages': [{'species': ['[OH-:1]', '[CH3:2][Br:3]'],
+                                                       'arrows': [hook([1], [1, 2])]}, SN2['stages'][1]]}
+        self.assertIn('no unpaired electron', chem.figure_errors(no_radical)[0])
+        self.assertEqual(chem.draw(homolysis).count("r='5'"), 2)                  # a dot on each Br
+
     def test_mechanisms_draw(self):
         self.assertEqual(chem.draw(SN2).count("stroke='#f3b85e'"), 2)               # two curly arrows
 

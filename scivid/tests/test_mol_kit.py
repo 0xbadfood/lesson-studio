@@ -117,6 +117,13 @@ class DrawingTests(unittest.TestCase):
         self.assertEqual(chair.positions()[0]['position'], 'equatorial')
         k.Haworth('deoxyribose', 'beta')
 
+    def test_radicals_show_their_dot(self):
+        mol = k.Molecule('[CH3:1][CH:2][CH2:3][Br:4]')
+        self.assertIn('•', mol.atom(2).text if hasattr(mol.atom(2), 'text') else mol.atom(2).original_text)
+        k.Mechanism([{'species': ['[Br:1]', '[CH2:2]=[CH:3][CH3:4]'], 'arrows': [
+            {'from': [1], 'to': [1, 2], 'electrons': 1}, {'from': [2, 3], 'to': [1, 2], 'electrons': 1},
+            {'from': [2, 3], 'to': [3], 'electrons': 1}]}, {'species': ['[Br:1][CH2:2][CH:3][CH3:4]']}])
+
     def test_three_molecular_models(self):
         mol = k.Molecule3D('methane', model='framework')
         self.assertEqual((mol.model_name(), mol._radius('C', 0)), ('framework model', 0))

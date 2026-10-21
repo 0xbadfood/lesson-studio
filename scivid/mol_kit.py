@@ -326,7 +326,7 @@ class Molecule(m.VGroup):
             return 0
         if atom.GetAtomicNum() == 6 and atom.GetFormalCharge() >= 0:
             return 0
-        return max(0, _organic._lone_electrons(atom) // 2)
+        return max(0, (_organic._lone_electrons(atom) - atom.GetNumRadicalElectrons()) // 2)
 
     def lone_pair_count(self, n, index=False):
         return self._pairs(self.index(n, index))
@@ -442,7 +442,8 @@ class Molecule(m.VGroup):
     def _label(self, atom, points, show_carbons, hydrogens):
         sym, i = atom.GetSymbol(), atom.GetIdx()
         q = atom.GetFormalCharge()
-        if sym == 'C' and not (show_carbons or q or atom.GetDegree() == 0):
+        radicals = atom.GetNumRadicalElectrons()
+        if sym == 'C' and not (show_carbons or q or radicals or atom.GetDegree() == 0):
             return None
         h = 0 if hydrogens else atom.GetTotalNumHs()
         hpart = ('H' + (str(h).translate(SUB) if h > 1 else '')) if h else ''
@@ -453,7 +454,7 @@ class Molecule(m.VGroup):
             h_first = bool(hpart) and dx > .05
         else:                                          # a lone hydride: H2O, H2S, HCl but NH3, CH4
             h_first = bool(hpart) and sym in ('O', 'S', 'F', 'Cl', 'Br', 'I')
-        words = (hpart + sym if h_first else sym + hpart) + charge
+        words = (hpart + sym if h_first else sym + hpart) + charge + '•' * radicals     # radical dot(s)
         size = self.text_size
         label = m.Text(words, font=FONT, font_size=size, color=COLOUR.get(sym, WHITE))
         start = len(hpart) if h_first else 0
@@ -514,8 +515,9 @@ class Molecule(m.VGroup):
         return m.VGroup(line(a + n * d, b + n * d), line(a - n * d, b - n * d))
 
 
-def curly_arrow(start, end, bend=1, color=AMBER, width=4):
-    """A curly (electron-pair) arrow from start to end, bowed up the screen (bend=-1: down); full head."""
+def curly_arrow(start, end, bend=1, color=AMBER, width=4, electrons=2):
+    """A curly arrow from start to end, bowed up the screen (bend=-1: down): a full head moves an electron pair, a
+    half head (electrons=1, a fish-hook) one electron."""
     p0, p1 = np.array(start, dtype=float), np.array(end, dtype=float)
     d = p1 - p0
     length = np.linalg.norm(d)
@@ -529,7 +531,8 @@ def curly_arrow(start, end, bend=1, color=AMBER, width=4):
     path = m.CubicBezier(p0, c0, c1, p1, color=color, stroke_width=width)
     t = _unit(p1 - c1)
     side = _v(-t[1], t[0])
-    head = m.Polygon(p1, p1 - t * .2 + side * .1, p1 - t * .2 - side * .1, color=color, fill_color=color,
+    head = m.Polygon(p1, p1 - t * .2 + side * .1, p1 - t * .2 - (0 if electrons == 1 else side * .1),
+                     color=color, fill_color=color,
                      fill_opacity=1, stroke_width=1)
     return m.VGroup(path, head)
 
@@ -780,7 +783,7 @@ class Mechanism:
                     far = p1 if dst[0] in src else p0
                     near = p0 if dst[0] in src else p1
                     end = far + _unit(near - far) * stage.molecules[0].text_size / 26 * .45
-            group.add(curly_arrow(start, end))
+            group.add(curly_arrow(start, end, electrons=arrow.get('electrons', 2)))
         return group
 
     def stage(self, k):

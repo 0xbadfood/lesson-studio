@@ -31,7 +31,9 @@ Fischer, Haworth, curly_arrow, formula, molar_mass, formula_text
 - Mechanism(stages, center, width=11.5, scale=1.4): stages = [{'species': ['[OH-:1]', '[CH3:2][Br:3]'], 'arrows':
   [{'from': [1], 'to': [1, 2]}, {'from': [2, 3], 'to': [3]}], 'label': 'slow'}, ..., {'species': [products]}].
   from [a] = a lone pair on a; from [a, b] = the bond a-b; to [a, x] = a new or stronger bond; to [b] = a lone pair
-  on b. Keep atom numbers across stages and every species (spectators too); write a moving H as [H:5]. The kit
+  on b. Radical steps use fish-hook arrows, {'from': ..., 'to': ..., 'electrons': 1}, one electron each: a bond
+  broken homolytically needs two, one to each atom; a radical is written [Br:1] or [CH:3] and is drawn with its
+  dot. Keep atom numbers across stages and every species (spectators too); write a moving H as [H:5]. The kit
   pushes the electrons and raises if a stage does not make the next. Show: self.play(m.FadeIn(mech.stage(0)));
   self.play(m.Create(mech.arrows(0))); mech.play_step(self, 0, run_time=2) morphs stage 0 into stage 1 (atoms
   move, broken bonds fade, new bonds grow, arrows fade); mech.label(k) -> Text of stage k's label or None.
