@@ -207,7 +207,26 @@ def activity(project, now=None):
                 say(at, f'Narration {problem}; recording it again')
             elif state == 'point_retry':
                 narration['retries'] += 1
+            elif state == 'succeeded':
+                say(at, f'All {d.get("point_clips")} narration points recorded: {clock(d.get("duration_seconds"))} of '
+                        'narration; now checking the whole narration once more')
             continue
+        if stage == 'audio-audit':                       # the whole-narration check and per-point cross-checks
+            model = str(d.get('model', '')).split('/')[-1]
+            reasons = ', '.join(d.get('reasons') or [])
+            text = {'needs_crosscheck': f'Audio check: {model} scored {d.get("score")} ({reasons}); asking the next '
+                                        'recogniser',
+                    'crosscheck_passed': f'Audio check passed on {model} (score {d.get("score")})',
+                    'failed': f'Audio check failed on {model} (score {d.get("score")}: {reasons})',
+                    'semantic_accepted': 'Audio check: the reviewer finds the transcript differences harmless',
+                    'semantic_needs_review': 'Audio check: the reviewer wants the recognisers to look again ('
+                                             + str(d.get('reason', ''))[:140] + ')',
+                    'repeated_failure_arbiter': 'Audio check: the same differences twice; asking an arbiter'}.get(state)
+            if text and ('points/' not in str(d.get('audio', '')) or state in ('failed', 'crosscheck_passed')):
+                say(at, text)
+            continue
+        if stage.startswith('alignment-') and state == 'running':
+            say(at, 'Timing every word of the narration')
         if stage == 'learner-check':
             learner.append({'round': d.get('round'), 'score': d.get('score'), 'landed': state == 'landed'})
             say(at, f'Test learner, round {d.get("round")}: score {d.get("score")} '
