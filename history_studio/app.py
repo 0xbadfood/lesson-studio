@@ -28,7 +28,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from history_studio import catalog, ideas
+from history_studio import activity, catalog, ideas
 
 REMOTION = Path('/home/nitin/remotion')
 sys.path.insert(0, str(REMOTION))
@@ -483,6 +483,17 @@ def build(queue=None, access=None, data=None, profile=None):
             return progress(queue, films.find(film))
         except KeyError:
             raise HTTPException(404, 'No such film')
+
+    @app.get('/api/films/{film}/activity')
+    def film_activity(film: str, request: Request):
+        """Behind the scenes: the current attempt's steps, work and log, in plain words (activity.py)."""
+        signed_in(request)
+        try:
+            record = films.find(film)
+        except KeyError:
+            raise HTTPException(404, 'No such film')
+        job = queue.get(record['job'])
+        return {**activity.activity(job['project']), 'status': job['status']}
 
     def parent_of(film):
         """A finished concept film whose key ideas can be found and made (profiles with key ideas only)."""

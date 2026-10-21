@@ -1,7 +1,7 @@
 'use strict';
 const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'history', key_ideas: false};
 const view = document.getElementById('view');
-const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null };
+const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null, activityTimer: null };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const minutes = (m) => (m < 1.25 ? 'about a minute' : `about ${Math.round(m)} min`);
@@ -20,7 +20,10 @@ function chrome(on, nav) {
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === nav));
 }
 
-function stopPolling() { clearTimeout(state.timer); state.timer = null; clearTimeout(state.ideaTimer); state.ideaTimer = null; }
+function stopPolling() {
+  clearTimeout(state.timer); state.timer = null; clearTimeout(state.ideaTimer); state.ideaTimer = null;
+  clearTimeout(state.activityTimer); state.activityTimer = null;
+}
 
 /* ---------------------------------------------------------------- sign in */
 function showLogin() {
@@ -216,6 +219,7 @@ function filmHtml(f) {
   const parts = [];
   if (f.video) parts.push(`<div class="player"><video controls preload="metadata" src="${f.video}" ${f.scenes[0] ? `poster="${f.scenes[0].src}"` : ''}></video></div>`);
   parts.push(nowPanel(f));
+  if (f.status !== 'waiting') parts.push(activityShell(f));
   if (f.kind === 'key_idea' && f.idea) parts.push(`<div class="panel"><h2>What this film makes simple</h2>
       <p class="sub">${esc(f.idea.why || '')}</p><p>${esc(f.idea.understanding || '')}</p>
       ${f.landed ? `<p class="landing ${f.landed.landed ? 'ok' : 'miss'}">${f.landed.landed ? 'A test learner got the idea' : 'A test learner did not fully get the idea'}${f.landed.score != null ? ` · ${f.landed.score}/100` : ''}${f.landed.rounds > 1 ? ` · after ${f.landed.rounds - 1} rewrite${f.landed.rounds > 2 ? 's' : ''}` : ''}</p>` : ''}</div>`);
@@ -263,6 +267,7 @@ async function showFilm(id) {
         <div class="film">${stepsHtml(f)}<div class="stage">${filmHtml(f)}</div></div>`;
       first = false;
       if (document.getElementById('key-ideas')) showIdeas(id);
+      if (document.getElementById('activity')) showActivity(id);
       const stop = document.getElementById('stop');
       if (stop) stop.onclick = async () => {
         if (!confirm('Stop making this film? You can make it again later; it carries on from where it stopped.')) return;
@@ -283,6 +288,70 @@ async function showFilm(id) {
     if (f.status === 'waiting' || f.status === 'making') state.timer = setTimeout(tick, 5000);
   };
   await tick();
+}
+
+/* ---------------------------------------------------------------- behind the scenes */
+// What the pipeline is doing, in plain words (GET /api/films/{id}/activity). Refreshes on its own timer so the
+// rest of the page stays still; open or closed is remembered per browser.
+function activityShell(f) {
+  let open = f.status === 'making';
+  try { const saved = localStorage.getItem('activity-open'); if (saved !== null) open = saved === '1'; } catch (e) { /* private mode */ }
+  return `<details class="panel activity" id="activity" ${open ? 'open' : ''}><summary><h2>Behind the scenes</h2>
+    <span class="sub" id="activity-line">What each step is doing, as it happens</span></summary><div id="activity-body"><p class="sub">Loading…</p></div></details>`;
+}
+
+const CHIP = { done: 'ok', succeeded: 'ok', accepted: 'ok', working: 'wait', running: 'wait', coding: 'wait', rendering: 'wait',
+  repairing: 'wait', painting: 'wait', retrying: 'wait', queued: '', skipped: '', failed: 'bad', blocked: 'bad', 'needs review': 'warn' };
+const chip = (s) => `<span class="chip ${CHIP[s] ?? ''}">${esc(s)}</span>`;
+const secs = (n) => n == null ? '' : n >= 60 ? `${Math.floor(n / 60)}m ${String(Math.round(n % 60)).padStart(2, '0')}s` : `${Math.round(n)}s`;
+
+function activityHtml(a) {
+  const w = a.work, out = [];
+  out.push(`<ol class="timeline">${a.steps.map((s) => `<li class="${s.state}"><span>${esc(s.title)}</span>${chip(s.state)}<span class="t">${secs(s.seconds)}</span>
+    ${s.error ? `<p class="err">${esc(s.error)}</p>` : ''}</li>`).join('')}</ol>`);
+  if (w.planning.length) out.push(`<h3>Planning, drafted and reviewed by two models</h3><table class="grid"><thead><tr><th>Step</th><th>Rounds</th><th>Review</th><th></th><th>Time</th></tr></thead><tbody>
+    ${w.planning.map((l) => `<tr><td>${esc(l.label)}${l.repairs.length ? `<small>fixed ${esc(l.repairs.map((r) => r.join(', ')).join(' · '))}</small>` : ''}
+      ${l.state !== 'done' && l.majors?.length ? `<small class="warn">Reviewer: ${esc(l.majors[0])}</small>` : ''}</td>
+      <td>${l.rounds}</td><td>${l.score ?? ''}</td><td>${chip(l.state)}</td><td>${secs(l.seconds)}</td></tr>`).join('')}</tbody></table>`);
+  if (w.narration) out.push(`<h3>Narration</h3><p>${w.narration.done} of ${w.narration.points} points recorded and checked against the script${w.narration.retries ? `, ${w.narration.retries} recorded again` : ''}</p>
+    ${w.narration.problems.map((p) => `<small class="warn">${esc(p)}</small>`).join('')}`);
+  if (w.learner) out.push(`<h3>Test learner</h3><table class="grid"><thead><tr><th>Round</th><th>Understood</th><th>Simple</th><th>Confusions</th><th></th></tr></thead><tbody>
+    ${w.learner.map((r) => `<tr><td>${r.round}</td><td>${r.understood ?? r.score ?? ''}</td><td>${r.simple ?? ''}</td><td>${r.confusing ?? ''}</td><td>${chip(r.landed ? 'landed' : 'not yet')}</td></tr>`).join('')}</tbody></table>`);
+  if (w.animations.length) out.push(`<h3>Animated scenes, coded and reviewed</h3><table class="grid"><thead><tr><th>Scene</th><th></th><th>Attempts</th><th>Time</th></tr></thead><tbody>
+    ${w.animations.map((b) => `<tr><td><b>${esc(b.id.toUpperCase())}</b> ${esc(b.title)}<small>${esc(b.line)}</small></td><td>${chip(b.state)}</td>
+      <td>${b.attempts}${b.tier ? ` · ${esc(b.tier)}` : ''}</td><td>${secs(b.seconds)}</td></tr>`).join('')}</tbody></table>`);
+  if (w.pictures) {
+    const p = w.pictures.summary;
+    out.push(`<h3>Pictures, painted and reviewed</h3><p>${p.completed_images ?? 0} of ${p.planned_images ?? '?'} done${p.needs_review_images ? ` · ${p.needs_review_images} marked for expert review` : ''}${p.blocked_images ? ` · ${p.blocked_images} blocked` : ''}${p.workers ? ` · ${p.workers} painted at once` : ''}${w.pictures.prompts?.batch ? ` · prompts batch ${w.pictures.prompts.batch} of ${w.pictures.prompts.of}` : ''}</p>
+      <table class="grid"><tbody>${w.pictures.items.map((i) => `<tr><td><b>${esc(i.id)}</b> ${esc(i.message)}${i.issue && i.state !== 'accepted' ? `<small class="warn">Reviewer: ${esc(i.issue)}</small>` : ''}</td>
+        <td>${chip(i.state)}</td><td>${i.takes ? `take ${i.takes}` : ''}${i.score != null ? ` · ${i.score}` : ''}</td></tr>`).join('')}</tbody></table>`);
+  }
+  if (w.clips) out.push(`<h3>Motion clips</h3><p>${w.clips.made.length} of ${w.clips.planned} made</p>
+    <ul class="plain">${w.clips.made.map((c) => `<li>${esc(c.scene)} on the ${esc(c.worker)}, ${secs(c.seconds)}</li>`).join('')}</ul>`);
+  if (w.render) out.push(`<h3>Final cut</h3><p>${chip(w.render.state)} ${secs(w.render.seconds)}</p>`);
+  if (a.log.length) out.push(`<details class="log"><summary>Activity log, newest first</summary><ol>${a.log.map((e) => `<li><time>${esc(e.at)}</time> ${esc(e.text)}</li>`).join('')}</ol></details>`);
+  return out.join('');
+}
+
+async function showActivity(film) {
+  const box = document.getElementById('activity');
+  if (!box) return;
+  clearTimeout(state.activityTimer);
+  box.ontoggle = () => { try { localStorage.setItem('activity-open', box.open ? '1' : '0'); } catch (e) { /* private mode */ } };
+  let a;
+  try { a = await api(`/api/films/${film}/activity`); } catch (err) { return; }
+  const body = document.getElementById('activity-body');
+  if (!body) return;
+  const logOpen = body.querySelector('details.log')?.open;
+  const html = activityHtml(a);
+  if (body.dataset.html !== html) {
+    body.innerHTML = html;
+    body.dataset.html = html;
+    if (logOpen) body.querySelector('details.log').open = true;
+  }
+  const line = document.getElementById('activity-line');
+  if (line && a.started) line.textContent = `Started ${a.started} · ${a.elapsed}${a.running ? ' so far' : ''} · ${a.models.calls} model calls · planner $${a.models.planner_usd.toFixed(2)}`;
+  if (a.status === 'running' || a.status === 'queued') state.activityTimer = setTimeout(() => showActivity(film), 4000);
 }
 
 /* ---------------------------------------------------------------- key ideas, made simple */
