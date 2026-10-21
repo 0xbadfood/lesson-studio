@@ -1,7 +1,7 @@
 'use strict';
 const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'history', key_ideas: false};
 const view = document.getElementById('view');
-const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null, activityTimer: null };
+const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null, activityTimer: null, questionTimer: null };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const minutes = (m) => (m < 1.25 ? 'about a minute' : `about ${Math.round(m)} min`);
@@ -23,6 +23,7 @@ function chrome(on, nav) {
 function stopPolling() {
   clearTimeout(state.timer); state.timer = null; clearTimeout(state.ideaTimer); state.ideaTimer = null;
   clearTimeout(state.activityTimer); state.activityTimer = null;
+  clearTimeout(state.questionTimer); state.questionTimer = null;
 }
 
 /* ---------------------------------------------------------------- sign in */
@@ -225,6 +226,7 @@ function filmHtml(f) {
       <p class="sub">${esc(f.idea.why || '')}</p><p>${esc(f.idea.understanding || '')}</p>
       ${f.landed ? `<p class="landing ${f.landed.landed ? 'ok' : 'miss'}">${f.landed.landed ? 'A test learner got the idea' : 'A test learner did not fully get the idea'}${f.landed.score != null ? ` · ${f.landed.score}/100` : ''}${f.landed.rounds > 1 ? ` · after ${f.landed.rounds - 1} rewrite${f.landed.rounds > 2 ? 's' : ''}` : ''}</p>` : ''}</div>`);
   if (f.kind !== 'key_idea' && STUDIO.key_ideas && f.status === 'done') parts.push('<div class="panel" id="key-ideas"></div>');
+  if (STUDIO.questions && f.status === 'done') parts.push('<div class="panel" id="questions"></div>');
   if (f.scenes.length || (f.phase === 'scenes' && f.scenes_total)) {
     const total = f.scenes_total || f.scenes.length;
     const blanks = f.status === 'making' && f.phase === 'scenes' ? Math.max(0, Math.min(3, total - f.scenes.length)) : 0;
@@ -270,6 +272,7 @@ async function showFilm(id) {
       first = false;
       if (document.getElementById('key-ideas')) showIdeas(id);
       if (document.getElementById('activity')) showActivity(id);
+      if (document.getElementById('questions')) showQuestions(id);
       const stop = document.getElementById('stop');
       if (stop) stop.onclick = async () => {
         if (!confirm('Stop making this film? You can make it again later; it carries on from where it stopped.')) return;
@@ -368,6 +371,61 @@ document.addEventListener('visibilitychange', () => {
   const m = location.hash.match(/^#\/film\/([\w-]+)/);
   if (document.visibilityState === 'visible' && m && document.getElementById('activity')) showActivity(m[1]);
 });
+
+/* ---------------------------------------------------------------- test yourself */
+// Creative questions on what the film taught (GET/POST /api/films/{id}/questions): pick an option, or show the model
+// answer, to see the explanation and what the question checks. Structures are drawn by code.
+const KIND_NAMES = { predict: 'Predict', explain: 'Explain why', spot_error: 'Spot the error', backwards: 'Work backwards',
+  compare: 'Compare', data: 'Read the data', sequence: 'Put in order', scenario: 'In real life' };
+
+function questionHtml(q, film) {
+  const figs = (q.figures || []).map((k) => `<img class="q-fig" loading="lazy" src="/media/${film}/question/${k}" alt="">`).join('');
+  const options = (q.options || []).map((o) => `<button class="q-option" type="button" data-letter="${esc(String(o).trim()[0])}">${esc(o)}</button>`).join('');
+  return `<article class="question" data-answer="${esc(String(q.answer).trim()[0])}">
+    <div class="q-head"><span class="chip">${esc(KIND_NAMES[q.kind] || q.kind)}</span><span class="q-level">${esc(q.difficulty || '')}</span></div>
+    <p class="q-stem"><b>${esc(q.id)}.</b> ${esc(q.stem)}</p>${figs}
+    ${options ? `<div class="q-options">${options}</div>` : `<button class="btn ghost q-show" type="button">Show the answer</button>`}
+    <div class="q-reveal" hidden>${options ? '' : `<p><b>Answer:</b> ${esc(q.answer)}</p>`}
+      <p>${esc(q.explanation)}</p><p class="sub"><b>What this checks:</b> ${esc(q.targets)}</p></div></article>`;
+}
+
+async function showQuestions(film) {
+  const box = document.getElementById('questions');
+  if (!box) return;
+  clearTimeout(state.questionTimer);
+  let data;
+  try { data = await api(`/api/films/${film}/questions`); } catch (err) { box.remove(); return; }
+  const head = '<h2>Test yourself</h2><p class="sub">Questions that check understanding, not memory: new cases, a student\'s mistake to spot, a reaction to work backwards</p>';
+  if (data.state === 'finding') {
+    box.innerHTML = `${head}<div class="now-line"><div class="spinner"></div><p class="sub">Choosing the ideas to test and writing the questions; each is checked before you see it (a few minutes)…</p></div>`;
+    state.questionTimer = setTimeout(() => showQuestions(film), 5000);
+    return;
+  }
+  if (data.state !== 'ready') {
+    box.innerHTML = `${head}${data.state === 'failed' ? '<p class="sub">The last attempt could not finish; try again.</p>' : ''}
+      <button class="btn" id="make-questions" type="button">Make 8 questions</button>`;
+    box.querySelector('#make-questions').onclick = async (e) => {
+      e.target.disabled = true;
+      try { await api(`/api/films/${film}/questions`, { method: 'POST' }); } catch (err) { alert(err.message); }
+      showQuestions(film);
+    };
+    return;
+  }
+  box.innerHTML = head + data.questions.map((q) => questionHtml(q, film)).join('');
+  box.querySelectorAll('.question').forEach((card) => {
+    const reveal = () => { card.querySelector('.q-reveal').hidden = false; };
+    card.querySelectorAll('.q-option').forEach((b) => b.onclick = () => {
+      card.querySelectorAll('.q-option').forEach((o) => {
+        o.disabled = true;
+        if (o.dataset.letter === card.dataset.answer) o.classList.add('right');
+      });
+      if (b.dataset.letter !== card.dataset.answer) b.classList.add('wrong');
+      reveal();
+    });
+    const show = card.querySelector('.q-show');
+    if (show) show.onclick = () => { show.remove(); reveal(); };
+  });
+}
 
 /* ---------------------------------------------------------------- key ideas, made simple */
 async function showIdeas(film) {

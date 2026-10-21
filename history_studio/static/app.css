@@ -254,3 +254,20 @@ audio { width: 100%; margin-top: 12px; }
   .timeline li { grid-template-columns: 1fr auto; }
   .timeline li .t { display: none; }
 }
+
+/* test yourself */
+.question { border-top: 1px solid var(--line); padding: 16px 0 6px; }
+.question:first-of-type { border-top: 0; }
+.q-head { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+.q-level { color: var(--muted); font-size: 12px; }
+.q-stem { margin: 0 0 10px; }
+.q-fig { display: block; max-width: 100%; max-height: 220px; margin: 6px 0 10px; border-radius: 10px; background: #0e1630;
+         padding: 8px; }
+.q-options { display: grid; gap: 8px; }
+.q-option { text-align: left; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--paper);
+            color: var(--ink); font: inherit; }
+.q-option:not(:disabled):hover { border-color: var(--accent); }
+.q-option.right { border-color: var(--ok); background: var(--ok-soft); }
+.q-option.wrong { border-color: var(--accent); background: var(--accent-soft); }
+.q-reveal { margin-top: 10px; font-size: 15px; }
+.q-reveal p { margin: 0 0 6px; }

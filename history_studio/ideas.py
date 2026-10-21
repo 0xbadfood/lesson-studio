@@ -102,8 +102,9 @@ def find(project, curriculum, models=None):
 class Finder:
     """Finds key ideas in the background (a minute or so of model time); one search per film at a time."""
 
-    def __init__(self, find_fn=find):
+    def __init__(self, find_fn=find, saved_fn=None):
         self.find, self.running, self.failed, self.lock = find_fn, set(), {}, threading.Lock()
+        self.saved = saved_fn or saved             # where the work lands (key ideas, or a question set)
 
     def start(self, project, curriculum):
         key = str(project)
@@ -127,7 +128,7 @@ class Finder:
         key = str(project)
         if key in self.running:
             return 'finding'
-        if saved(project) is not None:
+        if self.saved(project) is not None:
             return 'ready'
         return 'failed' if key in self.failed else 'none'
 

@@ -28,7 +28,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from history_studio import activity, catalog, ideas
+from history_studio import activity, catalog, ideas, questions
 
 REMOTION = Path('/home/nitin/remotion')
 sys.path.insert(0, str(REMOTION))
@@ -338,6 +338,8 @@ def media_path(queue, record, kind, item=None):
         path = Path(value.get('file', ''))
     elif kind == 'figure' and item and re.fullmatch(r'[0-9a-f]{20}', item):
         path = project / 'figures' / f'{item}.png'
+    elif kind == 'question' and item and re.fullmatch(r'[0-9a-f]{20}', item):
+        path = questions.folder(project) / 'figures' / f'{item}.png'
     elif kind == 'narration':
         path = Path((read_json(project / f'film-{curriculum.get("seconds")}' / 'audio-selection.json') or {}).get('audio', ''))
     elif kind == 'video':
@@ -370,7 +372,7 @@ def page(profile):
     """The single page, named for the studio (History Studio's page is unchanged)."""
     subject = profile['job']
     studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject,
-                         'key_ideas': bool(profile.get('key_ideas'))})
+                         'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions'))})
     text = (HERE / 'static' / 'index.html').read_text()
     text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {subject} textbook')
     text = text.replace('<span class="mark">H</span>', f'<span class="mark">{profile["mark"]}</span>')
@@ -385,6 +387,8 @@ def build(queue=None, access=None, data=None, profile=None):
     access = access or Access(data)
     films = Films(queue, data, profile)
     finder = ideas.Finder()
+    tester = ideas.Finder(lambda project, curriculum: questions.make(project, curriculum, profile['figures']),
+                          questions.saved)
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
     def signed_in(request):
@@ -531,6 +535,37 @@ def build(queue=None, access=None, data=None, profile=None):
         if finder.state(project) in ('none', 'failed'):
             finder.start(project, read_json(project / 'curriculum.json') or {})
         return ideas_state(film, job)
+
+    def finished(film):
+        """A finished film (concept or key idea) whose questions can be made (profiles with questions only)."""
+        if not profile.get('questions'):
+            raise HTTPException(404, 'Questions are not offered here')
+        try:
+            record = films.find(film)
+        except KeyError:
+            raise HTTPException(404, 'No such film')
+        job = films.job(record['job'])
+        if not job or job['status'] != 'succeeded':
+            raise HTTPException(409, 'Questions come from a finished film')
+        return Path(job['project'])
+
+    def questions_state(project):
+        made = questions.saved(project) or {}
+        return {'state': tester.state(project), 'error': tester.failed.get(str(project)),
+                'questions': made.get('questions') or []}
+
+    @app.get('/api/films/{film}/questions')
+    def get_questions(film: str, request: Request):
+        signed_in(request)
+        return questions_state(finished(film))
+
+    @app.post('/api/films/{film}/questions', status_code=202)
+    def make_questions(film: str, request: Request):
+        signed_in(request)
+        project = finished(film)
+        if tester.state(project) in ('none', 'failed'):
+            tester.start(project, read_json(project / 'curriculum.json') or {})
+        return questions_state(project)
 
     @app.post('/api/films/{film}/ideas/{idea}', status_code=202)
     def make_idea_film(film: str, idea: str, body: IdeaAsk, request: Request):

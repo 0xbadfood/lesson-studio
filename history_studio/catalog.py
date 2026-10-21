@@ -23,10 +23,12 @@ SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_scie
 # Chemistry films also get exact figures (code-drawn chemistry and credited Commons diagrams, 2026-10-19).
 PROFILES = {
     'history': {'name': 'History Studio', 'mark': 'H', 'subjects': SUBJECTS, 'data': 'history-data',
-                'cookie': 'history_session', 'job': 'history', 'figures': False},
+                'cookie': 'history_session', 'job': 'history', 'figures': False,
+                'questions': True},              # Test yourself: creative questions on a finished film (2026-10-22)
     'chemistry': {'name': 'Chemistry Studio', 'mark': 'C', 'subjects': {'chemistry'}, 'data': 'chemistry-data',
                   'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True,
-                  'key_ideas': True},            # simplified films of a finished film's key ideas (2026-10-20)
+                  'key_ideas': True,             # simplified films of a finished film's key ideas (2026-10-20)
+                  'questions': True},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)
