@@ -12,7 +12,8 @@ the renderer can place them on its board.
 
 Types: equation, molecule (optionally with a functional group highlighted), reaction (structures either side of an
 arrow), resonance (2-4 resonance structures on one layout), bohr, orbital_boxes, energy_levels, orbital, spectrum (and
-"library" for a Commons figure, resolved by figure_library.pick).
+"library" for a Commons figure, resolved by figure_library.pick); organic.py adds mechanism (curly arrows, checked by
+pushing the electrons), newman, sawhorse and chair.
 """
 from __future__ import annotations
 
@@ -115,6 +116,8 @@ def figure_errors(spec):
         errors += reaction_errors(spec)
     elif kind == 'resonance':
         errors += resonance_errors(spec)
+    elif kind in organic.ERRORS:
+        errors += organic.ERRORS[kind](spec)
     elif kind in ('bohr', 'orbital_boxes'):
         if spec.get('element') not in Z and not spec.get('config'):
             errors.append(f'{kind}: give "element" as a symbol such as "Na"')
@@ -305,8 +308,29 @@ def _extent(mol):
     return max(xs) - min(xs), max(ys) - min(ys)
 
 
-def _panel(mol, x, y, pad=60):
-    """One structure at the shared bond length, as a nested SVG at (x, y); returns (svg, width, height)."""
+SMALL = 6               # figures whose molecules are all this small show their carbons (CH3-CH2-OH, as NCERT writes
+                        # them), not bare lines; one figure labels all its molecules or none
+
+
+def _label_carbons(mol):
+    for atom in mol.GetAtoms():
+        if atom.GetAtomicNum() != 6:
+            continue
+        h, q = atom.GetTotalNumHs(), atom.GetFormalCharge()
+        label = 'C' + ('H' if h else '') + (f'<sub>{h}</sub>' if h > 1 else '')
+        label += {1: '<sup>+</sup>', -1: '<sup>-</sup>'}.get(q, '')
+        atom.SetProp('atomLabel', label)
+
+
+def labelled(mols):
+    return max(m.GetNumHeavyAtoms() for m in mols) <= SMALL
+
+
+def _panel(mol, x, y, pad=60, labels=False):
+    """One structure at the shared bond length, as a nested SVG at (x, y); returns (svg, width, height, atom
+    positions in the outer figure's pixels)."""
+    if labels:
+        _label_carbons(mol)
     w, h = _extent(mol)
     width, height = round(w / BOND * BOND_PX + 2 * pad), round(h / BOND * BOND_PX + 2 * pad)
     drawer = _drawer(width, height)
@@ -314,7 +338,8 @@ def _panel(mol, x, y, pad=60):
     drawer.DrawMolecule(mol)
     drawer.FinishDrawing()
     body = re.sub(r'^<\?xml[^>]*>\s*', '', drawer.GetDrawingText())
-    return body.replace('<svg ', f"<svg x='{x:.1f}' y='{y:.1f}' ", 1), width, height
+    coords = [(x + p.x, y + p.y) for p in (drawer.GetDrawCoords(i) for i in range(mol.GetNumAtoms()))]
+    return body.replace('<svg ', f"<svg x='{x:.1f}' y='{y:.1f}' ", 1), width, height, coords
 
 
 def _line_arrow(x0, x1, y, both=False):
@@ -329,10 +354,10 @@ def _line_arrow(x0, x1, y, both=False):
 def _row(items, height_min=280, gap=28):
     """Lay out [('mol', mol) | ('plus',) | ('arrow', over, under) | ('resonance',)] left to right, centred on one
     line."""
-    panels = []
+    panels, labels = [], labelled([item[1] for item in items if item[0] == 'mol'])
     for item in items:
         if item[0] == 'mol':
-            _, w, h = _panel(item[1], 0, 0)
+            _, w, h, _ = _panel(item[1], 0, 0, labels=labels)
             panels.append((item, w, h))
         elif item[0] == 'arrow':
             label = max(len(item[1] or ''), len(item[2] or ''))
@@ -344,7 +369,7 @@ def _row(items, height_min=280, gap=28):
     mid, x, body = height / 2, gap, []
     for item, w, h in panels:
         if item[0] == 'mol':
-            body.append(_panel(item[1], x, mid - h / 2)[0])
+            body.append(_panel(item[1], x, mid - h / 2, labels=labels)[0])
         elif item[0] == 'plus':
             body.append(text(x + w / 2, mid + 14, '+', size=44))
         elif item[0] == 'arrow':
@@ -638,3 +663,7 @@ def png(spec, path, width=1600):
     import cairosvg
     cairosvg.svg2png(bytestring=draw(spec).encode(), write_to=str(path), output_width=width)
     return Path(path)
+
+
+from . import organic  # noqa: E402 - organic figures use the helpers above
+DRAW.update(organic.DRAW)
