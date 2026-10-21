@@ -32,6 +32,34 @@ class SpecTests(unittest.TestCase):
         self.assertIn('C2H6O', chem.figure_errors({'type': 'molecule', 'smiles': 'CCO', 'formula': 'C2H4O2'})[0])
         self.assertTrue(chem.figure_errors({'type': 'molecule', 'smiles': 'C(('}))
 
+    def test_highlight_lights_only_the_group(self):
+        mol = chem._mol('CCC(=O)OC')                               # methyl propanoate: C(=O)O, not the carbons
+        self.assertEqual([mol.GetAtomWithIdx(i).GetSymbol() for i in chem._group_atoms(mol, 'ester')], ['C', 'O', 'O'])
+        self.assertEqual(chem.figure_errors({'type': 'molecule', 'smiles': 'CCO', 'highlight': 'hydroxyl'}), [])
+        self.assertIn('no ketone', chem.figure_errors({'type': 'molecule', 'smiles': 'CCO', 'highlight': 'ketone'})[0])
+        self.assertIn('must be one of', chem.figure_errors({'type': 'molecule', 'smiles': 'CCO', 'highlight': 'x'})[0])
+
+    def test_reaction_checks_structures_and_balance(self):
+        sn2 = {'type': 'reaction', 'reactants': [{'smiles': 'CCBr', 'formula': 'C2H5Br'}, {'smiles': '[OH-]'}],
+               'products': [{'smiles': 'CCO'}, {'smiles': '[Br-]'}], 'conditions': 'aqueous KOH', 'balanced': True}
+        self.assertEqual(chem.figure_errors(sn2), [])
+        self.assertIn('atoms differ', chem.figure_errors({**sn2, 'products': [{'smiles': 'CCO'}]})[0])
+        self.assertIn('not C2H5Br', chem.figure_errors({**sn2, 'reactants': [{'smiles': 'CCCl', 'formula': 'C2H5Br'}]})[0])
+        self.assertTrue(chem.figure_errors({**sn2, 'conditions': 'x' * 41}))
+
+    def test_resonance_structures_only_move_bonds_and_charges(self):
+        self.assertEqual(chem.figure_errors({'type': 'resonance', 'structures': ['C1=CC=CC=C1', 'C1C=CC=CC=1']}), [])
+        self.assertEqual(chem.figure_errors({'type': 'resonance', 'structures': ['CC(=O)[O-]', 'CC([O-])=O']}), [])
+        protonated = chem.figure_errors({'type': 'resonance', 'structures': ['CC(=O)[O-]', 'CC(=O)O']})
+        self.assertTrue(any('total charge' in e for e in protonated))
+        moved = chem.figure_errors({'type': 'resonance', 'structures': ['C=CC=O', 'C=COC']})
+        self.assertTrue(any('same atoms in the same order' in e for e in moved))
+        self.assertIn('written the same', chem.figure_errors({'type': 'resonance', 'structures': ['C=CC=O'] * 2})[0])
+
+    def test_formula_counts_are_subscripts(self):
+        drawn = chem.formula_text(0, 0, 'conc. H2SO4 at 25 C')
+        self.assertEqual(drawn.count("dy='6.5'"), 2)               # the 2 and the 4, not the 25
+
     def test_latex_is_maths_only(self):
         self.assertTrue(chem.figure_errors({'type': 'equation', 'latex': r'\input{/etc/passwd}'}))
         self.assertEqual(chem.figure_errors({'type': 'equation', 'latex': r'\ce{H2 + Cl2 -> 2HCl}'}), [])
@@ -47,7 +75,10 @@ class SpecTests(unittest.TestCase):
                  {'type': 'molecule', 'smiles': 'O'}, {'type': 'bohr', 'element': 'Na'},
                  {'type': 'orbital_boxes', 'element': 'Cr', 'valence_only': True},
                  {'type': 'energy_levels', 'transitions': [[3, 2], [1, 4]]},
-                 {'type': 'spectrum', 'kind': 'hydrogen'}, {'type': 'spectrum', 'kind': 'electromagnetic'}]
+                 {'type': 'spectrum', 'kind': 'hydrogen'}, {'type': 'spectrum', 'kind': 'electromagnetic'},
+                 {'type': 'molecule', 'smiles': 'CC(=O)OC', 'highlight': 'ester'},
+                 {'type': 'reaction', 'reactants': ['C=C', '[H][H]'], 'products': ['CC'], 'conditions': 'Ni, heat'},
+                 {'type': 'resonance', 'structures': ['C=CC=O', '[CH2+]C=C[O-]']}]
         specs += [{'type': 'orbital', 'orbital': o} for o in chem.ORBITALS]
         for spec in specs:
             self.assertIn('<svg', chem.draw(spec), spec)

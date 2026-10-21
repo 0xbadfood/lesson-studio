@@ -10,8 +10,9 @@ the renderer can place them on its board.
   svg = draw(spec)                      # SVG text
   png(spec, path, width=1600)           # PNG file
 
-Types: equation, molecule, bohr, orbital_boxes, energy_levels, orbital, spectrum (and "library" for a Commons figure,
-resolved by figure_library.pick).
+Types: equation, molecule (optionally with a functional group highlighted), reaction (structures either side of an
+arrow), resonance (2-4 resonance structures on one layout), bohr, orbital_boxes, energy_levels, orbital, spectrum (and
+"library" for a Commons figure, resolved by figure_library.pick).
 """
 from __future__ import annotations
 
@@ -105,6 +106,15 @@ def figure_errors(spec):
             stated = spec.get('formula')
             if stated and _formula(mol) != re.sub(r'\s', '', str(stated)):
                 errors.append(f'molecule: SMILES {spec["smiles"]} is {_formula(mol)}, not {stated}; fix the SMILES')
+            group = spec.get('highlight')
+            if group and group not in GROUPS:
+                errors.append(f'molecule: "highlight" must be one of {list(GROUPS)}')
+            elif group and not _group_atoms(mol, group):
+                errors.append(f'molecule: {spec["smiles"]} has no {group} group to highlight')
+    elif kind == 'reaction':
+        errors += reaction_errors(spec)
+    elif kind == 'resonance':
+        errors += resonance_errors(spec)
     elif kind in ('bohr', 'orbital_boxes'):
         if spec.get('element') not in Z and not spec.get('config'):
             errors.append(f'{kind}: give "element" as a symbol such as "Na"')
@@ -156,6 +166,27 @@ def sup_text(x, y, pieces, size=30, fill=INK, anchor='start'):
     return (f"<text x='{x:.1f}' y='{y:.1f}' {FONT} fill='{fill}' text-anchor='{anchor}'>{''.join(spans)}</text>")
 
 
+def formula_text(x, y, words, size=26, fill=INK):
+    """Centred text whose formula counts are subscripts: digits right after a letter or ')' (conc. H2SO4,
+    Ca(OH)2); other digits (such as 25 in '25 °C') stay as written."""
+    small, spans = round(size * .7), []
+    for part in re.split(r'((?<=[A-Za-z)])\d+)', str(words)):
+        if part and part.isdigit() and spans and re.search(r'[A-Za-z)]$', spans[-1][1]):
+            spans.append(('sub', part))
+        elif part:
+            spans.append(('base', part))
+    out = []
+    for kind, part in spans:
+        if kind == 'sub':
+            out.append(f"<tspan font-size='{small}' dy='{size * .25:.1f}'>{html.escape(part)}</tspan>"
+                       f"<tspan font-size='{size}' dy='{-size * .25:.1f}'></tspan>")
+        else:
+            out.append(f"<tspan font-size='{size}'>{html.escape(part)}</tspan>")
+    # cairosvg misplaces tspans under text-anchor='middle': start at x minus half the width (DejaVu Sans ~0.6 em)
+    width = sum(len(p) * (small if k == 'sub' else size) for k, p in spans) * .6
+    return f"<text x='{x - width / 2:.1f}' y='{y:.1f}' {FONT} fill='{fill}' text-anchor='start'>{''.join(out)}</text>"
+
+
 def config_pieces(config):
     subs = sorted((s for s in config if config[s]), key=lambda s: (int(s[0]), 'spdf'.index(s[1])))
     return [((' ' if i else '') + s, config[s]) for i, s in enumerate(subs)]
@@ -193,26 +224,244 @@ def _formula(mol):
     return CalcMolFormula(mol)
 
 
-def draw_molecule(spec, width=900, height=640):
-    from rdkit.Chem import AllChem
+PALETTE = {0: (0.97, 0.95, 0.91), 6: (0.97, 0.95, 0.91), 1: (0.97, 0.95, 0.91), 7: (0.49, 0.78, 0.84),
+           8: (0.95, 0.45, 0.40), 9: (0.6, 0.9, 0.5), 16: (0.95, 0.72, 0.37), 17: (0.6, 0.9, 0.5),
+           35: (0.85, 0.55, 0.35), 53: (0.75, 0.55, 0.85)}
+HIGHLIGHT = (0.95, 0.72, 0.37, 0.45)       # ACCENT, half see-through, behind the group's atoms and bonds
+# Functional groups a molecule figure may highlight (Class 11-12 organic). Code finds them; a group the molecule
+# does not have is an error, so the highlight can never point at the wrong atoms.
+GROUPS = {'hydroxyl': '[#6][OX2H:1]', 'carbonyl': '[CX3:1]=[OX1:1]', 'aldehyde': '[CX3H1:1]=[O:1]',
+          'ketone': '[#6][CX3:1](=[O:1])[#6]', 'carboxylic acid': '[CX3:1](=[O:1])[OX2H1:1]',
+          'carboxylate': '[CX3:1](=[O:1])[O-:1]', 'ester': '[#6][CX3:1](=[O:1])[OX2:1][#6]',
+          'ether': '[#6;!$(C=O)][OD2:1][#6;!$(C=O)]', 'amine': '[NX3;!$(N-C=O);!$(N=*);!$([N+]):1]',
+          'amide': '[NX3:1][CX3:1]=[O:1]', 'halide': '[#6][F,Cl,Br,I:1]', 'alkene': '[CX3:1]=[CX3:1]',
+          'alkyne': '[CX2:1]#[CX2:1]', 'benzene ring': '[c:1]1[c:1][c:1][c:1][c:1][c:1]1',
+          'nitrile': '[CX2:1]#[NX1:1]', 'nitro': '[N+:1](=[O:1])[O-:1]'}
+# Atoms marked :1 are the group; unmarked atoms are context the match needs (the carbons either side of an ester
+# oxygen) and stay unlit.
+BOND = 1.5                                 # RDKit's 2D bond length
+BOND_PX = 64                               # drawn bond length, the same in every panel of a figure
+
+
+def _drawer(width, height):
     from rdkit.Chem.Draw import rdMolDraw2D
-    mol = _mol(spec['smiles'])
-    AllChem.Compute2DCoords(mol)
     drawer = rdMolDraw2D.MolDraw2DSVG(width, height)
     options = drawer.drawOptions()
     options.clearBackground = False
     options.bondLineWidth = 3
     options.minFontSize = 30
-    options.setAtomPalette({0: (0.97, 0.95, 0.91), 6: (0.97, 0.95, 0.91), 1: (0.97, 0.95, 0.91),
-                            7: (0.49, 0.78, 0.84), 8: (0.95, 0.45, 0.40), 9: (0.6, 0.9, 0.5),
-                            16: (0.95, 0.72, 0.37), 17: (0.6, 0.9, 0.5)})
+    options.setAtomPalette(PALETTE)
+    return drawer
+
+
+def _group_atoms(mol, group):
+    from rdkit import Chem
+    pattern = Chem.MolFromSmarts(GROUPS[group])
+    lit = [q.GetIdx() for q in pattern.GetAtoms() if q.GetAtomMapNum() == 1]
+    return sorted({match[i] for match in mol.GetSubstructMatches(pattern) for i in lit})
+
+
+def draw_molecule(spec, width=900, height=640):
+    from rdkit import Chem
+    from rdkit.Chem import AllChem
+    mol = _mol(spec['smiles'])
     if spec.get('hydrogens'):
-        from rdkit import Chem
         mol = Chem.AddHs(mol)
-        AllChem.Compute2DCoords(mol)
-    drawer.DrawMolecule(mol)
+    AllChem.Compute2DCoords(mol)
+    drawer = _drawer(width, height)
+    drawer.drawOptions().highlightRadius = .32
+    drawer.drawOptions().highlightBondWidthMultiplier = 8
+    atoms = _group_atoms(mol, spec['highlight']) if spec.get('highlight') else []
+    if atoms:
+        bonds = [b.GetIdx() for b in mol.GetBonds() if b.GetBeginAtomIdx() in atoms and b.GetEndAtomIdx() in atoms]
+        drawer.DrawMolecule(mol, highlightAtoms=atoms, highlightBonds=bonds,
+                            highlightAtomColors={a: HIGHLIGHT for a in atoms},
+                            highlightBondColors={b: HIGHLIGHT for b in bonds})
+    else:
+        drawer.DrawMolecule(mol)
     drawer.FinishDrawing()
     return drawer.GetDrawingText()
+
+
+# ------------------------------------------------------------------ several structures in one figure
+def _kekule(smiles):
+    """A molecule exactly as written: bonds and charges kept, no aromatic perception (a Kekule benzene stays one
+    Kekule form), so each resonance structure draws as the planner wrote it."""
+    from rdkit import Chem
+    mol = Chem.MolFromSmiles(str(smiles or ''), sanitize=False)
+    if mol is None:
+        raise ValueError(f'"{smiles}" is not valid SMILES')
+    try:
+        Chem.SanitizeMol(mol, Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_SETAROMATICITY)
+    except Exception as exc:                                       # noqa: BLE001 - valence errors etc.
+        raise ValueError(f'"{smiles}" is not a valid structure ({str(exc).splitlines()[0][:80]})')
+    return mol
+
+
+def _extent(mol):
+    conf = mol.GetConformer()
+    xs = [conf.GetAtomPosition(i).x for i in range(mol.GetNumAtoms())]
+    ys = [conf.GetAtomPosition(i).y for i in range(mol.GetNumAtoms())]
+    return max(xs) - min(xs), max(ys) - min(ys)
+
+
+def _panel(mol, x, y, pad=60):
+    """One structure at the shared bond length, as a nested SVG at (x, y); returns (svg, width, height)."""
+    w, h = _extent(mol)
+    width, height = round(w / BOND * BOND_PX + 2 * pad), round(h / BOND * BOND_PX + 2 * pad)
+    drawer = _drawer(width, height)
+    drawer.drawOptions().fixedBondLength = BOND_PX
+    drawer.DrawMolecule(mol)
+    drawer.FinishDrawing()
+    body = re.sub(r'^<\?xml[^>]*>\s*', '', drawer.GetDrawingText())
+    return body.replace('<svg ', f"<svg x='{x:.1f}' y='{y:.1f}' ", 1), width, height
+
+
+def _line_arrow(x0, x1, y, both=False):
+    head = 16
+    parts = [f"<line x1='{x0:.1f}' y1='{y:.1f}' x2='{x1:.1f}' y2='{y:.1f}' stroke='{INK}' stroke-width='4'/>",
+             f"<path d='M{x1:.1f},{y:.1f} l{-head},{-head * .6:.1f} l0,{head * 1.2:.1f} z' fill='{INK}'/>"]
+    if both:
+        parts.append(f"<path d='M{x0:.1f},{y:.1f} l{head},{-head * .6:.1f} l0,{head * 1.2:.1f} z' fill='{INK}'/>")
+    return ''.join(parts)
+
+
+def _row(items, height_min=280, gap=28):
+    """Lay out [('mol', mol) | ('plus',) | ('arrow', over, under) | ('resonance',)] left to right, centred on one
+    line."""
+    panels = []
+    for item in items:
+        if item[0] == 'mol':
+            _, w, h = _panel(item[1], 0, 0)
+            panels.append((item, w, h))
+        elif item[0] == 'arrow':
+            label = max(len(item[1] or ''), len(item[2] or ''))
+            panels.append((item, max(150, 17 * label + 50), 0))
+        else:
+            panels.append((item, 70 if item[0] == 'plus' else 130, 0))
+    height = max([height_min] + [h for _, _, h in panels]) + 80
+    width = sum(w for _, w, _ in panels) + gap * (len(panels) + 1)
+    mid, x, body = height / 2, gap, []
+    for item, w, h in panels:
+        if item[0] == 'mol':
+            body.append(_panel(item[1], x, mid - h / 2)[0])
+        elif item[0] == 'plus':
+            body.append(text(x + w / 2, mid + 14, '+', size=44))
+        elif item[0] == 'arrow':
+            body.append(_line_arrow(x + 10, x + w - 10, mid))
+            if item[1]:
+                body.append(formula_text(x + w / 2, mid - 18, item[1], size=26, fill=ACCENT))
+            if item[2]:
+                body.append(formula_text(x + w / 2, mid + 40, item[2], size=24, fill=MUTED))
+        else:
+            body.append(_line_arrow(x + 15, x + w - 15, mid, both=True))
+        x += w + gap
+    return svg(round(width), round(height), ''.join(body))
+
+
+def _species(item):
+    return item.get('smiles') if isinstance(item, dict) else item
+
+
+def _counts(mols):
+    from collections import Counter
+    from rdkit import Chem
+    total = Counter()
+    for mol in mols:
+        for atom in Chem.AddHs(mol).GetAtoms():
+            total[atom.GetSymbol()] += 1
+    return total
+
+
+def reaction_errors(spec):
+    errors, sides = [], {}
+    for side in ('reactants', 'products'):
+        items = spec.get(side)
+        if not isinstance(items, list) or not 1 <= len(items) <= 3:
+            errors.append(f'reaction: give 1-3 {side}, each {{smiles, formula}}')
+            continue
+        mols = []
+        for item in items:
+            try:
+                mol = _mol(_species(item))
+            except ValueError as exc:
+                errors.append(f'reaction {side}: {exc}')
+                continue
+            stated = item.get('formula') if isinstance(item, dict) else None
+            if stated and _formula(mol) != re.sub(r'\s', '', str(stated)):
+                errors.append(f'reaction {side}: SMILES {_species(item)} is {_formula(mol)}, not {stated}; fix the SMILES')
+            mols.append(mol)
+        sides[side] = mols
+    for key in ('conditions', 'below'):
+        if len(str(spec.get(key) or '')) > 40:
+            errors.append(f'reaction: "{key}" is short text over or under the arrow, at most 40 characters')
+    if spec.get('balanced') and not errors and _counts(sides['reactants']) != _counts(sides['products']):
+        errors.append(f'reaction: marked balanced but atoms differ: reactants {dict(_counts(sides["reactants"]))}, '
+                      f'products {dict(_counts(sides["products"]))}')
+    return errors
+
+
+def draw_reaction(spec):
+    from rdkit.Chem import AllChem
+    items = []
+    for side in ('reactants', 'products'):
+        for n, item in enumerate(spec[side]):
+            if n:
+                items.append(('plus',))
+            mol = _mol(_species(item))
+            AllChem.Compute2DCoords(mol)
+            items.append(('mol', mol))
+        if side == 'reactants':
+            items.append(('arrow', spec.get('conditions'), spec.get('below')))
+    return _row(items)
+
+
+def _skeleton(mol):
+    return ([a.GetSymbol() for a in mol.GetAtoms()],
+            sorted(tuple(sorted((b.GetBeginAtomIdx(), b.GetEndAtomIdx()))) for b in mol.GetBonds()))
+
+
+def resonance_errors(spec):
+    structures = spec.get('structures')
+    if not isinstance(structures, list) or not 2 <= len(structures) <= 4:
+        return ['resonance: give 2-4 "structures" as SMILES']
+    mols, errors = [], []
+    for smiles in structures:
+        try:
+            mols.append(_kekule(smiles))
+        except ValueError as exc:
+            errors.append(f'resonance: {exc}')
+    if errors:
+        return errors
+    if any(_skeleton(m) != _skeleton(mols[0]) for m in mols[1:]):
+        errors.append('resonance: write every structure with the same atoms in the same order and the same '
+                      'connections; only double bonds and charges move between resonance structures')
+    if len({_formula(m) for m in mols}) > 1:
+        errors.append(f'resonance: the structures have different formulas {[_formula(m) for m in mols]}')
+    charges = {sum(a.GetFormalCharge() for a in m.GetAtoms()) for m in mols}
+    if len(charges) > 1:
+        errors.append(f'resonance: the total charge must be the same in every structure (found {sorted(charges)})')
+    if len(set(structures)) < len(structures):
+        errors.append('resonance: two structures are written the same; each must move a bond or a charge')
+    return errors
+
+
+def draw_resonance(spec):
+    """Every structure on the first one's 2D layout (same atom order), so only the bonds and charges change."""
+    from rdkit.Chem import AllChem
+    mols = [_kekule(s) for s in spec['structures']]
+    AllChem.Compute2DCoords(mols[0])
+    layout = mols[0].GetConformer()
+    items = []
+    for n, mol in enumerate(mols):
+        if n:
+            AllChem.Compute2DCoords(mol)
+            conf = mol.GetConformer()
+            for i in range(mol.GetNumAtoms()):
+                conf.SetAtomPosition(i, layout.GetAtomPosition(i))
+            items.append(('resonance',))
+        items.append(('mol', mol))
+    return _row(items)
 
 
 def draw_bohr(spec):
@@ -374,7 +623,8 @@ def draw_spectrum(spec, width=1200, height=260):
 
 
 DRAW = {'equation': draw_equation, 'molecule': draw_molecule, 'bohr': draw_bohr, 'orbital_boxes': draw_orbital_boxes,
-        'energy_levels': draw_energy_levels, 'orbital': draw_orbital, 'spectrum': draw_spectrum}
+        'energy_levels': draw_energy_levels, 'orbital': draw_orbital, 'spectrum': draw_spectrum,
+        'reaction': draw_reaction, 'resonance': draw_resonance}
 
 
 def draw(spec):
