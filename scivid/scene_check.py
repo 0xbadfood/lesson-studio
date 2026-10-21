@@ -6,7 +6,7 @@ import ast
 import builtins
 import symtable
 
-IMPORTS = {'manim', 'numpy', 'math', 'scene_kit', 'chem_kit'}
+IMPORTS = {'manim', 'numpy', 'math', 'scene_kit', 'chem_kit', 'mol_kit'}
 FORBIDDEN = {'open', 'eval', 'exec', 'compile', '__import__', 'getattr', 'setattr', 'delattr', 'globals', 'locals',
              'vars', 'dir', 'input', 'breakpoint', 'exit', 'quit', 'load', 'save', 'savez', 'loadtxt', 'savetxt',
              'fromfile', 'tofile', 'read_text', 'write_text', 'read_bytes', 'write_bytes', 'system', 'popen', 'spawn',
@@ -40,7 +40,7 @@ def validate_code(code, manim_module=None):
     for node in ast.walk(tree):
         if isinstance(node, ast.Import) and any(n.name not in IMPORTS for n in node.names) or \
                 isinstance(node, ast.ImportFrom) and (node.level or node.module not in IMPORTS):
-            defects.append('Import only manim, numpy, math, scene_kit and chem_kit')
+            defects.append('Import only manim, numpy, math, scene_kit, chem_kit and mol_kit')
         if isinstance(node, (ast.Global, ast.Nonlocal)):
             defects.append('Do not modify global state')
         name = node.id if isinstance(node, ast.Name) else node.attr if isinstance(node, ast.Attribute) else None

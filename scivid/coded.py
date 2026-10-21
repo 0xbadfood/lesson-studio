@@ -62,8 +62,11 @@ def render(settings, work, code, duration, background=None):
         shutil.rmtree(work)
     work.mkdir(parents=True)
     (work / 'scene.py').write_text(code)
-    for name in ('scene_entry.py', 'scene_kit.py', 'scene_check.py', 'chem_kit.py'):
+    for name in ('scene_entry.py', 'scene_kit.py', 'scene_check.py', 'chem_kit.py', 'mol_kit.py'):
         shutil.copy2(HERE / name, work / name)
+    # mol_kit checks structures with the figure library (mechanisms, groups, resonance): copy its code, not its data
+    shutil.copytree(HERE.parent / 'figure_library', work / 'figure_library',
+                    ignore=shutil.ignore_patterns('test_*', '__pycache__', 'sets', '*.json'))
     if background:   # the lesson theme (validated #rrggbb) replaces the kit's default background
         with (work / 'scene_kit.py').open('a') as kit:
             kit.write(f"\nBG = {background!r}\n")

@@ -69,7 +69,15 @@ def _ends(arrow):
 
 
 def push(species, arrows):
-    """Apply curly arrows to a stage: returns (canonical SMILES of the resulting species, sorted) or raises
+    """The species the arrows make, as sorted canonical SMILES (see pushed)."""
+    from rdkit import Chem
+    mol = pushed(species, arrows)
+    return sorted(_canonical(frag) for frag in Chem.GetMolFrags(mol, asMols=True, sanitizeFrags=False))
+
+
+def pushed(species, arrows):
+    """Apply curly arrows to a stage: returns the resulting molecule (atoms keep their indices in the stage's species,
+    combined in order, so each atom can be followed) or raises
     ValueError with what is wrong, phrased for the planner. Each arrow moves one electron pair:
       from [a]     a lone pair on atom a        to [a, x]  a new or stronger bond a-x
       from [a, b]  the bond a-b                 to [a] or [b] (a lone pair there), or a bond [a, x] / [b, x]
@@ -126,7 +134,7 @@ def push(species, arrows):
     except Exception as exc:                                        # noqa: BLE001 - an impossible structure
         raise ValueError(f'the arrows give an impossible structure ({str(exc).splitlines()[0][:90]}); is an arrow '
                          'missing, such as the leaving group taking its bond?')
-    return sorted(_canonical(frag) for frag in Chem.GetMolFrags(mol.GetMol(), asMols=True, sanitizeFrags=False))
+    return mol.GetMol()
 
 
 def _change_bond(mol, a, b, step):
