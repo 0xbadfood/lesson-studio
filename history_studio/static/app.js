@@ -250,7 +250,8 @@ async function showFilm(id) {
   const tick = async () => {
     let f;
     try { f = await api(`/api/films/${id}`); } catch (err) {
-      if (first) view.innerHTML = `<p class="empty">${esc(err.message)}</p>`;
+      if (first) { view.innerHTML = `<p class="empty">${esc(err.message)}</p>`; return; }
+      state.timer = setTimeout(tick, 5000);          // a passing hiccup (a restart, a slow read) must not end polling
       return;
     }
     const playing = view.querySelector('video, audio') && [...view.querySelectorAll('video, audio')].some((m) => !m.paused);
@@ -338,21 +339,32 @@ async function showActivity(film) {
   if (!box) return;
   clearTimeout(state.activityTimer);
   box.ontoggle = () => { try { localStorage.setItem('activity-open', box.open ? '1' : '0'); } catch (e) { /* private mode */ } };
-  let a;
-  try { a = await api(`/api/films/${film}/activity`); } catch (err) { return; }
-  const body = document.getElementById('activity-body');
-  if (!body) return;
-  const logOpen = body.querySelector('details.log')?.open;
-  const html = activityHtml(a);
-  if (body.dataset.html !== html) {
-    body.innerHTML = html;
-    body.dataset.html = html;
-    if (logOpen) body.querySelector('details.log').open = true;
+  let a, again = true;
+  try {
+    a = await api(`/api/films/${film}/activity`);
+    const body = document.getElementById('activity-body');
+    if (!body) return;
+    const logOpen = body.querySelector('details.log')?.open;
+    const html = activityHtml(a);
+    if (body.dataset.html !== html) {
+      body.innerHTML = html;
+      body.dataset.html = html;
+      if (logOpen) body.querySelector('details.log').open = true;
+    }
+    const line = document.getElementById('activity-line');
+    if (line && a.started) line.textContent = `Started ${a.started} · ${a.elapsed}${a.running ? ' so far' : ''} · ${a.models.calls} model calls · planner $${a.models.planner_usd.toFixed(2)} · updated ${new Date().toLocaleTimeString()}`;
+    again = a.status === 'running' || a.status === 'queued';
+  } catch (err) {
+    console.warn('Behind the scenes:', err);       // keep trying: a failed read must not freeze the panel
   }
-  const line = document.getElementById('activity-line');
-  if (line && a.started) line.textContent = `Started ${a.started} · ${a.elapsed}${a.running ? ' so far' : ''} · ${a.models.calls} model calls · planner $${a.models.planner_usd.toFixed(2)}`;
-  if (a.status === 'running' || a.status === 'queued') state.activityTimer = setTimeout(() => showActivity(film), 4000);
+  if (again && document.getElementById('activity')) state.activityTimer = setTimeout(() => showActivity(film), 4000);
 }
+
+// Browsers slow timers in background tabs; catch up as soon as the film page is looked at again.
+document.addEventListener('visibilitychange', () => {
+  const m = location.hash.match(/^#\/film\/([\w-]+)/);
+  if (document.visibilityState === 'visible' && m && document.getElementById('activity')) showActivity(m[1]);
+});
 
 /* ---------------------------------------------------------------- key ideas, made simple */
 async function showIdeas(film) {
