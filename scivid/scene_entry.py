@@ -33,9 +33,21 @@ def main():
                 return
             last[0] = scene.time
             labels, seen = [], set()
+            # What the viewer sees, not the heading or invisible helpers: the picture (graphics) apart from its
+            # words, so a caption cannot make a tiny drawing look like a full frame.
+            content = {'graphics': [], 'text': []}
             for obj in scene.mobjects:
                 if isinstance(obj, m.ValueTracker):   # stores its value as a point; never drawn
                     continue
+                if getattr(obj, '_kit_reserved', False):
+                    continue
+                words = {id(g) for t in obj.get_family() if isinstance(t, (m.Text, m.MathTex, m.Tex))
+                         for g in t.get_family()}
+                for f in obj.family_members_with_points():
+                    visible = max(f.get_fill_opacity(), f.get_stroke_opacity() if f.get_stroke_width() else 0)
+                    if visible >= .1 and np.isfinite(f.points).all():
+                        content['text' if id(f) in words else 'graphics'].append(
+                            (f.points.min(axis=0)[:2], f.points.max(axis=0)[:2]))
                 points = obj.get_all_points()
                 if len(points) and np.isfinite(points).all():
                     lo, hi = points.min(axis=0), points.max(axis=0)
@@ -56,7 +68,13 @@ def main():
                     labels.append(box)
                     if box['max'][1] > 2.95 or box['min'][1] < -2.75:
                         band.append({'time': round(scene.time, 1), **box})
-            samples.append({'time': round(scene.time, 2), 'labels': labels})
+            sample = {'time': round(scene.time, 2), 'labels': labels}
+            parts = content['graphics'] or content['text']     # an all-text scene is judged by its text
+            if parts:
+                lo = np.min([c[0] for c in parts], axis=0)
+                hi = np.max([c[1] for c in parts], axis=0)
+                sample['content'] = np.round([lo[0], lo[1], hi[0], hi[1]], 2).tolist()
+            samples.append(sample)
         cls.update_mobjects = monitored
         plays, original_play = [], cls.play
 

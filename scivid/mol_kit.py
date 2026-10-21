@@ -941,22 +941,38 @@ def _geometry(spec, hydrogens=True, ideal=None):
     return elements, coords, bonds, lone
 
 
+MODELS = {'framework': 0, 'ball_and_stick': 1, 'space_filling': 2}
+MODEL_NAMES = {0: 'framework model', 1: 'ball-and-stick model', 2: 'space-filling model'}
+# Van der Waals radii in angstrom (Bondi 1964; B, Be, Si, Xe from Mantina et al. 2009): the space-filling model's
+# spheres. Bond lengths come from RDKit's geometry, so sizes and overlaps on screen are to scale.
+VDW = {'H': 1.20, 'C': 1.70, 'N': 1.55, 'O': 1.52, 'F': 1.47, 'P': 1.80, 'S': 1.80, 'Cl': 1.75, 'Br': 1.85,
+       'I': 1.98, 'B': 1.92, 'Be': 1.53, 'Si': 2.10, 'Xe': 2.16}
+
+
 class Molecule3D(m.VGroup):
-    """A ball-and-stick model, projected (scenes are 2D) and redrawn as it turns.
+    """A 3D molecular model, projected (scenes are 2D) and redrawn as it turns or changes model.
 
-    Geometry: ideal VSEPR directions for a central-atom molecule (CH4, NH3, H2O, BF3, PCl5, SF6, XeF4 ...), with
-    lone-pair lobes; otherwise RDKit's 3D structure (ETKDG + MMFF). Turn it with self.play(mol.angle.animate.
-    set_value(...)) (degrees about the vertical axis); mol.tilt (degrees) leans it toward the viewer.
-    shape is the VSEPR result or None."""
+    model: 'framework' (bonds only, coloured by atom), 'ball_and_stick' (default) or 'space_filling' (spheres of
+    the atoms' van der Waals radii, to scale with the bond lengths). Morph between them with
+    self.play(mol.model.animate.set_value(2)) (0 framework, 1 ball-and-stick, 2 space-filling); model_name() is
+    'space-filling model' etc. at a whole value. Geometry: ideal VSEPR directions for a central-atom molecule (CH4,
+    NH3, H2O, BF3, PCl5, SF6, XeF4 ...), with lone-pair lobes; otherwise RDKit's 3D structure (ETKDG + MMFF). Turn
+    it with self.play(mol.angle.animate.set_value(...)) (degrees about the vertical axis); mol.tilt (degrees) leans
+    it toward the viewer. shape is the VSEPR result or None."""
 
-    def __init__(self, spec, center=(0, 0, 0), size=1.4, hydrogens=True, lone_pairs=True, labels=True, angle=25,
-                 tilt=15, ideal=None):
+    def __init__(self, spec, center=(0, 0, 0), size=1.4, hydrogens=True, lone_pairs=None, labels=True, angle=25,
+                 tilt=15, ideal=None, model='ball_and_stick'):
         super().__init__()
+        if model not in MODELS:
+            raise ValueError(f'model must be one of {list(MODELS)}')
+        self.model = m.ValueTracker(MODELS[model])
         self.elements, self.xyz, self.bond_list, self.lone = _geometry(spec, hydrogens, ideal)
         try:
             self.shape = vsepr(spec) if ideal is not False else None
         except ValueError:
             self.shape = None
+        if lone_pairs is None:                              # lobes belong to VSEPR shapes, not every O or N
+            lone_pairs = self.shape is not None
         self.center_point, self.size, self.show_lone, self.show_labels = np.array(center, float), size, lone_pairs, labels
         self.angle, self.tilt = m.ValueTracker(angle), m.ValueTracker(tilt)
         self._draw()
@@ -969,8 +985,22 @@ class Molecule3D(m.VGroup):
         y, z = y * math.cos(t) - z * math.sin(t), y * math.sin(t) + z * math.cos(t)
         return self.center_point + _v(x, y) * self.size, z
 
+    def model_name(self):
+        k = self.model.get_value()
+        return MODEL_NAMES[round(k)] if abs(k - round(k)) < .02 else ''
+
+    def _radius(self, el, z):
+        """Sphere radius on screen for the current model: 0 (framework) -> ball -> van der Waals."""
+        k = min(2.0, max(0.0, self.model.get_value()))
+        ball = BALL.get(el, .85) * .28
+        vdw = VDW.get(el, 1.8) / RDKIT_BOND                   # coordinates are in units of 1.5 angstrom
+        r = ball * k if k <= 1 else ball + (vdw - ball) * (k - 1)
+        return r * self.size * (1 + .1 * z)
+
     def _draw(self):
         projected = [self._project(p) for p in self.xyz]
+        k = min(2.0, max(0.0, self.model.get_value()))
+        stick = 1.0 if k <= 1.3 else max(0.0, (2 - k) / .7)    # bonds disappear inside the space-filling spheres
         items = []
         for i, j, order in self.bond_list:
             (pi, zi), (pj, zj) = projected[i], projected[j]
@@ -980,8 +1010,8 @@ class Molecule3D(m.VGroup):
             offsets = [0] if order < 1.5 else ([-.5, .5] if order < 2.5 else [-1, 0, 1])
             for o in offsets:
                 for (s, e, el) in ((pi, mid, self.elements[i]), (mid, pj, self.elements[j])):
-                    items.append(((zi + zj) / 2 - .05, m.Line(s + n * o, e + n * o, stroke_width=7,
-                                                               color=COLOUR.get(el, WHITE))))
+                    items.append(((zi + zj) / 2 - .05, m.Line(s + n * o, e + n * o, stroke_width=7 if k >= .5 else 9,
+                                                               color=COLOUR.get(el, WHITE), stroke_opacity=stick)))
         if self.show_lone:
             for atom, d in self.lone:
                 p, z = projected[atom]
@@ -989,20 +1019,24 @@ class Molecule3D(m.VGroup):
                 v = tip - p
                 length = max(np.linalg.norm(v), .12 * self.size)
                 lobe = m.Ellipse(width=length, height=.32 * self.size, stroke_width=1.5, color=CYAN,
-                                 fill_color=CYAN, fill_opacity=.22)
+                                 fill_color=CYAN, fill_opacity=.22 * stick, stroke_opacity=stick)
                 lobe.rotate(math.atan2(v[1], v[0])).move_to(p + v / 2)
                 depth = self._project(self.xyz[atom] + np.array(d) * .5)[1]
                 items.append((depth, lobe))
         for i, (p, z) in enumerate(projected):
             el = self.elements[i]
-            r = BALL.get(el, .85) * .28 * self.size * (1 + .1 * z)
-            ball = m.Circle(radius=r, stroke_width=2, stroke_color=GREY, fill_color=COLOUR.get(el, WHITE),
-                            fill_opacity=1).move_to(p)
-            shine = m.Circle(radius=r * .35, stroke_width=0, fill_color=WHITE, fill_opacity=.35).move_to(
+            r = max(self._radius(el, z), .001)                   # framework: a vanishing ball keeps the parts stable
+            seen = min(1.0, k * 2)
+            shade = m.interpolate_color(m.ManimColor(COLOUR.get(el, WHITE)), m.ManimColor('#0B1220'),
+                                        min(.45, max(0.0, -z * .18)))       # farther spheres a little darker
+            ball = m.Circle(radius=r, stroke_width=2, stroke_color=GREY, fill_color=shade,
+                            fill_opacity=seen, stroke_opacity=seen).move_to(p)
+            shine = m.Circle(radius=r * .35, stroke_width=0, fill_color=WHITE, fill_opacity=.35 * seen).move_to(
                 p + _v(-.3, .3) * r)
             parts = [ball, shine]
             if self.show_labels and el != 'H':
-                parts.append(m.Text(el, font=FONT, font_size=max(14, 40 * r), color='#0B1220').move_to(p))
+                parts.append(m.Text(el, font=FONT, font_size=max(14, 40 * BALL.get(el, .85) * .28 * self.size),
+                                    color='#0B1220', fill_opacity=seen).move_to(p))
             items.append((z, m.VGroup(*parts)))
         items.sort(key=lambda it: it[0])
         _redraw(self, [mob for _, mob in items])

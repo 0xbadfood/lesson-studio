@@ -40,8 +40,12 @@ Fischer, Haworth, curly_arrow, formula, molar_mass, formula_text
   .play_to(self, a, b, run_time) morphs form a (on screen) into form b.
 - reaction(reactants, products, conditions='', below='', center, width, balanced=False) -> VGroup row of
   structures with + and an arrow (balanced=True: code checks atoms).
-- Molecule3D(spec, center, size=1.4, lone_pairs=True, labels=True, angle=25, tilt=15) -> projected ball-and-stick
-  that turns: self.play(mol.angle.animate.set_value(360), run_time=6, rate_func=m.linear). Central-atom molecules
+- Molecule3D(spec, center, size=1.4, model='ball_and_stick'|'framework'|'space_filling', labels=True, angle=25,
+  tilt=15) -> a projected 3D model that turns: self.play(mol.angle.animate.set_value(360), run_time=6,
+  rate_func=m.linear). Morph between the three models with self.play(mol.model.animate.set_value(2)) (0 framework:
+  bonds only; 1 ball-and-stick; 2 space-filling: van der Waals spheres to scale, about twice as wide as the
+  ball-and-stick, so give it room or a smaller size); mol.model_name() -> 'space-filling model' at a whole value.
+  Central-atom molecules
   (CH4, NH3, H2O, BF3, BeCl2, CO2, SO2, PCl5, SF4, ClF3, XeF2, SF6, BrF5, XeF4, NH4+, H3O+) use ideal VSEPR
   geometry with lone-pair lobes; others RDKit's 3D structure. .caption() -> 'NH₃: trigonal pyramidal'.
   vsepr(spec) -> {'shape', 'bond_pairs', 'lone_pairs', 'domains', 'angle'} (computed; NCERT angles for a molecule
@@ -56,4 +60,5 @@ Fischer, Haworth, curly_arrow, formula, molar_mass, formula_text
   'fructose'|'ribose'|'deoxyribose', anomer='alpha'|'beta', center, size): derived from the Fischer projection; .cip.
 - curly_arrow(start, end, bend=1) for an extra electron-pair arrow between kit points (Molecule.point etc.).
 Objects that turn (Molecule3D, Newman, Sawhorse, Chair) redraw themselves; add them once, then animate their
-trackers. Every name, shape, label and number on a structure must come from these objects.'''
+trackers. Every name, shape, label and number on a structure must come from these objects. Make the structure the
+main thing on screen: large and central in the body area (a scene that fills less than 15% of it is sent back).'''

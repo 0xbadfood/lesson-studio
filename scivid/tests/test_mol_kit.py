@@ -117,6 +117,29 @@ class DrawingTests(unittest.TestCase):
         self.assertEqual(chair.positions()[0]['position'], 'equatorial')
         k.Haworth('deoxyribose', 'beta')
 
+    def test_three_molecular_models(self):
+        mol = k.Molecule3D('methane', model='framework')
+        self.assertEqual((mol.model_name(), mol._radius('C', 0)), ('framework model', 0))
+        mol.model.set_value(1)
+        ball = mol._radius('C', 0)
+        mol.model.set_value(2)
+        self.assertEqual(mol.model_name(), 'space-filling model')
+        self.assertAlmostEqual(mol._radius('C', 0), k.VDW['C'] / k.RDKIT_BOND * mol.size)  # van der Waals, to scale
+        self.assertGreater(mol._radius('C', 0), 2 * ball)
+        mol.model.set_value(1.5)
+        self.assertEqual(mol.model_name(), '')
+        with self.assertRaises(ValueError):
+            k.Molecule3D('methane', model='wireframe')
+        self.assertFalse(k.Molecule3D('ethanol').show_lone)                       # lobes only for VSEPR shapes
+        self.assertTrue(k.Molecule3D('water').show_lone)
+
+    def test_a_scene_must_fill_the_frame(self):
+        from scene_check import geometry_defects
+        tiny = {'samples': [{'time': 1, 'labels': [], 'content': [-.6, -.4, .6, .3]}], 'duration': 5, 'elapsed': 5}
+        full = {'samples': [{'time': 1, 'labels': [], 'content': [-4, -2, 4, 2]}], 'duration': 5, 'elapsed': 5}
+        self.assertIn('fills only 1%', geometry_defects(tiny)[0])
+        self.assertEqual(geometry_defects(full), [])
+
     def test_scenes_may_import_the_kit(self):
         code = ('import manim as m\nfrom scene_kit import begin, at, finish\nfrom mol_kit import Molecule\n\n\n'
                 'class ChapterScene(m.Scene):\n    def construct(self):\n        begin(self, "Ethanol")\n'

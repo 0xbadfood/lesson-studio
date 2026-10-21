@@ -14,6 +14,8 @@ FORBIDDEN = {'open', 'eval', 'exec', 'compile', '__import__', 'getattr', 'setatt
              'importlib', 'pickle', 'requests', 'urllib', 'httpx', 'inspect', 'SVGMobject', 'ImageMobject',
              'set_start_and_end_points', 'set_camera_orientation', 'begin_ambient_camera_rotation'}
 CLASS = 'ChapterScene'
+BODY = (-6.6, -2.7, 6.6, 2.9)     # x0, y0, x1, y1: between the heading and the burned-in subtitles (scene_kit.BODY)
+MIN_FILL = .15                    # the share of the body a scene's content must cover at its fullest
 
 
 def validate_code(code, manim_module=None):
@@ -120,6 +122,20 @@ def geometry_defects(data):
                        'label between those lines: ' + str(data['band_text'][:3]))
     if data.get('off_frame'):
         defects.append('Objects leave the visible frame (x beyond ±7.1 or y beyond ±4): ' + str(data['off_frame'][:3]))
+    # A scene that never fills a fair part of the body reads as an empty frame (S13 of the molecular-models film
+    # drew three small circles in a frame they covered ~5% of); judged at its fullest moment.
+    boxes = [s['content'] for s in data.get('samples', []) if s.get('content')]
+    if boxes:
+        x0, y0, x1, y1 = BODY
+        def share(b):
+            w = max(0, min(b[2], x1) - max(b[0], x0))
+            h = max(0, min(b[3], y1) - max(b[1], y0))
+            return w * h / ((x1 - x0) * (y1 - y0))
+        fullest = max(share(b) for b in boxes)
+        if fullest < MIN_FILL:
+            defects.append(f'The picture fills only {fullest:.0%} of the body area at its fullest; scale the main '
+                           f'objects up and centre them so they use at least {MIN_FILL:.0%} of the space between the '
+                           'heading and the subtitles (x -6.6..6.6, y -2.7..2.9)')
     late = [x for x in data.get('late', []) if x['reached_at'] - x['cue_time'] > .6]
     if late:
         defects.append('Animations ran past the start of later cues, so the picture lags the narration; shorten the '
