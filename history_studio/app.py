@@ -387,7 +387,7 @@ def build(queue=None, access=None, data=None, profile=None):
     access = access or Access(data)
     films = Films(queue, data, profile)
     finder = ideas.Finder()
-    tester = ideas.Finder(lambda project, curriculum: questions.make(project, curriculum, profile['figures']),
+    tester = ideas.Finder(lambda project, curriculum: questions.make(project, curriculum, profile['figures'] is True),
                           questions.saved)
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 

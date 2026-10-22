@@ -29,10 +29,9 @@ PROFILES = {
                   'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True,
                   'key_ideas': True,             # simplified films of a finished film's key ideas (2026-10-20)
                   'questions': True},
-    # Biology Studio (2026-10-22): Class 11-12 Biology. Its diagrams (~/biology SVG library) are not wired into films
-    # yet, so films use the image path like history until the biology figure type exists.
+    # Biology Studio (2026-10-22): Class 11-12 Biology; films get the ~/biology SVG library's diagrams as figures.
     'biology': {'name': 'Biology Studio', 'mark': 'B', 'subjects': {'biology'}, 'data': 'biology-data',
-                'cookie': 'biology_session', 'job': 'biology', 'figures': False, 'key_ideas': True,
+                'cookie': 'biology_session', 'job': 'biology', 'figures': 'biology', 'key_ideas': True,
                 'questions': True},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
@@ -205,8 +204,9 @@ ANIMATION = {'manim_python': str(ROOT / '.venv' / 'bin' / 'python'), 'python_bas
 
 
 def film_request(digest, concept, figures=False):
-    """The curriculum record and sources the studio submits to the film queue. `figures`: give the film exact figures
-    (Chemistry Studio): code-drawn chemistry and the Commons diagrams that match this concept."""
+    """The curriculum record and sources the studio submits to the film queue. `figures`: give the film exact figures:
+    True (Chemistry Studio) for code-drawn chemistry and the Commons diagrams that match this concept, 'biology'
+    (Biology Studio) for the biology library's diagrams of this chapter."""
     s = digest['source']
     code = Path(s['pdf']).stem
     record = {'kind': 'textbook_concept', 'chapter_id': s['id'], 'concept_id': concept['id'],
@@ -215,7 +215,11 @@ def film_request(digest, concept, figures=False):
               'book': f'Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], s["subject"])}: {s["book_title"]}',
               'chapter_no': s['chapter'], 'chapter': s['title'], 'coverage': coverage(digest, concept),
               'seconds': film_seconds(digest, concept)}
-    if figures:
+    if figures == 'biology':                     # Biology Studio: the ~/biology diagrams this chapter cites
+        from figure_library import biology
+        record['figures'] = {'subject': 'biology', 'code_root': str(ROOT), 'level': biology.level_for(s['class']),
+                             'library': biology.candidates(s['id'], s['class'])}
+    elif figures:
         from figure_library import pick
         about = ' '.join([concept['name'], concept.get('summary', '')] + [
             f'{b.get("title", "")} {b.get("caption", "")} {b.get("shows", "")}' for b in teaching_blocks(digest, concept)])
