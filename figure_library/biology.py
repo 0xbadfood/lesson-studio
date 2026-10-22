@@ -139,14 +139,13 @@ def figure_errors(spec, level=3):
 
 
 def _resolve_colours(text, theme):
-    """cairosvg has no CSS custom properties: put the theme's colour where each var(--x, var(--bio-y)) stands."""
-    def value(match):
-        names = re.findall(r'--([\w-]+)', match.group(0))
-        for name in reversed(names):
-            if name in theme:
-                return theme[name]
-        return '#888888'
-    return re.sub(r'var\(--[\w-]+(?:\s*,\s*var\(--[\w-]+\))?\)', value, text)
+    """cairosvg has no CSS custom properties: put the theme's colour where each var(--x, fallback) stands, innermost
+    first, so any depth resolves (mitosis telophase has var(--highlight, var(--film-accent, var(--bio-highlight))))."""
+    innermost = re.compile(r'var\(--([\w-]+)\s*(?:,\s*([^()]*?))?\s*\)')
+    while True:
+        text, n = innermost.subn(lambda m: theme.get(m.group(1)) or (m.group(2) or '').strip() or '#888888', text)
+        if not n:
+            return text
 
 
 def _theme(svg_text, light=False):

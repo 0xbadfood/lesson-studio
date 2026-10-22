@@ -56,5 +56,17 @@ class BiologyTests(unittest.TestCase):
         self.assertEqual(biology.draw(spec).count("r='5'"), 2)
 
 
+    def test_colours_resolve_at_any_depth(self):
+        # Mitosis film S28/S30: a three-deep var() reached cairosvg ("invalid literal for int() with base 16: 'ar'")
+        theme = {'bio-highlight': '#f3b85e', 'bio-outline': '#193f45'}
+        self.assertEqual(biology._resolve_colours('var(--highlight, var(--film-accent, var(--bio-highlight)))', theme),
+                         '#f3b85e')
+        self.assertEqual(biology._resolve_colours('var(--outline, var(--bio-outline))', theme), '#193f45')
+        for fid in biology.entries():                                   # every diagram, every stage
+            side = biology.entries()[fid]['sidecar']
+            for stage in side.get('stages') or [{'id': None}]:
+                self.assertNotIn('var(', biology.draw({'id': fid, 'stage': stage['id']}), (fid, stage['id']))
+
+
 if __name__ == '__main__':
     unittest.main()
