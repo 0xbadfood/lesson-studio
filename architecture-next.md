@@ -144,9 +144,36 @@ reports the model and its version, and the portal enforces the policy per queue.
    public front doors; they stay as internal tools.
 7. **Node agent:** registration and onboarding for outside provider nodes.
 
+## 6. On AWS (user, 2026-10-22: "AWS becomes the most obvious choice ... we will fulfil all requirements there")
+
+Region **ap-south-1 (Mumbai)** for latency to Indian students and for data residency. CloudFront's Indian edges
+serve the media.
+
+| Piece | AWS service |
+|---|---|
+| Portal tier | Application Load Balancer + ECS on Fargate (or an EC2 Auto Scaling group) running the portal API; static front end on S3 + CloudFront |
+| Shared state | RDS for PostgreSQL (Multi-AZ), or Aurora PostgreSQL when it grows |
+| Broker | Amazon MQ for RabbitMQ (managed, TLS); outside provider nodes connect with their own logins |
+| Object storage and delivery | S3 (media, stage caches, content bundles; Glacier for page images) + CloudFront with signed URLs |
+| Planning workers (`llm.plan`, `figure.code`, `code.manim`, `render.remotion`) | ECS or EC2 CPU instances, scaled on queue depth |
+| GPU workers (`tts`, `image`, `video.ltx`, `llm.local`) | EC2 GPU instances (g6/L4 or g6e/L40S class; check what Mumbai offers), mostly **Spot**: idempotent, cached tasks make an interruption cost only the task in flight |
+| LLM APIs | Claude through the Anthropic API, or Amazon Bedrock if keeping traffic and billing inside AWS is preferred |
+| Secrets and identity | Secrets Manager; IAM roles for AWS workers (no keys on nodes); outside nodes get broker credentials and presigned S3 URLs only |
+| Observability | CloudWatch metrics and alarms (queue depth, task failures, QA-gate rejections per node) |
+
+**Our own machines stay in the network.** The Spark, the amdserver and the aiserver join as provider nodes over
+TLS, with no AWS credentials, and serve the queues they are good at (`llm.local`, `content.build`, images).
+
+## 7. The subject studios stay internal (user, 2026-10-22)
+
+History, Chemistry, Biology and Lesson Studio stay as **internal tools**. They are "required for us to keep
+refining our core work": pilots, reviews and fixes happen there first. madesimple.in is the only public front door.
+The studios use the same pipeline and can submit to the same queues, but stay behind the VPN or the internal Caddy
+routes, not on public marketing domains.
+
 ## Open questions
 
-- **Broker host:** a managed RabbitMQ, or self-hosted next to Postgres.
-- **Object storage provider and region:** in India for latency and data residency, or a global CDN.
 - **Credits:** what a film costs, and what a provider earns per task type.
-- **Studio portals:** whether the per-subject studios stay as internal tools once madesimple.in is the front door.
+- **GPU instances:** which types ap-south-1 offers at Spot prices that fit the ~$10-a-film budget. Bench a film on
+  each class before choosing.
+- **LLM traffic:** Bedrock or the direct Anthropic API.
