@@ -10,7 +10,7 @@ is switched back to image mode when the job ends, or at once if a film job appea
 when a film is running, since the Spark's Qwen and GPU are shared. No new chapter starts after the deadline; a
 chapter cut short keeps its cached model calls, so the next night resumes it.
 
-  .venv/bin/python kb_research/nightly_digest.py [--deadline 07:00] [--no-amd] [--queue kb_research/digest-queue.txt]
+  .venv/bin/python kb_research/nightly_digest.py [--deadline 10:30] [--no-amd] [--queue kb_research/digest-queue.txt]
 """
 from __future__ import annotations
 
@@ -144,11 +144,17 @@ def lane(name, endpoint, todo, deadline, stop, results, log):
         failures = digest.run([ref], digest.OUT, endpoint, endpoint, endpoint, log=lambda m: log(f'{name}: {m}'))
         results.append({'chapter': ref, 'lane': name, 'ok': not failures,
                         'error': failures[0][1] if failures else None})
+        if not failures:                              # its visual needs, a few minutes on the same lane (2026-10-22)
+            try:
+                import visual_needs
+                visual_needs.run([ref], endpoint, log=lambda m: log(f'{name}: visual needs {m}'))
+            except Exception as exc:                  # noqa: BLE001 - the digest is built; the pass can be rerun
+                log(f'{name}: visual needs {ref} FAILED: {type(exc).__name__}: {exc}'[:300])
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--deadline', default='07:00', help='no chapter starts after this time (HH:MM)')
+    parser.add_argument('--deadline', default='10:30', help='no chapter starts after this time (HH:MM)')
     parser.add_argument('--no-amd', action='store_true', help='do not borrow the amdserver')
     parser.add_argument('--queue', type=Path, default=QUEUE_FILE)
     args = parser.parse_args(argv)

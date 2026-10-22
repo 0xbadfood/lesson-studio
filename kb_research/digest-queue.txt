@@ -1,11 +1,146 @@
 # Chapters the nightly digest job builds (systemd user timer nightly-digest.timer); done ones are skipped.
 # Pilot 2026-10-14: Class 10 History, India and the Contemporary World II.
-# Biology Studio pilot (2026-10-22): the Class 11 Biology chapters the biology SVG library covers, first
+# Order from 2026-10-22 (user: "plan the queue such that we do not waste any night"): Class 11 Biology
+# Ch 6/14/16, science up to Class 10, all of Biology, then geography (Class 10, the Class 6-9 chapters,
+# Class 11, Class 12). Each built chapter also gets its visual-needs pass (kb_research/visual_needs.py).
 kebo1:06  # Class 11: Anatomy of Flowering Plants
-kebo1:10  # Class 11: Cell Cycle and Cell Division
 kebo1:14  # Class 11: Breathing and Exchange of Gases
-kebo1:15  # Class 11: Body Fluids and Circulation
 kebo1:16  # Class 11: Excretory Products and their Elimination
+hecu1:01  # Class 8: Exploring The Investigative World Of Science
+hecu1:02  # Class 8: The Invisible Living World: Beyond Our Naked Eye
+hecu1:03  # Class 8: Health: The Ultimate Treasure
+hecu1:04  # Class 8: Electricity: Magnetic And Heating Effects
+hecu1:05  # Class 8: Exploring Forces
+hecu1:06  # Class 8: Pressure, Winds, Storms, And Cyclones
+hecu1:07  # Class 8: Particulate Nature Of Matter
+hecu1:08  # Class 8: Nature Of Matter: Elements, Compounds, And Mixtures
+hecu1:09  # Class 8: The Amazing World Of Solutes, Solvents, And Solutions
+hecu1:10  # Class 8: Light: Mirrors And Lenses
+hecu1:11  # Class 8: Keeping Time With The Skies
+hecu1:12  # Class 8: How Nature Works In Harmony
+hecu1:13  # Class 8: Our Home: Earth, A Unique Life Sustaining Planet
+iesc1:01  # Class 9: Exploration: Entering The World Of Secondary Science
+iesc1:02  # Class 9: Cell: The Building Block Of Life
+iesc1:03  # Class 9: Tissues In Action
+iesc1:04  # Class 9: Describing Motion Around Us
+iesc1:05  # Class 9: Exploring Mixtures And Their Separation
+iesc1:06  # Class 9: How Forces Affect Motion
+iesc1:07  # Class 9: Work, Energy, And Simple Machines
+iesc1:08  # Class 9: Journey Inside The Atom
+iesc1:09  # Class 9: Atomic Foundations Of Matter
+iesc1:10  # Class 9: Sound Waves: Characteristics And Applications
+iesc1:11  # Class 9: Reproduction: How Life Continues
+iesc1:12  # Class 9: Patterns In Life: Diversity And Classification
+iesc1:13  # Class 9: Earth As A System: Energy, Matter, And Life
+jesc1:01  # Class 10: Chemical Reactions And Equations
+jesc1:02  # Class 10: Acids, Bases And Salts
+jesc1:03  # Class 10: Metals And Non-metals
+jesc1:04  # Class 10: Carbon And Its Compounds
+jesc1:05  # Class 10: Life Processes
+jesc1:06  # Class 10: Control And Coordination
+jesc1:07  # Class 10: How Do Organisms Reproduce?
+jesc1:08  # Class 10: Heredity
+jesc1:09  # Class 10: Light – Reflection And Refraction
+jesc1:10  # Class 10: The Human Eye And The Colourful World
+jesc1:11  # Class 10: Electricity
+jesc1:12  # Class 10: Magnetic Effects Of Electric Current
+jesc1:13  # Class 10: Our Environment
+kebo1:01  # Class 11: The Living World
+kebo1:02  # Class 11: Biological Classification
+kebo1:03  # Class 11: Plant Kingdom
+kebo1:04  # Class 11: Animal Kingdom
+kebo1:05  # Class 11: Morphology of Flowering Plants
+kebo1:07  # Class 11: Structural Organisation in Animals
+kebo1:08  # Class 11: Cell: The Unit of Life
+kebo1:09  # Class 11: Biomolecules
+kebo1:10  # Class 11: Cell Cycle and Cell Division
+kebo1:11  # Class 11: Photosynthesis in Higher Plants
+kebo1:12  # Class 11: Respiration in Plants
+kebo1:13  # Class 11: Plant Growth and Development
+kebo1:15  # Class 11: Body Fluids and Circulation
+kebo1:17  # Class 11: Locomotion and Movement
+kebo1:18  # Class 11: Neural Control and Coordination
+kebo1:19  # Class 11: Chemical Coordination and Integration
+lebo1:01  # Class 12: Sexual Reproduction in Flowering Plants
+lebo1:02  # Class 12: Human Reproduction
+lebo1:03  # Class 12: Reproductive Health
+lebo1:04  # Class 12: Principles of Inheritance and Variation
+lebo1:05  # Class 12: Molecular Basis of Inheritance
+lebo1:06  # Class 12: Evolution
+lebo1:07  # Class 12: Human Health and Disease
+lebo1:08  # Class 12: Microbes in Human Welfare
+lebo1:09  # Class 12: Biotechnology: Principles and Processes
+lebo1:10  # Class 12: Biotechnology and its Applications
+lebo1:11  # Class 12: Organisms and Populations
+lebo1:12  # Class 12: Ecosystem
+lebo1:13  # Class 12: Biodiversity and Conservation
+jess1:01  # Class 10: Resources and Development
+jess1:02  # Class 10: Forest and Wildlife Resources
+jess1:03  # Class 10: Water Resources
+jess1:04  # Class 10: Agriculture
+jess1:05  # Class 10: Minerals and Energy Resources
+jess1:06  # Class 10: Manufacturing Industries
+jess1:07  # Class 10: Lifelines of National Economy
+fees1:02  # Class 6: Oceans
+fees1:03  # Class 6: Landforms
+gees1:01  # Class 7: Geographical Diversity
+gees1:02  # Class 7: Understanding
+gees1:03  # Class 7: Climates of India
+gees2:01  # Class 7: The Story of Indian Farming
+gees2:02  # Class 7: India and Her Neighbours
+hees2:01  # Class 8: World Geography: Some Glimpses
+hees2:06  # Class 8: Dynamics of Population
+hees2:07  # Class 8: India’s Urban Landscape
+iest1:02  # Class 9: Shaping of the Earth’s Surface The Big Questions 1. What shapes the Earth’s surface?
+iest1:03  # Class 9: Atmosphere and Climate The Big Questions 1. What is the composition of the atmosphere?
+kegy1:01  # Class 11: I INTRODUCTION This unit deals with
+kegy1:02  # Class 11: II PHYSIOGRAPHY This unit deals with • Structure and Relief; physiographic divisions
+kegy1:03  # Class 11: DRAINAGE SYSTEM Y
+kegy1:04  # Class 11: III CLIMATE AND VEGETATION This unit deals with
+kegy1:05  # Class 11: NATURAL VEGETATION H
+kegy1:06  # Class 11: IV NATURAL HAZARDS AND DISASTERS: CAUSES, CONSEQUENCES AND MANAGEMENT
+kegy2:01  # Class 11: I GEOGRAPHY AS A DISCIPLINE This unit deals with
+kegy2:02  # Class 11: 12 FUNDAMENTALS OF PHYSICAL GEOGRAPHY II THE EARTH This unit deals with
+kegy2:03  # Class 11: 18 FUNDAMENTALS OF PHYSICAL GEOGRAPHY INTERIOR OF THE EARTH W
+kegy2:04  # Class 11: DISTRIBUTION OF OCEANS AND CONTINENTS
+kegy2:05  # Class 11: III LANDFORMS This unit deals with • Landforms and their evolution
+kegy2:06  # Class 11: LANDFORMS AND THEIR EVOLUTION A
+kegy2:07  # Class 11: IV CLIMATE This unit deals with
+kegy2:08  # Class 11: SOLAR RADIATION, HEAT BALANCE AND TEMPERATURE D
+kegy2:09  # Class 11: ATMOSPHERIC CIRCULATION AND WEATHER SYSTEMS E
+kegy2:10  # Class 11: WATER IN THE ATMOSPHERE Y
+kegy2:11  # Class 11: WORLD CLIMATE AND CLIMATE CHANGE T
+kegy2:12  # Class 11: V WATER (OCEANS) This unit deals with • Hydrological Cycle
+kegy2:13  # Class 11: MOVEMENTS OF OCEAN WATER T
+kegy2:14  # Class 11: 114 FUNDAMENTALS OF PHYSICAL GEOGRAPHY VI LIFE ON THE EARTH This unit deals with
+kegy3:01  # Class 11: Introduction to Maps Introduction to Maps You may be familiar with
+kegy3:02  # Class 11: Map Scale Map Scale
+kegy3:03  # Class 11: Practical Work in Geography 26 Chapter Latitude, Longitude and
+kegy3:04  # Class 11: Map Projections Map Projections
+kegy3:05  # Class 11: Topographical Maps Topographical Maps
+kegy3:06  # Class 11: Introduction To Remote Sensing Introduction To Remote Sensing
+legy1:01  # Class 12: You have already studied ‘Geography as a -I Discipline’ in Chapter I of the book
+legy1:02  # Class 12: The people of a country are its real wealth. It
+legy1:03  # Class 12: 
+legy1:04  # Class 12: Human activities which generate income are -III known as economic activities. Economic
+legy1:05  # Class 12: All economic activities namely primary, -III secondary, tertiary and quaternary, revolve
+legy1:06  # Class 12: When you fall ill you go to your family doctor
+legy1:07  # Class 12: Natural resources, economic activities and
+legy1:08  # Class 12: You are already familiar with the term “trade”
+legy2:01  # Class 12: Population : Distribution, Density, Growth and Composition
+legy2:02  # Class 12: Human Settlements
+legy2:03  # Class 12: Land Resources and Agriculture
+legy2:04  # Class 12: Water Resources
+legy2:05  # Class 12: Mineral and Energy Resources
+legy2:06  # Class 12: Planning and Sustainable Development in Indian Context
+legy2:07  # Class 12: Transport and Communication
+legy2:08  # Class 12: International Trade
+legy2:09  # Class 12: Geographical Perspective on Selected Issues and Problems
+legy3:01  # Class 12: Chapter 1
+legy3:02  # Class 12: Chapter 2
+legy3:03  # Class 12: Chapter 3
+legy3:04  # Class 12: Chapter 4
+
 
 jess3:01
 jess3:02
@@ -78,16 +213,6 @@ fecu1:09  # Class 6: Methods of Separation in Everyday Life (20 p)
 gecu1:02  # Class 7: Exploring Substances: Acidic, Basic, and Neutral (16 p)
 gecu1:04  # Class 7: The World of Metals and Non-Metals (16 p)
 gecu1:05  # Class 7: Changes Around Us: Physical and Chemical (16 p)
-hecu1:07  # Class 8: Particulate Nature Of Matter (18 p)
-hecu1:08  # Class 8: Nature Of Matter: Elements, Compounds, And Mixtures (18 p)
-hecu1:09  # Class 8: The Amazing World Of Solutes, Solvents, And Solutions (18 p)
-iesc1:05  # Class 9: Exploring Mixtures And Their Separation (22 p)
-iesc1:08  # Class 9: Journey Inside The Atom (22 p)
-iesc1:09  # Class 9: Atomic Foundations Of Matter (22 p)
-jesc1:01  # Class 10: Chemical Reactions And Equations (16 p)
-jesc1:02  # Class 10: Acids, Bases And Salts (20 p)
-jesc1:03  # Class 10: Metals And Non-metals (21 p)
-jesc1:04  # Class 10: Carbon And Its Compounds (21 p)
 # Physics and biology in the Class 6-10 Science books, after their chemistry chapters (user, 2026-10-21)
 fecu1:01  # Class 6: The Wonderful World of Science (8 p)
 fecu1:02  # Class 6: Diversity in the Living World (26 p)
@@ -107,32 +232,3 @@ gecu1:09  # Class 7: Life Processes in Animals (16 p)
 gecu1:10  # Class 7: Life Processes in Plants (16 p)
 gecu1:11  # Class 7: Light: Shadows and Reflections (16 p)
 gecu1:12  # Class 7: Earth, Moon, and the Sun (20 p)
-hecu1:01  # Class 8: Exploring The Investigative World Of Science (7 p)
-hecu1:02  # Class 8: The Invisible Living World: Beyond Our Naked Eye (20 p)
-hecu1:03  # Class 8: Health: The Ultimate Treasure (18 p)
-hecu1:04  # Class 8: Electricity: Magnetic And Heating Effects (16 p)
-hecu1:05  # Class 8: Exploring Forces (18 p)
-hecu1:06  # Class 8: Pressure, Winds, Storms, And Cyclones (18 p)
-hecu1:10  # Class 8: Light: Mirrors And Lenses (18 p)
-hecu1:11  # Class 8: Keeping Time With The Skies (20 p)
-hecu1:12  # Class 8: How Nature Works In Harmony (20 p)
-hecu1:13  # Class 8: Our Home: Earth, A Unique Life Sustaining Planet (19 p)
-iesc1:01  # Class 9: Exploration: Entering The World Of Secondary Science (7 p)
-iesc1:02  # Class 9: Cell: The Building Block Of Life (20 p)
-iesc1:03  # Class 9: Tissues In Action (20 p)
-iesc1:04  # Class 9: Describing Motion Around Us (24 p)
-iesc1:06  # Class 9: How Forces Affect Motion (22 p)
-iesc1:07  # Class 9: Work, Energy, And Simple Machines (24 p)
-iesc1:10  # Class 9: Sound Waves: Characteristics And Applications (24 p)
-iesc1:11  # Class 9: Reproduction: How Life Continues (20 p)
-iesc1:12  # Class 9: Patterns In Life: Diversity And Classification (24 p)
-iesc1:13  # Class 9: Earth As A System: Energy, Matter, And Life (21 p)
-jesc1:05  # Class 10: Life Processes (21 p)
-jesc1:06  # Class 10: Control And Coordination (13 p)
-jesc1:07  # Class 10: How Do Organisms Reproduce? (15 p)
-jesc1:08  # Class 10: Heredity (6 p)
-jesc1:09  # Class 10: Light – Reflection And Refraction (27 p)
-jesc1:10  # Class 10: The Human Eye And The Colourful World (10 p)
-jesc1:11  # Class 10: Electricity (24 p)
-jesc1:12  # Class 10: Magnetic Effects Of Electric Current (13 p)
-jesc1:13  # Class 10: Our Environment (10 p)
