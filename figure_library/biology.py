@@ -179,7 +179,10 @@ def _place(items, top, bottom, gap=10):
     return items
 
 
-def draw(spec, level=3, light=False):
+def draw(spec, level=3, light=False, layer='all'):
+    """The figure as SVG. layer: 'all' (the whole picture), 'base' (the diagram, dimmed beside the lit part, without
+    labels), 'highlight' (only the lit part, in the highlight colour, for the renderer to pulse) or a label's index
+    (that label alone). Every layer has the same size, so the renderer stacks them exactly."""
     entry = entries()[spec['id']]
     side = entry['sidecar']
     raw = entry['svg'].read_text()
@@ -196,53 +199,89 @@ def draw(spec, level=3, light=False):
         if not visible(p, level) and p['id'] in by_svg_id:
             by_svg_id[p['id']].set('display', 'none')
     lit = parts.get(spec.get('highlight') or '')
+    glow = theme.get('bio-highlight', '#f3b85e')
     if lit and lit['id'] in by_svg_id:
         target = by_svg_id[lit['id']]
         chain = [target]
         while chain[-1] in parent:
             chain.append(parent[chain[-1]])
-        for node in chain[1:]:                                  # dim what is beside the lit part's line
-            for child in node:
-                if child not in chain and str(child.get('id', '')).startswith('part-'):
-                    child.set('opacity', DIM)
-        for el in target.iter():
-            if el.get('stroke') not in (None, 'none'):
-                el.set('stroke', theme.get('bio-highlight', '#f3b85e'))
-    body = _resolve_colours(ET.tostring(root, encoding='unicode'), theme)
-    body = re.sub(r'<style>.*?</style>', '', body, flags=re.S)
-    body = re.sub(r'^<svg[^>]*>|</svg>\s*$', '', body.strip())
-    ink, muted = theme.get('bio-label', '#f7f3e9'), theme.get('bio-muted', '#82a5a7')
+        for node in chain[1:]:                                  # dim what is beside the lit part's line (the
+            for child in node:                                  # highlight layer hides it)
+                if child not in chain and (layer == 'highlight' or str(child.get('id', '')).startswith('part-')):
+                    child.set('display' if layer == 'highlight' else 'opacity', 'none' if layer == 'highlight' else DIM)
+        if layer in ('all', 'highlight'):
+            for el in target.iter():
+                if el.get('stroke') not in (None, 'none'):
+                    el.set('stroke', glow)
+    body = ''
+    if layer in ('all', 'base') or (layer == 'highlight' and lit):
+        body = _resolve_colours(ET.tostring(root, encoding='unicode'), theme)
+        body = re.sub(r'<style>.*?</style>', '', body, flags=re.S)
+        body = re.sub(r'^<svg[^>]*>|</svg>\s*$', '', body.strip())
     overlay = []
-    gutters = side['layout']['label_gutters']
-    art = side['layout']['artwork_region']
-    sides = {'left': [], 'right': []}
-    for pid in (spec.get('labels') or [])[:MAX_LABELS]:
-        p = parts[pid]
-        where = p.get('label_side', 'auto')
-        if where not in sides:
-            where = 'left' if p['anchor'][0] < art[0] + art[2] / 2 else 'right'
-        gx, gy, gw, gh = gutters[where]
-        lines = _wrap(label(p, level), gw - 6)
-        sides[where].append({'anchor': p['anchor'], 'lines': lines, 'h': len(lines) * FONT * 1.2,
-                             'lit': lit is p})
-    for where, items in sides.items():
-        gx, gy, gw, gh = gutters[where]
-        for item in _place(items, gy, gy + gh):
-            ax, ay = item['anchor']
-            mid = item['y'] + item['h'] / 2
-            edge = gx + gw if where == 'left' else gx
-            colour = theme.get('bio-highlight', '#f3b85e') if item['lit'] else ink
-            overlay.append(f"<path d='M {edge + (4 if where == 'left' else -4):.1f} {mid:.1f} L {ax:.1f} {ay:.1f}' "
-                           f"stroke='{muted}' stroke-width='2' fill='none'/>"
-                           f"<circle cx='{ax:.1f}' cy='{ay:.1f}' r='5' fill='{colour}'/>")
-            anchor, x = ('end', gx + gw) if where == 'left' else ('start', gx)
-            for n, line in enumerate(item['lines']):
-                overlay.append(f"<text x='{x:.1f}' y='{item['y'] + FONT * (1 + 1.2 * n) - 4:.1f}' "
-                               f"font-family='DejaVu Sans' font-size='{FONT}' fill='{colour}' "
-                               f"text-anchor='{anchor}'>{_escape(line)}</text>")
+    if layer == 'all' or isinstance(layer, int):
+        for n, item in enumerate(_label_items(spec, side, parts, lit, level)):
+            if layer == 'all' or layer == n:
+                overlay.append(_label_svg(item, theme))
     x, y, w, h = CROP
     return (f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='{x} {y} {w} {h}' width='{w}' height='{h}'>"
             + body + ''.join(overlay) + '</svg>')
+
+
+def _label_items(spec, side, parts, lit, level):
+    """The labels, in the spec's order, each placed in its gutter."""
+    gutters = side['layout']['label_gutters']
+    art = side['layout']['artwork_region']
+    items = []
+    for pid in (spec.get('labels') or [])[:MAX_LABELS]:
+        p = parts[pid]
+        where = p.get('label_side', 'auto')
+        if where not in gutters:
+            where = 'left' if p['anchor'][0] < art[0] + art[2] / 2 else 'right'
+        lines = _wrap(label(p, level), gutters[where][2] - 6)
+        items.append({'part': pid, 'text': label(p, level), 'aliases': p.get('aliases') or [], 'side': where,
+                      'gutter': gutters[where], 'anchor': p['anchor'], 'lines': lines, 'h': len(lines) * FONT * 1.2,
+                      'lit': lit is p})
+    for where, gutter in gutters.items():
+        _place([i for i in items if i['side'] == where], gutter[1], gutter[1] + gutter[3])
+    return items
+
+
+def _label_svg(item, theme):
+    ink, muted = theme.get('bio-label', '#f7f3e9'), theme.get('bio-muted', '#82a5a7')
+    gx, gy, gw, gh = item['gutter']
+    left = item['side'] == 'left'
+    ax, ay = item['anchor']
+    mid = item['y'] + item['h'] / 2
+    edge = gx + gw if left else gx
+    colour = theme.get('bio-highlight', '#f3b85e') if item['lit'] else ink
+    out = (f"<path d='M {edge + (4 if left else -4):.1f} {mid:.1f} L {ax:.1f} {ay:.1f}' stroke='{muted}' "
+           f"stroke-width='2' fill='none'/><circle cx='{ax:.1f}' cy='{ay:.1f}' r='5' fill='{colour}'/>")
+    anchor, x = ('end', gx + gw) if left else ('start', gx)
+    for n, line in enumerate(item['lines']):
+        out += (f"<text x='{x:.1f}' y='{item['y'] + FONT * (1 + 1.2 * n) - 4:.1f}' font-family='DejaVu Sans' "
+                f"font-size='{FONT}' fill='{colour}' text-anchor='{anchor}'>{_escape(line)}</text>")
+    return out
+
+
+def layers(spec, prefix, level=3, width=1824):
+    """Write the figure as stacked layers for the renderer (labels timed to the narration, the lit part pulsing):
+    <prefix>-base.png, <prefix>-highlight.png (when a part is lit) and <prefix>-label-<n>.png. Returns
+    {base, highlight, labels:[{text, aliases, file, lit}]}."""
+    import cairosvg
+    entry = entries()[spec['id']]
+    side = entry['sidecar']
+    parts = _parts(side, _stage(side, spec))
+    lit = parts.get(spec.get('highlight') or '')
+    def write(layer, path):
+        cairosvg.svg2png(bytestring=draw(spec, level, layer=layer).encode(), write_to=str(path), output_width=width)
+        return str(path)
+    out = {'base': write('base', f'{prefix}-base.png'),
+           'highlight': write('highlight', f'{prefix}-highlight.png') if lit else None, 'labels': []}
+    for n, item in enumerate(_label_items(spec, side, parts, lit, level)):
+        out['labels'].append({'text': item['text'], 'aliases': item['aliases'], 'lit': item['lit'],
+                              'file': write(n, f'{prefix}-label-{n}.png')})
+    return out
 
 
 def _escape(text):
