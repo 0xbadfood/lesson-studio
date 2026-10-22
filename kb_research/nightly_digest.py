@@ -57,8 +57,14 @@ def wanted(path=QUEUE_FILE, out_root=digest.OUT):
     return [r for r in refs if r and not (digest.chapter_folder({'id': r}, out_root) / 'digest.json').exists()]
 
 
+MODE_KEY = Path.home() / '.config/gpu-mode/api-key'    # the amdserver's mode switch needs it for a POST (2026-10-22)
+
+
 def http(url, method='GET', timeout=10):
-    request = urllib.request.Request(url, method=method, data=b'' if method == 'POST' else None)
+    headers = {'X-Caller': 'nightly-digest'}
+    if method == 'POST' and MODE_KEY.exists():
+        headers['Authorization'] = 'Bearer ' + MODE_KEY.read_text().strip()
+    request = urllib.request.Request(url, method=method, data=b'' if method == 'POST' else None, headers=headers)
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return json.load(response)
 
