@@ -53,5 +53,26 @@ class RegistryTests(unittest.TestCase):
             self.assertIn('to build: Cathode ray tube', visuals.report(db))
 
 
+    def test_a_concept_finds_drawn_diagrams_from_other_chapters(self):
+        # Mitosis (Ch 10) needs centromeres; the chromosome-structure SVG belongs to the Cell chapter (Ch 8)
+        def entry(name, parts, asset, chapter, concepts, status='have'):
+            return {'name': name, 'kind': 'structure', 'subject': 'biology', 'shows': name, 'parts': parts,
+                    'stages': [], 'motions': ['labels'], 'status': status, 'asset': asset, 'commons': [],
+                    'members': [member(f'{chapter}:N1', chapter, concepts, name=name, ref='')]}
+        entries = [entry('Mitosis stages', ['chromosomes', 'spindle fibers', 'centromeres'], 'biology:mitosis-stages',
+                         'kebo1-10', ['C2']),
+                   entry('Chromosome with kinetochore', ['centromere', 'kinetochore', 'sister chromatids', 'chromosome'],
+                         'biology:chromosome-structure', 'kebo1-08', ['C16']),
+                   entry('Plasma membrane', ['phospholipid', 'protein'], 'biology:plasma-membrane-fluid-mosaic',
+                         'kebo1-08', ['C5'])]
+        with tempfile.TemporaryDirectory() as tmp:
+            db = Path(tmp) / 'v.sqlite3'
+            visuals.store(entries, db)
+            self.assertEqual(visuals.related_assets('kebo1-10', 'C2', db=db),
+                             ['biology:mitosis-stages', 'biology:chromosome-structure'])
+            self.assertEqual(visuals.related_assets('kebo1-10', 'C9', db=db), [])
+        self.assertEqual(visuals.related_assets('kebo1-10', 'C2', db=Path('/nowhere.sqlite3')), [])
+
+
 if __name__ == '__main__':
     unittest.main()

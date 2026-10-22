@@ -225,6 +225,42 @@ def search(text=None, chapter=None, concept=None, subject=None, status=None, db=
     return out
 
 
+GENERIC = set('cell cells body diagram structure section process stage stages phase parts part human animal plant '
+              'organ organs system type types with from into show shows showing'.split())
+
+
+def _stems(text):
+    return {w[:6] for w in re.findall(r'[a-z]{4,}', str(text).lower()) if w not in GENERIC}
+
+
+def related_assets(chapter, concept, prefix='biology:', limit=6, db=DB):
+    """Assets (e.g. biology SVGs) that draw what a concept needs, from any chapter: the concept's own needs that an
+    asset draws, then the drawn entries sharing at least two word stems with the needs' names and parts, most shared
+    first (mitosis needs "centromeres", which the chromosome-structure SVG of the Cell chapter draws, 2026-10-22).
+    [] when the registry or the concept is unknown."""
+    if not Path(db).exists():
+        return []
+    con = sqlite3.connect(db)
+    mine = con.execute('SELECT e.name, e.parts, e.asset FROM entries e JOIN uses u ON u.entry = e.id '
+                       'WHERE u.chapter = ? AND u.concepts LIKE ?', (chapter, f'%"{concept}"%')).fetchall()
+    drawn = con.execute("SELECT name, parts, asset FROM entries WHERE status = 'have' AND asset LIKE ?",
+                        (prefix + '%',)).fetchall()
+    con.close()
+    out = [a for _, _, a in mine if a and a.startswith(prefix)]
+    wanted = set().union(*(_stems(name + ' ' + ' '.join(json.loads(parts))) for name, parts, _ in mine)) if mine else set()
+    scored = {}
+    for name, parts, asset in drawn:
+        shared = len(wanted & _stems(name + ' ' + ' '.join(json.loads(parts))))
+        if shared >= 2:
+            scored[asset] = max(scored.get(asset, 0), shared)
+    out += sorted(scored, key=lambda a: -scored[a])
+    seen = []
+    for a in out:
+        if a not in seen:
+            seen.append(a)
+    return seen[:limit]
+
+
 def report(db=DB):
     con = sqlite3.connect(db)
     lines = []

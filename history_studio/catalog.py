@@ -216,9 +216,10 @@ def film_request(digest, concept, figures=False):
               'chapter_no': s['chapter'], 'chapter': s['title'], 'coverage': coverage(digest, concept),
               'seconds': film_seconds(digest, concept)}
     if figures == 'biology':                     # Biology Studio: the ~/biology diagrams this chapter cites
-        from figure_library import biology
+        from figure_library import biology, visuals
+        related = [a.split(':', 1)[1] for a in visuals.related_assets(s['id'], concept['id'])]
         record['figures'] = {'subject': 'biology', 'code_root': str(ROOT), 'level': biology.level_for(s['class']),
-                             'library': biology.candidates(s['id'], s['class'])}
+                             'library': biology.candidates(s['id'], s['class'], extra=related)}
     elif figures:
         from figure_library import pick
         about = ' '.join([concept['name'], concept.get('summary', '')] + [

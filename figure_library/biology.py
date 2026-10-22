@@ -61,19 +61,21 @@ def labelable(part, level):
                                      or str(level) in part.get('label_by_level', {}))
 
 
-def candidates(chapter_id, class_no=None):
-    """The diagrams the book's chapter cites, as the planner sees them: id, title, parts it may label or highlight
-    (at the film's level), and stages."""
+def candidates(chapter_id, class_no=None, extra=()):
+    """The diagrams a film may use, as the planner sees them: those the book's chapter cites, then `extra` library
+    ids (what the visual registry finds for the concept in other chapters). Each with its title, the parts it may
+    label or highlight at the film's level, and its stages with their own parts."""
     book, number = _book_chapter(chapter_id)
     level = level_for(class_no)
     out = []
-    for fid, entry in sorted(entries().items()):
-        side = entry['sidecar']
-        refs = [r for r in side.get('ncert') or [] if r.get('book') == book and int(r.get('chapter', 0)) == number]
-        if not refs:
-            continue
+    cited = [fid for fid, entry in sorted(entries().items())
+             if any(r.get('book') == book and int(r.get('chapter', 0)) == number for r in entry['sidecar'].get('ncert') or [])]
+    for fid in cited + [x for x in extra if x in entries() and x not in cited]:
+        side = entries()[fid]['sidecar']
+        refs = [r for r in side.get('ncert') or [] if r.get('figure')]
+        here = [r for r in refs if r.get('book') == book and int(r.get('chapter', 0)) == number]
         out.append({'id': fid, 'name': side.get('title', fid),
-                    'description': '; '.join(f'NCERT Fig. {r["figure"]}' for r in refs if r.get('figure'))
+                    'description': '; '.join(f'NCERT {r["book"]} Fig. {r["figure"]}' for r in (here or refs)[:3])
                                    + (f'. {side["notes"][0]}' if side.get('notes') else ''),
                     'parts': {p['id']: label(p, level) for p in side['parts'] if labelable(p, level)
                               and not p.get('stage')},
