@@ -57,6 +57,16 @@ def wanted(path=QUEUE_FILE, out_root=digest.OUT):
     return [r for r in refs if r and not (digest.chapter_folder({'id': r}, out_root) / 'digest.json').exists()]
 
 
+def visual_backlog(books, out_root=digest.OUT):
+    """Digested chapters of these books that have no visual needs yet, as chapter refs (kech1:02)."""
+    out = []
+    for book in books:
+        for folder in sorted(out_root.glob(f'{book}-[0-9][0-9]')):
+            if (folder / 'digest.json').exists() and not (folder / 'visual-needs.json').exists():
+                out.append(f'{book}:{folder.name[-2:]}')
+    return out
+
+
 MODE_KEY = Path.home() / '.config/gpu-mode/api-key'    # the amdserver's mode switch needs it for a POST (2026-10-22)
 
 
@@ -140,6 +150,13 @@ def lane(name, endpoint, todo, deadline, stop, results, log):
             ref = todo.get_nowait()
         except queue.Empty:
             return
+        if ref.startswith('visual:'):                 # an already digested chapter: only its visual needs
+            try:
+                import visual_needs
+                visual_needs.run([ref.split(':', 1)[1]], endpoint, log=lambda m: log(f'{name}: visual needs {m}'))
+            except Exception as exc:                  # noqa: BLE001 - logged; the next run picks it up again
+                log(f'{name}: visual needs {ref} FAILED: {type(exc).__name__}: {exc}'[:300])
+            continue
         log(f'{name}: {ref} starting')
         failures = digest.run([ref], digest.OUT, endpoint, endpoint, endpoint, log=lambda m: log(f'{name}: {m}'))
         results.append({'chapter': ref, 'lane': name, 'ok': not failures,
@@ -154,7 +171,10 @@ def lane(name, endpoint, todo, deadline, stop, results, log):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--deadline', default='10:30', help='no chapter starts after this time (HH:MM)')
+    parser.add_argument('--deadline', default='10:30',
+                        help='no chapter starts after this time (HH:MM), or "none" to run until the queue is done')
+    parser.add_argument('--visual-backlog', default='',
+                        help='books (e.g. keph1,kech1) whose digested chapters without visual needs get the pass first')
     parser.add_argument('--no-amd', action='store_true', help='do not borrow the amdserver')
     parser.add_argument('--queue', type=Path, default=QUEUE_FILE)
     args = parser.parse_args(argv)
@@ -177,13 +197,18 @@ def main(argv=None):
             log_file.flush()
 
     now = datetime.now()
-    hour, minute = map(int, args.deadline.split(':'))
-    deadline = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
-    if deadline <= now:
-        deadline += timedelta(days=1)
+    if args.deadline == 'none':                       # the digest is the priority work: run until the queue is done
+        deadline = now + timedelta(days=30)           # (user, 2026-10-22)
+    else:
+        hour, minute = map(int, args.deadline.split(':'))
+        deadline = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+        if deadline <= now:
+            deadline += timedelta(days=1)
+    backlog = visual_backlog([b for b in args.visual_backlog.split(',') if b])
     refs = wanted(args.queue)
-    log(f'{len(refs)} chapters to build, deadline {deadline:%Y-%m-%d %H:%M}: {", ".join(refs)}')
-    if not refs:
+    log(f'{len(backlog)} visual passes, then {len(refs)} chapters to build, deadline {deadline:%Y-%m-%d %H:%M}: '
+        f'{", ".join(refs)}')
+    if not refs and not backlog:
         return 0
     if film_busy():
         log('an infofilm job is queued or running: skipping tonight')
@@ -199,7 +224,7 @@ def main(argv=None):
 
     signal.signal(signal.SIGTERM, stopped)
     todo = queue.Queue()
-    for ref in refs:
+    for ref in [f'visual:{r}' for r in backlog] + refs:
         todo.put(ref)
     stop, results, lanes, threads = threading.Event(), [], [], []
 
@@ -209,7 +234,7 @@ def main(argv=None):
         threads[-1].start()
 
     start('spark', SPARK_LLM)                         # the Spark works while the amdserver loads (~1 min)
-    if len(refs) > 1 and not args.no_amd and amd.borrow():
+    if len(backlog) + len(refs) > 1 and not args.no_amd and amd.borrow():
         for name, url in AMD_LLMS.items():
             if not todo.empty():
                 start(name, url)
