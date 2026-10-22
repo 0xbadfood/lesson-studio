@@ -77,7 +77,21 @@ def candidates(chapter_id, class_no=None):
                                    + (f'. {side["notes"][0]}' if side.get('notes') else ''),
                     'parts': {p['id']: label(p, level) for p in side['parts'] if labelable(p, level)
                               and not p.get('stage')},
-                    'stages': [{'id': s['id'], 'title': s.get('title', '')} for s in side.get('stages') or []]})
+                    'stages': [{'id': s['id'], 'title': s.get('title', ''), 'parts': stage_parts(side, s, level)}
+                               for s in side.get('stages') or []]})
+    return out
+
+
+def stage_parts(side, stage, level):
+    """A stage's parts by their stable names (part-spindle, part-chromosomes...), as a figure of that stage may label
+    or highlight them; one name per label (the four 'Replicated chromosome' parts are offered once)."""
+    by_id = {p['id']: p for p in side['parts']}
+    out, seen = {}, set()
+    for semantic, concrete in (stage.get('part_map') or {}).items():
+        part = by_id.get(concrete)
+        if part and labelable(part, level) and label(part, level) not in seen:
+            seen.add(label(part, level))
+            out[semantic] = label(part, level)
     return out
 
 

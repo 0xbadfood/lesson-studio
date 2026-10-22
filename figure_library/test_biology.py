@@ -45,5 +45,16 @@ class BiologyTests(unittest.TestCase):
         self.assertLess(biology.CROP[0], left - 100)
 
 
+    def test_a_stage_offers_its_own_parts(self):
+        # Mitosis: the stage's parts (spindle, chromosomes) were not offered, so its beats could not label anything
+        mitosis = next(c for c in biology.candidates('kebo1-10', 11) if c['id'] == 'mitosis-stages')
+        metaphase = next(st for st in mitosis['stages'] if st['id'] == 'stage-metaphase')
+        self.assertEqual(metaphase['parts']['part-spindle'], 'Spindle fibres')
+        spec = {'id': 'mitosis-stages', 'stage': 'stage-metaphase', 'highlight': 'part-spindle',
+                'labels': ['part-spindle', 'part-chromosomes']}
+        self.assertEqual(biology.figure_errors(spec), [])
+        self.assertEqual(biology.draw(spec).count("r='5'"), 2)
+
+
 if __name__ == '__main__':
     unittest.main()
