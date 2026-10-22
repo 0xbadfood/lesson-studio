@@ -161,6 +161,27 @@ serve the media.
 | Secrets and identity | Secrets Manager; IAM roles for AWS workers (no keys on nodes); outside nodes get broker credentials and presigned S3 URLs only |
 | Observability | CloudWatch metrics and alarms (queue depth, task failures, QA-gate rejections per node) |
 
+**GPU capacity in layers (user, 2026-10-22):**
+- **Steady load:** a few always-on GPUs (e.g. RTX 5090s on RunPod, with a network volume for the models) keep their
+  models loaded.
+- **Overflow:** EC2 GPU instances.
+- **Joining:** every provider joins the Celery broker with **its own login (a per-node secret)** over TLS, so one can
+  be revoked or rotated alone and metering is per node.
+
+**Starting EC2 media workers fast:**
+- An **Auto Scaling warm pool** holds GPU instances that were set up once and then *stopped*, each keeping its EBS
+  disk with the models. Scale-out starts one in about 1–2 minutes, and stopped instances cost only their disk.
+  Capacity must be free at that moment, which is why the always-on layer comes first.
+- Alternatives:
+  - **a golden AMI** with the models baked in, plus **EBS Fast Snapshot Restore** in the AZs used (otherwise a disk
+    made from a snapshot loads lazily and the first read of 20–40 GB is slow);
+  - **local NVMe filled from S3 at boot** (parallel copy at about 1–2 GB/s, roughly 15–40 s for our models), for Spot
+    instances that are never kept.
+- An EBS volume attaches to one instance in its own Availability Zone (io2 multi-attach allows up to 16, fine for
+  read-only weights).
+- Loading weights into GPU memory still takes tens of seconds to a few minutes per model. Only always-on workers skip
+  it.
+
 **Our own machines stay in the network.** The Spark, the amdserver and the aiserver join as provider nodes over
 TLS, with no AWS credentials, and serve the queues they are good at (`llm.local`, `content.build`, images).
 
