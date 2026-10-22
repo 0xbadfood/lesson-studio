@@ -831,7 +831,11 @@ def calculation_errors(addition):
     errors = []
     values = []
     for c in addition.get('calculations') or []:
-        if isinstance(c, dict) and str(c.get('expr') or '').strip() in ('', 'None', 'null'):
+        if not isinstance(c, dict):
+            errors.append(f'calculation {json.dumps(c, ensure_ascii=False)[:80]} must be an object '
+                          '{"expr": plain arithmetic, "value": number, "unit": str}')
+            continue
+        if str(c.get('expr') or '').strip() in ('', 'None', 'null'):
             continue                                # an empty entry (a model writes null when nothing is computed)
         try:
             got = float(evaluate(c.get('expr', '')))  # an exact int too big for a float raises OverflowError here
@@ -1010,8 +1014,10 @@ def apply_audit(findings, concepts, gaps, additions):
     return dropped
 
 
-REPAIR_SCHEMA = '''{"addition":{same fields as the addition: "gap","title","content","level","provenance","sources",
-"calculations","textbook_note"}}'''
+REPAIR_SCHEMA = '''{"addition":{same fields as the addition: "gap","title","content","level","provenance",
+"sources":[{"url":str,"tier":"official|academic|reference|other"}],
+"calculations":[{"expr":str (plain arithmetic, e.g. "8*1.852"),"value":number,"unit":str}],"textbook_note":str}}'''
+# (the bare field list let Lucebox write calculations as sentences, and both repairs of 2026-10-22 failed three times)
 
 
 def repair_addition(model, chapter, addition, gap, concept_blocks, findings, research):

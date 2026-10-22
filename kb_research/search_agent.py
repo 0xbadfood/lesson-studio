@@ -239,6 +239,52 @@ class QwenClient:
             raise HarnessError(f"Qwen request failed: {exc}{detail}") from exc
 
 
+OVERFLOW = re.compile(r"maximum context length is (\d+) tokens\. However, you requested (\d+) tokens")
+
+
+def trim_pages(messages: list[dict[str, Any]], fraction: float) -> bool:
+    """Shorten the fetched pages in the conversation, longest first, by about `fraction` of all its text; False when
+    there is nothing left to cut. The page budget is in characters and dense pages can still overflow the context
+    (two Lucebox research calls of 2026-10-22 asked for 39k tokens of a 32k window)."""
+    pages = []
+    for message in messages:
+        if message.get("role") == "tool" and message.get("name") == "fetch_url":
+            try:
+                result = json.loads(message["content"])
+            except (TypeError, ValueError):
+                continue
+            if isinstance(result, dict) and len(str(result.get("content", ""))) > 1000:
+                pages.append((message, result))
+    if not pages:
+        return False
+    cut = int(fraction * sum(len(str(m.get("content") or "")) for m in messages))
+    for message, result in sorted(pages, key=lambda pair: -len(pair[1]["content"])):
+        text = result["content"]
+        keep = max(1000, len(text) - cut)
+        cut -= len(text) - keep
+        result["content"] = text[:keep] + f"\n\n[... page shortened to {keep} characters to fit the context]"
+        message["content"] = json.dumps(result, ensure_ascii=False)
+        if cut <= 0:
+            break
+    return True
+
+
+def complete_fitting(qwen: "QwenClient", messages: list[dict[str, Any]], **kwargs: Any) -> dict[str, Any]:
+    """qwen.complete, shortening the fetched pages and asking again when the conversation overflows the context."""
+    for _ in range(3):
+        try:
+            return qwen.complete(messages, **kwargs)
+        except HarnessError as exc:
+            found = OVERFLOW.search(str(exc))
+            if not found:
+                raise
+            limit, requested = map(int, found.groups())
+            sent = max(1, requested - qwen.max_tokens)
+            if not trim_pages(messages, min(0.9, (requested - limit + 1500) / sent * 1.2)):
+                raise
+    return qwen.complete(messages, **kwargs)
+
+
 def cited_fetched_urls(answer: str, fetched_urls: set[str]) -> set[str]:
     found = re.findall(r"https?://[^\s<>\])}]+", answer)
     cited: set[str] = set()
@@ -263,7 +309,7 @@ def run_agent(question: str, qwen: QwenClient, research: ResearchTools, max_step
     answer = ""
     nudges = 2
     for step in range(1, max_steps + 1):
-        raw_message = qwen.complete(messages)
+        raw_message = complete_fitting(qwen, messages)
         message = {
             key: raw_message[key]
             for key in ("role", "content", "tool_calls")
@@ -318,7 +364,7 @@ def run_agent(question: str, qwen: QwenClient, research: ResearchTools, max_step
                 "content": "The research step limit is reached. Answer now using only fetched evidence, with inline citations.",
             }
         )
-        answer = (qwen.complete(messages, tools=None).get("content") or "").strip()
+        answer = (complete_fitting(qwen, messages, tools=None).get("content") or "").strip()
 
     if not answer:
         raise HarnessError("Qwen returned an empty answer")
@@ -339,7 +385,7 @@ def run_agent(question: str, qwen: QwenClient, research: ResearchTools, max_step
                 },
             ]
         )
-        answer = (qwen.complete(messages, tools=None).get("content") or "").strip()
+        answer = (complete_fitting(qwen, messages, tools=None).get("content") or "").strip()
         if not cited_fetched_urls(answer, research.fetched_urls):
             raise HarnessError("Qwen did not cite any successfully fetched source")
     return answer

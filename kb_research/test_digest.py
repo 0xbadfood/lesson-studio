@@ -22,6 +22,12 @@ class CalculationTests(unittest.TestCase):
         ok = {'content': 'W = 10 × 4 × 0.5 = 20 J', 'calculations': [{'expr': '10*4*0.5', 'value': 20}]}
         self.assertEqual(d.calculation_errors(ok), [])
 
+    def test_a_calculation_written_as_a_sentence_is_an_error_not_a_crash(self):
+        # 2026-10-22: Lucebox wrote repair calculations as strings and both repairs died on 'str'.get three times
+        errors = d.calculation_errors({'content': 'about 15 km/h', 'calculations': ['8 knots × 1.852 = 14.8 km/h']})
+        self.assertTrue(any('must be an object' in e for e in errors), errors)
+        self.assertIn('"expr"', d.REPAIR_SCHEMA)
+
     def test_expression_start_is_not_a_result_and_trig_in_degrees(self):
         content = 'The power is $P = F v \\cos(90^\\circ) = 10 \\times 5 \\times 0 = 0$ W.'
         self.assertEqual(d.computed_results(content), [0.0])
@@ -134,7 +140,7 @@ class GuardTests(unittest.TestCase):
                 return validate({'additions': [{'gap': 'G1', 'calculations': ['2*3']}]})
         client = d.guarded(Fake())
         with self.assertRaises(ValueError):
-            client.call('x', 'p', validate=lambda r: d.calculation_errors(r['additions'][0]))
+            client.call('x', 'p', validate=lambda r: r['additions'][0]['calculations'][0].get('expr'))
 
 
 class ConceptTests(unittest.TestCase):

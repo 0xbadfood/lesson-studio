@@ -3,7 +3,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from search_agent import ResearchTools, canonical_url, cited_fetched_urls
+import json
+
+from search_agent import HarnessError, ResearchTools, canonical_url, cited_fetched_urls, complete_fitting
 
 
 class FakeTavily:
@@ -44,6 +46,31 @@ class ResearchToolsTests(unittest.TestCase):
         fetched = {canonical_url("https://example.gov/fact")}
         answer = "Supported by [the agency](https://example.gov/fact). Not https://blog.example/x"
         self.assertEqual(cited_fetched_urls(answer, fetched), fetched)
+
+
+
+class OverflowTests(unittest.TestCase):
+    def test_an_overflowing_conversation_is_shortened_and_asked_again(self):
+        page = {"url": "https://example.org/a", "content": "x" * 60000}
+        messages = [{"role": "user", "content": "q"},
+                    {"role": "tool", "name": "fetch_url", "content": json.dumps(page)}]
+
+        class Qwen:
+            max_tokens = 4096
+            calls = 0
+
+            def complete(self, messages, **kwargs):
+                self.calls += 1
+                size = sum(len(m["content"]) for m in messages) // 2      # 2 characters a token
+                if size + self.max_tokens > 32768:
+                    raise HarnessError(f"Qwen request failed: 400; response: This model's maximum context length is "
+                                       f"32768 tokens. However, you requested {size + self.max_tokens} tokens")
+                return {"content": "answer"}
+
+        qwen = Qwen()
+        self.assertEqual(complete_fitting(qwen, messages), {"content": "answer"})
+        self.assertEqual(qwen.calls, 2)
+        self.assertIn("page shortened", json.loads(messages[1]["content"])["content"])
 
 
 if __name__ == "__main__":
