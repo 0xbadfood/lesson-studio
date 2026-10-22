@@ -1,5 +1,12 @@
 # Chapters the nightly digest job builds (systemd user timer nightly-digest.timer); done ones are skipped.
 # Pilot 2026-10-14: Class 10 History, India and the Contemporary World II.
+# Biology Studio pilot (2026-10-22): the Class 11 Biology chapters the biology SVG library covers, first
+kebo1:06  # Class 11: Anatomy of Flowering Plants
+kebo1:10  # Class 11: Cell Cycle and Cell Division
+kebo1:14  # Class 11: Breathing and Exchange of Gases
+kebo1:15  # Class 11: Body Fluids and Circulation
+kebo1:16  # Class 11: Excretory Products and their Elimination
+
 jess3:01
 jess3:02
 jess3:03

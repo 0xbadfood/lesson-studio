@@ -18,7 +18,7 @@ DIGESTS = ROOT / 'textbook-digest'
 SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology', 'social_science'}
 SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_science': 'Political Science',
                  'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science',
-                 'chemistry': 'Chemistry'}
+                 'chemistry': 'Chemistry', 'biology': 'Biology'}
 # A studio is one profile of this code: its subjects, its own data folder (access code, films), cookie and job names.
 # Chemistry films also get exact figures (code-drawn chemistry and credited Commons diagrams, 2026-10-19).
 PROFILES = {
@@ -29,6 +29,11 @@ PROFILES = {
                   'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True,
                   'key_ideas': True,             # simplified films of a finished film's key ideas (2026-10-20)
                   'questions': True},
+    # Biology Studio (2026-10-22): Class 11-12 Biology. Its diagrams (~/biology SVG library) are not wired into films
+    # yet, so films use the image path like history until the biology figure type exists.
+    'biology': {'name': 'Biology Studio', 'mark': 'B', 'subjects': {'biology'}, 'data': 'biology-data',
+                'cookie': 'biology_session', 'job': 'biology', 'figures': False, 'key_ideas': True,
+                'questions': True},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)
