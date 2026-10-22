@@ -38,5 +38,12 @@ class BiologyTests(unittest.TestCase):
             self.assertGreater((Path(tmp) / 'h.png').stat().st_size, 10000)
 
 
+    def test_a_long_label_breaks_at_its_hyphen_and_stays_in_the_picture(self):
+        # Heart film S21: "Atrio-ventricular node" in the 100 px left gutter ran past the picture's edge
+        self.assertEqual(biology._wrap('Atrio-ventricular node', 100)[:2], ['Atrio-', 'ventricular'])
+        left = min(biology.entries()[i]['sidecar']['layout']['label_gutters']['left'][0] for i in biology.entries())
+        self.assertLess(biology.CROP[0], left - 100)
+
+
 if __name__ == '__main__':
     unittest.main()

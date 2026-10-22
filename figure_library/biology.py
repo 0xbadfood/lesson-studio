@@ -21,7 +21,8 @@ SVG_NS = 'http://www.w3.org/2000/svg'
 ET.register_namespace('', SVG_NS)
 MAX_LABELS = 5
 FONT = 21
-CROP = (688, 30, 912, 650)              # the label region and the artwork above the quiet bottom quarter
+CROP = (560, 30, 1040, 650)             # the label region and the artwork above the quiet bottom quarter, with a
+                                        # margin so a long word in the narrow left gutter is not cut (2026-10-22)
 DIM = '0.28'
 
 
@@ -148,7 +149,14 @@ def _theme(svg_text, light=False):
 def _wrap(words, width):
     per_line = max(6, int(width / (FONT * .56)))
     lines, line = [], ''
-    for word in words.split():
+    pieces = []
+    for word in words.split():                          # "Atrio-ventricular" breaks after its hyphen
+        while len(word) > per_line and '-' in word[:-1]:
+            cut = word.index('-') + 1
+            pieces.append(word[:cut])
+            word = word[cut:]
+        pieces.append(word)
+    for word in pieces:
         if line and len(line) + 1 + len(word) > per_line:
             lines.append(line)
             line = word
