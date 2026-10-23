@@ -105,6 +105,7 @@ class Solver:
         if record['status'] == 'settled':
             plan, trail = clips.plan(q, record, say)
             record['clips'] = plan.get('clips')
+            record['unwrap'] = plan.get('unwrap')
             record['clip_errors'] = trail['errors']
             record['usage'].update({f'clips-{k}': v for k, v in trail['usage'].items()})
         record['flow'] = flow
@@ -148,7 +149,8 @@ class Solver:
         return aid
 
     def snags(self):
-        """Clips that hit a snag, by missing family: how many, and how many went to manim or found a verb."""
+        """Clips that hit a snag, by missing family: how many (and how many in standard physics, the evidence for a
+        verb), and how many went to manim or found a verb."""
         decided, out = self.decisions(), {}
         for q in self.questions():
             record = self.record(q['id'])
@@ -156,8 +158,11 @@ class Solver:
                 aid = c.get('aid') or {}
                 if aid.get('kind') != 'missing':
                     continue
-                row = out.setdefault(aid.get('family') or 'unknown', {'clips': 0, 'manim': 0, 'linkwork': 0})
+                row = out.setdefault(aid.get('family') or 'unknown',
+                                     {'clips': 0, 'standard': 0, 'manim': 0, 'linkwork': 0})
                 row['clips'] += 1
+                if c.get('role') == 'standard':      # only the standard physics counts as evidence for a verb;
+                    row['standard'] += 1             # setups and unwrapping are one-offs (manim, user 2026-10-23)
                 route = decided.get(f'{q["id"]}:{c.get("n")}', {}).get('route')
                 if route in row:
                     row[route] += 1

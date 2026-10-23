@@ -39,10 +39,12 @@ def _image(path):
     return base64.b64encode((ROOT / path).read_bytes()).decode()
 
 
-def ask(who, prompt, images=(), *, max_tokens=12000, name='call'):
-    """One JSON answer from a model, cached. Returns (value, usage)."""
+def ask(who, prompt, images=(), *, max_tokens=12000, name='call', system=None):
+    """One JSON answer from a model, cached. Returns (value, usage). `system` adds to the standing instruction."""
     m = MODELS[who]
+    system = SYSTEM + ('\n\n' + system if system else '')
     identity = hashlib.sha256(json.dumps({'who': who, 'model': m['model'], 'effort': m['effort'], 'prompt': prompt,
+                                          **({'system': system} if system != SYSTEM else {}),
                                           'images': [hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
                                                      for p in images], 'max_tokens': max_tokens}).encode()).hexdigest()
     cached = CACHE / f'{name}-{who}-{identity[:16]}.json'
@@ -52,7 +54,7 @@ def ask(who, prompt, images=(), *, max_tokens=12000, name='call'):
         saved = json.loads(cached.read_text())
         if 'invalid' in saved:          # a malformed reply is cached too, so a replay goes straight to its retry
             return ask(who, prompt + retry_note.format(saved['invalid']), images, max_tokens=max_tokens,
-                       name=name + '-format')
+                       name=name + '-format', system=system.removeprefix(SYSTEM).strip() or None)
         return saved['value'], {**saved['usage'], 'cached': True}
     key = api_key(SECRETS, m['id'], m)
     if not key:
@@ -60,7 +62,7 @@ def ask(who, prompt, images=(), *, max_tokens=12000, name='call'):
     if m['type'] == 'openai_responses':
         content = [{'type': 'input_text', 'text': prompt + '\n\nRespond with one JSON object.'}] + [
             {'type': 'input_image', 'image_url': 'data:image/png;base64,' + _image(p)} for p in images]
-        path, body = '/responses', {'model': m['model'], 'instructions': SYSTEM,
+        path, body = '/responses', {'model': m['model'], 'instructions': system,
                                     'input': [{'role': 'user', 'content': content}],
                                     'reasoning': {'effort': m['effort']}, 'max_output_tokens': max_tokens * 3,
                                     'text': {'format': {'type': 'json_object'}}, 'store': False}
@@ -68,7 +70,7 @@ def ask(who, prompt, images=(), *, max_tokens=12000, name='call'):
         content = [{'type': 'text', 'text': prompt}] + [
             {'type': 'image_url', 'image_url': {'url': 'data:image/png;base64,' + _image(p)}} for p in images]
         path, body = '/chat/completions', {'model': m['model'], 'temperature': 0,
-                                           'messages': [{'role': 'system', 'content': SYSTEM},
+                                           'messages': [{'role': 'system', 'content': system},
                                                         {'role': 'user', 'content': content}],
                                            'max_tokens': max_tokens + 16000, 'reasoning': {'effort': m['effort']},
                                            'response_format': {'type': 'json_object'}, 'usage': {'include': True}}
@@ -112,7 +114,8 @@ def ask(who, prompt, images=(), *, max_tokens=12000, name='call'):
             # One format retry, as the film engine does: escape backslashes and quotes inside strings.
             CACHE.mkdir(parents=True, exist_ok=True)
             cached.write_text(json.dumps({'invalid': str(exc), 'text': text, 'usage': usage}, ensure_ascii=False))
-            return ask(who, prompt + retry_note.format(exc), images, max_tokens=max_tokens, name=name + '-format')
+            return ask(who, prompt + retry_note.format(exc), images, max_tokens=max_tokens, name=name + '-format',
+                       system=system.removeprefix(SYSTEM).strip() or None)
     CACHE.mkdir(parents=True, exist_ok=True)
     cached.write_text(json.dumps({'value': value, 'usage': usage, 'model': m['model']}, indent=1, ensure_ascii=False))
     return value, usage

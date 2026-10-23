@@ -83,6 +83,20 @@ FAMILIES = {
 }
 
 
+# The clip planner's system prompt (user, 2026-10-23, in their words): the mapping from the complex environment to the
+# basic principles is what a student pays coaching institutes to unwrap; it is worth most in the videos.
+PLANNER_SYSTEM = (
+    'You plan worked-solution videos for JEE questions, after the solution has been reached. JEE questions take a '
+    'familiar principle and put it in an unfamiliar setting - a cylinder rolling off an edge, a rod hinged across '
+    'two liquids, five Carnot engines in a chain - or bury it in a complicated environment. The student has to see '
+    'what is really going on before any formula helps. That is the skill these videos teach, not the algebra. '
+    'Solving the problem is not the point; unwrapping it is: map the complex environment to the basic principles '
+    'beneath it, element by element, and name what is there only to confuse. This unwrapping is what Indian '
+    'students pay coaching institutes a lot of money for, and it is worth most in the video: give it the most care '
+    'and the clearest pictures. Then the standard physics can be quick.')
+ROLES = ('setup', 'unwrap', 'standard')
+
+
 def aids(subject):
     base = ('none', 'question_figure', 'verb', 'missing')
     return base[:3] + ('chem_figure',) + base[3:] if subject == 'chemistry' else base
@@ -125,12 +139,18 @@ def shape(subject):
     chem = ('"figure": {"type": "one of ' + ', '.join(CHEM_FIGURES) + '", "what": "the species or reaction"} '
             '(only for kind chem_figure), ' if subject == 'chemistry' else '')
     return (
-        'Return {"clips": [{"n": 1, "explains": "what this clip makes the student understand, one sentence", '
+        'Return {"unwrap": [{"in_the_question": "...", "is_really": "the principle or model", "why": "..."}], '
+        '"clips": [{"n": 1, "role": "setup|unwrap|standard", "explains": "what this clip makes the student '
+        'understand, one sentence", '
         '"steps": [solution step numbers it covers], "concepts": ["book concept refs from the catalogue, e.g. '
         f'{BOOKS[subject][0]}-02:C3; one to three"], "aid": {{"kind": "{kinds}", "verb": "a verb name, only for '
         f'kind verb", {chem}"family": "a family name, only for kind missing (or other:<name>)", "shows": "what the '
         'picture shows and how it moves, one or two sentences", "why": "why this aid and not the others"}}]}. '
-        'Three to six clips; every solution step belongs to exactly one clip, in order. Choose a verb only when its '
+        'Roles, in this order: setup (the question as given: what makes it look hard), unwrap (one or more clips '
+        'that map each element of the setting to its principle or model, and set the decoys aside; the heart of '
+        'the video), standard (the physics or algebra that follows, kept brisk). Steps that only restate the setup '
+        'may stay in setup clips; the unwrapping may need clips with no solution step if the solution skipped it. '
+        'Three to seven clips; every solution step belongs to exactly one clip, in order. Choose a verb only when its '
         'card\'s use_when fits and its not_when does not; a near fit is "missing", not "verb". "none" is right when '
         'the equations alone carry the idea: do not decorate.')
 
@@ -140,7 +160,8 @@ def context(q, record):
     return {
         'question': {'id': q['id'], 'type': q['type'], 'text': q['text'], 'stem': q.get('stem'),
                      'official_answer': (q.get('answer') or {}).get('raw')},
-        'solution': {k: record['solution'].get(k) for k in ('answer', 'steps', 'ideas', 'check', 'options')},
+        'solution': {k: record['solution'].get(k) for k in ('answer', 'unwrap', 'decoys', 'steps', 'ideas', 'check',
+                                                          'options')},
         'verbs': cards(subject),
         'missing_families': FAMILIES[subject],
     }
@@ -149,8 +170,8 @@ def context(q, record):
 def errors(plan, steps, subject='physics'):
     found = []
     clips = plan.get('clips') if isinstance(plan, dict) else None
-    if not isinstance(clips, list) or not 1 <= len(clips) <= 8:
-        return ['clips must be a list of 1-8 clips']
+    if not isinstance(clips, list) or not 1 <= len(clips) <= 9:
+        return ['clips must be a list of 1-9 clips']
     known, verbs, kinds = concepts(subject), cards(subject), aids(subject)
     covered = []
     for c in clips:
@@ -172,6 +193,15 @@ def errors(plan, steps, subject='physics'):
             family = str(aid.get('family') or '')
             if family not in FAMILIES[subject] and not family.startswith('other:'):
                 found.append(f'clip {n}: family {family!r} is not listed; use other:<name>')
+    roles = [c.get('role') for c in clips]
+    if any(r not in ROLES for r in roles):
+        found.append(f'each clip needs a role, one of {ROLES}')
+    elif 'unwrap' not in roles:
+        found.append('no unwrap clip: map the setting to its principles before the standard physics')
+    elif 'standard' in roles and roles.index('standard') < roles.index('unwrap'):
+        found.append('the unwrapping must come before the standard physics')
+    if not plan.get('unwrap'):
+        found.append('give the unwrap mapping: each element of the setting -> the principle it really is')
     if sorted(covered) != sorted(steps):
         found.append(f'the clips cover steps {sorted(covered)} but the solution has steps {sorted(steps)}: each '
                      'step in exactly one clip')
@@ -193,13 +223,13 @@ def plan(q, record, progress=None):
     planner = record.get('planner') or 'team'
     if planner != 'team':
         say(f'Planning the clips: {planner} alone')
-        final, usage[planner] = ask(planner, lead, pages, max_tokens=12000, name=f'{q["id"]}-clips-{planner}')
+        final, usage[planner] = ask(planner, lead, pages, max_tokens=12000, name=f'{q["id"]}-clips-{planner}', system=PLANNER_SYSTEM)
         left = errors(final, steps, subject)
         if left:
             say(f'Code found {len(left)} faults; {planner} repairs the plan once')
             final, usage[f'{planner}-repair'] = ask(planner, lead + '\n\nYour plan:\n' + json.dumps(
                 final, ensure_ascii=False) + '\n\nIt failed these checks; fix them: ' + '; '.join(left), pages,
-                max_tokens=12000, name=f'{q["id"]}-clips-{planner}-repair')
+                max_tokens=12000, name=f'{q["id"]}-clips-{planner}-repair', system=PLANNER_SYSTEM)
             left = errors(final, steps, subject)
         trail['final'] = final
         say(f'Plan settled: {len(final.get("clips") or [])} clips' + (f'; checks still failing: {"; ".join(left)}' if left else ''))
@@ -207,27 +237,30 @@ def plan(q, record, progress=None):
     author = record.get('author') or 'haiku'
     other = next(w for w in ('haiku', 'luna') if w != author)
     say(f'Planning the clips: {author} drafts')
-    draft, usage[author] = ask(author, lead, pages, name=f'{q["id"]}-clips-draft')
+    draft, usage[author] = ask(author, lead, pages, name=f'{q["id"]}-clips-draft', system=PLANNER_SYSTEM)
     trail['draft'] = {**draft, 'by': author}
     issues = errors(draft, steps, subject)
     say(f'Draft: {len(draft.get("clips") or [])} clips; {other} reviews it')
     review_task = (lead + '\n\nA colleague drafted this plan:\n' + json.dumps(draft, ensure_ascii=False) +
                    ('\nCode found: ' + '; '.join(issues) if issues else '') +
-                   '\n\nReview it as a teacher would: wrong or missing concepts, a clip that teaches two things, an '
+                   '\n\nReview it as a teacher would. First the unwrapping: does it map every element of the setting '
+                   'to its principle, name the decoys, and get the most care? Then: wrong or missing concepts, a clip '
+                   'that teaches two things, an '
                    'aid that does not fit its card (or a verb forced where "missing" or "none" is honest). Return '
                    '{"findings": [{"clip": n, "problem": "...", "fix": "..."}], "verdict": "accept|revise"}.')
-    review, usage[other] = ask(other, review_task, pages, name=f'{q["id"]}-clips-review')
+    review, usage[other] = ask(other, review_task, pages, name=f'{q["id"]}-clips-review', system=PLANNER_SYSTEM)
     trail['review'] = {**review, 'by': other}
     say(f'{other}: {review.get("verdict", "?")}, {len(review.get("findings") or [])} findings; Opus settles the plan')
     settle = (lead + '\n\nThe planner drafted:\n' + json.dumps(draft, ensure_ascii=False) + '\n\nThe reviewer found:\n' +
               json.dumps(review, ensure_ascii=False) + ('\nCode found: ' + '; '.join(issues) if issues else '') +
               '\n\nYou are the teacher and have the final say. Return the final plan in the same shape. Take a '
               'finding only if it is right.')
-    final, usage['opus'] = ask('opus', settle, pages, max_tokens=12000, name=f'{q["id"]}-clips-final')
+    final, usage['opus'] = ask('opus', settle, pages, max_tokens=12000, name=f'{q["id"]}-clips-final', system=PLANNER_SYSTEM)
     left = errors(final, steps, subject)
     if left:
         final, usage['opus-repair'] = ask('opus', settle + '\n\nYour plan failed these checks; fix them: ' +
-                                          '; '.join(left), pages, max_tokens=12000, name=f'{q["id"]}-clips-repair')
+                                          '; '.join(left), pages, max_tokens=12000, name=f'{q["id"]}-clips-repair',
+                                          system=PLANNER_SYSTEM)
         left = errors(final, steps, subject)
     trail['final'] = final
     say(f'Plan settled: {len(final.get("clips") or [])} clips' + (f'; checks still failing: {"; ".join(left)}' if left else ''))

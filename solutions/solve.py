@@ -33,10 +33,14 @@ TYPES = {
 }
 SOLUTION_SHAPE = (
     'Return {"answer": "<letters or number>", "options": {"A": {"correct": true|false, "why": "..."}, ...} '
-    '(omit for numerical), "steps": [{"n": 1, "title": "short", "working": "the reasoning and equations of this '
+    '(omit for numerical), "unwrap": [{"in_the_question": "an element of the setup as the question dresses it", '
+    '"is_really": "the familiar principle or model it maps to", "why": "what in the setup tells you so"}], '
+    '"decoys": ["details there to confuse or that do not matter, and why"], "steps": [{"n": 1, "title": "short", "working": "the reasoning and equations of this '
     'step, in plain text with Unicode maths (√, ², θ, ω, ×); never LaTeX or backslashes", "result": "what this step establishes"}], "ideas": ["each physics '
     'principle or law the solution uses"], "check": "one independent sanity check of the result (limits, units, '
-    'a special case)"}. Steps are the order a teacher would explain them; each does one thing.')
+    'a special case)"}. Unwrap first: before any formula, map the unfamiliar setting to the familiar principles '
+    'beneath it, element by element; the steps then work from that model. Steps are the order a teacher would '
+    'explain them; each does one thing.')
 
 
 def question_prompt(q):

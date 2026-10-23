@@ -520,7 +520,7 @@ async function showSolveList(year) {
     <section class="hero"><div class="eyebrow">Solve</div><h1>Exam questions, solved and checked</h1>
       <p>Two student models solve each question on their own. If both match the official answer, the teacher model only reviews them; if not, the teacher solves it. An answer that still misses the official key stops for a person to review.</p></section>
     ${Object.keys(data.snags || {}).length ? `<div class="section-title"><h2>Snags: no Linkwork aid</h2><span>clips by missing family · the evidence for build a verb or leave it to manim</span></div>
-      <div class="verdicts">${Object.entries(data.snags).map(([fam, n]) => `<div class="verdict"><span class="sub">${esc(fam)}</span><b>${n.clips} clip${n.clips === 1 ? '' : 's'}</b><span class="sub">${n.manim} to manim · ${n.linkwork} found on retry</span></div>`).join('')}</div>` : ''}
+      <div class="verdicts">${Object.entries(data.snags).map(([fam, n]) => `<div class="verdict"><span class="sub">${esc(fam)}</span><b>${n.clips} clip${n.clips === 1 ? '' : 's'}</b><span class="sub">${n.standard ?? 0} in standard physics (verb evidence) · ${n.manim} to manim · ${n.linkwork} found on retry</span></div>`).join('')}</div>` : ''}
     ${Object.entries(papers).map(([name, qs]) => `
       <div class="section-title"><h2>JEE Advanced ${esc(name)}</h2><span>${qs.length} questions</span></div>
       <div class="solve-list">${qs.map((q) => `
@@ -618,6 +618,8 @@ async function showSolve(qid) {
       ${sol ? `<h2>The solution</h2><p class="sub">Answer: ${esc(sol.answer)}. Ideas used: ${esc((sol.ideas || []).join('; '))}</p>
         <ol class="steps-list">${(sol.steps || []).map((s) => `<li><b>${esc(s.title)}</b><pre>${esc(s.working)}</pre><span class="sub">${esc(s.result || '')}</span></li>`).join('')}</ol>
         ${sol.check ? `<p class="sub"><b>Check:</b> ${esc(sol.check)}</p>` : ''}` : ''}
+      ${(r.unwrap || sol?.unwrap || []).length ? `<h2>Unwrapping the question</h2><ul>${(r.unwrap || sol.unwrap).map((u) => `<li><b>${esc(u.in_the_question)}</b> is really <b>${esc(u.is_really)}</b>${u.why ? ` <span class="sub">(${esc(u.why)})</span>` : ''}</li>`).join('')}</ul>
+        ${(sol?.decoys || []).length ? `<p class="sub"><b>There to confuse:</b> ${esc(sol.decoys.join(' · '))}</p>` : ''}` : ''}
       ${(r.clips || []).length ? `<h2>Clips</h2><p class="sub">What each clip explains, the book concepts it rests on, and the drawing aid it needs</p>
         ${r.clips.map((c) => {
           const a = c.aid || {};
@@ -634,7 +636,8 @@ async function showSolve(qid) {
               ${d.route === 'manim' ? '' : `<button class="btn" type="button" data-manim="${c.n}">Proceed with manim</button>`}
               <button class="btn ghost" type="button" data-retry="${c.n}">Retry Linkwork search</button></div>`;
           }
-          return `<div class="clip"><span class="chapter-no">Clip ${c.n} · steps ${esc((c.steps || []).join(', '))}</span>
+          const role = { setup: 'The setup', unwrap: 'Unwrapping', standard: 'Standard physics' }[c.role] || '';
+          return `<div class="clip"><span class="chapter-no">Clip ${c.n}${role ? ` · ${role}` : ''} · steps ${esc((c.steps || []).join(', ') || '—')}</span>
             <h3>${esc(c.explains)}</h3><span class="badge aid ${cls}">${esc(aid)}</span>
             <p class="sub">${esc((d.route === 'linkwork' && d.shows) || a.shows || '')}</p>
             <p class="sub"><b>Book:</b> ${esc((c.concept_names || c.concepts || []).join(' · '))}</p>${snag}</div>`;
