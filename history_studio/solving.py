@@ -175,14 +175,14 @@ class Solver:
     def detail(self, qid):
         q = self.question(qid)
         record = self.record(qid)
-        known = clips.concepts()
+        known = clips.all_concepts()
         if record:
             decided = self.decisions()
             for c in record.get('clips') or []:
                 c['concept_names'] = [known.get(ref, ref) for ref in c.get('concepts') or []]
                 c['decision'] = decided.get(f'{qid}:{c.get("n")}')
         return {'id': q['id'], 'year': q['year'], 'paper': q['paper'], 'number': q['number'], 'type': q['type'],
-                'key': q['answer']['raw'], 'pages': len(q.get('pages', [])), 'state': self.state(qid),
+                'key': (q.get('answer') or {}).get('raw'), 'pages': len(q.get('pages', [])), 'state': self.state(qid),
                 'error': self.failed.get(qid), 'record': record,
                 'flow': self.flow.get(qid) if self.state(qid) in ('solving', 'failed') else None}
 

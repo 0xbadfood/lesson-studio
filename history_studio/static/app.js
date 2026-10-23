@@ -485,9 +485,9 @@ async function showLibrary() {
 
 /* ---------------------------------------------------------------- solve (Physics Studio) */
 const TYPE_NAMES = { single: 'One correct option', multiple: 'One or more options', numerical: 'Numerical', match: 'Matching lists' };
-const STATE_NAMES = { new: 'Not solved', queued: 'Waiting', solving: 'Solving', settled: 'Settled', needs_review: 'Needs review', failed: 'Failed' };
+const STATE_NAMES = { new: 'Not solved', queued: 'Waiting', solving: 'Solving', settled: 'Settled', unverified: 'Unverified (no key)', needs_review: 'Needs review', failed: 'Failed' };
 function stateBadge(s) {
-  const cls = s === 'settled' ? 'ready' : (s === 'solving' || s === 'queued') ? 'making' : '';
+  const cls = (s === 'settled' || s === 'unverified') ? 'ready' : (s === 'solving' || s === 'queued') ? 'making' : '';
   return `<span class="badge ${cls}">${(s === 'solving' || s === 'queued') ? '<i class="dot"></i>' : ''}${esc(STATE_NAMES[s] || s)}</span>`;
 }
 
@@ -513,7 +513,7 @@ async function showSolveList() {
 
 function aidName(a) {
   a = a || {};
-  return a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'missing' ? `missing · ${a.family}` : a.kind === 'question_figure' ? 'question figure' : 'equations only';
+  return a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'chem_figure' ? `chemistry figure · ${a.figure?.type}` : a.kind === 'missing' ? `missing · ${a.family}` : a.kind === 'question_figure' ? 'question figure' : 'equations only';
 }
 
 function flowHtml(flow) {
@@ -537,24 +537,27 @@ function reasoningHtml(r) {
   if (r.route === 'review') {
     const errs = Object.entries(t.step_errors || {}).map(([k, list]) => `<li><b>${esc(who(k))}</b>: ${list.length ? esc(list.join(' · ')) : 'no wrong steps found'}</li>`).join('');
     teacher = `<h3>Opus's review</h3><p>${esc(t.why || '')}</p><ul>${errs}</ul>
-      ${(t.improvements || []).length ? `<p class="sub"><b>To fix before teaching:</b> ${esc(t.improvements.join(' · '))}</p>` : ''}`;
+      ${(t.improvements || []).length ? `<p class="sub"><b>What Opus changed in the chosen solution:</b> ${esc(t.improvements.join(' · '))}</p>` : ''}`;
+  } else if (r.route === 'one_right') {
+    teacher = '';
   } else {
     const notes = Object.entries(t.students || {}).map(([k, v]) => `<li><b>${esc(who(k))}</b>: ${esc(v)}</li>`).join('');
     teacher = `<h3>Opus on the students' attempts</h3><ul>${notes}</ul>`;
   }
   const att = r.attempts || {};
   const students = ['haiku', 'luna'].filter((k) => att[k]).map((k) => `<details><summary>${esc(k)}'s working ${mark(r.students[k]?.right)}</summary>${workingHtml(att[k])}</details>`).join('');
-  const opus = r.route === 'teacher_solves' && att.opus ? `<details><summary>Opus's own working ${mark(t.right)}</summary>${workingHtml(att.opus)}</details>` : '';
+  const opus = att.opus ? `<details><summary>${r.route === 'review' ? 'Opus\'s improved version (taught below)' : `Opus's own working ${mark(t.right)}`}</summary>${workingHtml(att.opus)}</details>` : '';
   return `<section class="reasoning"><h2>How it was settled</h2>${r.flow ? flowHtml(r.flow) : ''}${students}${opus}${teacher}</section>`;
 }
 
 function clipTrailHtml(trail) {
   if (!trail) return '';
+  if (!trail.draft) return `<details class="reasoning"><summary>How the clips were planned</summary><p>Planned by one model alone (the one that settled the solution); code checked the plan.</p></details>`;
   const draft = (trail.draft?.clips || []).map((c) => `<li>Clip ${c.n}: ${esc(c.explains)} <span class="sub">(${esc(aidName(c.aid))})</span></li>`).join('');
   const findings = (trail.review?.findings || []).map((f) => `<li>Clip ${esc(f.clip)}: ${esc(f.problem)} <span class="sub">Fix: ${esc(f.fix)}</span></li>`).join('');
   return `<details class="reasoning"><summary>How the clips were planned</summary>
-    <h3>Haiku's draft</h3><ol>${draft}</ol>
-    <h3>Luna's review: ${esc(trail.review?.verdict || '')}</h3>${findings ? `<ul>${findings}</ul>` : '<p class="sub">No findings.</p>'}
+    <h3>${esc(trail.draft.by || 'haiku')}'s draft</h3><ol>${draft}</ol>
+    <h3>${esc(trail.review?.by || 'luna')}'s review: ${esc(trail.review?.verdict || '')}</h3>${findings ? `<ul>${findings}</ul>` : '<p class="sub">No findings.</p>'}
     <h3>Opus settled the plan shown above</h3></details>`;
 }
 
@@ -574,18 +577,22 @@ async function showSolve(qid) {
     body = `${d.error ? `<p class="error">${esc(d.error)}</p>` : ''}${d.flow ? flowHtml(d.flow) : ''}<button class="btn" id="solve-go" type="button">Solve this question</button>`;
   } else {
     const t = r.teacher || {};
+    const keyed = r.key !== null && r.key !== undefined;
     const teacherLine = r.route === 'review'
-      ? `Both students matched the key, so the teacher only reviewed: it chose <b>${esc(r.author)}</b>'s solution. ${esc(t.why || '')}`
-      : `The students disagreed or missed, so the teacher solved it: <b>${esc(t.answer)}</b> ${mark(t.right)}.`;
+      ? `Both students ${keyed ? 'matched the key' : 'agreed (no official key)'}, so Opus only reviewed: it chose <b>${esc(r.author)}</b>'s solution${r.improved ? ' and improved it' : ''}. ${esc(t.why || '')}`
+      : r.route === 'one_right'
+      ? `Only <b>${esc(r.author)}</b> matched the key, so its solution is the one and it planned the clips alone. No Opus call.`
+      : `The students ${keyed ? 'both missed the key' : 'disagreed'}, so Opus solved it: <b>${esc(t.answer)}</b> ${mark(t.right)}${t.right ? ', and planned the clips alone' : ''}.`;
     const sol = r.solution;
     body = `
       <div class="verdicts">
         ${Object.entries(r.students).map(([who, s]) => `<div class="verdict"><span class="sub">Student · ${esc(who)}</span><b>${esc(s.answer ?? 'no answer')} ${mark(s.right)}</b></div>`).join('')}
-        <div class="verdict"><span class="sub">Official key</span><b>${esc(r.key)}</b></div>
+        <div class="verdict"><span class="sub">Official key</span><b>${esc(r.key ?? 'none found')}</b></div>
         <div class="verdict"><span class="sub">Outcome</span><b>${stateBadge(r.status)}</b></div>
       </div>
       <p>${teacherLine}</p>
-      ${r.status !== 'settled' ? '<p class="error">No answer reached the official key. This question needs a person to review it.</p>' : ''}
+      ${r.status === 'needs_review' ? `<p class="error">${keyed ? 'No answer reached the official key.' : 'The models could not agree on an answer.'} This question needs a person to review it.</p>` : ''}
+      ${r.status === 'unverified' ? '<p class="sub">No official key was found for this year: the answer is agreed by the models, not checked against a key.</p>' : ''}
       ${reasoningHtml(r)}
       ${sol ? `<h2>The solution</h2><p class="sub">Answer: ${esc(sol.answer)}. Ideas used: ${esc((sol.ideas || []).join('; '))}</p>
         <ol class="steps-list">${(sol.steps || []).map((s) => `<li><b>${esc(s.title)}</b><pre>${esc(s.working)}</pre><span class="sub">${esc(s.result || '')}</span></li>`).join('')}</ol>
@@ -594,8 +601,8 @@ async function showSolve(qid) {
         ${r.clips.map((c) => {
           const a = c.aid || {};
           const d = c.decision || {};
-          let aid = a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'question_figure' ? 'The question\'s figure' : 'Equations only';
-          let cls = a.kind === 'verb' ? 'ready' : '';
+          let aid = a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'chem_figure' ? `Chemistry figure · ${a.figure?.type}: ${a.figure?.what || ''}` : a.kind === 'question_figure' ? 'The question\'s figure' : 'Equations only';
+          let cls = (a.kind === 'verb' || a.kind === 'chem_figure') ? 'ready' : '';
           let snag = '';
           if (a.kind === 'missing') {
             if (d.route === 'linkwork') { aid = `Linkwork · ${d.verb} (found on retry)`; cls = 'ready'; }
