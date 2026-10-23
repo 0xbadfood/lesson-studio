@@ -271,3 +271,17 @@ audio { width: 100%; margin-top: 12px; }
 .q-option.wrong { border-color: var(--accent); background: var(--accent-soft); }
 .q-reveal { margin-top: 10px; font-size: 15px; }
 .q-reveal p { margin: 0 0 6px; }
+
+/* Solve (Physics Studio) */
+.solve-list { display: grid; gap: 10px; }
+.solve-row { display: grid; grid-template-columns: 110px 1fr auto; gap: 14px; align-items: center; padding: 14px 16px; }
+.solve-row .sub { margin: 0; }
+.solve-pages img { width: 100%; max-width: 820px; border: 1px solid var(--line); border-radius: 10px; background: #fff; margin: 6px 0; }
+.verdicts { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin: 14px 0; }
+.verdict { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.verdict b { display: block; font-family: var(--serif); font-size: 18px; }
+.right-mark { color: var(--ok); } .wrong-mark { color: var(--accent); }
+.steps-list { padding-left: 22px; } .steps-list li { margin: 10px 0; } .steps-list pre { white-space: pre-wrap; font: inherit; margin: 4px 0; color: var(--muted); }
+.clip { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 10px 0; }
+.clip .aid { display: inline-block; margin: 6px 0; }
+@media (max-width: 640px) { .solve-row { grid-template-columns: 1fr; gap: 6px; } }

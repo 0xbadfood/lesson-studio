@@ -18,7 +18,7 @@ DIGESTS = ROOT / 'textbook-digest'
 SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology', 'social_science'}
 SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_science': 'Political Science',
                  'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science',
-                 'chemistry': 'Chemistry', 'biology': 'Biology'}
+                 'chemistry': 'Chemistry', 'biology': 'Biology', 'physics': 'Physics'}
 # A studio is one profile of this code: its subjects, its own data folder (access code, films), cookie and job names.
 # Chemistry films also get exact figures (code-drawn chemistry and credited Commons diagrams, 2026-10-19).
 PROFILES = {
@@ -33,6 +33,11 @@ PROFILES = {
     'biology': {'name': 'Biology Studio', 'mark': 'B', 'subjects': {'biology'}, 'data': 'biology-data',
                 'cookie': 'biology_session', 'job': 'biology', 'figures': 'biology', 'key_ideas': True,
                 'questions': True},
+    # Physics Studio (2026-10-23): Class 11-12 Physics, and Solve: JEE questions solved by two students and a teacher
+    # model, checked against the official key, then planned as worked-solution clips with their drawing aids.
+    'physics': {'name': 'Physics Studio', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',
+                'cookie': 'physics_session', 'job': 'physics', 'figures': False, 'key_ideas': True,
+                'questions': True, 'solve': 'physics'},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)

@@ -1,6 +1,7 @@
 'use strict';
 const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'history', key_ideas: false};
 const view = document.getElementById('view');
+if (STUDIO.solve) document.getElementById('nav-solve').hidden = false;
 const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null, activityTimer: null, questionTimer: null };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -482,6 +483,88 @@ async function showLibrary() {
       </a>`).join('')}</div>` : '<p class="empty">No films yet. Pick a chapter and make the first one.</p>'}`;
 }
 
+/* ---------------------------------------------------------------- solve (Physics Studio) */
+const TYPE_NAMES = { single: 'One correct option', multiple: 'One or more options', numerical: 'Numerical', match: 'Matching lists' };
+const STATE_NAMES = { new: 'Not solved', queued: 'Waiting', solving: 'Solving', settled: 'Settled', needs_review: 'Needs review', failed: 'Failed' };
+function stateBadge(s) {
+  const cls = s === 'settled' ? 'ready' : (s === 'solving' || s === 'queued') ? 'making' : '';
+  return `<span class="badge ${cls}">${(s === 'solving' || s === 'queued') ? '<i class="dot"></i>' : ''}${esc(STATE_NAMES[s] || s)}</span>`;
+}
+
+async function showSolveList() {
+  chrome(true, 'solve');
+  const data = await api('/api/solve');
+  const papers = {};
+  data.questions.forEach((q) => { (papers[`${q.year} · Paper ${q.paper}`] ||= []).push(q); });
+  view.innerHTML = `
+    <section class="hero"><div class="eyebrow">Solve</div><h1>Exam questions, solved and checked</h1>
+      <p>Two student models solve each question on their own. If both match the official answer, the teacher model only reviews them; if not, the teacher solves it. An answer that still misses the official key stops for a person to review.</p></section>
+    ${Object.entries(papers).map(([name, qs]) => `
+      <div class="section-title"><h2>JEE Advanced ${esc(name)}</h2><span>${qs.length} questions</span></div>
+      <div class="solve-list">${qs.map((q) => `
+        <a class="card solve-row" href="#/solve/${esc(q.id)}">
+          <span class="chapter-no">Q.${q.number}</span>
+          <div><p>${esc(q.preview)}…</p><p class="sub">${esc(TYPE_NAMES[q.type] || q.type)}</p></div>
+          ${stateBadge(q.state)}
+        </a>`).join('')}</div>`).join('')}`;
+}
+
+function mark(ok) { return ok ? '<span class="right-mark">✓</span>' : '<span class="wrong-mark">✗</span>'; }
+
+async function showSolve(qid) {
+  chrome(true, 'solve');
+  clearTimeout(state.timer);
+  const d = await api(`/api/solve/${encodeURIComponent(qid)}`);
+  const r = d.record;
+  const pages = Array.from({ length: d.pages }, (_, i) => `<img loading="lazy" src="/api/solve/${encodeURIComponent(qid)}/page/${i}" alt="Question paper page">`).join('');
+  let body = '';
+  if (d.state === 'solving' || d.state === 'queued') {
+    body = `<div class="now-line"><div class="spinner"></div><p class="sub">${d.state === 'queued' ? 'Waiting for the question before it…' : 'The students are solving it; then the teacher reviews or solves, and the clips are planned (a few minutes)…'}</p></div>`;
+    state.timer = setTimeout(() => showSolve(qid), 5000);
+  } else if (!r) {
+    body = `${d.error ? `<p class="error">${esc(d.error)}</p>` : ''}<button class="btn" id="solve-go" type="button">Solve this question</button>`;
+  } else {
+    const t = r.teacher || {};
+    const teacherLine = r.route === 'review'
+      ? `Both students matched the key, so the teacher only reviewed: it chose <b>${esc(r.author)}</b>'s solution. ${esc(t.why || '')}`
+      : `The students disagreed or missed, so the teacher solved it: <b>${esc(t.answer)}</b> ${mark(t.right)}.`;
+    const sol = r.solution;
+    body = `
+      <div class="verdicts">
+        ${Object.entries(r.students).map(([who, s]) => `<div class="verdict"><span class="sub">Student · ${esc(who)}</span><b>${esc(s.answer ?? 'no answer')} ${mark(s.right)}</b></div>`).join('')}
+        <div class="verdict"><span class="sub">Official key</span><b>${esc(r.key)}</b></div>
+        <div class="verdict"><span class="sub">Outcome</span><b>${stateBadge(r.status)}</b></div>
+      </div>
+      <p>${teacherLine}</p>
+      ${r.status !== 'settled' ? '<p class="error">No answer reached the official key. This question needs a person to review it.</p>' : ''}
+      ${sol ? `<h2>The solution</h2><p class="sub">Answer: ${esc(sol.answer)}. Ideas used: ${esc((sol.ideas || []).join('; '))}</p>
+        <ol class="steps-list">${(sol.steps || []).map((s) => `<li><b>${esc(s.title)}</b><pre>${esc(s.working)}</pre><span class="sub">${esc(s.result || '')}</span></li>`).join('')}</ol>
+        ${sol.check ? `<p class="sub"><b>Check:</b> ${esc(sol.check)}</p>` : ''}` : ''}
+      ${(r.clips || []).length ? `<h2>Clips</h2><p class="sub">What each clip explains, the book concepts it rests on, and the drawing aid it needs</p>
+        ${r.clips.map((c) => {
+          const a = c.aid || {};
+          const aid = a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'missing' ? `Missing · ${a.family}` : a.kind === 'question_figure' ? 'The question\'s figure' : 'Equations only';
+          return `<div class="clip"><span class="chapter-no">Clip ${c.n} · steps ${esc((c.steps || []).join(', '))}</span>
+            <h3>${esc(c.explains)}</h3><span class="badge aid ${a.kind === 'verb' ? 'ready' : a.kind === 'missing' ? 'making' : ''}">${esc(aid)}</span>
+            <p class="sub">${esc(a.shows || '')}</p>
+            <p class="sub"><b>Book:</b> ${esc((c.concept_names || c.concepts || []).join(' · '))}</p></div>`;
+        }).join('')}` : ''}
+      <button class="btn ghost" id="solve-go" type="button">Solve again</button>`;
+  }
+  view.innerHTML = `
+    <section class="hero"><div class="eyebrow">JEE Advanced ${d.year} · Paper ${d.paper} · ${esc(TYPE_NAMES[d.type] || d.type)}</div>
+      <h1>Question ${d.number}</h1><p><a href="#/solve">‹ All questions</a></p></section>
+    <details class="solve-pages" ${r ? '' : 'open'}><summary>The question paper</summary>${pages}</details>
+    ${body}`;
+  const go = document.getElementById('solve-go');
+  if (go) go.onclick = async () => {
+    if (!confirm('Solving calls the cloud models (two students and the teacher). Go ahead?')) return;
+    go.disabled = true;
+    try { await api(`/api/solve/${encodeURIComponent(qid)}`, { method: 'POST' }); } catch (err) { alert(err.message); }
+    showSolve(qid);
+  };
+}
+
 /* ---------------------------------------------------------------- routing */
 async function route() {
   stopPolling();
@@ -493,6 +576,7 @@ async function route() {
     if (parts[0] === 'chapter') await showChapter(parts[1]);
     else if (parts[0] === 'film') await showFilm(parts[1]);
     else if (parts[0] === 'library') await showLibrary();
+    else if (parts[0] === 'solve' && STUDIO.solve) await (parts[1] ? showSolve(decodeURIComponent(parts[1])) : showSolveList());
     else await showHome();
   } catch (err) {
     if (err.message !== 'signed out') view.innerHTML = `<p class="empty">${esc(err.message)}</p>`;

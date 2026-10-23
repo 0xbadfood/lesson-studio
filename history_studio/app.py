@@ -28,7 +28,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from history_studio import activity, catalog, ideas, questions
+from history_studio import activity, catalog, ideas, questions, solving
 
 REMOTION = Path('/home/nitin/remotion')
 sys.path.insert(0, str(REMOTION))
@@ -372,7 +372,8 @@ def page(profile):
     """The single page, named for the studio (History Studio's page is unchanged)."""
     subject = profile['job']
     studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject,
-                         'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions'))})
+                         'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions')),
+                         'solve': bool(profile.get('solve'))})
     text = (HERE / 'static' / 'index.html').read_text()
     text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {subject} textbook')
     text = text.replace('<span class="mark">H</span>', f'<span class="mark">{profile["mark"]}</span>')
@@ -591,6 +592,43 @@ def build(queue=None, access=None, data=None, profile=None):
                                              'kind', 'idea')}
                        | {'cover': item['scenes'][0]['src'] if item['scenes'] else None})
         return {'films': out}
+
+    solver = solving.Solver(profile['solve']) if profile.get('solve') else None
+
+    def solving_on():
+        if solver is None:
+            raise HTTPException(404, 'Solve is not offered here')
+        return solver
+
+    @app.get('/api/solve')
+    def solve_list(request: Request):
+        signed_in(request)
+        return {'questions': solving_on().listing()}
+
+    @app.get('/api/solve/{qid}')
+    def solve_detail(qid: str, request: Request):
+        signed_in(request)
+        try:
+            return solving_on().detail(qid)
+        except KeyError:
+            raise HTTPException(404, 'No such question')
+
+    @app.post('/api/solve/{qid}', status_code=202)
+    def solve_start(qid: str, request: Request):
+        signed_in(request)
+        try:
+            solving_on().start(qid)
+            return solving_on().detail(qid)
+        except KeyError:
+            raise HTTPException(404, 'No such question')
+
+    @app.get('/api/solve/{qid}/page/{n}')
+    def solve_page(qid: str, n: int, request: Request):
+        signed_in(request)
+        try:
+            return FileResponse(solving_on().page(qid, n), headers={'Cache-Control': 'private, max-age=86400'})
+        except KeyError:
+            raise HTTPException(404)
 
     @app.get('/media/{film}/{kind}')
     @app.get('/media/{film}/{kind}/{item}')
