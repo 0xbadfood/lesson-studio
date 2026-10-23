@@ -31,7 +31,7 @@ class Solver:
     def __init__(self, subject):
         self.subject = subject
         self.waiting = queue.Queue()
-        self.busy, self.failed, self.queued = None, {}, []
+        self.busy, self.failed, self.queued, self.flow = None, {}, [], {}
         self.lock = threading.Lock()
         threading.Thread(target=self._work, daemon=True).start()
 
@@ -54,6 +54,8 @@ class Solver:
                 record = json.loads(path.read_text())
                 solutions = folder / f'{qid}.solutions.json'
                 record['attempts'] = json.loads(solutions.read_text()) if solutions.exists() else {}
+                trail = folder / f'{qid}.clips-trail.json'
+                record['clip_trail'] = json.loads(trail.read_text()).get('trail') if trail.exists() else None
                 return record
         return None
 
@@ -92,13 +94,23 @@ class Solver:
                     self.busy = None
 
     def _solve(self, q):
-        record, attempts = solve.solve(q)
+        flow = self.flow[q['id']] = []
+
+        def say(text):
+            flow.append({'at': time.strftime('%H:%M:%S'), 'text': text})
+
+        say('Haiku and Luna solve the question on their own')
+        record, attempts = solve.solve(q, say)
+        trail = None
         if record['status'] == 'settled':
-            plan, trail = clips.plan(q, record)
+            plan, trail = clips.plan(q, record, say)
             record['clips'] = plan.get('clips')
             record['clip_errors'] = trail['errors']
             record['usage'].update({f'clips-{k}': v for k, v in trail['usage'].items()})
+        record['flow'] = flow
         SOLVED.mkdir(parents=True, exist_ok=True)
+        if trail:
+            (SOLVED / f'{q["id"]}.clips-trail.json').write_text(json.dumps(trail, indent=1, ensure_ascii=False))
         (SOLVED / f'{q["id"]}.solutions.json').write_text(json.dumps(attempts, indent=1, ensure_ascii=False))
         (SOLVED / f'{q["id"]}.json').write_text(json.dumps(record, indent=1, ensure_ascii=False))
 
@@ -171,7 +183,8 @@ class Solver:
                 c['decision'] = decided.get(f'{qid}:{c.get("n")}')
         return {'id': q['id'], 'year': q['year'], 'paper': q['paper'], 'number': q['number'], 'type': q['type'],
                 'key': q['answer']['raw'], 'pages': len(q.get('pages', [])), 'state': self.state(qid),
-                'error': self.failed.get(qid), 'record': record}
+                'error': self.failed.get(qid), 'record': record,
+                'flow': self.flow.get(qid) if self.state(qid) in ('solving', 'failed') else None}
 
     def page(self, qid, n):
         pages = self.question(qid).get('pages', [])

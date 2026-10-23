@@ -46,8 +46,13 @@ def ask(who, prompt, images=(), *, max_tokens=12000, name='call'):
                                           'images': [hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
                                                      for p in images], 'max_tokens': max_tokens}).encode()).hexdigest()
     cached = CACHE / f'{name}-{who}-{identity[:16]}.json'
+    retry_note = ('\n\nYour previous reply was not valid JSON ({}). Return one valid JSON object; escape every '
+                  'backslash and double quote inside strings.')
     if cached.exists():
         saved = json.loads(cached.read_text())
+        if 'invalid' in saved:          # a malformed reply is cached too, so a replay goes straight to its retry
+            return ask(who, prompt + retry_note.format(saved['invalid']), images, max_tokens=max_tokens,
+                       name=name + '-format')
         return saved['value'], {**saved['usage'], 'cached': True}
     key = api_key(SECRETS, m['id'], m)
     if not key:
@@ -105,9 +110,9 @@ def ask(who, prompt, images=(), *, max_tokens=12000, name='call'):
             if name.endswith('-format'):
                 raise RuntimeError(f'{who} returned invalid JSON twice: {exc}') from exc
             # One format retry, as the film engine does: escape backslashes and quotes inside strings.
-            return ask(who, prompt + '\n\nYour previous reply was not valid JSON (' + str(exc) + '). Return one '
-                       'valid JSON object; escape every backslash and double quote inside strings.', images,
-                       max_tokens=max_tokens, name=name + '-format')
+            CACHE.mkdir(parents=True, exist_ok=True)
+            cached.write_text(json.dumps({'invalid': str(exc), 'text': text, 'usage': usage}, ensure_ascii=False))
+            return ask(who, prompt + retry_note.format(exc), images, max_tokens=max_tokens, name=name + '-format')
     CACHE.mkdir(parents=True, exist_ok=True)
     cached.write_text(json.dumps({'value': value, 'usage': usage, 'model': m['model']}, indent=1, ensure_ascii=False))
     return value, usage

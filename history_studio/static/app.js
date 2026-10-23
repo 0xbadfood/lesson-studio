@@ -511,6 +511,53 @@ async function showSolveList() {
         </a>`).join('')}</div>`).join('')}`;
 }
 
+function aidName(a) {
+  a = a || {};
+  return a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'missing' ? `missing · ${a.family}` : a.kind === 'question_figure' ? 'question figure' : 'equations only';
+}
+
+function flowHtml(flow) {
+  return `<ol class="flow">${flow.map((f) => `<li><span class="sub">${esc(f.at)}</span> ${esc(f.text)}</li>`).join('')}</ol>`;
+}
+
+function workingHtml(sol) {
+  if (!sol) return '';
+  if (sol.error) return `<p class="error">${esc(sol.error)}</p>`;
+  const options = sol.options ? `<ul>${Object.entries(sol.options).map(([k, o]) => `<li><b>(${esc(k)})</b> ${o.correct ? 'true' : 'false'}: ${esc(o.why)}</li>`).join('')}</ul>` : '';
+  return `<p class="sub">Answer: <b>${esc(sol.answer)}</b></p>${options}
+    <ol class="steps-list">${(sol.steps || []).map((s) => `<li><b>${esc(s.title)}</b><pre>${esc(s.working)}</pre><span class="sub">${esc(s.result || '')}</span></li>`).join('')}</ol>
+    ${sol.check ? `<p class="sub"><b>Check:</b> ${esc(sol.check)}</p>` : ''}`;
+}
+
+function reasoningHtml(r) {
+  const t = r.teacher || {};
+  const labels = t.labels || {};
+  const who = (k) => labels[k] || k;
+  let teacher = '';
+  if (r.route === 'review') {
+    const errs = Object.entries(t.step_errors || {}).map(([k, list]) => `<li><b>${esc(who(k))}</b>: ${list.length ? esc(list.join(' · ')) : 'no wrong steps found'}</li>`).join('');
+    teacher = `<h3>Opus's review</h3><p>${esc(t.why || '')}</p><ul>${errs}</ul>
+      ${(t.improvements || []).length ? `<p class="sub"><b>To fix before teaching:</b> ${esc(t.improvements.join(' · '))}</p>` : ''}`;
+  } else {
+    const notes = Object.entries(t.students || {}).map(([k, v]) => `<li><b>${esc(who(k))}</b>: ${esc(v)}</li>`).join('');
+    teacher = `<h3>Opus on the students' attempts</h3><ul>${notes}</ul>`;
+  }
+  const att = r.attempts || {};
+  const students = ['haiku', 'luna'].filter((k) => att[k]).map((k) => `<details><summary>${esc(k)}'s working ${mark(r.students[k]?.right)}</summary>${workingHtml(att[k])}</details>`).join('');
+  const opus = r.route === 'teacher_solves' && att.opus ? `<details><summary>Opus's own working ${mark(t.right)}</summary>${workingHtml(att.opus)}</details>` : '';
+  return `<section class="reasoning"><h2>How it was settled</h2>${r.flow ? flowHtml(r.flow) : ''}${students}${opus}${teacher}</section>`;
+}
+
+function clipTrailHtml(trail) {
+  if (!trail) return '';
+  const draft = (trail.draft?.clips || []).map((c) => `<li>Clip ${c.n}: ${esc(c.explains)} <span class="sub">(${esc(aidName(c.aid))})</span></li>`).join('');
+  const findings = (trail.review?.findings || []).map((f) => `<li>Clip ${esc(f.clip)}: ${esc(f.problem)} <span class="sub">Fix: ${esc(f.fix)}</span></li>`).join('');
+  return `<details class="reasoning"><summary>How the clips were planned</summary>
+    <h3>Haiku's draft</h3><ol>${draft}</ol>
+    <h3>Luna's review: ${esc(trail.review?.verdict || '')}</h3>${findings ? `<ul>${findings}</ul>` : '<p class="sub">No findings.</p>'}
+    <h3>Opus settled the plan shown above</h3></details>`;
+}
+
 function mark(ok) { return ok ? '<span class="right-mark">✓</span>' : '<span class="wrong-mark">✗</span>'; }
 
 async function showSolve(qid) {
@@ -521,10 +568,10 @@ async function showSolve(qid) {
   const pages = Array.from({ length: d.pages }, (_, i) => `<img loading="lazy" src="/api/solve/${encodeURIComponent(qid)}/page/${i}" alt="Question paper page">`).join('');
   let body = '';
   if (d.state === 'solving' || d.state === 'queued') {
-    body = `<div class="now-line"><div class="spinner"></div><p class="sub">${d.state === 'queued' ? 'Waiting for the question before it…' : 'The students are solving it; then the teacher reviews or solves, and the clips are planned (a few minutes)…'}</p></div>`;
+    body = `<div class="now-line"><div class="spinner"></div><p class="sub">${d.state === 'queued' ? 'Waiting for the question before it…' : 'Solving: each step of the rule appears below as it happens (a few minutes)…'}</p></div>${d.flow ? flowHtml(d.flow) : ''}`;
     state.timer = setTimeout(() => showSolve(qid), 5000);
   } else if (!r) {
-    body = `${d.error ? `<p class="error">${esc(d.error)}</p>` : ''}<button class="btn" id="solve-go" type="button">Solve this question</button>`;
+    body = `${d.error ? `<p class="error">${esc(d.error)}</p>` : ''}${d.flow ? flowHtml(d.flow) : ''}<button class="btn" id="solve-go" type="button">Solve this question</button>`;
   } else {
     const t = r.teacher || {};
     const teacherLine = r.route === 'review'
@@ -539,6 +586,7 @@ async function showSolve(qid) {
       </div>
       <p>${teacherLine}</p>
       ${r.status !== 'settled' ? '<p class="error">No answer reached the official key. This question needs a person to review it.</p>' : ''}
+      ${reasoningHtml(r)}
       ${sol ? `<h2>The solution</h2><p class="sub">Answer: ${esc(sol.answer)}. Ideas used: ${esc((sol.ideas || []).join('; '))}</p>
         <ol class="steps-list">${(sol.steps || []).map((s) => `<li><b>${esc(s.title)}</b><pre>${esc(s.working)}</pre><span class="sub">${esc(s.result || '')}</span></li>`).join('')}</ol>
         ${sol.check ? `<p class="sub"><b>Check:</b> ${esc(sol.check)}</p>` : ''}` : ''}
@@ -562,7 +610,7 @@ async function showSolve(qid) {
             <h3>${esc(c.explains)}</h3><span class="badge aid ${cls}">${esc(aid)}</span>
             <p class="sub">${esc((d.route === 'linkwork' && d.shows) || a.shows || '')}</p>
             <p class="sub"><b>Book:</b> ${esc((c.concept_names || c.concepts || []).join(' · '))}</p>${snag}</div>`;
-        }).join('')}` : ''}
+        }).join('')}${clipTrailHtml(r.clip_trail)}` : ''}
       <button class="btn ghost" id="solve-go" type="button">Solve again</button>`;
   }
   view.innerHTML = `

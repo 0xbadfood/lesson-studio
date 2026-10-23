@@ -129,7 +129,7 @@ def errors(plan, steps):
     return found
 
 
-def plan(q, record):
+def plan(q, record, progress=None):
     """Draft (planner), review (reviewer), settle (teacher). Returns the plan and the trail."""
     ctx = context(q, record)
     steps = [s.get('n') for s in record['solution'].get('steps') or []]
@@ -140,7 +140,10 @@ def plan(q, record):
             'choose the drawing aid.\n\nCONCEPT CATALOGUE:\n' + catalogue() + '\n\nINPUT:\n' +
             json.dumps(ctx, ensure_ascii=False) + '\n\n' + SHAPE)
     trail, usage = {}, {}
+    say = progress or (lambda text: None)
+    say('Planning the clips: Haiku drafts')
     draft, usage['haiku'] = ask('haiku', lead, pages, name=f'{q["id"]}-clips-draft')
+    say(f'Draft: {len(draft.get("clips") or [])} clips; Luna reviews it')
     trail['draft'] = draft
     issues = errors(draft, steps)
     review_task = (lead + '\n\nA colleague drafted this plan:\n' + json.dumps(draft, ensure_ascii=False) +
@@ -149,6 +152,7 @@ def plan(q, record):
                    'aid that does not fit its card (or a verb forced where "missing" or "none" is honest). Return '
                    '{"findings": [{"clip": n, "problem": "...", "fix": "..."}], "verdict": "accept|revise"}.')
     review, usage['luna'] = ask('luna', review_task, pages, name=f'{q["id"]}-clips-review')
+    say(f'Luna: {review.get("verdict", "?")}, {len(review.get("findings") or [])} findings; Opus settles the plan')
     trail['review'] = review
     settle = (lead + '\n\nThe planner drafted:\n' + json.dumps(draft, ensure_ascii=False) + '\n\nThe reviewer found:\n' +
               json.dumps(review, ensure_ascii=False) + ('\nCode found: ' + '; '.join(issues) if issues else '') +
@@ -161,6 +165,7 @@ def plan(q, record):
                                           '; '.join(left), pages, max_tokens=12000, name=f'{q["id"]}-clips-repair')
         left = errors(final, steps)
     trail['final'] = final
+    say(f'Plan settled: {len(final.get("clips") or [])} clips' + (f'; checks still failing: {"; ".join(left)}' if left else ''))
     return final, {'trail': trail, 'usage': usage, 'errors': left}
 
 

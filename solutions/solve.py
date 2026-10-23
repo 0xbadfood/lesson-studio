@@ -28,7 +28,7 @@ TYPES = {
 SOLUTION_SHAPE = (
     'Return {"answer": "<letters or number>", "options": {"A": {"correct": true|false, "why": "..."}, ...} '
     '(omit for numerical), "steps": [{"n": 1, "title": "short", "working": "the reasoning and equations of this '
-    'step, in plain text with Unicode maths", "result": "what this step establishes"}], "ideas": ["each physics '
+    'step, in plain text with Unicode maths (√, ², θ, ω, ×); never LaTeX or backslashes", "result": "what this step establishes"}], "ideas": ["each physics '
     'principle or law the solution uses"], "check": "one independent sanity check of the result (limits, units, '
     'a special case)"}. Steps are the order a teacher would explain them; each does one thing.')
 
@@ -86,8 +86,10 @@ def teacher_solves(q, solutions):
     return value, usage
 
 
-def solve(q):
-    """Run the rule on one question. Returns a record: status settled | needs_review, and the solution to teach."""
+def solve(q, progress=None):
+    """Run the rule on one question. Returns a record: status settled | needs_review, and the solution to teach.
+    progress(text), when given, hears each step of the rule as it happens (the studio shows it live)."""
+    say = progress or (lambda text: None)
     record = {'id': q['id'], 'type': q['type'], 'key': q['answer']['raw'], 'students': {}, 'usage': {}}
     solutions = {}
     for who in STUDENTS:
@@ -99,17 +101,25 @@ def solve(q):
         record['usage'][who] = usage
         record['students'][who] = {'answer': value.get('answer'), 'right': bank.marked(q['answer'], value.get('answer')),
                                    **({'error': value['error']} if 'error' in value else {})}
+        s = record['students'][who]
+        say(f'Student {who} answered {s["answer"]}: ' + ('matches the official key' if s['right'] else
+            f'does not match the key ({q["answer"]["raw"]})' if s['answer'] is not None else 'no answer (' + str(s.get('error'))[:80] + ')'))
     right = [who for who in STUDENTS if record['students'][who]['right']]
     if len(right) == len(STUDENTS):
+        say('Both students match the key, so Opus only reviews their solutions (shuffled, authors hidden)')
         verdict, usage = review(q, solutions)
+        say(f'Opus chose {verdict.get("chosen")}\'s solution: {verdict.get("why", "")}')
         record['usage']['opus'] = usage
         record.update(route='review', status='settled', teacher=verdict,
                       solution=solutions[verdict['chosen']] if verdict.get('chosen') else solutions[STUDENTS[0]],
                       author=verdict.get('chosen') or STUDENTS[0])
         return record, solutions
+    say('The students disagree or missed the key, so Opus solves it (it sees their attempts, not the key)')
     verdict, usage = teacher_solves(q, solutions)
     record['usage']['opus'] = usage
     ok = bank.marked(q['answer'], verdict.get('answer'))
+    say(f'Opus answered {verdict.get("answer")}: ' + ('matches the key; its solution is the one' if ok else
+        'does not match the key either, so the question stops here for review'))
     record.update(route='teacher_solves', teacher={'answer': verdict.get('answer'), 'right': ok,
                                                    'students': verdict.get('students'), 'labels': verdict['labels']},
                   status='settled' if ok else 'needs_review', author='opus' if ok else None,
