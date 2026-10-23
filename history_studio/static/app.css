@@ -290,3 +290,10 @@ audio { width: 100%; margin-top: 12px; }
 .flow { padding-left: 20px; } .flow li { margin: 6px 0; }
 .reasoning { margin: 18px 0; } .reasoning details, details.reasoning { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin: 8px 0; }
 .reasoning summary { cursor: pointer; font-weight: 600; } .reasoning h3 { font-size: 17px; margin: 14px 0 6px; }
+.years { display: flex; gap: 6px; max-width: 1120px; width: 100%; margin: -6px auto 0; padding: 0 16px 10px;
+         overflow-x: auto; scrollbar-width: none; }
+.years::-webkit-scrollbar { display: none; }
+.years a { flex: none; text-decoration: none; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+           color: var(--muted); font-size: 14px; font-weight: 600; background: var(--card); }
+.years a.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.years a:hover { color: var(--ink); }

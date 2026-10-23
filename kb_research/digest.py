@@ -936,7 +936,9 @@ def make_additions(model, chapter, group, blocks, gaps, research, n):
 
 # ------------------------------------------------------------------ 6. audit (a different model reads the work)
 SCIVID_DATA = HERE.parent / 'scivid-data'
-AUDITOR = 'claude-haiku-5-5-openrouter'
+# The audit model, a connection in Lesson Studio's model settings. DIGEST_AUDITOR overrides it for a run, e.g. 'luna'
+# (the OpenAI account) while the OpenRouter account waits for a top-up (user, 2026-10-23).
+AUDITOR = os.environ.get('DIGEST_AUDITOR') or 'claude-haiku-5-5-openrouter'
 AUDIT_SCHEMA = '''{"findings":[{"target":"C3|G4|A7" (the concept, gap or addition at fault),
 "problem":"contradicts_book|factual_error|wrong_number|unsupported|not_a_gap|misleading",
 "severity":"error|warning","detail":str (what is wrong, citing the block),

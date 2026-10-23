@@ -491,11 +491,31 @@ function stateBadge(s) {
   return `<span class="badge ${cls}">${(s === 'solving' || s === 'queued') ? '<i class="dot"></i>' : ''}${esc(STATE_NAMES[s] || s)}</span>`;
 }
 
-async function showSolveList() {
+function yearTabs(years, current) {
+  const bar = document.getElementById('years');
+  bar.innerHTML = years.map((y) => `<a href="#/solve/year/${y}" class="${y === current ? 'on' : ''}">${y}</a>`).join('');
+  bar.hidden = false;
+  const on = bar.querySelector('.on');
+  if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+async function solveYears() {
+  if (!state.solveYears) {
+    const data = await api('/api/solve');
+    state.solveYears = [...new Set(data.questions.map((q) => q.year))].sort((a, b) => b - a);
+  }
+  return state.solveYears;
+}
+
+async function showSolveList(year) {
   chrome(true, 'solve');
   const data = await api('/api/solve');
+  const years = [...new Set(data.questions.map((q) => q.year))].sort((a, b) => b - a);
+  state.solveYears = years;
+  year = years.includes(+year) ? +year : years[0];
+  yearTabs(years, year);
   const papers = {};
-  data.questions.forEach((q) => { (papers[`${q.year} · Paper ${q.paper}`] ||= []).push(q); });
+  data.questions.filter((q) => q.year === year).forEach((q) => { (papers[`${q.year} · Paper ${q.paper}`] ||= []).push(q); });
   view.innerHTML = `
     <section class="hero"><div class="eyebrow">Solve</div><h1>Exam questions, solved and checked</h1>
       <p>Two student models solve each question on their own. If both match the official answer, the teacher model only reviews them; if not, the teacher solves it. An answer that still misses the official key stops for a person to review.</p></section>
@@ -567,6 +587,7 @@ async function showSolve(qid) {
   chrome(true, 'solve');
   clearTimeout(state.timer);
   const d = await api(`/api/solve/${encodeURIComponent(qid)}`);
+  yearTabs(await solveYears(), d.year);
   const r = d.record;
   const pages = Array.from({ length: d.pages }, (_, i) => `<img loading="lazy" src="/api/solve/${encodeURIComponent(qid)}/page/${i}" alt="Question paper page">`).join('');
   let body = '';
@@ -622,7 +643,7 @@ async function showSolve(qid) {
   }
   view.innerHTML = `
     <section class="hero"><div class="eyebrow">JEE Advanced ${d.year} · Paper ${d.paper} · ${esc(TYPE_NAMES[d.type] || d.type)}</div>
-      <h1>Question ${d.number}</h1><p><a href="#/solve">‹ All questions</a></p></section>
+      <h1>Question ${d.number}</h1><p><a href="#/solve/year/${d.year}">‹ All ${d.year} questions</a></p></section>
     <details class="solve-pages" ${r ? '' : 'open'}><summary>The question paper</summary>${pages}</details>
     ${body}`;
   view.querySelectorAll('[data-manim]').forEach((b) => b.onclick = async () => {
@@ -648,6 +669,7 @@ async function showSolve(qid) {
 /* ---------------------------------------------------------------- routing */
 async function route() {
   stopPolling();
+  document.getElementById('years').hidden = true;
   const session = await api('/api/session');
   if (!session.signed_in) return showLogin();
   const parts = location.hash.replace(/^#\/?/, '').split('/');
@@ -656,7 +678,7 @@ async function route() {
     if (parts[0] === 'chapter') await showChapter(parts[1]);
     else if (parts[0] === 'film') await showFilm(parts[1]);
     else if (parts[0] === 'library') await showLibrary();
-    else if (parts[0] === 'solve' && STUDIO.solve) await (parts[1] ? showSolve(decodeURIComponent(parts[1])) : showSolveList());
+    else if (parts[0] === 'solve' && STUDIO.solve) await (parts[1] === 'year' ? showSolveList(parts[2]) : parts[1] ? showSolve(decodeURIComponent(parts[1])) : showSolveList());
     else await showHome();
   } catch (err) {
     if (err.message !== 'signed out') view.innerHTML = `<p class="empty">${esc(err.message)}</p>`;
