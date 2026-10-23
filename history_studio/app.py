@@ -603,7 +603,7 @@ def build(queue=None, access=None, data=None, profile=None):
     @app.get('/api/solve')
     def solve_list(request: Request):
         signed_in(request)
-        return {'questions': solving_on().listing()}
+        return {'questions': solving_on().listing(), 'snags': solving_on().snags()}
 
     @app.get('/api/solve/{qid}')
     def solve_detail(qid: str, request: Request):
@@ -621,6 +621,26 @@ def build(queue=None, access=None, data=None, profile=None):
             return solving_on().detail(qid)
         except KeyError:
             raise HTTPException(404, 'No such question')
+
+    @app.post('/api/solve/{qid}/clips/{n}/manim')
+    def clip_to_manim(qid: str, n: int, request: Request):
+        signed_in(request)
+        try:
+            solving_on().to_manim(qid, n)
+            return solving_on().detail(qid)
+        except KeyError:
+            raise HTTPException(404, 'No such clip')
+
+    @app.post('/api/solve/{qid}/clips/{n}/retry')
+    def clip_retry(qid: str, n: int, request: Request):
+        signed_in(request)
+        try:
+            solving_on().retry(qid, n)
+            return solving_on().detail(qid)
+        except KeyError:
+            raise HTTPException(404, 'No such clip')
+        except RuntimeError as exc:
+            raise HTTPException(502, str(exc)[:300])
 
     @app.get('/api/solve/{qid}/page/{n}')
     def solve_page(qid: str, n: int, request: Request):

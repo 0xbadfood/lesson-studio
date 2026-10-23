@@ -162,3 +162,20 @@ def plan(q, record):
         left = errors(final, steps)
     trail['final'] = final
     return final, {'trail': trail, 'usage': usage, 'errors': left}
+
+
+def retry(q, record, clip):
+    """Retry Linkwork search for one clip that hit a snag: the teacher looks again at today's verb cards (new verbs
+    may exist since the plan). Returns the aid; a verb only when code finds it on the cards."""
+    task = ('One clip of a worked-solution video has no Linkwork drawing aid yet. Look again at the verb cards (some '
+            'may be new) and decide: is there a verb whose use_when fits this clip and whose not_when does not? A '
+            'near fit is still "missing".\n\nQUESTION:\n' + q['text'] + '\n\nSOLUTION STEPS:\n' +
+            json.dumps(record['solution'].get('steps'), ensure_ascii=False) + '\n\nCLIP:\n' +
+            json.dumps(clip, ensure_ascii=False) + '\n\nVERBS:\n' + json.dumps(cards(), ensure_ascii=False) +
+            '\n\nReturn {"kind": "verb|missing", "verb": "only for kind verb", "family": "only for kind missing", '
+            '"shows": "what the picture shows and how it moves", "why": "one sentence"}.')
+    aid, usage = ask('opus', task, q.get('pages', []), max_tokens=3000,
+                     name=f'{q["id"]}-clip{clip.get("n")}-retry-{"-".join(sorted(cards()))[:60]}')
+    if aid.get('kind') != 'verb' or aid.get('verb') not in cards():
+        aid = {**(clip.get('aid') or {}), 'kind': 'missing', 'retry_why': aid.get('why')}
+    return aid, usage

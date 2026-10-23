@@ -33,6 +33,9 @@ SET = {
     '2026-P2-phys-Q15': {'fits': ['graph', 'missing:fluid'], 'verbs': ['graph'],
                          'note': 'a draining tank: the level falls with time'},
     # Controls: no verb fits.
+    '2026-P1-phys-Q03': {'control': True, 'fits': ['missing:rigid_body', 'missing:torque_and_balance',
+                                                   'missing:other:contact_loss'], 'verbs': ['graph'],
+                         'note': 'a rolling cylinder pivots over an edge and leaves it when N = 0 (cos = 5/7)'},
     '2026-P1-phys-Q01': {'control': True, 'fits': ['missing:rigid_body', 'missing:torque_and_balance',
                                                    'question_figure'], 'verbs': [],
                          'note': 'discs rolling on a disc'},

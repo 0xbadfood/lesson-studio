@@ -499,6 +499,8 @@ async function showSolveList() {
   view.innerHTML = `
     <section class="hero"><div class="eyebrow">Solve</div><h1>Exam questions, solved and checked</h1>
       <p>Two student models solve each question on their own. If both match the official answer, the teacher model only reviews them; if not, the teacher solves it. An answer that still misses the official key stops for a person to review.</p></section>
+    ${Object.keys(data.snags || {}).length ? `<div class="section-title"><h2>Snags: no Linkwork aid</h2><span>clips by missing family · the evidence for build a verb or leave it to manim</span></div>
+      <div class="verdicts">${Object.entries(data.snags).map(([fam, n]) => `<div class="verdict"><span class="sub">${esc(fam)}</span><b>${n.clips} clip${n.clips === 1 ? '' : 's'}</b><span class="sub">${n.manim} to manim · ${n.linkwork} found on retry</span></div>`).join('')}</div>` : ''}
     ${Object.entries(papers).map(([name, qs]) => `
       <div class="section-title"><h2>JEE Advanced ${esc(name)}</h2><span>${qs.length} questions</span></div>
       <div class="solve-list">${qs.map((q) => `
@@ -543,11 +545,23 @@ async function showSolve(qid) {
       ${(r.clips || []).length ? `<h2>Clips</h2><p class="sub">What each clip explains, the book concepts it rests on, and the drawing aid it needs</p>
         ${r.clips.map((c) => {
           const a = c.aid || {};
-          const aid = a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'missing' ? `Missing · ${a.family}` : a.kind === 'question_figure' ? 'The question\'s figure' : 'Equations only';
+          const d = c.decision || {};
+          let aid = a.kind === 'verb' ? `Linkwork · ${a.verb}` : a.kind === 'question_figure' ? 'The question\'s figure' : 'Equations only';
+          let cls = a.kind === 'verb' ? 'ready' : '';
+          let snag = '';
+          if (a.kind === 'missing') {
+            if (d.route === 'linkwork') { aid = `Linkwork · ${d.verb} (found on retry)`; cls = 'ready'; }
+            else if (d.route === 'manim') { aid = `Going to manim · no Linkwork ${a.family}`; }
+            else { aid = `Hit a snag: no Linkwork aid · ${a.family}`; cls = 'making'; }
+            snag = d.route === 'linkwork' ? '' : `<div class="snag">
+              ${d.retried ? `<p class="sub">Retried: still no verb fits. ${esc(d.retry_why || '')}</p>` : ''}
+              ${d.route === 'manim' ? '' : `<button class="btn" type="button" data-manim="${c.n}">Proceed with manim</button>`}
+              <button class="btn ghost" type="button" data-retry="${c.n}">Retry Linkwork search</button></div>`;
+          }
           return `<div class="clip"><span class="chapter-no">Clip ${c.n} · steps ${esc((c.steps || []).join(', '))}</span>
-            <h3>${esc(c.explains)}</h3><span class="badge aid ${a.kind === 'verb' ? 'ready' : a.kind === 'missing' ? 'making' : ''}">${esc(aid)}</span>
-            <p class="sub">${esc(a.shows || '')}</p>
-            <p class="sub"><b>Book:</b> ${esc((c.concept_names || c.concepts || []).join(' · '))}</p></div>`;
+            <h3>${esc(c.explains)}</h3><span class="badge aid ${cls}">${esc(aid)}</span>
+            <p class="sub">${esc((d.route === 'linkwork' && d.shows) || a.shows || '')}</p>
+            <p class="sub"><b>Book:</b> ${esc((c.concept_names || c.concepts || []).join(' · '))}</p>${snag}</div>`;
         }).join('')}` : ''}
       <button class="btn ghost" id="solve-go" type="button">Solve again</button>`;
   }
@@ -556,6 +570,17 @@ async function showSolve(qid) {
       <h1>Question ${d.number}</h1><p><a href="#/solve">‹ All questions</a></p></section>
     <details class="solve-pages" ${r ? '' : 'open'}><summary>The question paper</summary>${pages}</details>
     ${body}`;
+  view.querySelectorAll('[data-manim]').forEach((b) => b.onclick = async () => {
+    b.disabled = true;
+    try { await api(`/api/solve/${encodeURIComponent(qid)}/clips/${b.dataset.manim}/manim`, { method: 'POST' }); } catch (err) { alert(err.message); }
+    showSolve(qid);
+  });
+  view.querySelectorAll('[data-retry]').forEach((b) => b.onclick = async () => {
+    if (!confirm('Retrying asks the teacher model again (a cloud call). Go ahead?')) return;
+    b.disabled = true; b.textContent = 'Searching Linkwork…';
+    try { await api(`/api/solve/${encodeURIComponent(qid)}/clips/${b.dataset.retry}/retry`, { method: 'POST' }); } catch (err) { alert(err.message); }
+    showSolve(qid);
+  });
   const go = document.getElementById('solve-go');
   if (go) go.onclick = async () => {
     if (!confirm('Solving calls the cloud models (two students and the teacher). Go ahead?')) return;

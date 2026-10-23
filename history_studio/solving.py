@@ -4,12 +4,18 @@ planned as worked-solution clips (solutions/clips.py).
 One question is solved at a time in a background thread: each solve calls cloud models (two students, Opus as
 reviewer or solver), so the spend stays visible. Records live in questions-data/jee-advanced/runs/solved/<id>.json;
 the pilot's records (runs/pilot-2026) are shown too until a question is solved again here.
+
+A clip whose aid is "missing" has hit a snag: no Linkwork verb fits. The page offers two ways on (user, 2026-10-23):
+proceed with manim, or retry the Linkwork search (new verbs may exist). Decisions live in runs/decisions.json, keyed
+'<question>:<clip>', so a re-solve does not lose them; the snag tally by family is the evidence for deciding whether a
+family deserves a Linkwork verb or stays with manim.
 """
 from __future__ import annotations
 
 import json
 import queue
 import threading
+import time
 from pathlib import Path
 
 from solutions import clips, solve
@@ -18,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'questions-data' / 'jee-advanced'
 SOLVED = DATA / 'runs' / 'solved'
 EARLIER = [DATA / 'runs' / 'pilot-2026']
+DECISIONS = DATA / 'runs' / 'decisions.json'
 
 
 class Solver:
@@ -95,6 +102,55 @@ class Solver:
         (SOLVED / f'{q["id"]}.solutions.json').write_text(json.dumps(attempts, indent=1, ensure_ascii=False))
         (SOLVED / f'{q["id"]}.json').write_text(json.dumps(record, indent=1, ensure_ascii=False))
 
+    # ------------------------------------------------------------ snags: clips without a Linkwork aid
+    def decisions(self):
+        return json.loads(DECISIONS.read_text()) if DECISIONS.exists() else {}
+
+    def _decide(self, qid, n, decision):
+        with self.lock:
+            saved = self.decisions()
+            saved[f'{qid}:{n}'] = {**decision, 'at': time.strftime('%Y-%m-%d %H:%M')}
+            DECISIONS.parent.mkdir(parents=True, exist_ok=True)
+            DECISIONS.write_text(json.dumps(saved, indent=1, ensure_ascii=False))
+
+    def _clip(self, qid, n):
+        record = self.record(qid)
+        clip = next((c for c in (record or {}).get('clips') or [] if c.get('n') == n), None)
+        if clip is None:
+            raise KeyError(n)
+        return record, clip
+
+    def to_manim(self, qid, n):
+        self._clip(qid, n)
+        self._decide(qid, n, {'route': 'manim'})
+
+    def retry(self, qid, n):
+        record, clip = self._clip(qid, n)
+        aid, _ = clips.retry(self.question(qid), record, clip)
+        if aid.get('kind') == 'verb':
+            self._decide(qid, n, {'route': 'linkwork', 'verb': aid['verb'], 'shows': aid.get('shows'),
+                                  'why': aid.get('why')})
+        else:
+            self._decide(qid, n, {**self.decisions().get(f'{qid}:{n}', {}), 'retried': True,
+                                  'retry_why': aid.get('retry_why')})
+        return aid
+
+    def snags(self):
+        """Clips that hit a snag, by missing family: how many, and how many went to manim or found a verb."""
+        decided, out = self.decisions(), {}
+        for q in self.questions():
+            record = self.record(q['id'])
+            for c in (record or {}).get('clips') or []:
+                aid = c.get('aid') or {}
+                if aid.get('kind') != 'missing':
+                    continue
+                row = out.setdefault(aid.get('family') or 'unknown', {'clips': 0, 'manim': 0, 'linkwork': 0})
+                row['clips'] += 1
+                route = decided.get(f'{q["id"]}:{c.get("n")}', {}).get('route')
+                if route in row:
+                    row[route] += 1
+        return dict(sorted(out.items(), key=lambda kv: -kv[1]['clips']))
+
     # ------------------------------------------------------------ what the page gets
     def listing(self):
         out = []
@@ -109,8 +165,10 @@ class Solver:
         record = self.record(qid)
         known = clips.concepts()
         if record:
+            decided = self.decisions()
             for c in record.get('clips') or []:
                 c['concept_names'] = [known.get(ref, ref) for ref in c.get('concepts') or []]
+                c['decision'] = decided.get(f'{qid}:{c.get("n")}')
         return {'id': q['id'], 'year': q['year'], 'paper': q['paper'], 'number': q['number'], 'type': q['type'],
                 'key': q['answer']['raw'], 'pages': len(q.get('pages', [])), 'state': self.state(qid),
                 'error': self.failed.get(qid), 'record': record}

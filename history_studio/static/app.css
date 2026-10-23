@@ -284,4 +284,6 @@ audio { width: 100%; margin-top: 12px; }
 .steps-list { padding-left: 22px; } .steps-list li { margin: 10px 0; } .steps-list pre { white-space: pre-wrap; font: inherit; margin: 4px 0; color: var(--muted); }
 .clip { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 10px 0; }
 .clip .aid { display: inline-block; margin: 6px 0; }
+.snag { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+.snag p { flex-basis: 100%; margin: 0; }
 @media (max-width: 640px) { .solve-row { grid-template-columns: 1fr; gap: 6px; } }
