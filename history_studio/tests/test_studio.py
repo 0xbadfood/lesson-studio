@@ -348,13 +348,13 @@ if __name__ == '__main__':
     unittest.main()
 
 
-DIGEST = catalog.ROOT / 'textbook-digest' / 'keph1-02' / 'digest.json'
+PHYSICS_DIGEST = catalog.ROOT / 'textbook-digest' / 'keph1-02' / 'digest.json'
 
 
-@unittest.skipUnless(DIGEST.exists() and (catalog.EXTRAS / 'extras.sqlite3').exists(), 'needs the Class 11 Physics digest')
+@unittest.skipUnless(PHYSICS_DIGEST.exists() and (catalog.EXTRAS / 'extras.sqlite3').exists(), 'needs the Class 11 Physics digest')
 class BookFigureTests(unittest.TestCase):
     def test_physics_films_get_the_figures_their_concept_teaches_from(self):
-        digest = json.loads(DIGEST.read_text())
+        digest = json.loads(PHYSICS_DIGEST.read_text())
         concept = next(c for c in digest['concepts'] if c['id'] == 'C2')
         record = catalog.film_request(digest, concept, figures=catalog.PROFILES['physics']['figures'])['record']
         figures = record['figures']
