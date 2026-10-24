@@ -207,7 +207,7 @@ def job_request(built, voice):
     """The film queue request for a concept or key-idea film."""
     return {'subject': built['subject'], 'durations': [built['record']['seconds']],
             'generation_mode': 'short', 'orientation': 'landscape', 'review_mode': 'experimental',
-            'image_review': True, 'premium_rescue': False, 'tts_engine': 'vibevoice', 'mood': 'auto',
+            'image_review': True, 'premium_rescue': False, 'tts_engine': 'luxtts', 'mood': 'auto',
             'mood_intensity': 'restrained', 'visual_balance': 'auto', 'music_engine': 'none',
             **narrator(voice),
             'curriculum': {'record': built['record'], 'sources': built['sources']}}
