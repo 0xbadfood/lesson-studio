@@ -15,10 +15,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIGESTS = ROOT / 'textbook-digest'
-SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology', 'social_science'}
+SUBJECTS = {'history', 'political_science', 'economics', 'sociology', 'social_science'}   # Humanities Studio
 SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_science': 'Political Science',
                  'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science',
-                 'chemistry': 'Chemistry', 'biology': 'Biology', 'physics': 'Physics', 'science': 'Science'}
+                 'chemistry': 'Chemistry', 'biology': 'Biology', 'physics': 'Physics', 'science': 'Science', 'maths': 'Maths'}
 # Class 6-10 have one Science book; each chapter belongs to one subject studio, by what it teaches (user, 2026-10-24:
 # no duplicates). The opening "world of science" chapters go to Chemistry, the lightest of the three.
 SCIENCE_SPLIT = {
@@ -34,9 +34,14 @@ SCIENCE_SPLIT = {
 # A studio is one profile of this code: its subjects, its own data folder (access code, films), cookie and job names.
 # Chemistry films also get exact figures (code-drawn chemistry and credited Commons diagrams, 2026-10-19).
 PROFILES = {
-    'history': {'name': 'History Studio', 'mark': 'H', 'subjects': SUBJECTS, 'data': 'history-data',
-                'cookie': 'history_session', 'job': 'history', 'figures': False,
+    # Humanities Studio (renamed from History Studio, 2026-10-24): history, political science, economics, sociology
+    # and the combined social science books, at history.photovault.live. Geography has its own studio (maps).
+    'history': {'name': 'Humanities Studio', 'mark': 'H', 'subjects': SUBJECTS, 'data': 'history-data',
+                'cookie': 'history_session', 'job': 'history', 'textbook': 'humanities', 'figures': False,
                 'questions': True},              # Test yourself: creative questions on a finished film (2026-10-22)
+    # Geography Studio (2026-10-24): its own studio because of maps (code-drawn, India's boundaries; map kit to come).
+    'geography': {'name': 'Geography Studio', 'mark': 'G', 'subjects': {'geography'}, 'data': 'geography-data',
+                  'cookie': 'geography_session', 'job': 'geography', 'figures': False, 'questions': True},
     'chemistry': {'name': 'Chemistry Studio', 'mark': 'C', 'subjects': {'chemistry'}, 'data': 'chemistry-data',
                   'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True,
                   'key_ideas': True,             # simplified films of a finished film's key ideas (2026-10-20)
@@ -50,6 +55,9 @@ PROFILES = {
     'physics': {'name': 'Physics Studio', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',
                 'cookie': 'physics_session', 'job': 'physics', 'figures': False, 'key_ideas': True,
                 'questions': True, 'solve': 'physics'},
+    # Maths Studio (2026-10-24): Class 11-12 Maths concept and key-idea films; Solve for maths comes with questions.
+    'maths': {'name': 'Maths Studio', 'mark': 'M', 'subjects': {'maths'}, 'data': 'maths-data',
+              'cookie': 'maths_session', 'job': 'maths', 'figures': False, 'key_ideas': True, 'questions': True},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)
@@ -128,8 +136,17 @@ def _load(path, mtime):
     return json.loads(Path(path).read_text())
 
 
+# Class 6-9 "Exploring Society" books mix history, geography and civics; their geography chapters (maps) belong to
+# Geography Studio, whatever the digest labelled them (2026-10-24).
+SOCIETY_GEOGRAPHY = {'fees1-02', 'fees1-03', 'gees1-01', 'gees1-02', 'gees1-03', 'gees2-01', 'gees2-02', 'hees2-01',
+                     'hees2-06', 'hees2-07', 'iest1-02', 'iest1-03'}
+
+
 def subjects_of(source):
-    """The studio subjects a chapter belongs to: its own, or for a Class 6-10 Science chapter, what it teaches."""
+    """The studio subjects a chapter belongs to: its own; for a Class 6-10 Science chapter, what it teaches; for a
+    geography chapter of the combined social science books, geography."""
+    if source.get('id') in SOCIETY_GEOGRAPHY:
+        return {'geography'}
     if source.get('subject') == 'science':
         return {s for s, ids in SCIENCE_SPLIT.items() if source.get('id') in ids}
     return {source.get('subject')}

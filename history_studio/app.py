@@ -375,7 +375,7 @@ def page(profile):
                          'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions')),
                          'solve': bool(profile.get('solve'))})
     text = (HERE / 'static' / 'index.html').read_text()
-    text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {subject} textbook')
+    text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {profile.get("textbook", subject)} textbook')
     text = text.replace('<span class="mark">H</span>', f'<span class="mark">{profile["mark"]}</span>')
     return text.replace('</head>', f'  <script>window.STUDIO = {studio};</script>\n</head>', 1)
 
