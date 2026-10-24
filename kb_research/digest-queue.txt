@@ -232,3 +232,65 @@ gecu1:09  # Class 7: Life Processes in Animals (16 p)
 gecu1:10  # Class 7: Life Processes in Plants (16 p)
 gecu1:11  # Class 7: Light: Shadows and Reflections (16 p)
 gecu1:12  # Class 7: Earth, Moon, and the Sun (20 p)
+# Class 6-10 Maths (user, 2026-10-24): never queued; Maths Studio covered only Class 11-12.
+fegp1:01  # Class 6: Patterns in Mathematics
+fegp1:02  # Class 6: Lines and Angles
+fegp1:03  # Class 6: Number Play
+fegp1:04  # Class 6: Data Handling and Presentation
+fegp1:05  # Class 6: Prime Time
+fegp1:06  # Class 6: Perimeter and Area
+fegp1:07  # Class 6: Fractions
+fegp1:08  # Class 6: Playing with Constructions
+fegp1:09  # Class 6: Symmetry
+fegp1:10  # Class 6: The Other Side of Zero
+gegp1:01  # Class 7: Large Numbers Around Us
+gegp1:02  # Class 7: Arithmetic Expressions
+gegp1:03  # Class 7: A Peek Beyond the Point
+gegp1:04  # Class 7: Expressions Using Letter-Numbers
+gegp1:05  # Class 7: Parallel and Intersecting Lines
+gegp1:06  # Class 7: Number Play
+gegp1:07  # Class 7: A Tale of Three Intersecting Lines
+gegp1:08  # Class 7: Working With Fractions
+gegp2:01  # Class 7: Geometric Twins
+gegp2:02  # Class 7: Operations With Integers
+gegp2:03  # Class 7: Finding Common Ground
+gegp2:04  # Class 7: Another Peek Beyond The Point
+gegp2:05  # Class 7: Connecting The Dots...
+gegp2:06  # Class 7: Constructions And Tilings
+gegp2:07  # Class 7: Finding The Unknown
+hegp1:01  # Class 8: A Square and A Cube
+hegp1:02  # Class 8: Power Play
+hegp1:03  # Class 8: A Story of Numbers
+hegp1:04  # Class 8: Quadrilaterals
+hegp1:05  # Class 8: Number Play
+hegp1:06  # Class 8: We Distribute, Yet Things Multiply
+hegp1:07  # Class 8: Proportional Reasoning-1
+hegp2:01  # Class 8: Fractions In Disguise
+hegp2:02  # Class 8: The Baudhayana-Pythagoras Theorem
+hegp2:03  # Class 8: Proportional Reasoning-2
+hegp2:04  # Class 8: Exploring Some Geometric Themes
+hegp2:05  # Class 8: Tales By Dots And Lines
+hegp2:06  # Class 8: Algebra Play
+hegp2:07  # Class 8: Area
+iemh1:01  # Class 9: Orienting Yourself: The Use of Coordinates
+iemh1:02  # Class 9: Introduction to Linear Polynomials
+iemh1:03  # Class 9: The World of Numbers
+iemh1:04  # Class 9: Exploring Algebraic Identities
+iemh1:05  # Class 9: I'm Up and Down, and Round and Round
+iemh1:06  # Class 9: Measuring Space: Perimeter and Area
+iemh1:07  # Class 9: The Mathematics of Maybe: Introduction to Probability
+iemh1:08  # Class 9: Predicting What Comes Next: Exploring Sequences and Progressions
+jemh1:01  # Class 10: Real Numbers
+jemh1:02  # Class 10: Polynomials
+jemh1:03  # Class 10: Pair Of Linear Equations In Two Variables
+jemh1:04  # Class 10: Quadratic Equations
+jemh1:05  # Class 10: Arithmetic Progressions
+jemh1:06  # Class 10: Triangles
+jemh1:07  # Class 10: Coordinate Geometry
+jemh1:08  # Class 10: Introduction To Trigonometry
+jemh1:09  # Class 10: Some Applications Of Trigonometry
+jemh1:10  # Class 10: Circles
+jemh1:11  # Class 10: Areas Related To Circles
+jemh1:12  # Class 10: Surface Areas And Volumes
+jemh1:13  # Class 10: Statistics
+jemh1:14  # Class 10: Probability
