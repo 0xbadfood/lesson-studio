@@ -108,10 +108,14 @@ def read_answers(model, book):
     return items
 
 
-def answer_key(ref):
+def answer_key(ref, chapter=None):
     """The digest's printed label as (chapter, set, question): Exercise 5.23 -> (5, None, 23);
-    Exercise 7.1 Q4 -> (7, '1', 4); Miscellaneous Exercise on Chapter 2 Q3 -> (2, 'misc', 3)."""
+    Exercise 7.1 Q4 -> (7, '1', 4); Miscellaneous Exercise on Chapter 2 Q3 -> (2, 'misc', 3); a bare Exercise 4 (the
+    end-of-chapter questions of books that number them 1, 2, 3 ... per chapter) -> (chapter, 'end', 4)."""
     ref = str(ref or '')
+    m = re.match(r'(?i)(?:Exercise|Question)s?\s*Q?(\d+)$', ref)
+    if m and chapter is not None:
+        return chapter, 'end', int(m.group(1))
     m = re.match(r'(?i)Miscellaneous Exercise on Chapter (\d+)\s*Q(\d+)$', ref)
     if m:
         return int(m.group(1)), 'misc', int(m.group(2))
@@ -148,7 +152,7 @@ def match_answers(book, items):
         for b in d['blocks']:
             if b['type'] == 'exercise':
                 for ref in b.get('ref') or []:
-                    key = answer_key(ref)
+                    key = answer_key(ref, d['source'].get('chapter'))
                     if key:
                         blocks[key].append((folder, b['id'], ref))
     found, unmatched = collections.defaultdict(dict), []
@@ -156,9 +160,10 @@ def match_answers(book, items):
         targets = []
         for number in re.split(r'\s*(?:,|and|&)\s*', str(item['number'])):   # "7.10 and 7.11": one answer, two
             key = item_key({**item, 'number': number})                          # questions
-            if key and key[1] == '*':      # no exercise headings in the answers: the question number within the chapter
+            if key and key[1] == '*':      # no exercise headings in the answers: the question number within the chapter,
+                end = (key[0], 'end', key[2])                          # the end-of-chapter questions first
                 options = {k for k in blocks if k[0] == key[0] and k[2] == key[2]}
-                targets += blocks[options.pop()] if len(options) == 1 else []
+                targets += blocks[end] if end in blocks else blocks[options.pop()] if len(options) == 1 else []
             elif key:
                 targets += blocks.get(key, [])
         if not targets:
