@@ -54,10 +54,10 @@ PROFILES = {
     # model, checked against the official key, then planned as worked-solution clips with their drawing aids.
     'physics': {'name': 'Physics Studio', 'slug': 'physics', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',
                 'cookie': 'physics_session', 'job': 'physics', 'figures': False, 'key_ideas': True,
-                'questions': True, 'solve': 'physics'},
+                'questions': True, 'solve': 'physics', 'linkwork': 'physics'},
     # Maths Studio (2026-10-24): Class 11-12 Maths concept and key-idea films; Solve for maths comes with questions.
     'maths': {'name': 'Maths Studio', 'slug': 'maths', 'mark': 'M', 'subjects': {'maths'}, 'data': 'maths-data',
-              'cookie': 'maths_session', 'job': 'maths', 'figures': False, 'key_ideas': True, 'questions': True},
+              'cookie': 'maths_session', 'job': 'maths', 'figures': False, 'key_ideas': True, 'questions': True, 'linkwork': 'maths'},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)

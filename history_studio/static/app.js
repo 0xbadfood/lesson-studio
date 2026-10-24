@@ -222,6 +222,9 @@ function filmHtml(f) {
   const parts = [];
   if (f.video) parts.push(`<div class="player"><video controls preload="metadata" src="${f.video}" ${f.scenes[0] ? `poster="${f.scenes[0].src}"` : ''}></video></div>`);
   parts.push(nowPanel(f));
+  if (f.status === 'done' || f.status === 'failed') parts.push(`<div class="panel"><h2>Plan the scenes again</h2>
+    <p class="sub">Keeps the narration and plans the pictures and scenes afresh, then makes the video again. Pictures that come out the same are reused.</p>
+    <button class="btn ghost" id="replan" type="button">Re-plan scenes</button></div>`);
   if (f.status !== 'waiting') parts.push(activityShell(f));
   if (f.kind === 'key_idea' && f.idea) parts.push(`<div class="panel"><h2>What this film makes simple</h2>
       <p class="sub">${esc(f.idea.why || '')}</p><p>${esc(f.idea.understanding || '')}</p>
@@ -279,6 +282,13 @@ async function showFilm(id) {
         if (!confirm('Stop making this film? You can make it again later; it carries on from where it stopped.')) return;
         stop.disabled = true;
         try { await api(`api/films/${id}/cancel`, { method: 'POST' }); } catch (err) { alert(err.message); }
+        clearTimeout(state.timer); tick();
+      };
+      const replan = document.getElementById('replan');
+      if (replan) replan.onclick = async () => {
+        if (!confirm('Plan the scenes of this film again? The narration is kept; the scenes, pictures and video are made again.')) return;
+        replan.disabled = true;
+        try { await api(`api/films/${id}/replan`, { method: 'POST' }); } catch (err) { alert(err.message); replan.disabled = false; return; }
         clearTimeout(state.timer); tick();
       };
       const again = document.getElementById('again');

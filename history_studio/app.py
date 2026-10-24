@@ -135,6 +135,8 @@ class Films:
             if job and voice is None:                # "make it again" keeps the narrator the film was started with
                 voice = job['request'].get('voice_id')
             built = catalog.film_request(digest, concept, figures=self.profile['figures'])
+            if self.profile.get('linkwork'):            # exact code-drawn scenes (Linkwork verbs) as a beat kind
+                built['record']['linkwork'] = {'subject': self.profile['linkwork']}
             curriculum = {'record': built['record'], 'sources': built['sources']}
             if (job and job['request'].get('voice_id') == narrator(voice)['voice_id']
                     and same_book(job, curriculum)):
@@ -169,6 +171,8 @@ class Films:
                 voice = job['request'].get('voice_id')
             built = ideas.key_idea_record(catalog.film_request(digest, concept, figures=self.profile['figures']),
                                           found, parent_film)
+            if self.profile.get('linkwork'):
+                built['record']['linkwork'] = {'subject': self.profile['linkwork']}
             if previous and previous['request'].get('voice_id') == narrator(voice)['voice_id']:
                 self.queue.resume(previous['id'])
                 return existing['film']
@@ -188,6 +192,10 @@ class Films:
                 if job and job['status'] not in ('failed', 'interrupted'):
                     out[value['idea']] = (value['film'], job['status'])
         return out
+
+    def replan(self, film):
+        """Plan a film's scenes again from its narration (the film engine's re-plan); narration is kept."""
+        return self.queue.replan_scenes(self.find(film)['job'])
 
     def cancel(self, film):
         """Stop a queued or running film (started by mistake). It can be made again later from its saved stages."""
@@ -469,6 +477,17 @@ def build(queue=None, access=None, data=None, profile=None):
             raise HTTPException(404)
         return FileResponse(chosen['reference_audio'], media_type='audio/wav',
                             headers={'Cache-Control': 'private, max-age=86400'})
+
+    @app.post('/api/films/{film}/replan')
+    def replan_film(film: str, request: Request):
+        signed_in(request)
+        try:
+            films.replan(film)
+        except KeyError:
+            raise HTTPException(404, 'No such film')
+        except ValueError as exc:
+            raise HTTPException(409, str(exc))
+        return progress(queue, films.find(film))
 
     @app.post('/api/films/{film}/cancel')
     def cancel_film(film: str, request: Request):
