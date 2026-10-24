@@ -229,8 +229,8 @@ function filmHtml(f) {
   if (f.kind === 'key_idea' && f.idea) parts.push(`<div class="panel"><h2>What this film makes simple</h2>
       <p class="sub">${esc(f.idea.why || '')}</p><p>${esc(f.idea.understanding || '')}</p>
       ${f.landed ? `<p class="landing ${f.landed.landed ? 'ok' : 'miss'}">${f.landed.landed ? 'A test learner got the idea' : 'A test learner did not fully get the idea'}${f.landed.score != null ? ` · ${f.landed.score}/100` : ''}${f.landed.rounds > 1 ? ` · after ${f.landed.rounds - 1} rewrite${f.landed.rounds > 2 ? 's' : ''}` : ''}</p>` : ''}</div>`);
-  if (f.kind !== 'key_idea' && STUDIO.key_ideas && f.status === 'done') parts.push('<div class="panel" id="key-ideas"></div>');
-  if (STUDIO.questions && f.status === 'done') parts.push('<div class="panel" id="questions"></div>');
+  if (f.kind !== 'key_idea' && STUDIO.key_ideas && (f.status === 'done' || f.replanning)) parts.push('<div class="panel" id="key-ideas"></div>');
+  if (STUDIO.questions && (f.status === 'done' || f.replanning)) parts.push('<div class="panel" id="questions"></div>');
   if (f.scenes.length || (f.phase === 'scenes' && f.scenes_total)) {
     const total = f.scenes_total || f.scenes.length;
     const blanks = f.status === 'making' && f.phase === 'scenes' ? Math.max(0, Math.min(3, total - f.scenes.length)) : 0;

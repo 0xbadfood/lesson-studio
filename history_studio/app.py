@@ -268,6 +268,13 @@ def read_json(path):
         return None
 
 
+def delivered(job):
+    """A film that has been made: finished, or being re-planned from a finished film (its narration and script, which
+    key ideas and questions come from, are kept by a re-plan)."""
+    return bool(job) and (job['status'] == 'succeeded' or (job['request'].get('resume_from') == 'scenes'
+                                                           and (Path(job['project']) / 'delivery.json').is_file()))
+
+
 def progress(queue, record):
     job = queue.get(record['job'])
     project = Path(job['project'])
@@ -322,7 +329,7 @@ def progress(queue, record):
         'status': 'stopped' if status == 'interrupted' and str(job.get('error') or '').startswith('Cancelled') else
         'failed' if status in ('failed', 'interrupted') else
         'done' if status == 'succeeded' else 'waiting' if status == 'queued' else 'making',
-        'ahead': ahead, 'phase': phase, 'phases': [{'key': k, 'title': t, 'line': l} for k, t, l in PHASES],
+        'replanning': job['status'] != 'succeeded' and delivered(job), 'ahead': ahead, 'phase': phase, 'phases': [{'key': k, 'title': t, 'line': l} for k, t, l in PHASES],
         'concept': curriculum.get('concept'), 'summary': curriculum.get('summary'),
         'chapter': curriculum.get('chapter'), 'chapter_no': curriculum.get('chapter_no'),
         'book': nice(curriculum.get('book', '')), 'minutes': round(seconds / 60, 1),
@@ -528,7 +535,7 @@ def build(queue=None, access=None, data=None, profile=None):
         except KeyError:
             raise HTTPException(404, 'No such film')
         job = films.job(record['job'])
-        if record.get('idea') or not job or job['status'] != 'succeeded':
+        if record.get('idea') or not delivered(job):
             raise HTTPException(409, 'Key ideas come from a finished concept film')
         return record, job
 
@@ -565,7 +572,7 @@ def build(queue=None, access=None, data=None, profile=None):
         except KeyError:
             raise HTTPException(404, 'No such film')
         job = films.job(record['job'])
-        if not job or job['status'] != 'succeeded':
+        if not delivered(job):
             raise HTTPException(409, 'Questions come from a finished film')
         return Path(job['project'])
 
