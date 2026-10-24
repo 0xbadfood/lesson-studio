@@ -179,7 +179,9 @@ class Lesson:
         for cid, _ in chapters:
             self.chapter_status(cid, 'recording')
         self.log(f'Recording {len(chapters)} chapters in one session')
-        if self.remote_voice:
+        if self.settings.tts_engine == 'luxtts':
+            self.log('Recording with LuxTTS on the CPU')
+        elif self.remote_voice:
             self.log('Recording on the Spark voice server')
         timings = audio.narrate_all(self.settings, self.dir / 'chapters', chapters, self.request['voice'],
                                     remote=self.remote_voice, log=self.log)

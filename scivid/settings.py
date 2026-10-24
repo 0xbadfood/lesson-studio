@@ -18,6 +18,7 @@ class Settings:
     # Media services
     image_url: str = 'http://127.0.0.1:8075'          # Qwen Image 2.1 (local 3090)
     spark_voice_url: str = 'http://10.8.0.4:8092'     # resident VibeVoice on Spark (same checkpoint and LoRA)
+    tts_engine: str = 'luxtts'                        # luxtts (CPU, speed 0.75) | vibevoice (GPU) (user, 2026-10-24)
     remote_voice_lock: str = '/tmp/scivid-remote-voice.lock'   # serialises our narrations on the remote server
     gpu_lock: str = '/tmp/infofilm-rtx3090.lock'      # shared with infofilm
     remotion_root: str = '/home/nitin/remotion'       # frozen; used as a library
