@@ -224,7 +224,7 @@ def mathy(quote):
     return bool(re.search(r'[\\^_{}]', quote)) and len(plain) < 6
 
 
-def page_errors(result, page, pages, chapter_no, required):
+def page_errors(result, page, pages, chapter_no, required, start='intro'):
     errors = []
     blocks = result.get('blocks')
     if not isinstance(blocks, list):
@@ -237,6 +237,8 @@ def page_errors(result, page, pages, chapter_no, required):
         tag = f'block {n} ({b.get("type")}, "{str(b.get("title", ""))[:40]}")'
         if isinstance(b.get('section'), str):         # "5.6(d)", "9.4.1B": the lettered parts of a section are the section
             b['section'] = re.sub(r'(?<=\d)\s*(\([A-Za-z]\)|[A-Za-z])$', '', b['section'].strip())
+            if re.fullmatch(r'\(?[A-Za-z]\)?', b['section']):   # "d": a lettered item of an unnumbered chapter
+                b['section'] = start                           # (gees1:03 "(d) Winds") is in the page's section
         if b.get('type') not in types:
             errors.append(f'{tag}: type must be one of {list(types)}')
         if not section_re.match(str(b.get('section', ''))):
@@ -356,7 +358,8 @@ def read_page(model, chapter, pages, page, section_at_start, note=''):
             f'wording and quotes, and the image for equations and layout):\n{text}')
     image = render(chapter['pdf'], page, model.root / 'pages')
     return model.call(f'page-{page:02d}', prompt, images=[image], thinking=0, max_tokens=12000, attempts=3,
-                      validate=lambda r: kb.raise_if(page_errors(r, page, pages, numbering(chapter), required)))
+                      validate=lambda r: kb.raise_if(page_errors(r, page, pages, numbering(chapter), required,
+                                                                  section_at_start)))
 
 
 def humanities_page_prompt(chapter, page, section_at_start, expected, note, text):

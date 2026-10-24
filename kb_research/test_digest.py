@@ -79,6 +79,12 @@ class PageTests(unittest.TestCase):
             self.assertEqual(d.page_errors({'blocks': [block]}, 7, PAGES, 5, {}), [], lettered)
             self.assertEqual(block['section'], '5.2')
 
+    def test_bare_letter_section_is_the_page_section(self):
+        for lettered in ('d', '(d)'):                       # gees1:03 page 8: "(d) Winds" in an unnumbered chapter
+            block = {**self.block(), 'section': lettered}
+            self.assertEqual(d.page_errors({'blocks': [block]}, 7, PAGES, 5, {}, '5.2'), [], lettered)
+            self.assertEqual(block['section'], '5.2')
+
     def test_one_missed_quote_is_flagged_not_fatal(self):
         miss = self.block(title='other', quote='momentum is conserved in every collision here')
         self.assertEqual(d.page_errors({'blocks': [self.block(), miss]}, 7, PAGES, 5, {}), [])
