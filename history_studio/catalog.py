@@ -53,11 +53,11 @@ PROFILES = {
     # Physics Studio (2026-10-23): Class 11-12 Physics, and Solve: JEE questions solved by two students and a teacher
     # model, checked against the official key, then planned as worked-solution clips with their drawing aids.
     'physics': {'name': 'Physics Studio', 'slug': 'physics', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',
-                'cookie': 'physics_session', 'job': 'physics', 'figures': False, 'key_ideas': True,
+                'cookie': 'physics_session', 'job': 'physics', 'figures': 'book', 'key_ideas': True,
                 'questions': True, 'solve': 'physics', 'linkwork': 'physics'},
     # Maths Studio (2026-10-24): Class 11-12 Maths concept and key-idea films; Solve for maths comes with questions.
     'maths': {'name': 'Maths Studio', 'slug': 'maths', 'mark': 'M', 'subjects': {'maths'}, 'data': 'maths-data',
-              'cookie': 'maths_session', 'job': 'maths', 'figures': False, 'key_ideas': True, 'questions': True, 'linkwork': 'maths'},
+              'cookie': 'maths_session', 'job': 'maths', 'figures': 'book', 'key_ideas': True, 'questions': True, 'linkwork': 'maths'},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
 WORDS_PER_MINUTE = 123                                  # measured: Salt March 120, Unification of Italy 127 (2026-10-15)
@@ -244,10 +244,47 @@ ANIMATION = {'manim_python': str(ROOT / '.venv' / 'bin' / 'python'), 'python_bas
              'scivid_data': str(ROOT / 'scivid-data'), 'kits': ['chem']}
 
 
+EXTRAS = ROOT / 'textbook-digest'
+
+
+def book_figures(digest, concept):
+    """The book's numbered figures that this concept teaches from, as figure-library entries: the exact SVG cut from
+    the PDF's own drawing (book_extras.py), or its PNG crop for a photograph. Read from the digest's index, never the
+    PDF (user, 2026-10-24: Physics and Maths films show the book's figures and LaTeX equations)."""
+    import sqlite3
+    s = digest['source']
+    blocks = {r: b for b in teaching_blocks(digest, concept) if b.get('type') == 'figure' for r in (b.get('ref') or [])}
+    refs = list(blocks)
+    if not refs or not (EXTRAS / 'extras.sqlite3').exists():
+        return []
+    db = sqlite3.connect(f'file:{EXTRAS / "extras.sqlite3"}?mode=ro', uri=True)
+    db.row_factory = sqlite3.Row
+    out = []
+    for ref in dict.fromkeys(refs):
+        row = db.execute('SELECT * FROM figures WHERE chapter = ? AND ref = ?', (s['id'], ref)).fetchone()
+        if not row:
+            continue
+        drawn = row['svg'] if row['svg'] and row['svg_kind'] == 'vector' else row['image']
+        if not drawn or not (EXTRAS / drawn).exists():
+            continue
+        caption = re.sub(r'^Fig\.?\s*[\d.]+\s*', '', row['caption'] or '').strip()
+        shows = ' '.join(str(blocks[ref].get(k) or '') for k in ('caption', 'shows')).strip()
+        shows = re.sub(r'^Fig\.?\s*[\d.]+\s*', '', shows)
+        about = shows if caption[:40] in shows else f'{caption} {shows}'.strip()
+        if not about:                    # a figure nobody can say anything about is no use to a planner
+            continue
+        out.append({'id': re.sub(r'[^A-Za-z0-9]+', '-', ref).strip('-'), 'name': ref,
+                    'description': about[:400], 'file': str(EXTRAS / drawn),
+                    'credit': f'NCERT Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], s["subject"])}, {ref}'})
+    db.close()
+    return out
+
+
 def film_request(digest, concept, figures=False):
     """The curriculum record and sources the studio submits to the film queue. `figures`: give the film exact figures:
     True (Chemistry Studio) for code-drawn chemistry and the Commons diagrams that match this concept, 'biology'
-    (Biology Studio) for the biology library's diagrams of this chapter."""
+    (Biology Studio) for the biology library's diagrams of this chapter, 'book' (Physics and Maths Studios) for LaTeX
+    equations and the book's own figures this concept teaches from (exact SVGs from the digest's index)."""
     s = digest['source']
     code = Path(s['pdf']).stem
     record = {'kind': 'textbook_concept', 'chapter_id': s['id'], 'concept_id': concept['id'],
@@ -261,6 +298,9 @@ def film_request(digest, concept, figures=False):
         related = [a.split(':', 1)[1] for a in visuals.related_assets(s['id'], concept['id'])]
         record['figures'] = {'subject': 'biology', 'code_root': str(ROOT), 'level': biology.level_for(s['class']),
                              'library': biology.candidates(s['id'], s['class'], extra=related)}
+    elif figures == 'book':
+        record['figures'] = {'subject': s['subject'], 'book': True, 'code_root': str(ROOT),
+                             'library': book_figures(digest, concept)}
     elif figures:
         from figure_library import pick
         about = ' '.join([concept['name'], concept.get('summary', '')] + [
