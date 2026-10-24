@@ -324,8 +324,8 @@ def progress(queue, record):
                                                                       'understanding': idea.get('understanding')},
         'parent': record.get('parent'),
         'landed': landing and {'landed': landing['landed'],
-                               'score': (landing['rounds'][-1].get('verdict') or {}).get('score'),
-                               'rounds': len(landing['rounds'])},
+                               'score': (landing['rounds'][landing.get('chosen_round', -1)].get('verdict') or {}).get('score'),
+                               'rounds': len(landing['rounds']), 'chosen_round': landing.get('chosen_round')},
         'status': 'stopped' if status == 'interrupted' and str(job.get('error') or '').startswith('Cancelled') else
         'failed' if status in ('failed', 'interrupted') else
         'done' if status == 'succeeded' else 'waiting' if status == 'queued' else 'making',
