@@ -46,7 +46,7 @@ function showLogin() {
     const error = document.getElementById('error');
     error.textContent = '';
     try {
-      await api('/api/login', { method: 'POST', body: JSON.stringify({ code: document.getElementById('code').value }) });
+      await api('api/login', { method: 'POST', body: JSON.stringify({ code: document.getElementById('code').value }) });
       route();
     } catch (err) { error.textContent = err.message === 'signed out' ? '' : err.message; }
   });
@@ -54,7 +54,7 @@ function showLogin() {
 
 /* ---------------------------------------------------------------- chapters */
 async function loadCatalog(force) {
-  if (!state.catalog || force) state.catalog = await api('/api/catalog');
+  if (!state.catalog || force) state.catalog = await api('api/catalog');
   return state.catalog;
 }
 
@@ -131,7 +131,7 @@ async function showChapter(id) {
 }
 
 async function confirmFilm(chapter, concept) {
-  if (!state.voices) state.voices = await api('/api/voices').catch(() => ({ voices: [] }));
+  if (!state.voices) state.voices = await api('api/voices').catch(() => ({ voices: [] }));
   const voices = state.voices.voices || [];
   const back = document.createElement('div');
   back.className = 'sheet-back';
@@ -183,7 +183,7 @@ async function confirmFilm(chapter, concept) {
     e.target.textContent = 'Starting…';
     try {
       const voice = back.querySelector('#voice')?.value;
-      const made = await api('/api/films', { method: 'POST', body: JSON.stringify({ chapter: chapter.id, concept: concept.id, ...(voice ? { voice } : {}) }) });
+      const made = await api('api/films', { method: 'POST', body: JSON.stringify({ chapter: chapter.id, concept: concept.id, ...(voice ? { voice } : {}) }) });
       close();
       location.hash = `#/film/${made.film}`;
     } catch (err) {
@@ -253,7 +253,7 @@ async function showFilm(id) {
   let first = true;
   const tick = async () => {
     let f;
-    try { f = await api(`/api/films/${id}`); } catch (err) {
+    try { f = await api(`api/films/${id}`); } catch (err) {
       if (first) { view.innerHTML = `<p class="empty">${esc(err.message)}</p>`; return; }
       state.timer = setTimeout(tick, 5000);          // a passing hiccup (a restart, a slow read) must not end polling
       return;
@@ -278,7 +278,7 @@ async function showFilm(id) {
       if (stop) stop.onclick = async () => {
         if (!confirm('Stop making this film? You can make it again later; it carries on from where it stopped.')) return;
         stop.disabled = true;
-        try { await api(`/api/films/${id}/cancel`, { method: 'POST' }); } catch (err) { alert(err.message); }
+        try { await api(`api/films/${id}/cancel`, { method: 'POST' }); } catch (err) { alert(err.message); }
         clearTimeout(state.timer); tick();
       };
       const again = document.getElementById('again');
@@ -286,8 +286,8 @@ async function showFilm(id) {
         again.disabled = true;
         try {
           const made = f.kind === 'key_idea'                // a key idea is made again from its concept film
-            ? await api(`/api/films/${f.parent}/ideas/${f.idea.id}`, { method: 'POST', body: '{}' })
-            : await api('/api/films', { method: 'POST', body: JSON.stringify({ chapter: f.chapter_id, concept: f.concept_id }) });
+            ? await api(`api/films/${f.parent}/ideas/${f.idea.id}`, { method: 'POST', body: '{}' })
+            : await api('api/films', { method: 'POST', body: JSON.stringify({ chapter: f.chapter_id, concept: f.concept_id }) });
           if (made.film !== id) { location.hash = `#/film/${made.film}`; return; }
         } catch (err) { alert(err.message); again.disabled = false; return; }
         clearTimeout(state.timer); tick();
@@ -348,7 +348,7 @@ async function showActivity(film) {
   box.ontoggle = () => { try { localStorage.setItem('activity-open', box.open ? '1' : '0'); } catch (e) { /* private mode */ } };
   let a, again = true;
   try {
-    a = await api(`/api/films/${film}/activity`);
+    a = await api(`api/films/${film}/activity`);
     const body = document.getElementById('activity-body');
     if (!body) return;
     const logOpen = body.querySelector('details.log')?.open;
@@ -380,7 +380,7 @@ const KIND_NAMES = { predict: 'Predict', explain: 'Explain why', spot_error: 'Sp
   compare: 'Compare', data: 'Read the data', sequence: 'Put in order', scenario: 'In real life' };
 
 function questionHtml(q, film) {
-  const figs = (q.figures || []).map((k) => `<img class="q-fig" loading="lazy" src="/media/${film}/question/${k}" alt="">`).join('');
+  const figs = (q.figures || []).map((k) => `<img class="q-fig" loading="lazy" src="media/${film}/question/${k}" alt="">`).join('');
   const options = (q.options || []).map((o) => `<button class="q-option" type="button" data-letter="${esc(String(o).trim()[0])}">${esc(o)}</button>`).join('');
   return `<article class="question" data-answer="${esc(String(q.answer).trim()[0])}">
     <div class="q-head"><span class="chip">${esc(KIND_NAMES[q.kind] || q.kind)}</span><span class="q-level">${esc(q.difficulty || '')}</span></div>
@@ -395,7 +395,7 @@ async function showQuestions(film) {
   if (!box) return;
   clearTimeout(state.questionTimer);
   let data;
-  try { data = await api(`/api/films/${film}/questions`); } catch (err) { box.remove(); return; }
+  try { data = await api(`api/films/${film}/questions`); } catch (err) { box.remove(); return; }
   const head = '<h2>Test yourself</h2><p class="sub">Questions that check understanding, not memory: new cases, a student\'s mistake to spot, a reaction to work backwards</p>';
   if (data.state === 'finding') {
     box.innerHTML = `${head}<div class="now-line"><div class="spinner"></div><p class="sub">Choosing the ideas to test and writing the questions; each is checked before you see it (a few minutes)…</p></div>`;
@@ -407,7 +407,7 @@ async function showQuestions(film) {
       <button class="btn" id="make-questions" type="button">Make 8 questions</button>`;
     box.querySelector('#make-questions').onclick = async (e) => {
       e.target.disabled = true;
-      try { await api(`/api/films/${film}/questions`, { method: 'POST' }); } catch (err) { alert(err.message); }
+      try { await api(`api/films/${film}/questions`, { method: 'POST' }); } catch (err) { alert(err.message); }
       showQuestions(film);
     };
     return;
@@ -434,7 +434,7 @@ async function showIdeas(film) {
   if (!box) return;
   clearTimeout(state.ideaTimer);
   let data;
-  try { data = await api(`/api/films/${film}/ideas`); } catch (err) { box.remove(); return; }
+  try { data = await api(`api/films/${film}/ideas`); } catch (err) { box.remove(); return; }
   const head = `<h2>Key ideas, made simple</h2><p class="sub">Short films that drill down one idea at a time, with analogies and everyday pictures</p>`;
   if (data.state === 'finding') {
     box.innerHTML = `${head}<div class="now-line"><div class="spinner"></div><p class="sub">Finding the ideas students most need made simple…</p></div>`;
@@ -446,7 +446,7 @@ async function showIdeas(film) {
       <button class="btn" id="find-ideas" type="button">${data.state === 'failed' ? 'Try again' : 'Find key ideas'}</button>`;
     box.querySelector('#find-ideas').onclick = async (e) => {
       e.target.disabled = true;
-      try { await api(`/api/films/${film}/ideas`, { method: 'POST' }); } catch (err) { alert(err.message); }
+      try { await api(`api/films/${film}/ideas`, { method: 'POST' }); } catch (err) { alert(err.message); }
       showIdeas(film);
     };
     return;
@@ -461,7 +461,7 @@ async function showIdeas(film) {
     if (!confirm(`Make a short simplified film: "${data.ideas.find((i) => i.id === b.dataset.idea).title}"?`)) return;
     b.disabled = true; b.textContent = 'Starting…';
     try {
-      const made = await api(`/api/films/${film}/ideas/${b.dataset.idea}`, { method: 'POST', body: '{}' });
+      const made = await api(`api/films/${film}/ideas/${b.dataset.idea}`, { method: 'POST', body: '{}' });
       location.hash = `#/film/${made.film}`;
     } catch (err) { alert(err.message); b.disabled = false; b.textContent = 'Make this film'; }
   }));
@@ -470,7 +470,7 @@ async function showIdeas(film) {
 /* ---------------------------------------------------------------- library */
 async function showLibrary() {
   chrome(true, 'library');
-  const data = await api('/api/library');
+  const data = await api('api/library');
   view.innerHTML = `
     <section class="hero"><div class="eyebrow">The studio's films</div><h1>Films made so far</h1>
       <p>Every film made in the studio, newest first.</p></section>
@@ -501,7 +501,7 @@ function yearTabs(years, current) {
 
 async function solveYears() {
   if (!state.solveYears) {
-    const data = await api('/api/solve');
+    const data = await api('api/solve');
     state.solveYears = [...new Set(data.questions.map((q) => q.year))].sort((a, b) => b - a);
   }
   return state.solveYears;
@@ -509,7 +509,7 @@ async function solveYears() {
 
 async function showSolveList(year) {
   chrome(true, 'solve');
-  const data = await api('/api/solve');
+  const data = await api('api/solve');
   const years = [...new Set(data.questions.map((q) => q.year))].sort((a, b) => b - a);
   state.solveYears = years;
   year = years.includes(+year) ? +year : years[0];
@@ -586,10 +586,10 @@ function mark(ok) { return ok ? '<span class="right-mark">✓</span>' : '<span c
 async function showSolve(qid) {
   chrome(true, 'solve');
   clearTimeout(state.timer);
-  const d = await api(`/api/solve/${encodeURIComponent(qid)}`);
+  const d = await api(`api/solve/${encodeURIComponent(qid)}`);
   yearTabs(await solveYears(), d.year);
   const r = d.record;
-  const pages = Array.from({ length: d.pages }, (_, i) => `<img loading="lazy" src="/api/solve/${encodeURIComponent(qid)}/page/${i}" alt="Question paper page">`).join('');
+  const pages = Array.from({ length: d.pages }, (_, i) => `<img loading="lazy" src="api/solve/${encodeURIComponent(qid)}/page/${i}" alt="Question paper page">`).join('');
   let body = '';
   if (d.state === 'solving' || d.state === 'queued') {
     body = `<div class="now-line"><div class="spinner"></div><p class="sub">${d.state === 'queued' ? 'Waiting for the question before it…' : 'Solving: each step of the rule appears below as it happens (a few minutes)…'}</p></div>${d.flow ? flowHtml(d.flow) : ''}`;
@@ -651,20 +651,20 @@ async function showSolve(qid) {
     ${body}`;
   view.querySelectorAll('[data-manim]').forEach((b) => b.onclick = async () => {
     b.disabled = true;
-    try { await api(`/api/solve/${encodeURIComponent(qid)}/clips/${b.dataset.manim}/manim`, { method: 'POST' }); } catch (err) { alert(err.message); }
+    try { await api(`api/solve/${encodeURIComponent(qid)}/clips/${b.dataset.manim}/manim`, { method: 'POST' }); } catch (err) { alert(err.message); }
     showSolve(qid);
   });
   view.querySelectorAll('[data-retry]').forEach((b) => b.onclick = async () => {
     if (!confirm('Retrying asks the teacher model again (a cloud call). Go ahead?')) return;
     b.disabled = true; b.textContent = 'Searching Linkwork…';
-    try { await api(`/api/solve/${encodeURIComponent(qid)}/clips/${b.dataset.retry}/retry`, { method: 'POST' }); } catch (err) { alert(err.message); }
+    try { await api(`api/solve/${encodeURIComponent(qid)}/clips/${b.dataset.retry}/retry`, { method: 'POST' }); } catch (err) { alert(err.message); }
     showSolve(qid);
   });
   const go = document.getElementById('solve-go');
   if (go) go.onclick = async () => {
     if (!confirm('Solving calls the cloud models (two students and the teacher). Go ahead?')) return;
     go.disabled = true;
-    try { await api(`/api/solve/${encodeURIComponent(qid)}`, { method: 'POST' }); } catch (err) { alert(err.message); }
+    try { await api(`api/solve/${encodeURIComponent(qid)}`, { method: 'POST' }); } catch (err) { alert(err.message); }
     showSolve(qid);
   };
 }
@@ -673,7 +673,7 @@ async function showSolve(qid) {
 async function route() {
   stopPolling();
   document.getElementById('years').hidden = true;
-  const session = await api('/api/session');
+  const session = await api('api/session');
   if (!session.signed_in) return showLogin();
   const parts = location.hash.replace(/^#\/?/, '').split('/');
   window.scrollTo(0, 0);
@@ -688,6 +688,8 @@ async function route() {
   }
 }
 
-document.getElementById('logout').addEventListener('click', async () => { await api('/api/logout', { method: 'POST' }); showLogin(); });
+// Under the learn.photovault.live shell a studio lives at /<slug>/: offer the way back to every studio.
+document.getElementById('nav-all').hidden = location.pathname === '/';
+document.getElementById('logout').addEventListener('click', async () => { await api('api/logout', { method: 'POST' }); showLogin(); });
 window.addEventListener('hashchange', route);
 route();

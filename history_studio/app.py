@@ -293,14 +293,14 @@ def progress(queue, record):
     for selected in sorted((project / 'images').glob('*/selected.json'), key=lambda p: p.stat().st_mtime):
         value = read_json(selected) or {}
         if value.get('file') and Path(value['file']).is_file():
-            scenes.append({'src': f'/media/{record["film"]}/scene/{selected.parent.name}',
+            scenes.append({'src': f'media/{record["film"]}/scene/{selected.parent.name}',
                            'caption': value.get('visual_message', '')})
     for drawn in sorted((project / 'figures').glob('*.png'), key=lambda p: p.stat().st_mtime):
-        scenes.append({'src': f'/media/{record["film"]}/figure/{drawn.stem}', 'caption': ''})
+        scenes.append({'src': f'media/{record["film"]}/figure/{drawn.stem}', 'caption': ''})
     delivery = read_json(project / 'delivery.json')
     video = None
     if delivery and delivery.get('outputs'):
-        video = f'/media/{record["film"]}/video'
+        video = f'media/{record["film"]}/video'
     idea = curriculum.get('idea') if curriculum.get('kind') == 'key_idea' else None
     landing = read_json(project / f'learner-check-{seconds}.json') if idea else None
     return {
@@ -322,7 +322,7 @@ def progress(queue, record):
         'passages': passages,
         'ideas': [f['claim'] for f in (evidence or {}).get('facts', [])] if evidence else None,
         'storyline': [{'heading': p.get('heading'), 'line': p.get('narration')} for p in script['points']] if script else None,
-        'narration': f'/media/{record["film"]}/narration' if audio and audio.get('audio') else None,
+        'narration': f'media/{record["film"]}/narration' if audio and audio.get('audio') else None,
         'scenes': scenes, 'scenes_total': images_total, 'scenes_done': images_done, 'video': video,
         'notes': [{'title': s['title'].replace("Teacher's note: ", ''), 'url': s['url']}
                   for s in sources['results'][1:] if s['url'].startswith('http') and 'ncert.nic.in' not in s['url']],
@@ -459,7 +459,7 @@ def build(queue=None, access=None, data=None, profile=None):
     def get_voices(request: Request):
         signed_in(request)
         return {'voices': [{'id': v['id'], 'label': v['label'], 'gender': v.get('gender') or 'other',
-                            'sample': f'/api/voices/{v["id"]}/sample'} for v in voices()]}
+                            'sample': f'api/voices/{v["id"]}/sample'} for v in voices()]}
 
     @app.get('/api/voices/{voice}/sample')
     def voice_sample(voice: str, request: Request):

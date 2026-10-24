@@ -31,32 +31,32 @@ SCIENCE_SPLIT = {
                 'hecu1-03', 'hecu1-12', 'hecu1-13', 'iesc1-02', 'iesc1-03', 'iesc1-11', 'iesc1-12', 'iesc1-13',
                 'jesc1-05', 'jesc1-06', 'jesc1-07', 'jesc1-08', 'jesc1-13'],
 }
-# A studio is one profile of this code: its subjects, its own data folder (access code, films), cookie and job names.
+# A studio is one profile of this code (slug: its path under the learn.photovault.live shell): its subjects, its own data folder (access code, films), cookie and job names.
 # Chemistry films also get exact figures (code-drawn chemistry and credited Commons diagrams, 2026-10-19).
 PROFILES = {
     # Humanities Studio (renamed from History Studio, 2026-10-24): history, political science, economics, sociology
     # and the combined social science books, at history.photovault.live. Geography has its own studio (maps).
-    'history': {'name': 'Humanities Studio', 'mark': 'H', 'subjects': SUBJECTS, 'data': 'history-data',
+    'history': {'name': 'Humanities Studio', 'slug': 'humanities', 'mark': 'H', 'subjects': SUBJECTS, 'data': 'history-data',
                 'cookie': 'history_session', 'job': 'history', 'textbook': 'humanities', 'figures': False,
                 'questions': True},              # Test yourself: creative questions on a finished film (2026-10-22)
     # Geography Studio (2026-10-24): its own studio because of maps (code-drawn, India's boundaries; map kit to come).
-    'geography': {'name': 'Geography Studio', 'mark': 'G', 'subjects': {'geography'}, 'data': 'geography-data',
+    'geography': {'name': 'Geography Studio', 'slug': 'geography', 'mark': 'G', 'subjects': {'geography'}, 'data': 'geography-data',
                   'cookie': 'geography_session', 'job': 'geography', 'figures': False, 'questions': True},
-    'chemistry': {'name': 'Chemistry Studio', 'mark': 'C', 'subjects': {'chemistry'}, 'data': 'chemistry-data',
+    'chemistry': {'name': 'Chemistry Studio', 'slug': 'chemistry', 'mark': 'C', 'subjects': {'chemistry'}, 'data': 'chemistry-data',
                   'cookie': 'chemistry_session', 'job': 'chemistry', 'figures': True,
                   'key_ideas': True,             # simplified films of a finished film's key ideas (2026-10-20)
                   'questions': True},
     # Biology Studio (2026-10-22): Class 11-12 Biology; films get the ~/biology SVG library's diagrams as figures.
-    'biology': {'name': 'Biology Studio', 'mark': 'B', 'subjects': {'biology'}, 'data': 'biology-data',
+    'biology': {'name': 'Biology Studio', 'slug': 'biology', 'mark': 'B', 'subjects': {'biology'}, 'data': 'biology-data',
                 'cookie': 'biology_session', 'job': 'biology', 'figures': 'biology', 'key_ideas': True,
                 'questions': True},
     # Physics Studio (2026-10-23): Class 11-12 Physics, and Solve: JEE questions solved by two students and a teacher
     # model, checked against the official key, then planned as worked-solution clips with their drawing aids.
-    'physics': {'name': 'Physics Studio', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',
+    'physics': {'name': 'Physics Studio', 'slug': 'physics', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',
                 'cookie': 'physics_session', 'job': 'physics', 'figures': False, 'key_ideas': True,
                 'questions': True, 'solve': 'physics'},
     # Maths Studio (2026-10-24): Class 11-12 Maths concept and key-idea films; Solve for maths comes with questions.
-    'maths': {'name': 'Maths Studio', 'mark': 'M', 'subjects': {'maths'}, 'data': 'maths-data',
+    'maths': {'name': 'Maths Studio', 'slug': 'maths', 'mark': 'M', 'subjects': {'maths'}, 'data': 'maths-data',
               'cookie': 'maths_session', 'job': 'maths', 'figures': False, 'key_ideas': True, 'questions': True},
 }
 NOT_TAUGHT = {'exercise', 'discuss', 'activity', 'ponder_point'}   # questions practise a concept; not narrated
