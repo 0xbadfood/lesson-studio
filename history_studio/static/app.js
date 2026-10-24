@@ -331,7 +331,7 @@ function activityHtml(a) {
     ${w.planning.map((l) => `<tr><td>${esc(l.label)}${l.repairs.length ? `<small>fixed ${esc(l.repairs.map((r) => r.join(', ')).join(' · '))}</small>` : ''}
       ${l.state !== 'done' && l.majors?.length ? `<small class="warn">Reviewer: ${esc(l.majors[0])}</small>` : ''}</td>
       <td>${l.rounds}</td><td>${l.score ?? ''}</td><td>${chip(l.state)}</td><td>${secs(l.seconds)}</td></tr>`).join('')}</tbody></table>`);
-  if (w.narration) out.push(`<h3>Narration</h3><p>${w.narration.done} of ${w.narration.points} points recorded and checked against the script${w.narration.retries ? `, ${w.narration.retries} recorded again` : ''}</p>
+  if (w.narration) out.push(`<h3>Narration</h3><p>${w.narration.recorded > w.narration.done ? `${Math.min(w.narration.recorded, w.narration.points)} of ${w.narration.points} points recorded; ` : ''}${w.narration.done} of ${w.narration.points} recorded and checked against the script${w.narration.retries ? `, ${w.narration.retries} recorded again` : ''}</p>
     ${w.narration.problems.map((p) => `<small class="warn">${esc(p)}</small>`).join('')}`);
   if (w.learner) out.push(`<h3>Test learner</h3><table class="grid"><thead><tr><th>Round</th><th>Understood</th><th>Simple</th><th>Confusions</th><th></th></tr></thead><tbody>
     ${w.learner.map((r) => `<tr><td>${r.round}</td><td>${r.understood ?? r.score ?? ''}</td><td>${r.simple ?? ''}</td><td>${r.confusing ?? ''}</td><td>${chip(r.landed ? 'landed' : 'not yet')}</td></tr>`).join('')}</tbody></table>`);

@@ -112,7 +112,7 @@ def activity(project, now=None):
     now = now or time.time()
     events = read_events(project)
     steps, loops, beats, pictures, log = {}, {}, {}, {}, []
-    narration = {'points': 0, 'done': 0, 'retries': 0, 'problems': []}
+    narration = {'points': 0, 'recorded': 0, 'done': 0, 'retries': 0, 'problems': []}
     learner, clips, render, images, prompts = [], {'planned': 0, 'made': []}, {}, {}, {}
     models = {'calls': 0, 'planner_usd': 0.0, 'reviewer_tokens': 0}
 
@@ -198,6 +198,10 @@ def activity(project, now=None):
             if state == 'point_rendering':
                 narration['points'] = max(narration['points'], len(d.get('points') or []))
                 say(at, f'Recording the narration: {len(d.get("points") or [])} points')
+            elif state == 'point_recorded':
+                narration['recorded'] += 1
+                say(at, f'Narration {d.get("point")}: recorded'
+                        + (f' (take {d.get("attempt")})' if (d.get('attempt') or 1) > 1 else ''))
             elif state == 'point_accepted':
                 narration['done'] += 1
                 say(at, f'Narration {d.get("point")}: recorded and checked against the script')
