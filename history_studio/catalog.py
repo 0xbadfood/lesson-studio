@@ -19,22 +19,18 @@ SUBJECTS = {'history', 'geography', 'political_science', 'economics', 'sociology
 SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_science': 'Political Science',
                  'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science',
                  'chemistry': 'Chemistry', 'biology': 'Biology', 'physics': 'Physics', 'science': 'Science'}
-# Class 6-10 have one Science book; its chapters belong to the subject studios by what they teach (2026-10-24).
-# The opening "world of science" chapters belong to all three; a chapter missing here is in none.
-_ALL = ('physics', 'chemistry', 'biology')
+# Class 6-10 have one Science book; each chapter belongs to one subject studio, by what it teaches (user, 2026-10-24:
+# no duplicates). The opening "world of science" chapters go to Chemistry, the lightest of the three.
 SCIENCE_SPLIT = {
-    'physics': ['fecu1-04', 'fecu1-05', 'fecu1-07', 'fecu1-08', 'fecu1-12', 'gecu1-03', 'gecu1-07', 'gecu1-08',
+    'physics': ['fecu1-04', 'fecu1-05', 'fecu1-07', 'fecu1-12', 'gecu1-03', 'gecu1-07', 'gecu1-08',
                 'gecu1-11', 'gecu1-12', 'hecu1-04', 'hecu1-05', 'hecu1-06', 'hecu1-10', 'hecu1-11', 'iesc1-04',
-                'iesc1-06', 'iesc1-07', 'iesc1-10', 'iesc1-13', 'jesc1-09', 'jesc1-10', 'jesc1-11', 'jesc1-12'],
-    'chemistry': ['fecu1-06', 'fecu1-08', 'fecu1-09', 'gecu1-02', 'gecu1-04', 'gecu1-05', 'hecu1-07', 'hecu1-08',
+                'iesc1-06', 'iesc1-07', 'iesc1-10', 'jesc1-09', 'jesc1-10', 'jesc1-11', 'jesc1-12'],
+    'chemistry': ['fecu1-01', 'gecu1-01', 'hecu1-01', 'iesc1-01', 'fecu1-06', 'fecu1-08', 'fecu1-09', 'gecu1-02', 'gecu1-04', 'gecu1-05', 'hecu1-07', 'hecu1-08',
                   'hecu1-09', 'iesc1-05', 'iesc1-08', 'iesc1-09', 'jesc1-01', 'jesc1-02', 'jesc1-03', 'jesc1-04'],
     'biology': ['fecu1-02', 'fecu1-03', 'fecu1-10', 'fecu1-11', 'gecu1-06', 'gecu1-09', 'gecu1-10', 'hecu1-02',
                 'hecu1-03', 'hecu1-12', 'hecu1-13', 'iesc1-02', 'iesc1-03', 'iesc1-11', 'iesc1-12', 'iesc1-13',
                 'jesc1-05', 'jesc1-06', 'jesc1-07', 'jesc1-08', 'jesc1-13'],
 }
-for _first in ('fecu1-01', 'gecu1-01', 'hecu1-01', 'iesc1-01'):
-    for _s in _ALL:
-        SCIENCE_SPLIT[_s].append(_first)
 # A studio is one profile of this code: its subjects, its own data folder (access code, films), cookie and job names.
 # Chemistry films also get exact figures (code-drawn chemistry and credited Commons diagrams, 2026-10-19).
 PROFILES = {
