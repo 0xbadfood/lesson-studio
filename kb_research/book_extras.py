@@ -6,6 +6,8 @@
 2. figures: every figure block of a digest is cut out of its page as a PNG. The vision model gives a box (0-1000 on
    both axes); code widens it to the PDF's own drawing objects and labels it cuts through, so a box that clips a label
    still yields the whole drawing. A figure the model cannot find is recorded as missing, not guessed.
+3. svgs: the same box cut from the page's own vector drawing (pdftocairo), so a figure is the book's exact SVG, with
+   everything outside it pruned. Photographs and scans come out as 'raster' (left for vtracer).
 
 Results sit beside each digest (answers.json, figures.json, figures/<ref>.png) and in one index,
 textbook-digest/extras.sqlite3, for lookups by chapter and the book's own label (Exercise 5.23, Fig. 5.10).
@@ -14,6 +16,7 @@ model call is cached).
 
   .venv/bin/python kb_research/book_extras.py answers [books...]
   .venv/bin/python kb_research/book_extras.py figures [chapters...] [--min-class 9]
+  .venv/bin/python kb_research/book_extras.py svgs [chapters...]      (SVGs for figures already cut)
   .venv/bin/python kb_research/book_extras.py index
 """
 from __future__ import annotations
@@ -252,6 +255,140 @@ def widen(page, box, skip):
     return b
 
 
+SVG_NS = 'http://www.w3.org/2000/svg'
+XLINK = '{http://www.w3.org/1999/xlink}href'
+
+
+def page_svg(pdf_path, page, folder):
+    """The page as SVG (poppler's cairo backend), cached beside the page images, and the offset of its crop box."""
+    path = folder / f'p-{page:02d}.svg'
+    if not path.exists():
+        folder.mkdir(parents=True, exist_ok=True)
+        subprocess.run(['pdftocairo', '-svg', '-f', str(page), '-l', str(page), str(pdf_path), str(path)],
+                       check=True, capture_output=True)
+    info = subprocess.run(['pdfinfo', '-f', str(page), '-l', str(page), '-box', str(pdf_path)],
+                          capture_output=True, text=True).stdout
+    media = [float(v) for v in re.search(rf'Page\s+{page} MediaBox:\s+(.*)', info).group(1).split()]
+    crop = [float(v) for v in re.search(rf'Page\s+{page} CropBox:\s+(.*)', info).group(1).split()]
+    return path, (crop[0] - media[0], media[3] - crop[3])          # pdfplumber measures from the media box's top left
+
+
+def figure_svg(pdf_path, page, box, folder, target):
+    """The figure exactly as the book drew it: the page's own vector drawing, cut to the box (PDF points), with every
+    element outside the box removed, full-page images (watermarks, backgrounds) dropped and unused glyphs pruned.
+    Returns 'vector', 'raster' (only bitmaps inside the box: a photograph or a scan, for vtracer later) or None
+    (nothing drawn there)."""
+    import xml.etree.ElementTree as ET
+    import svgelements as se
+    ET.register_namespace('', SVG_NS)
+    ET.register_namespace('xlink', 'http://www.w3.org/1999/xlink')
+    path, (dx, dy) = page_svg(pdf_path, page, folder)
+    root = ET.parse(path).getroot()
+    page_w, page_h = (float(v) for v in root.get('viewBox').split()[2:])
+    x0, y0, x1, y1 = box[0] - dx, box[1] - dy, box[2] - dx, box[3] - dy
+    q = lambda tag: f'{{{SVG_NS}}}{tag}'  # noqa: E731
+    defs = {e.get('id'): e for e in root.iter() if e.get('id')}
+    parent = {c: p for p in root.iter() for c in p}
+
+    def local_box(e):
+        tag = e.tag.split('}')[1]
+        if tag == 'path' and (e.get('d') or '').strip():
+            return se.Path(e.get('d')).bbox()
+        if tag == 'rect':
+            x, y = float(e.get('x', 0)), float(e.get('y', 0))
+            return x, y, x + float(e.get('width', 0)), y + float(e.get('height', 0))
+        if tag == 'image':
+            x, y = float(e.get('x', 0)), float(e.get('y', 0))
+            return x, y, x + float(e.get('width', 0)), y + float(e.get('height', 0))
+        if tag == 'use':
+            ref = defs.get((e.get(XLINK) or '').lstrip('#'))
+            inner = [b for b in (local_box(c) for c in ref.iter() if c is not ref) if b] if ref is not None else []
+            if ref is not None and ref.tag.split('}')[1] in ('image', 'path', 'rect'):
+                inner = [b for b in [local_box(ref)] if b]
+            if not inner:
+                return None
+            x, y = float(e.get('x', 0)), float(e.get('y', 0))
+            return (min(b[0] for b in inner) + x, min(b[1] for b in inner) + y,
+                    max(b[2] for b in inner) + x, max(b[3] for b in inner) + y)
+        return None
+
+    def matrix(e):
+        m = se.Matrix()
+        chain = []
+        while e is not None and e is not root:
+            chain.append(e)
+            e = parent.get(e)
+        for node in reversed(chain):
+            if node.get('transform'):
+                m = se.Matrix(node.get('transform')) * m
+        return m
+
+    drawn = [e for e in root.iter() if e.tag in (q('path'), q('use'), q('image'), q('rect'))
+             and not any(a.tag in (q('defs'), q('clipPath'), q('mask'), q('symbol')) for a in _ancestors(e, parent))]
+    kept = images = 0
+    for e in drawn:
+        b = local_box(e)
+        if b is None:                              # draws nothing measurable (an empty glyph: a space)
+            parent[e].remove(e)
+            continue
+        m = matrix(e)
+        corners = [m.point_in_matrix_space((x, y)) for x in (b[0], b[2]) for y in (b[1], b[3])]
+        bx0, by0 = min(c[0] for c in corners), min(c[1] for c in corners)
+        bx1, by1 = max(c[0] for c in corners), max(c[1] for c in corners)
+        whole_page = (bx1 - bx0) > .8 * page_w and (by1 - by0) > .8 * page_h
+        if whole_page or bx1 < x0 or bx0 > x1 or by1 < y0 or by0 > y1:
+            parent[e].remove(e)
+        else:
+            kept += 1
+            images += e.tag == q('image') or (e.tag == q('use') and (e.get(XLINK) or '').startswith('#source'))
+
+    def refs(e):
+        out = {(e.get(XLINK) or '').lstrip('#')} if e.get(XLINK) else set()
+        return out | {u for a in ('clip-path', 'mask', 'filter') for u in re.findall(r'url\(#([^)]+)\)', e.get(a) or '')}
+
+    def drawing(e):
+        return any(x.tag in (q('path'), q('use'), q('image'), q('rect')) for x in e.iter())
+
+    pruned = True                                  # groups left empty (a watermark's masked wrapper) go too
+    while pruned:
+        pruned = False
+        for e in list(root.iter(q('g'))):
+            if e in parent and not drawing(e) and not any(a.tag == q('defs') for a in _ancestors(e, parent)):
+                parent[e].remove(e)
+                pruned = True
+        parent = {c: p for p in root.iter() for c in p}
+    defs_nodes = [d for d in root.iter(q('defs'))]
+    in_defs = {x for d in defs_nodes for x in d.iter()}
+    used = set().union(*(refs(e) for e in root.iter() if e not in in_defs))
+    while True:                                    # what the used definitions themselves use (mask -> image)
+        more = set().union(set(), *(refs(x) for i in used if i in defs for x in defs[i].iter())) - used
+        if not more:
+            break
+        used |= more
+    parent = {c: p for p in root.iter() for c in p}
+    for e in [x for d in defs_nodes for x in d.iter() if x is not d]:     # unused definitions at any depth (glyphs
+        if e.get('id') and e.get('id') not in used and e in parent:      # sit inside an unnamed group)
+            parent[e].remove(e)
+    for d in defs_nodes:
+        for g in [x for x in d.iter(q('g')) if not x.get('id') and not len(x)]:
+            parent = {c: p for p in root.iter() for c in p}
+            if g in parent:
+                parent[g].remove(g)
+    root.set('viewBox', f'{x0:.2f} {y0:.2f} {x1 - x0:.2f} {y1 - y0:.2f}')
+    root.set('width', f'{x1 - x0:.2f}')
+    root.set('height', f'{y1 - y0:.2f}')
+    if not kept:
+        return None
+    ET.ElementTree(root).write(target, encoding='utf-8', xml_declaration=True)
+    return 'raster' if images == kept else 'vector'
+
+
+def _ancestors(e, parent):
+    while e in parent:
+        e = parent[e]
+        yield e
+
+
 def text_share(page, b):
     """How much of the box is body text: a high share means the box missed the drawing."""
     body, _ = text_lines(page)
@@ -337,11 +474,39 @@ def run_figures(selected, endpoint, log=print):
                     entry.update(image=f'figures/{target.name}', page=page, box_pt=[round(v, 1) for v in box],
                                  box_model=r['box'], text_share=round(share, 2), suspect=share > .25)
                     entry.pop('error', None)
+                    add_svg(folder, src, entry)
                     break
                 out[ref] = entry
         index_path.write_text(json.dumps(out, indent=1, ensure_ascii=False))
         cut = sum(bool(e['image']) for e in out.values())
         log(f'{folder.name}: {cut}/{len(out)} figures cut ({time.monotonic() - started:.0f} s)')
+
+
+def add_svg(folder, src, entry):
+    """The figure's exact SVG from the PDF's own drawing, beside its PNG (no model: the box is already known)."""
+    target = folder / 'figures' / f'{slug(entry["ref"])}.svg'
+    try:
+        kind = figure_svg(src, entry['page'], entry['box_pt'], folder / 'pages', target)
+    except Exception as exc:  # noqa: BLE001 - the PNG stands; the SVG is recorded as failed
+        entry.update(svg=None, svg_kind=None, svg_error=str(exc)[:200])
+        return
+    entry.update(svg=f'figures/{target.name}' if kind else None, svg_kind=kind)
+    entry.pop('svg_error', None)
+
+
+def run_svgs(selected, log=print):
+    """SVGs for figures already cut (their boxes are in figures.json)."""
+    for folder, d in selected:
+        path = folder / 'figures.json'
+        if not path.exists():
+            continue
+        figures, started = json.loads(path.read_text()), time.monotonic()
+        for entry in figures.values():
+            if entry.get('box_pt') and not (entry.get('svg') and (folder / entry['svg']).is_file()):
+                add_svg(folder, d['source']['pdf'], entry)
+        path.write_text(json.dumps(figures, indent=1, ensure_ascii=False))
+        kinds = collections.Counter(e.get('svg_kind') for e in figures.values() if e.get('box_pt'))
+        log(f'{folder.name}: SVG {dict(kinds)} ({time.monotonic() - started:.0f} s)')
 
 
 # ------------------------------------------------------------------ index
@@ -350,7 +515,8 @@ def build_index():
     db = sqlite3.connect(INDEX)
     db.executescript('''
         CREATE TABLE answers (chapter TEXT, block TEXT, ref TEXT, answer TEXT, source_pdf TEXT, source_page INT);
-        CREATE TABLE figures (chapter TEXT, block TEXT, ref TEXT, caption TEXT, image TEXT, page INT);
+        CREATE TABLE figures (chapter TEXT, block TEXT, ref TEXT, caption TEXT, image TEXT, page INT, svg TEXT,
+                              svg_kind TEXT, suspect INT);
         CREATE INDEX answers_ref ON answers (chapter, ref);
         CREATE INDEX figures_ref ON figures (chapter, ref);''')
     counts = collections.Counter()
@@ -363,9 +529,10 @@ def build_index():
                 counts['answers'] += 1
         if (folder / 'figures.json').exists():
             for ref, f in json.loads((folder / 'figures.json').read_text()).items():
-                db.execute('INSERT INTO figures VALUES (?,?,?,?,?,?)', (chapter, f['block'], ref, f['caption'],
-                                                                       f'{chapter}/{f["image"]}' if f['image'] else None,
-                                                                       f['page']))
+                db.execute('INSERT INTO figures VALUES (?,?,?,?,?,?,?,?,?)', (
+                    chapter, f['block'], ref, f['caption'], f'{chapter}/{f["image"]}' if f['image'] else None,
+                    f['page'], f'{chapter}/{f["svg"]}' if f.get('svg') else None, f.get('svg_kind'),
+                    int(bool(f.get('suspect')))))
                 counts['figures'] += 1
     db.commit()
     return dict(counts)
@@ -383,7 +550,7 @@ def lookup(chapter, ref):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('what', choices=['answers', 'figures', 'index'])
+    parser.add_argument('what', choices=['answers', 'figures', 'svgs', 'index'])
     parser.add_argument('names', nargs='*', help='books (answers) or chapter folders like keph1-05 (figures)')
     parser.add_argument('--min-class', type=int, default=9)
     parser.add_argument('--endpoint', default=SPARK)
@@ -395,6 +562,9 @@ def main(argv=None):
     elif args.what == 'figures':
         selected = [(f, d) for f, d in chapters(args.min_class) if not args.names or f.name in args.names]
         run_figures(selected, args.endpoint, log)
+    elif args.what == 'svgs':
+        selected = [(f, d) for f, d in chapters(args.min_class) if not args.names or f.name in args.names]
+        run_svgs(selected, log)
     log(f'index: {build_index()}')
 
 
