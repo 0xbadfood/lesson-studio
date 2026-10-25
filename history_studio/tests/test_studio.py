@@ -364,3 +364,26 @@ class BookFigureTests(unittest.TestCase):
         self.assertIn('tangent', first['description'])
         self.assertTrue(Path(first['file']).exists())
         self.assertTrue(all(f['description'] for f in figures['library']))
+
+
+class TopicTests(unittest.TestCase):
+    """Beyond the book (2026-10-25): a topic written from cited sources loads like a chapter in the studio it names."""
+
+    def test_the_heart_procedure_topic_is_a_biology_film_for_parents(self):
+        cat = catalog.catalog(subjects={'biology'})
+        eleven = next(c for c in cat if c['class'] == 11)
+        beyond = next(s for s in eleven['subjects'] if s['name'] == 'Beyond the book')
+        self.assertEqual([ch['id'] for ch in beyond['chapters']], ['topic-bav-newborn'])
+        self.assertNotIn('topic-bav-newborn', [d['source']['id'] for d in catalog.digests(subjects={'physics'})])
+        d = catalog.digest_for('topic-bav-newborn', subjects={'biology'})
+        request = catalog.film_request(d, d['concepts'][0], figures='biology')
+        record = request['record']
+        self.assertTrue(record['topic'])
+        self.assertIn('Parents', record['audience'])
+        self.assertEqual(record['figures']['level'], 2)                       # plain words with the medical name
+        ids = [f['id'] for f in record['figures']['library']]
+        for fid in ('aortic-valve-closeup', 'heart-newborn', 'catheter-route', 'balloon-valvuloplasty', 'heart-section'):
+            self.assertIn(fid, ids)
+        sources = request['sources']['results']
+        self.assertTrue(all(s['url'].startswith('https://') and s['raw_content'] for s in sources))
+        self.assertIn('about 30 percent', ' '.join(s['raw_content'] for s in sources))

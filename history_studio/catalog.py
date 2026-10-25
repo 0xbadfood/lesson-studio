@@ -18,7 +18,8 @@ DIGESTS = ROOT / 'textbook-digest'
 SUBJECTS = {'history', 'political_science', 'economics', 'sociology', 'social_science'}   # Humanities Studio
 SUBJECT_NAMES = {'history': 'History', 'geography': 'Geography', 'political_science': 'Political Science',
                  'economics': 'Economics', 'sociology': 'Sociology', 'social_science': 'Social Science',
-                 'chemistry': 'Chemistry', 'biology': 'Biology', 'physics': 'Physics', 'science': 'Science', 'maths': 'Maths'}
+                 'chemistry': 'Chemistry', 'biology': 'Biology', 'physics': 'Physics', 'science': 'Science', 'maths': 'Maths',
+                 'beyond': 'Beyond the book'}
 # Class 6-10 have one Science book; each chapter belongs to one subject studio, by what it teaches (user, 2026-10-24:
 # no duplicates). The opening "world of science" chapters go to Chemistry, the lightest of the three.
 SCIENCE_SPLIT = {
@@ -144,7 +145,9 @@ SOCIETY_GEOGRAPHY = {'fees1-02', 'fees1-03', 'gees1-01', 'gees1-02', 'gees1-03',
 
 def subjects_of(source):
     """The studio subjects a chapter belongs to: its own; for a Class 6-10 Science chapter, what it teaches; for a
-    geography chapter of the combined social science books, geography."""
+    geography chapter of the combined social science books, geography; for a topic, the studio it names."""
+    if source.get('kind') == 'topic':
+        return {source['studio']}
     if source.get('id') in SOCIETY_GEOGRAPHY:
         return {'geography'}
     if source.get('subject') == 'science':
@@ -152,9 +155,15 @@ def subjects_of(source):
     return {source.get('subject')}
 
 
+# Beyond the book (2026-10-25): topics written from cited sources (a reviewer asked for a heart procedure explained to
+# parents) load like chapters, in the class and studio they name, with their own audience, sources and figures.
+TOPICS = ROOT / 'topics'
+
+
 def digests(root=None, subjects=SUBJECTS):
     out = []
-    for path in sorted(Path(root or DIGESTS).glob('*/digest.json')):
+    paths = sorted(Path(root or DIGESTS).glob('*/digest.json')) + ([] if root else sorted(TOPICS.glob('*/digest.json')))
+    for path in paths:
         d = _load(str(path), path.stat().st_mtime)
         if subjects_of(d['source']) & set(subjects):
             out.append(d)
@@ -220,7 +229,9 @@ def book_text(digest, concept):
     for b in teaching_blocks(digest, concept):
         label = {'source': 'Primary source', 'figure': 'Figure', 'map': 'Map', 'key_term': 'Key term',
                  'box': 'Box'}.get(b['type'], b['type'].replace('_', ' ').title())
-        head = f'[{label}, p.{",".join(map(str, b.get("pages", [])))}] {b.get("title", "")}'.strip()
+        where = (f', {b["source"]["title"]}' if isinstance(b.get('source'), dict) else       # a topic cites its source
+                 f', p.{",".join(map(str, b.get("pages", [])))}')
+        head = f'[{label}{where}] {b.get("title", "")}'.strip()
         body = b.get('text') or b.get('meaning') or b.get('caption') or ''   # some key terms carry only 'meaning'
         if b['type'] in ('figure', 'map') and b.get('shows'):
             body = f'{b.get("caption", "")} Shows: {b["shows"]}'
@@ -286,6 +297,8 @@ def film_request(digest, concept, figures=False):
     (Biology Studio) for the biology library's diagrams of this chapter, 'book' (Physics and Maths Studios) for LaTeX
     equations and the book's own figures this concept teaches from (exact SVGs from the digest's index)."""
     s = digest['source']
+    if s.get('kind') == 'topic':
+        return topic_request(digest, concept, figures)
     code = Path(s['pdf']).stem
     record = {'kind': 'textbook_concept', 'chapter_id': s['id'], 'concept_id': concept['id'],
               'concept': concept['name'], 'summary': concept.get('summary', ''),
@@ -318,3 +331,29 @@ def film_request(digest, concept, figures=False):
                         'raw_content': a['content'] + (('\nSources: ' + ', '.join(urls)) if urls else '')})
     subject = f'{concept["name"]} (NCERT Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], "")}, {s["title"]})'
     return {'subject': subject[:300], 'record': record, 'sources': {'results': sources}}
+
+
+def topic_request(digest, concept, figures=False):
+    """A topic's film request: its audience, its blocks grouped by the source each cites (the film's sources), and
+    for Biology Studio the topic's own diagrams (beyond the book) with those of the chapter it builds on, labelled at
+    the topic's level."""
+    s = digest['source']
+    record = {'kind': 'textbook_concept', 'topic': True, 'chapter_id': s['id'], 'concept_id': concept['id'],
+              'concept': concept['name'], 'summary': concept.get('summary', ''), 'audience': s['audience'],
+              'book': f'{s["book_title"]}: {s["title"]}', 'chapter_no': s['chapter'], 'chapter': s['title'],
+              'coverage': coverage(digest, concept), 'seconds': film_seconds(digest, concept)}
+    if figures == 'biology':
+        from figure_library import biology
+        level_class = s.get('figure_class', s['class'])
+        record['figures'] = {'subject': 'biology', 'code_root': str(ROOT), 'level': biology.level_for(level_class),
+                             'library': biology.candidates(s.get('anchor_chapter', s['id']), level_class,
+                                                           extra=s.get('figures') or [])}
+    by_source = {}
+    for b in teaching_blocks(digest, concept):
+        src = b['source']
+        entry = by_source.setdefault(src['url'], {'url': src['url'], 'complete': True, 'title': src['title'], 'raw_content': ''})
+        entry['raw_content'] += f'{b.get("title", "")}\n{b.get("text", "")}\n\n'
+    sources = [{**e, 'raw_content': e['raw_content'].strip()} for e in by_source.values()]
+    subject = f'{concept["name"]} ({s["book_title"]}: {s["title"]})'
+    return {'subject': subject[:300], 'record': record, 'sources': {'results': sources}}
+

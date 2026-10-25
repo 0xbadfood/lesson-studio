@@ -1,0 +1,53 @@
+{
+  "schema": "topic.v1",
+  "source": {
+    "id": "topic-bav-newborn", "kind": "topic", "studio": "biology", "class": 11, "subject": "beyond",
+    "book": "topic", "book_title": "Beyond the book", "chapter": 1,
+    "title": "A heart procedure for newborns",
+    "audience": "Parents of a newborn who needs balloon aortic valvuloplasty, in plain words (no biology background)",
+    "anchor_chapter": "kebo1-15", "figure_class": 10,
+    "figures": ["aortic-valve-closeup", "heart-newborn", "catheter-route", "balloon-valvuloplasty", "heart-section"],
+    "written": "2026-10-25: written from the cited sources and checked against them; requested by a paediatric cardiologist reviewer"
+  },
+  "outline": [], "chapter_context": [], "gaps": [], "additions": [], "audit": {}, "research": {},
+  "blocks": [
+    {"id": "B1", "type": "fact", "title": "The heart's exit door",
+     "text": "The left ventricle, the heart's main pumping chamber, pumps oxygen-rich blood into the aorta, the main artery that carries blood to the whole body. The aortic valve sits between the left ventricle and the aorta. A normal aortic valve has three thin flaps, called cusps. With every heartbeat they open wide to let blood out, then close tightly so that blood does not flow back into the heart.",
+     "source": {"title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation", "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"}},
+    {"id": "B2", "type": "definition", "title": "Aortic stenosis: a narrow valve",
+     "text": "Aortic stenosis means the aortic valve is narrowed and cannot open fully, so the heart has to pump much harder to push blood through the small opening. In babies born with it, the valve is often thickened and stiff, and it frequently has only two flaps instead of three (a bicuspid valve), sometimes with flaps that are partly joined along a seam called a raphe.",
+     "source": {"title": "Catheter management of aortic valve stenosis in neonates and children (review)", "url": "https://www.cambridge.org/core/product/5FCF165366D8648709D07AB55B8BD79F"}},
+    {"id": "B3", "type": "fact", "title": "When a newborn's valve is very narrow",
+     "text": "When the narrowing is severe at birth, called critical aortic stenosis, too little blood can get out of the left ventricle, and the ventricle may become thickened or weak. Before birth, and for a few days after it, a short blood vessel called the ductus arteriosus joins the pulmonary artery to the aorta, and blood can reach the body through this short cut. The ductus normally closes in the first days of life, so the baby is given a medicine called prostaglandin that keeps it open until the valve is treated. Blood returning to the left side of the heart can also cross to the right side through a small flap opening between the upper chambers, the foramen ovale.",
+     "source": {"title": "Balloon aortic valvuloplasty in newborns with critical aortic stenosis (Folia Cardiologica)", "url": "https://journals.viamedica.pl/folia_cardiologica/article/download/24168/19352"}},
+    {"id": "B4", "type": "fact", "title": "Two ways to open the valve",
+     "text": "The narrow valve can be opened with a balloon during a cardiac catheterisation, called balloon aortic valvuloplasty, or by heart surgery, called surgical valvotomy. Both are used for newborns. Doctors choose between them for each baby and by their own centre's experience; no randomised trials have compared the two.",
+     "source": {"title": "Critical aortic stenosis in neonates: balloon valvuloplasty versus surgical valvotomy", "url": "https://www.em-consulte.com/article/1463787/alerteM"}},
+    {"id": "B5", "type": "fact", "title": "Reaching the heart with a thin tube",
+     "text": "The baby is given medicine to sleep through the procedure. The doctor puts a thin, flexible tube, called a catheter, into an artery: usually in the groin (the femoral artery); in a newborn sometimes through the belly button (an umbilical artery) or in the neck (the carotid artery), which suits very small babies. Watching on X-ray and ultrasound screens, the doctor passes the catheter through the arteries up to the heart, travelling against the flow of blood, and passes a thin guide wire through the narrow valve into the left ventricle.",
+     "source": {"title": "Approach for balloon aortic valvuloplasty in neonates (Pediatric Cardiology 2017)", "url": "https://link.springer.com/10.1007/s00246-017-1772-9"}},
+    {"id": "B6", "type": "fact", "title": "Opening the valve with a balloon",
+     "text": "A balloon about the size of the valve ring is slid along the wire until it sits across the valve. It is inflated for only a few seconds and then deflated. As it fills, the stiff valve squeezes its middle, then it opens fully: it stretches the valve and splits flaps that are joined together, so the opening becomes wider. The balloon, wire and catheter are then taken out. For aortic stenosis the procedure takes about two hours.",
+     "source": {"title": "Balloon valvuloplasty, Children's Health (Dallas), information for families", "url": "https://www.childrens.com/specialties-services/treatments/balloon-valvuloplasty"}},
+    {"id": "B7", "type": "fact", "title": "Right after the procedure",
+     "text": "Afterwards, blood flows out of the heart more easily and the pressure inside the left ventricle falls. A newborn who had critical stenosis is looked after closely in intensive care while the heart recovers; how long depends on how strong the heart is. Ultrasound scans of the heart (echocardiograms) check how well the valve opens and closes.",
+     "source": {"title": "Balloon valvuloplasty, Children's Health (Dallas), information for families", "url": "https://www.childrens.com/specialties-services/treatments/balloon-valvuloplasty"}},
+    {"id": "B8", "type": "fact", "title": "Possible problems",
+     "text": "The most common problem afterwards is a leak: the stretched valve may not close completely, so some blood flows back into the heart. This is called aortic regurgitation, and some degree of it happens in about 30 percent of children; it can grow over the years, so doctors keep watching it. Other risks include bleeding or a blocked artery where the catheter went in, and short-lived irregular heart rhythms; damage to the heart wall is rare.",
+     "source": {"title": "Balmer C et al., Balloon aortic valvoplasty in paediatric patients: progressive aortic regurgitation is common. Heart 2004;90:77", "url": "https://heart.bmj.com/content/90/1/77"}},
+    {"id": "B9", "type": "fact", "title": "Growing up with the valve",
+     "text": "The balloon makes the valve wider, but it does not make it a normal valve. Many children need another balloon procedure or heart surgery later in childhood: in one large hospital's experience, about a third of babies treated with a balloon had needed no further procedure ten years later. So children have regular check-ups with their heart doctor as they grow.",
+     "source": {"title": "Critical aortic stenosis in neonates: balloon valvuloplasty versus surgical valvotomy (137 neonates, 1990-2020)", "url": "https://www.em-consulte.com/article/1463787/alerteM"}}
+  ],
+  "concepts": [
+    {"id": "C1", "name": "Balloon aortic valvuloplasty in a newborn",
+     "aliases": ["Balloon valvuloplasty", "Critical aortic stenosis"], "sections": [],
+     "summary": "Why a newborn's narrow aortic valve strains the heart, how a balloon on a thin tube opens it, and what parents can expect afterwards.",
+     "depth": "stated", "difficulty": "core", "blocks": ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
+     "objectives": ["Explain what the aortic valve does and how a narrow valve strains a newborn's heart.",
+                    "Explain why a newborn may depend on the ductus arteriosus and prostaglandin before treatment.",
+                    "Follow how balloon valvuloplasty is done: a catheter through an artery, a wire across the valve, a balloon inflated for a few seconds.",
+                    "Know what to expect afterwards: a wider valve, a possible leak, check-ups, and perhaps more treatment later."],
+     "prerequisites": []}
+  ]
+}
