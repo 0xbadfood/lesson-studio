@@ -11,7 +11,9 @@ async function api(path, options = {}) {
   const response = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...options });
   if (response.status === 401) { showLogin(); throw new Error('signed out'); }
   const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(body.detail || 'Something went wrong');
+  // FastAPI's validation errors are a list of objects: show their messages, not "[object Object]"
+  const detail = Array.isArray(body.detail) ? body.detail.map((d) => d.msg || String(d)).join('; ') : body.detail;
+  if (!response.ok) throw new Error(detail || 'Something went wrong');
   return body;
 }
 

@@ -387,3 +387,12 @@ class TopicTests(unittest.TestCase):
         sources = request['sources']['results']
         self.assertTrue(all(s['url'].startswith('https://') and s['raw_content'] for s in sources))
         self.assertIn('about 30 percent', ' '.join(s['raw_content'] for s in sources))
+
+
+class TopicRequestTests(unittest.TestCase):
+    def test_a_topic_id_is_a_valid_chapter_in_a_film_request(self):
+        # 2026-10-25: "topic-bav-newborn" failed the chapter pattern and the page showed "[object Object]".
+        self.assertEqual(studio.FilmAsk(chapter='topic-bav-newborn', concept='C1', voice='nitin').chapter, 'topic-bav-newborn')
+        self.assertEqual(studio.FilmAsk(chapter='kebo1-15', concept='C6').chapter, 'kebo1-15')
+        with self.assertRaises(Exception):
+            studio.FilmAsk(chapter='../etc', concept='C1')

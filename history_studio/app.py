@@ -374,7 +374,7 @@ class IdeaAsk(BaseModel):
 
 
 class FilmAsk(BaseModel):
-    chapter: str = Field(pattern=r'^[a-z0-9]+-\d{2}$')
+    chapter: str = Field(pattern=r'^([a-z0-9]+-\d{2}|topic-[a-z0-9-]{1,40})$')     # a book chapter, or a topic
     concept: str = Field(pattern=r'^C\d{1,3}$')
     voice: str | None = Field(default=None, max_length=80)
 
