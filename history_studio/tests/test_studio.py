@@ -408,3 +408,11 @@ class TopicRequestTests(unittest.TestCase):
         self.assertEqual(studio.FilmAsk(chapter='kebo1-15', concept='C6').chapter, 'kebo1-15')
         with self.assertRaises(Exception):
             studio.FilmAsk(chapter='../etc', concept='C1')
+
+
+class BookFigureTests(unittest.TestCase):
+    def test_exercise_and_incomplete_figures_stay_out_of_films(self):
+        digest = json.loads((catalog.EXTRAS / 'keph1-02' / 'digest.json').read_text())
+        concept = {'id': 'c-test', 'name': 'graphs', 'blocks': ['B82']}
+        self.assertEqual(catalog.book_figures(digest, concept), [])
+        self.assertIn('[Exercise figure', catalog.book_text(digest, concept))

@@ -398,7 +398,7 @@ def text_share(page, b):
     return covered / area
 
 
-def find_figure(model, pdf_path, page, ref, caption, folder):
+def find_figure(model, pdf_path, page, ref, caption, folder, hint=''):
     # The model's boxes came back sometimes in 0-1000 units and sometimes in pixels: on a 1000 x 1000 picture (the
     # page scaled to 1000 high, white to its right) the two agree, and both axes share one scale.
     from PIL import Image
@@ -415,7 +415,7 @@ def find_figure(model, pdf_path, page, ref, caption, folder):
               ': the drawing, graph or photograph itself, with all its parts (a), (b)... and their labels, but not '
               'its caption and not any example box or body text. Return JSON {"found": true|false, "box": [x0, y0, '
               'x1, y1]} in pixels of this 1000 x 1000 image (0,0 top left), tight around the figure. found is false '
-              'if this page does not show it.')
+              'if this page does not show it.' + (f' {hint}' if hint else ''))
 
     def errors(r):
         if not r.get('found'):
@@ -425,8 +425,78 @@ def find_figure(model, pdf_path, page, ref, caption, folder):
                 and 0 <= box[0] < box[2] <= 1000 and 0 <= box[1] < box[3] <= 1000):
             return ['box must be [x0, y0, x1, y1] within 0-1000 with x0 < x1 and y0 < y1']
         return []
-    return model.call(f'figure-{page:02d}-{slug(ref)}', prompt, images=[image], thinking=0, max_tokens=600,
+    return model.call(f'figure-{page:02d}-{slug(ref)}{"-retry" if hint else ""}', prompt, images=[image], thinking=0, max_tokens=600,
                       attempts=3, validate=lambda r: digest.kb.raise_if(errors(r)))
+
+
+def panels_named(block):
+    """The part letters a figure's own words name, (a) to (d): a crop must hold every one of them. NCERT draws the
+    letters as shapes, so the PDF's text can't confirm them; a look at the crop does."""
+    words = ' '.join(str(block.get(k) or '') for k in ('caption', 'title', 'text', 'shows'))
+    letters = sorted(set(re.findall(r'\(([a-h])\)', words)))
+    return letters if len(letters) >= 2 else []
+
+
+def panels_missing(model, folder, entry, letters):
+    """The named parts the crop does not show (Fig. 2.10 of keph1-02 was cut with (c) and (d) only, and a film said
+    four graphs over two, 2026-10-26)."""
+    def errors(r):
+        seen = r.get('visible')
+        return [] if isinstance(seen, list) and all(isinstance(x, str) for x in seen) else ['visible must be a list of letters']
+    r = model.call(f'panels-{slug(entry["ref"])}', (
+        f'This is a crop of NCERT figure {entry["ref"]}, which has parts {", ".join(f"({x})" for x in letters)}. '
+        'Which of these part labels can you see in this picture, each with its own drawing? Return JSON '
+        '{"visible": ["a", ...]} with the letters only.'), images=[folder / entry['image']], thinking=0, max_tokens=300,
+        attempts=3, validate=lambda r: digest.kb.raise_if(errors(r)))
+    seen = {str(x).strip('() ').lower() for x in r.get('visible') or []}
+    return [x for x in letters if x not in seen]
+
+
+def cut_figure(model, pdf, src, folder, block, entry, skip, hint=''):
+    """Find the figure on its pages and cut it (PNG, and SVG from the PDF's drawing); True when cut."""
+    for page in block.get('pages') or []:
+        try:
+            r = find_figure(model, src, page, entry['ref'], entry['caption'], folder, hint)
+        except Exception as exc:  # noqa: BLE001 - a failed figure is recorded, the chapter goes on
+            entry['error'] = str(exc)[:200]
+            continue
+        if not r.get('found'):
+            continue
+        p = pdf.pages[page - 1]
+        scale = max(p.width, p.height) / 1000           # the square picture: one scale, both axes
+        box = widen(p, tuple(v * scale for v in r['box']), skip)
+        pad, k = 4, FIG_DPI / 72
+        target = folder / 'figures' / f'{slug(entry["ref"])}.png'
+        target.parent.mkdir(exist_ok=True)
+        subprocess.run(['pdftoppm', '-r', str(FIG_DPI), '-png', '-singlefile', '-f', str(page), '-l',
+                        str(page), '-x', str(int((box[0] - pad) * k)), '-y', str(int((box[1] - pad) * k)),
+                        '-W', str(int((box[2] - box[0] + 2 * pad) * k)),
+                        '-H', str(int((box[3] - box[1] + 2 * pad) * k)), src, str(target.with_suffix(''))],
+                       check=True, capture_output=True)
+        share = text_share(p, box)
+        entry.update(image=f'figures/{target.name}', page=page, box_pt=[round(v, 1) for v in box],
+                     box_model=r['box'], text_share=round(share, 2), suspect=share > .25)
+        entry.pop('error', None)
+        add_svg(folder, src, entry)
+        return True
+    return False
+
+
+def check_panels(model, pdf, src, folder, block, entry, skip, log=print):
+    """Every named part in the crop, or one more cut told which parts were left out; still missing, it is suspect
+    (a film then leaves it out)."""
+    letters = panels_named(block)
+    if not letters or not entry.get('image'):
+        return
+    missing = panels_missing(model, folder, entry, letters)
+    if missing:
+        hint = (f'It has parts {", ".join(f"({x})" for x in letters)}; a box that held only some of them left out '
+                f'{", ".join(f"({x})" for x in missing)}, which may sit beside or above the others: include every part.')
+        if cut_figure(model, pdf, src, folder, block, entry, skip, hint):
+            missing = panels_missing(model, folder, entry, letters)
+    entry['panels_missing'] = missing
+    entry['suspect'] = bool(entry.get('suspect')) or bool(missing)
+    log(f'{folder.name} {entry["ref"]}: ' + (f'parts {", ".join(missing)} still missing: suspect' if missing else f'all {len(letters)} parts'))
 
 
 def run_figures(selected, endpoint, log=print):
@@ -451,31 +521,8 @@ def run_figures(selected, endpoint, log=print):
                     continue
                 entry = {'ref': ref, 'block': b['id'], 'caption': b.get('caption') or b.get('title', ''),
                          'image': None, 'page': None}
-                for page in b.get('pages') or []:
-                    try:
-                        r = find_figure(model, src, page, ref, entry['caption'], folder)
-                    except Exception as exc:  # noqa: BLE001 - a failed figure is recorded, the chapter goes on
-                        entry['error'] = str(exc)[:200]
-                        continue
-                    if not r.get('found'):
-                        continue
-                    p = pdf.pages[page - 1]
-                    scale = max(p.width, p.height) / 1000           # the square picture: one scale, both axes
-                    box = widen(p, tuple(v * scale for v in r['box']), skip)
-                    pad, k = 4, FIG_DPI / 72
-                    target = folder / 'figures' / f'{slug(ref)}.png'
-                    target.parent.mkdir(exist_ok=True)
-                    subprocess.run(['pdftoppm', '-r', str(FIG_DPI), '-png', '-singlefile', '-f', str(page), '-l',
-                                    str(page), '-x', str(int((box[0] - pad) * k)), '-y', str(int((box[1] - pad) * k)),
-                                    '-W', str(int((box[2] - box[0] + 2 * pad) * k)),
-                                    '-H', str(int((box[3] - box[1] + 2 * pad) * k)), src, str(target.with_suffix(''))],
-                                   check=True, capture_output=True)
-                    share = text_share(p, box)
-                    entry.update(image=f'figures/{target.name}', page=page, box_pt=[round(v, 1) for v in box],
-                                 box_model=r['box'], text_share=round(share, 2), suspect=share > .25)
-                    entry.pop('error', None)
-                    add_svg(folder, src, entry)
-                    break
+                if cut_figure(model, pdf, src, folder, b, entry, skip):
+                    check_panels(model, pdf, src, folder, b, entry, skip, log)
                 out[ref] = entry
         index_path.write_text(json.dumps(out, indent=1, ensure_ascii=False))
         cut = sum(bool(e['image']) for e in out.values())
@@ -509,6 +556,29 @@ def run_svgs(selected, log=print):
         log(f'{folder.name}: SVG {dict(kinds)} ({time.monotonic() - started:.0f} s)')
 
 
+def run_panels(selected, endpoint, log=print):
+    """Check the figures already cut: each multi-part figure must show all its named parts (re-cut once if not)."""
+    import pdfplumber
+    for folder, d in selected:
+        path = folder / 'figures.json'
+        if not path.exists():
+            continue
+        figures, blocks = json.loads(path.read_text()), {b['id']: b for b in d['blocks']}
+        todo = [e for e in figures.values() if e.get('image') and 'panels_missing' not in e
+                and panels_named(blocks.get(e['block'], {}))]
+        if not todo:
+            continue
+        model = digest.chat(endpoint, folder, 'figures', 1800)
+        with pdfplumber.open(d['source']['pdf']) as pdf:
+            skip = furniture(pdf)
+            for entry in todo:
+                try:
+                    check_panels(model, pdf, d['source']['pdf'], folder, blocks[entry['block']], entry, skip, log)
+                except Exception as exc:  # noqa: BLE001 - one figure's check failing leaves the rest
+                    log(f'{folder.name} {entry["ref"]}: check failed: {str(exc)[:120]}')
+                path.write_text(json.dumps(figures, indent=1, ensure_ascii=False))
+
+
 # ------------------------------------------------------------------ index
 def build_index():
     INDEX.unlink(missing_ok=True)
@@ -516,7 +586,7 @@ def build_index():
     db.executescript('''
         CREATE TABLE answers (chapter TEXT, block TEXT, ref TEXT, answer TEXT, source_pdf TEXT, source_page INT);
         CREATE TABLE figures (chapter TEXT, block TEXT, ref TEXT, caption TEXT, image TEXT, page INT, svg TEXT,
-                              svg_kind TEXT, suspect INT);
+                              svg_kind TEXT, suspect INT, incomplete INT);
         CREATE INDEX answers_ref ON answers (chapter, ref);
         CREATE INDEX figures_ref ON figures (chapter, ref);''')
     counts = collections.Counter()
@@ -529,10 +599,10 @@ def build_index():
                 counts['answers'] += 1
         if (folder / 'figures.json').exists():
             for ref, f in json.loads((folder / 'figures.json').read_text()).items():
-                db.execute('INSERT INTO figures VALUES (?,?,?,?,?,?,?,?,?)', (
+                db.execute('INSERT INTO figures VALUES (?,?,?,?,?,?,?,?,?,?)', (
                     chapter, f['block'], ref, f['caption'], f'{chapter}/{f["image"]}' if f['image'] else None,
                     f['page'], f'{chapter}/{f["svg"]}' if f.get('svg') else None, f.get('svg_kind'),
-                    int(bool(f.get('suspect')))))
+                    int(bool(f.get('suspect'))), int(bool(f.get('panels_missing')))))
                 counts['figures'] += 1
     db.commit()
     return dict(counts)
@@ -550,7 +620,7 @@ def lookup(chapter, ref):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('what', choices=['answers', 'figures', 'svgs', 'index'])
+    parser.add_argument('what', choices=['answers', 'figures', 'svgs', 'panels', 'index'])
     parser.add_argument('names', nargs='*', help='books (answers) or chapter folders like keph1-05 (figures)')
     parser.add_argument('--min-class', type=int, default=9)
     parser.add_argument('--endpoint', default=SPARK)
@@ -562,6 +632,9 @@ def main(argv=None):
     elif args.what == 'figures':
         selected = [(f, d) for f, d in chapters(args.min_class) if not args.names or f.name in args.names]
         run_figures(selected, args.endpoint, log)
+    elif args.what == 'panels':
+        selected = [(f, d) for f, d in chapters(args.min_class) if not args.names or f.name in args.names]
+        run_panels(selected, args.endpoint, log)
     elif args.what == 'svgs':
         selected = [(f, d) for f, d in chapters(args.min_class) if not args.names or f.name in args.names]
         run_svgs(selected, log)

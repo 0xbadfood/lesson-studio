@@ -235,6 +235,10 @@ def book_text(digest, concept):
         body = b.get('text') or b.get('meaning') or b.get('caption') or ''   # some key terms carry only 'meaning'
         if b['type'] in ('figure', 'map') and b.get('shows'):
             body = f'{b.get("caption", "")} Shows: {b["shows"]}'
+        if b['type'] == 'figure' and b.get('section') == 'end':    # its meaning is the exercise's question
+            head = head.replace('[Figure', '[Exercise figure', 1)
+            body += (f' It belongs to an end-of-chapter exercise ("{b.get("quote", "")}"), not to the teaching: '
+                     'its drawings are the question, and may be ones the student must spot as impossible.')
         if b['type'] == 'source' and b.get('author'):
             head += f' ({b["author"]}{", " + str(b["year"]) if b.get("year") else ""})'
         if b.get('latex'):                                   # science: the book's equation, as printed
@@ -264,7 +268,10 @@ def book_figures(digest, concept):
     PDF (user, 2026-10-24: Physics and Maths films show the book's figures and LaTeX equations)."""
     import sqlite3
     s = digest['source']
-    blocks = {r: b for b in teaching_blocks(digest, concept) if b.get('type') == 'figure' for r in (b.get('ref') or [])}
+    # An exercise's figure is its question (Fig. 2.10 of keph1-02: graphs that cannot be motion), so films leave it
+    # to the solutions phase; a figure whose crop misses some of its named parts (a) to (d) stays out too.
+    blocks = {r: b for b in teaching_blocks(digest, concept) if b.get('type') == 'figure' and b.get('section') != 'end'
+              for r in (b.get('ref') or [])}
     refs = list(blocks)
     if not refs or not (EXTRAS / 'extras.sqlite3').exists():
         return []
@@ -273,7 +280,7 @@ def book_figures(digest, concept):
     out = []
     for ref in dict.fromkeys(refs):
         row = db.execute('SELECT * FROM figures WHERE chapter = ? AND ref = ?', (s['id'], ref)).fetchone()
-        if not row:
+        if not row or ('incomplete' in row.keys() and row['incomplete']):
             continue
         drawn = row['svg'] if row['svg'] and row['svg_kind'] == 'vector' else row['image']
         if not drawn or not (EXTRAS / drawn).exists():
