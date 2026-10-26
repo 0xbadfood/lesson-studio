@@ -432,6 +432,8 @@ def find_figure(model, pdf_path, page, ref, caption, folder, hint=''):
 def panels_named(block):
     """The part letters a figure's own words name, (a) to (d): a crop must hold every one of them. NCERT draws the
     letters as shapes, so the PDF's text can't confirm them; a look at the crop does."""
+    if re.search(r'\([a-h]\)\s*$', fig_ref(block) or ''):
+        return []                            # one part filed on its own (Fig. 9.7 (a)): its crop is that part
     words = ' '.join(str(block.get(k) or '') for k in ('caption', 'title', 'text', 'shows'))
     letters = sorted(set(re.findall(r'\(([a-h])\)', words)))
     return letters if len(letters) >= 2 else []

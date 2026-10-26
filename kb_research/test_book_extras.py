@@ -21,6 +21,7 @@ class PanelTests(unittest.TestCase):
         block = {'caption': 'Fig. 2.10', 'shows': 'Graph (a) is an x-t plot; (b) a v-t plot; (c) speed; (d) path length.'}
         self.assertEqual(book_extras.panels_named(block), ['a', 'b', 'c', 'd'])
         self.assertEqual(book_extras.panels_named({'caption': 'Fig. 3.1 (a) only'}), [])
+        self.assertEqual(book_extras.panels_named({'type': 'figure', 'ref': ['Fig. 9.7 (a)'], 'caption': 'Fig. 9.7 (a) and (b)'}), [])
 
     def test_crop_missing_parts_is_recut_then_marked(self):
         block = {'id': 'B82', 'shows': '(a) x-t (b) v-t (c) speed (d) path', 'pages': [13]}
