@@ -196,6 +196,18 @@ class AppTests(unittest.TestCase):
         self.assertEqual(self.client.get(f'/media/{film}/scene/abcdef12').content, b'png')
         self.assertEqual(self.client.get(f'/media/{film}/scene/..%2f..').status_code, 404)
 
+    def test_the_video_downloads_under_the_films_name(self):
+        self.client.post('/api/login', json={'code': self.access.code})
+        film = self.client.post('/api/films', json={'chapter': 'jess3-02', 'concept': 'C1'}).json()['film']
+        project = Path(self.queue.jobs['job1']['project'])
+        (project / 'videos').mkdir(parents=True)
+        (project / 'videos' / 'final-375.mp4').write_bytes(b'mp4')
+        (project / 'delivery.json').write_text(json.dumps({'outputs': [{'video': str(project / 'videos' / 'final-375.mp4')}]}))
+        self.assertNotIn('attachment', self.client.get(f'/media/{film}/video').headers.get('content-disposition', ''))
+        saved = self.client.get(f'/media/{film}/video?download=1&name=Free fall: ../a ball/thrown up')
+        self.assertEqual(saved.content, b'mp4')
+        self.assertEqual(saved.headers['content-disposition'], "attachment; filename*=utf-8''Free%20fall%20a%20ballthrown%20up.mp4")
+
 
 
 CHEM = {'source': {'id': 'kech1-02', 'class': 11, 'subject': 'chemistry', 'book': 'kech1', 'chapter': 2,

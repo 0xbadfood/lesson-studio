@@ -222,7 +222,12 @@ function nowPanel(f) {
 
 function filmHtml(f) {
   const parts = [];
-  if (f.video) parts.push(`<div class="player"><video controls preload="metadata" src="${f.video}" ${f.scenes[0] ? `poster="${f.scenes[0].src}"` : ''}></video></div>`);
+  if (f.video) {
+    parts.push(`<div class="player"><video controls preload="metadata" src="${f.video}" ${f.scenes[0] ? `poster="${f.scenes[0].src}"` : ''}></video></div>`);
+    const name = encodeURIComponent((f.kind === 'key_idea' ? f.idea?.title : f.concept) || 'film');
+    parts.push(`<div class="video-actions"><a class="btn ghost" href="${f.video}?download=1&name=${name}" download>Download video</a>
+      <button class="btn ghost" id="share-video" type="button">Share video</button><span class="sub" id="share-note"></span></div>`);
+  }
   parts.push(nowPanel(f));
   if (f.status === 'done' || f.status === 'failed') parts.push(`<div class="panel"><h2>Plan the scenes again</h2>
     <p class="sub">Keeps the narration and plans the pictures and scenes afresh, then makes the video again. Pictures that come out the same are reused.</p>
@@ -251,6 +256,28 @@ function filmHtml(f) {
   if (f.notes.length && (f.ideas || f.status === 'done')) parts.push(`<div class="panel"><h2>Beyond the book</h2><p class="sub">Where the textbook leaves a gap, the film adds a little, checked against these sources</p>
       <ul class="notes">${f.notes.map((n) => `<li>${esc(n.title)} · <a href="${esc(n.url)}" target="_blank" rel="noopener">source</a></li>`).join('')}</ul></div>`);
   return parts.join('');
+}
+
+// Shares the video file itself (WhatsApp, mail, Drive...) where the browser can: the studio's own link needs its access
+// code, so a link would not open for the person it is sent to. Elsewhere it says to download and send the file.
+async function shareVideo(f, button) {
+  const note = document.getElementById('share-note');
+  const title = (f.kind === 'key_idea' ? f.idea?.title : f.concept) || 'film';
+  const probe = new File([''], 'film.mp4', { type: 'video/mp4' });
+  if (!navigator.canShare || !navigator.canShare({ files: [probe] })) {
+    note.textContent = 'This browser cannot share files: download the video, then send the file.';
+    return;
+  }
+  button.disabled = true;
+  note.textContent = 'Preparing the video…';
+  try {
+    const blob = await (await fetch(f.video, { credentials: 'same-origin' })).blob();
+    const file = new File([blob], `${title.replace(/[^\w ,()-]+/g, '').trim() || 'film'}.mp4`, { type: 'video/mp4' });
+    note.textContent = '';
+    await navigator.share({ files: [file], title });
+  } catch (err) {
+    if (err.name !== 'AbortError') note.textContent = `Could not share: ${err.message}`;
+  } finally { button.disabled = false; if (note.textContent === 'Preparing the video…') note.textContent = ''; }
 }
 
 async function showFilm(id) {
@@ -286,6 +313,8 @@ async function showFilm(id) {
         try { await api(`api/films/${id}/cancel`, { method: 'POST' }); } catch (err) { alert(err.message); }
         clearTimeout(state.timer); tick();
       };
+      const share = document.getElementById('share-video');
+      if (share) share.onclick = () => shareVideo(f, share);
       const replan = document.getElementById('replan');
       if (replan) replan.onclick = async () => {
         if (!confirm('Plan the scenes of this film again? The narration is kept; the scenes, pictures and video are made again.')) return;

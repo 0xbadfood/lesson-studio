@@ -684,6 +684,10 @@ def build(queue=None, access=None, data=None, profile=None):
             path = media_path(queue, films.find(film), kind, item)
         except KeyError:
             raise HTTPException(404)
+        if kind == 'video' and request.query_params.get('download'):
+            # Saved under the film's own name (the page sends it), not the run's file name.
+            name = re.sub(r'[^\w ,()-]+', '', request.query_params.get('name') or '').strip()[:80] or 'film'
+            return FileResponse(path, filename=f'{name}{path.suffix}', headers={'Cache-Control': 'private, max-age=3600'})
         return FileResponse(path, headers={'Cache-Control': 'private, max-age=3600'})
 
     return app

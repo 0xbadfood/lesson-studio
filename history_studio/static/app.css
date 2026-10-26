@@ -176,6 +176,9 @@ audio { width: 100%; margin-top: 12px; }
 .bar i { display: block; height: 100%; background: var(--accent); border-radius: inherit; transition: width .6s; }
 .player { background: #000; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
 .player video { width: 100%; display: block; aspect-ratio: 16 / 9; }
+.video-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 12px 0 4px; }
+.video-actions .btn { text-decoration: none; }
+.video-actions .sub { margin: 0; }
 .notes { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
 .notes a { color: var(--accent); }
 .empty { text-align: center; color: var(--muted); padding: 48px 16px; }
