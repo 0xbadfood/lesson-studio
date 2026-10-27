@@ -228,6 +228,8 @@ def draw(spec, level=3, light=False, layer='all'):
             for el in target.iter():
                 if el.get('stroke') not in (None, 'none'):
                     el.set('stroke', glow)
+                    if el.get('stroke-opacity') == '0':     # a painted figure's hit outline shows once lit
+                        el.set('stroke-opacity', '1')
     body = ''
     if layer in ('all', 'base') or (layer == 'highlight' and lit):
         body = _resolve_colours(ET.tostring(root, encoding='unicode'), theme)

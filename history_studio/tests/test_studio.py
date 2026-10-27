@@ -381,11 +381,21 @@ class BookFigureTests(unittest.TestCase):
 class TopicTests(unittest.TestCase):
     """Beyond the book (2026-10-25): a topic written from cited sources loads like a chapter in the studio it names."""
 
+    def test_the_ductus_stent_topic_offers_its_painted_figures(self):
+        # 2026-10-27: PDA stenting for parents, with painted figures (painting + vector overlays) from ~/biology
+        d = catalog.digest_for('topic-pda-stenting', subjects={'biology'})
+        record = catalog.film_request(d, d['concepts'][0], figures='biology')['record']
+        self.assertTrue(record['topic'])
+        library = {f['id']: [s['id'] for s in f['stages']] for f in record['figures']['library']}
+        self.assertEqual(list(library), ['pda-heart-front', 'pda-stent-closeup', 'pda-arm-approach'])
+        self.assertIn('stage-stent-in-place', library['pda-heart-front'])
+        self.assertTrue(all(b['source']['url'].startswith('https://') for b in d['blocks']))
+
     def test_the_heart_procedure_topic_is_a_biology_film_for_parents(self):
         cat = catalog.catalog(subjects={'biology'})
         eleven = next(c for c in cat if c['class'] == 11)
         beyond = next(s for s in eleven['subjects'] if s['name'] == 'Beyond the book')
-        self.assertEqual([ch['id'] for ch in beyond['chapters']], ['topic-bav-newborn'])
+        self.assertEqual([ch['id'] for ch in beyond['chapters']], ['topic-bav-newborn', 'topic-pda-stenting'])
         self.assertNotIn('topic-bav-newborn', [d['source']['id'] for d in catalog.digests(subjects={'physics'})])
         d = catalog.digest_for('topic-bav-newborn', subjects={'biology'})
         request = catalog.film_request(d, d['concepts'][0], figures='biology')

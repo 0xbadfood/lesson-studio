@@ -1,0 +1,197 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-pda-stenting",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 2,
+  "title": "A stent to keep a newborn's ductus open",
+  "audience": "Parents of a newborn who needs a stent in the ductus arteriosus (PDA stenting), in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "pda-heart-front",
+   "pda-stent-closeup",
+   "pda-arm-approach"
+  ],
+  "written": "2026-10-27: written from the cited sources and checked against them; requested after the heart-valve film by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Two sides of the heart",
+   "text": "The heart has two pumping sides. The right ventricle pumps blood that has given up its oxygen into the pulmonary artery, which carries it to the lungs to pick up oxygen. The left ventricle pumps oxygen-rich blood into the aorta, the main artery that carries blood to the whole body.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "definition",
+   "title": "The ductus: a short-cut vessel from before birth",
+   "text": "Every baby in the womb has a short blood vessel called the ductus arteriosus. It joins the pulmonary artery, the artery to the lungs, to the aorta, the main artery to the body. Before birth the baby gets its oxygen from the placenta, not from the lungs, so the ductus lets blood bypass the lungs. After birth, once the baby starts breathing, the ductus should close shortly after birth.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Patent ductus arteriosus (PDA): information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/conditions-we-treat/patent-ductus-arteriosus-pda/"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "fact",
+   "title": "When the way to the lungs is blocked",
+   "text": "Some babies are born with a severe problem of the pulmonary valve, the valve between the heart and the artery to the lungs: in pulmonary valve atresia it is closed. Then blood can keep reaching the lungs only through the ductus. These babies need treatment soon after birth, because the ductus normally closes within the first week. A PDA stent keeps the ductus open, so that blood can keep flowing to the lungs.",
+   "source": {
+    "title": "Children's Health (Dallas), Patent ductus arteriosus (PDA) stent: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/patent-ductus-arteriosus-stent"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "Which babies need it",
+   "text": "Babies whose blood supply to the lungs depends on the ductus have one of several heart conditions, for example pulmonary atresia, tricuspid atresia with a narrow or closed pulmonary valve, or tetralogy of Fallot with a narrow pulmonary valve. For them, doctors secure the lungs' blood supply in one of two ways: a surgical shunt, called a modified Blalock-Taussig shunt, made in an operation, or a stent placed in the ductus through a thin tube, a procedure first done in 1992.",
+   "source": {
+    "title": "Al Kindi et al., Blalock-Taussig shunt versus ductal stenting as palliation for duct-dependent pulmonary circulation, Sultan Qaboos Univ Med J 2023",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10754312/"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "A medicine keeps the ductus open until then",
+   "text": "In the days before the procedure, the baby is given a medicine called PGE1, a prostaglandin, which keeps the ductus open. It can cause fever, low blood pressure, poor feeding and pauses in breathing, called apnoea, so the baby has round-the-clock care. Tests such as an echocardiogram, an ultrasound picture of the heart, and a CT scan show the ductus, and a team of cardiologists, heart surgeons, anaesthetists and intensive care doctors discuss the options with the parents.",
+   "source": {
+    "title": "Children's Health (Dallas), Patent ductus arteriosus (PDA) stent: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/patent-ductus-arteriosus-stent"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "How the stent is placed",
+   "text": "The procedure is usually done when the baby is 5 to 7 days old, under general anaesthesia, so the baby sleeps through it; it takes about an hour and a half. The doctors do not open the chest. Through a small cut in the leg, the neck or the arm they guide a thin tube, a catheter, through the blood vessels to the ductus and the lung artery. A thin guide wire then carries a balloon catheter with the stent on it into the ductus, where the stent is placed.",
+   "source": {
+    "title": "Children's Health (Dallas), Patent ductus arteriosus (PDA) stent: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/patent-ductus-arteriosus-stent"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "Going in through the arm",
+   "text": "In some hospitals the thin tube goes in through the artery under the left arm, the axillary artery, and on to the ductus, where the stent is opened.",
+   "source": {
+    "title": "Ganta et al., Stage 1 and 2 palliation: comparing ductal stenting and aorto-pulmonary shunts, Pediatric Cardiology 2024 (CC BY 4.0)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10891206/"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "The stent itself",
+   "text": "The stents used are coronary stents, the small metal mesh tubes also used in the heart's own arteries; most babies need just one. The stent sits folded tight on a small balloon; filling the balloon opens the stent against the wall of the ductus, then the balloon is emptied and taken out, and the stent stays to hold the ductus open. In this series of 32 newborns, babies spent a median of 3 days in intensive care afterwards.",
+   "source": {
+    "title": "Marfil-Godoy et al., Ductal stenting in congenital heart disease with duct-dependent pulmonary flow, Rev Esp Cardiol 2020 (32 newborns)",
+    "url": "https://www.revespcardiol.org/en-ductal-stenting-in-congenital-heart-dise-articulo-S188558572030181X"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "fact",
+   "title": "Medicine to stop clots",
+   "text": "Because a stent is metal inside a blood vessel, the baby is given medicine to stop blood clots forming on it: a blood thinner given by injection for the first two days, together with aspirin, and then aspirin by mouth, sometimes with a second medicine called clopidogrel.",
+   "source": {
+    "title": "Marfil-Godoy et al., Ductal stenting in congenital heart disease with duct-dependent pulmonary flow, Rev Esp Cardiol 2020 (32 newborns)",
+    "url": "https://www.revespcardiol.org/en-ductal-stenting-in-congenital-heart-dise-articulo-S188558572030181X"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "fact",
+   "title": "After the procedure",
+   "text": "Afterwards the baby recovers in the cardiac intensive care unit, where parents can visit. At this hospital babies usually stay one to two weeks before going home, with a blood oxygen monitor and a scale, and the cardiology team checks them every week to see that the stent is working.",
+   "source": {
+    "title": "Children's Health (Dallas), Patent ductus arteriosus (PDA) stent: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/patent-ductus-arteriosus-stent"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "fact",
+   "title": "Possible problems",
+   "text": "If the stent cannot be placed, the team can change plan, and the baby may need heart surgery instead. Problems where the tube went in, such as bleeding or poor blood flow in that vessel, are possible but usually minor. Over time, the tissue lining the vessel can grow inside the stent and narrow it, called in-stent stenosis; the team watches for this and treats it if it happens.",
+   "source": {
+    "title": "Children's Health (Dallas), Patent ductus arteriosus (PDA) stent: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/patent-ductus-arteriosus-stent"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "fact",
+   "title": "Sometimes a second catheter procedure",
+   "text": "In one hospital's comparison, babies with a ductal stent spent fewer days in intensive care than babies who had the shunt operation (a median of 2 days against 6). About a third of the babies with a stent needed another procedure later, most often because tissue had grown inside the stent and narrowed it.",
+   "source": {
+    "title": "Al Kindi et al., Blalock-Taussig shunt versus ductal stenting as palliation for duct-dependent pulmonary circulation, Sultan Qaboos Univ Med J 2023",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10754312/"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "A bridge to the next operation",
+   "text": "The stent is a bridge, not the final repair. It usually stays in place for three to four months, while the baby grows; the next procedure to treat the heart condition is planned around then, and its timing is decided for each baby from the weekly check-ups. Because the chest was not opened, there is no scar tissue in the chest to make the later operation harder.",
+   "source": {
+    "title": "Children's Health (Dallas), Patent ductus arteriosus (PDA) stent: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/patent-ductus-arteriosus-stent"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "A stent in the ductus for a newborn",
+   "aliases": [
+    "PDA stenting",
+    "Ductal stenting",
+    "Ductus arteriosus stent"
+   ],
+   "sections": [],
+   "summary": "Why some newborns depend on the ductus arteriosus for blood to reach the lungs, how a stent placed through a thin tube keeps it open, and what parents can expect afterwards.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13"
+   ],
+   "objectives": [
+    "Explain what the ductus arteriosus is and why it normally closes after birth.",
+    "Explain why a baby whose valve to the lungs is blocked depends on the ductus, and how a medicine keeps it open.",
+    "Follow how the stent is placed: a thin tube through an artery, a wire across the ductus, a balloon that opens the stent.",
+    "Know what to expect afterwards: medicine against clots, check-ups, a possible second catheter procedure, and the next operation in a few months."
+   ],
+   "prerequisites": []
+  }
+ ]
+}
