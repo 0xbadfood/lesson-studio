@@ -107,6 +107,18 @@ class CatalogTests(unittest.TestCase):
         self.assertIn('[Key term, p.6] Fossil\nThe preserved remains', catalog.book_text(digest, concept))
 
 
+    def test_a_tables_rows_come_into_the_book_text(self):
+        # Class 10 Light C3 (2026-10-28): Table 9.1's rows were only in 'shows'; the film saw a bare title and its
+        # evidence brief could not say what image each object position gives, so every candidate was refused.
+        rows = '1. At infinity | At the focus F | Highly diminished, point-sized | Real and inverted.'
+        digest = {**DIGEST, 'blocks': [{'id': 'B1', 'type': 'table', 'title': 'Table 9.1', 'pages': [5],
+                                        'caption': 'Image formation by a concave mirror', 'shows': rows},
+                                       {'id': 'B2', 'type': 'table', 'title': 'Table 9.2', 'pages': [6],
+                                        'text': f'Summary. Rows: {rows}', 'shows': rows}]}
+        text = catalog.book_text(digest, {'id': 'C1', 'name': 'Images', 'blocks': ['B1', 'B2']})
+        self.assertIn('Image formation by a concave mirror Shows: 1. At infinity | At the focus F', text)
+        self.assertEqual(text.count(rows), 2, 'once each: B2 already has its rows in its text')
+
 class AppTests(unittest.TestCase):
     def setUp(self):
         folder = tempfile.TemporaryDirectory(); self.addCleanup(folder.cleanup); root = Path(folder.name)

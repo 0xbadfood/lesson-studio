@@ -235,6 +235,10 @@ def book_text(digest, concept):
         body = b.get('text') or b.get('meaning') or b.get('caption') or ''   # some key terms carry only 'meaning'
         if b['type'] in ('figure', 'map') and b.get('shows'):
             body = f'{b.get("caption", "")} Shows: {b["shows"]}'
+        # A table's rows are in 'shows' (658 of 841 tables had no rows anywhere else): without them a film saw only
+        # its title, and Class 10 Light C3's brief could not say what image each object position gives (2026-10-28).
+        if b['type'] == 'table' and b.get('shows') and str(b['shows'])[:60] not in body:
+            body = f'{body} Shows: {b["shows"]}'.strip()
         if b['type'] == 'figure' and b.get('section') == 'end':    # its meaning is the exercise's question
             head = head.replace('[Figure', '[Exercise figure', 1)
             body += (f' It belongs to an end-of-chapter exercise ("{b.get("quote", "")}"), not to the teaching: '
