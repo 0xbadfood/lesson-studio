@@ -58,6 +58,25 @@ DIGEST = {'source': {'id': 'jess3-02', 'class': 10, 'subject': 'history', 'book'
 
 
 class CatalogTests(unittest.TestCase):
+    def test_the_digest_marks_which_concepts_a_film_can_teach(self):
+        # 2026-10-29, Units and Measurement: C8 held only exercises and C2 only a figure; the run script queued C2 and
+        # waited on a job that never started. The mark is made once on the digest and every reader follows it.
+        digest = json.loads(json.dumps(DIGEST))
+        self.assertTrue(catalog.mark_filmable(digest))
+        first, second = digest['concepts'][:2]
+        self.assertEqual((first['filmable'], first['film_note']), (True, ''))
+        self.assertFalse(second['filmable']); self.assertTrue(second['film_note'])
+        self.assertFalse(catalog.mark_filmable(digest))                     # already marked
+        first['filmable'] = False                                           # the stamp is what readers follow
+        self.assertFalse(catalog.filmable(digest, first))
+        first['film_rule'] = 0                                              # unless an older rule made it
+        self.assertTrue(catalog.filmable(digest, first))
+
+    def test_a_concept_of_exercises_only_is_not_filmable(self):
+        digest = {'blocks': [{'id': 'B1', 'type': 'exercise', 'text': 'Convert 1 J to erg. ' * 40}],
+                  'concepts': [{'id': 'C1', 'name': 'Unit Conversions', 'blocks': ['B1']}]}
+        self.assertIn('questions only', catalog.film_status(digest, digest['concepts'][0]))
+
     def test_request_is_rooted_in_the_book_and_sized_by_coverage(self):
         concept = DIGEST['concepts'][0]
         built = catalog.film_request(DIGEST, concept)

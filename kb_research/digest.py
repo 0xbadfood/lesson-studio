@@ -1211,6 +1211,8 @@ def stage_rest(chapter, read, out_root, text_endpoint, research_endpoint, log, a
         'outline': outline, 'blocks': blocks, 'concepts': concepts,
         'chapter_context': [b['id'] for b in uncovered(concepts, blocks)],
         'gaps': gaps, 'additions': additions, 'audit': findings, 'research': research}
+    from history_studio.catalog import mark_filmable    # which concepts a film can teach, decided here, once
+    mark_filmable(digest)
     (out / 'digest.json').write_text(json.dumps(digest, indent=1, ensure_ascii=False))
     (out / 'digest.md').write_text(markdown(digest))
     log(f'{chapter["id"]} wrote {out / "digest.md"}')

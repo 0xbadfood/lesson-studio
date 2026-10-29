@@ -117,10 +117,44 @@ def additions_for(digest, concept):
     return [a for a in digest['additions'] if a['gap'] in gaps and a.get('status') == 'accepted']
 
 
+# What makes a concept filmable is decided once, when the digest is built, and stamped on the concept, so the studios,
+# the run scripts and the night jobs agree (user, 2026-10-29: "the concepts that are not filmable should be marked at
+# digest level and should not really be shown in the studios"). A stamp from an older rule is worked out afresh.
+FILM_RULE = 1
+
+
+def film_status(digest, concept):
+    """'' for a concept a film can teach, else why not."""
+    if re.search(r'\b(assessment|review|exercises)\b', concept['name'].lower()):
+        return 'a chapter review or question set: its questions belong with the solutions'
+    by_id = {b['id']: b for b in digest['blocks']}
+    own = [by_id[x] for x in concept['blocks'] if x in by_id]
+    if own and all(b['type'] in NOT_TAUGHT for b in own):
+        return 'questions only (exercises): they belong with the solutions'
+    n = words(teaching_blocks(digest, concept))
+    if n < 100:
+        kinds = sorted({b['type'] for b in own}) or ['no blocks']
+        return f'{n} words of teaching text ({", ".join(kinds)}): too little for a film; its teaching sits in another concept'
+    return ''
+
+
+def mark_filmable(digest):
+    """Stamp each concept's filmable and film_note; True when anything changed."""
+    changed = False
+    for c in digest['concepts']:
+        note = film_status(digest, c)
+        stamp = {'filmable': not note, 'film_note': note, 'film_rule': FILM_RULE}
+        if any(c.get(k) != v for k, v in stamp.items()):
+            c.update(stamp)
+            changed = True
+    return changed
+
+
 def filmable(digest, concept):
-    """A concept a film can teach: chapter reviews and question sets are not."""
-    name = concept['name'].lower()
-    return words(teaching_blocks(digest, concept)) >= 100 and not re.search(r'\b(assessment|review|exercises)\b', name)
+    """A concept a film can teach: chapter reviews, question sets and concepts with almost no text are not."""
+    if concept.get('film_rule') == FILM_RULE:
+        return concept['filmable']
+    return not film_status(digest, concept)
 
 
 def film_seconds(digest, concept):
