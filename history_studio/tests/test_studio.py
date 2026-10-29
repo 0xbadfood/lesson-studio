@@ -117,6 +117,25 @@ class CatalogTests(unittest.TestCase):
         unnamed = {**germany, 'objectives': ['Explain the proclamation.']}
         self.assertEqual(catalog.teaching_ids(digest, unnamed), ['B2'])                  # only terms objectives name
 
+    def test_an_objective_only_an_exercise_carries_brings_that_exercise_into_the_book_text(self):
+        # Laws of Motion C3 (2026-10-29): the objective asks for disintegration, which only Exercise 4.17 mentions;
+        # without it every evidence brief was refused for an unsupported coverage point.
+        digest = {**DIGEST, 'blocks': [
+            {'id': 'B1', 'type': 'principle', 'title': 'Conservation of momentum', 'pages': [9],
+             'text': 'A bullet is fired from a gun: the recoil momentum is equal and opposite. Collisions too.'},
+            {'id': 'B2', 'type': 'exercise', 'title': 'Exercise 4.17', 'pages': [22],
+             'text': 'A nucleus at rest disintegrates into two smaller nuclei. Show they move in opposite directions.'},
+            {'id': 'B3', 'type': 'exercise', 'title': 'Exercise 4.9', 'pages': [21],
+             'text': 'Solve these problems involving a bullet and a gun recoil.'}]}
+        concept = {'id': 'C3', 'name': 'Momentum', 'blocks': ['B1', 'B2', 'B3'],
+                   'objectives': ['Apply conservation of momentum to problems involving collisions, recoil, and disintegration.']}
+        text = catalog.book_text(digest, concept)
+        self.assertIn('[Exercise, p.22] Exercise 4.17\nA nucleus at rest disintegrates', text)
+        self.assertNotIn('Exercise 4.9', text, 'an exercise on what the teaching already says stays out')
+        self.assertEqual(catalog.teaching_ids(digest, concept), ['B1'], 'still not teaching: words and figures ignore it')
+        taught = {**concept, 'objectives': ['Apply conservation of momentum to recoil.']}
+        self.assertNotIn('Exercise', catalog.book_text(digest, taught))
+
     def test_key_terms_bring_their_meaning_into_the_book_text(self):
         # Human Evolution (2026-10-17): 'Fossil' had only a meaning, so the book text showed a bare heading while
         # coverage asked for the definition, and the evidence review rejected every candidate.

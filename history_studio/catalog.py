@@ -104,6 +104,37 @@ def teaching_blocks(digest, concept, linked=True):
     return sorted(own + extra, key=lambda b: order[b['id']])          # the book's reading order
 
 
+# Words an objective uses to set a task, not to name what is taught.
+TASK_WORDS = {'problems', 'involving', 'situations', 'examples', 'numerical', 'numericals', 'calculate', 'identify',
+              'distinguish', 'explain', 'describe', 'understand', 'between', 'different', 'various', 'including',
+              'related', 'questions', 'everyday', 'applications', 'exercise', 'exercises', 'activity',
+              'justify', 'determine', 'classify', 'predict', 'estimate', 'compute', 'simplify', 'statement',
+              'statements', 'compare', 'discuss', 'suggest', 'arrange', 'imagine', 'provide', 'propose', 'contrast',
+              'whether', 'chapter', 'multiple', 'missing', 'correct', 'correctly', 'methods', 'solution', 'solutions',
+              'measure', 'project', 'projects', 'interest', 'reflect', 'features', 'advantages', 'disadvantages',
+              'conditions', 'knowledge'}
+
+
+def asked_exercises(digest, concept, taught):
+    """The concept's own exercises that carry a thing its objectives name and its teaching text never mentions. The
+    digest writes objectives from all of a concept's blocks, questions included: Laws of Motion C3's objective asks for
+    "collisions, recoil, and disintegration", and only Exercise 4.17 (a nucleus at rest splits in two) says
+    disintegration, so with the exercises left out every evidence brief was refused for the missing source (2026-10-29)."""
+    # The thing must be one the chapter's teaching never says at all, not just this concept's: words that set a task
+    # ('compare', 'answer', 'define') are said somewhere in any chapter, so they never bring a question in.
+    said = ' '.join(_says(b) + ' ' + str(b.get('meaning', '')) for b in taught + [
+        b for b in digest['blocks'] if b['type'] not in NOT_TAUGHT])
+    stems = {w[:8] for w in re.findall(r'[a-z]{7,}', ' '.join(concept.get('objectives') or []).lower())
+             if w not in TASK_WORDS} - {w[:8] for w in re.findall(r'[a-z]{7,}', said)}
+    by_id = {b['id']: b for b in digest['blocks']}
+    out = []
+    for x in concept.get('blocks') or []:
+        b = by_id.get(x)
+        if b and b['type'] == 'exercise' and stems & {w[:8] for w in re.findall(r'[a-z]{7,}', _says(b))}:
+            out.append(b)
+    return out[:3]
+
+
 def teaching_ids(digest, concept):
     return [b['id'] for b in teaching_blocks(digest, concept)]
 
@@ -288,6 +319,10 @@ def book_text(digest, concept):
         if b.get('items'):
             body += ' ' + '; '.join(map(str, b['items']))
         lines.append(f'{head}\n{body}'.strip())
+    for b in asked_exercises(digest, concept, teaching_blocks(digest, concept)):
+        lines.append(f'[Exercise, p.{",".join(map(str, b.get("pages", [])))}] {b.get("title", "")}\n{b.get("text", "")} '
+                     'This end-of-chapter question is the only place the book takes the concept to this case: the film '
+                     'may show the situation it poses, worked with the concept\'s own law; the book prints no answer.')
     return '\n\n'.join(lines)
 
 
