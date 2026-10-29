@@ -46,5 +46,28 @@ class PanelTests(unittest.TestCase):
         self.assertFalse(entry.get('suspect'))
 
 
+class FakePage:
+    """A page with a figure and, below-left of it, a box shaded as hundreds of 1-pt strips."""
+    width, height = 595, 842
+    curves, lines, images = [], [], []
+
+    def __init__(self):
+        self.rects = [{'x0': 430, 'top': 515, 'x1': 545, 'bottom': 575}]
+        self.rects += [{'x0': 311, 'top': 525 + i * .05, 'x1': 541, 'bottom': 525.5 + i * .05} for i in range(200)]
+
+    def extract_words(self):
+        return []
+
+    def extract_text_lines(self):
+        return [{'x0': 78, 'top': 527, 'x1': 396, 'bottom': 537, 'text': 'when placed inside the coil (Fig. 12.11). The magnet'}]
+
+
+class WidenTests(unittest.TestCase):
+    def test_a_shaded_band_does_not_pull_body_text_into_a_crop(self):
+        # 2026-10-29, jesc1-12 Fig. 12.11: the QUESTIONS box's gradient strips each touched the figure's box
+        box = book_extras.widen(FakePage(), (421, 511, 552, 579), set())
+        self.assertEqual([round(v) for v in box], [421, 511, 552, 579])
+
+
 if __name__ == '__main__':
     unittest.main()

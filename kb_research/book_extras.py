@@ -227,11 +227,19 @@ def text_lines(page):
     return body, captions
 
 
+def gradient_strips(page, least=10):
+    """(x0, x1) of thin rects stacked by the dozen: a box shaded as a gradient (jesc1-12 p.7: the QUESTIONS box's
+    hundreds of 1-pt strips each touched Fig. 12.11's box and pulled body text into its crop, 2026-10-29)."""
+    spans = collections.Counter((round(o['x0']), round(o['x1'])) for o in page.rects if o['bottom'] - o['top'] < 1.5)
+    return {span for span, n in spans.items() if n >= least}
+
+
 def widen(page, box, skip):
     """Grow the model's box (PDF points) to the drawing objects and the short label lines it cuts through, never to
     body text, captions or text boxes; then trim a caption caught at its bottom."""
     body, captions = text_lines(page)
     words = page.extract_words()
+    shading = gradient_strips(page)
     b = list(box)
     for _ in range(2):
         grown = list(b)
@@ -239,6 +247,8 @@ def widen(page, box, skip):
             r = (o['x0'], o['top'], o['x1'], o['bottom'])
             if tuple(round(v) for v in r) in skip or r[2] - r[0] > .8 * page.width or not _touches(r, b):
                 continue
+            if (round(r[0]), round(r[2])) in shading and r[3] - r[1] < 1.5:
+                continue                            # a strip of a shaded band (a box's gradient), not a drawing
             if sum(_inside((w['x0'], w['top'], w['x1'], w['bottom']), r) for w in words) >= 5:
                 continue                            # a shaded box of text (an Example), not part of a drawing
             if (r[2] - r[0]) * (r[3] - r[1]) < 2 * max(1, (b[2] - b[0]) * (b[3] - b[1])):
