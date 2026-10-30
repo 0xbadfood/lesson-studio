@@ -18,6 +18,7 @@ import os
 import re
 import secrets
 import sqlite3
+import subprocess
 import sys
 import threading
 import time
@@ -383,12 +384,28 @@ class Login(BaseModel):
     code: str = Field(min_length=1, max_length=80)
 
 
+def linkwork_mirror():
+    """Linkwork as plain JS for the browser (plays), built when its sources change; None if it cannot be built, and plays hide."""
+    source = Path.home() / 'linkwork' / 'src'
+    node = Path.home() / '.local' / 'node-v24.4.0' / 'bin' / 'node'
+    try:
+        files = sorted(source.rglob('*.ts'))
+        stamp = hashlib.sha256(''.join(f'{f}{f.stat().st_mtime_ns}' for f in files).encode()).hexdigest()[:16]
+        out = HERE / '.lw-mirror' / stamp
+        if not (out / 'index.js').is_file():
+            subprocess.run([str(node), str(Path.home() / 'linkwork' / 'scripts' / 'mirror.ts'), str(out)], check=True, capture_output=True, timeout=120)
+        return out
+    except (OSError, subprocess.SubprocessError) as error:
+        print(f'plays hidden: no Linkwork mirror ({error})', flush=True)
+        return None
+
+
 def page(profile):
     """The single page, named for the studio (History Studio's page is unchanged)."""
     subject = profile['job']
     studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject,
                          'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions')),
-                         'solve': bool(profile.get('solve'))})
+                         'solve': bool(profile.get('solve')), 'plays': bool(profile.get('plays') and linkwork_mirror())})
     text = (HERE / 'static' / 'index.html').read_text()
     text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {profile.get("textbook", subject)} textbook')
     text = text.replace('<span class="mark">H</span>', f'<span class="mark">{profile["mark"]}</span>')
@@ -421,6 +438,14 @@ def build(queue=None, access=None, data=None, profile=None):
         if path.parent != (HERE / 'static').resolve() or not path.is_file():
             raise HTTPException(404)
         return FileResponse(path, headers={'Cache-Control': 'no-cache'})
+
+    @app.get('/lw/{name:path}')
+    def linkwork_js(name: str):
+        root = linkwork_mirror() if profile.get('plays') else None
+        path = (root / name).resolve() if root else None
+        if not path or not path.is_relative_to(root.resolve()) or path.suffix != '.js' or not path.is_file():
+            raise HTTPException(404)
+        return FileResponse(path, media_type='text/javascript', headers={'Cache-Control': 'no-cache'})
 
     @app.get('/healthz')
     def health():

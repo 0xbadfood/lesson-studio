@@ -124,7 +124,9 @@ async function showChapter(id) {
             <span class="meta"><span>${minutes(c.minutes)}</span>${badge(c)}</span></span>
           <span class="go">${c.ready ? 'Watch ›' : c.film ? 'See progress ›' : 'Make film ›'}</span>
         </button>`).join('')}
-    </div>`;
+    </div>
+    <div id="plays"></div>`;
+    if (STUDIO.plays) showPlayCards(id);
   view.querySelectorAll('[data-concept]').forEach((b) => b.addEventListener('click', () => {
     const concept = chapter.concepts.find((c) => c.id === b.dataset.concept);
     if (concept.film) location.hash = `#/film/${concept.film}`;
@@ -711,6 +713,20 @@ async function showSolve(qid) {
 }
 
 /* ---------------------------------------------------------------- routing */
+async function showPlayCards(chapter) {
+  const cards = await (await import('./plays.js')).cardsFor(chapter);
+  const host = document.getElementById('plays');
+  if (!host || !cards.length) return;
+  host.innerHTML = `<section class="chapter-head play-head"><h2>Try it yourself</h2><p>Predict what happens, then take the challenges.</p></section>
+    <div class="concepts">${cards.map((p) => `
+      <a class="card concept" href="#/play/${chapter}/${esc(p.id)}">
+        <span class="num">▶</span>
+        <span><h3>${esc(p.title)}</h3><p>${esc(p.intro)}</p>
+          <span class="meta"><span>${p.won ? `${p.won} of ${p.total} challenges done` : `${p.total} challenges`}</span></span></span>
+        <span class="go">Play ›</span>
+      </a>`).join('')}</div>`;
+}
+
 async function route() {
   stopPolling();
   document.getElementById('years').hidden = true;
@@ -721,6 +737,7 @@ async function route() {
   try {
     if (parts[0] === 'chapter') await showChapter(parts[1]);
     else if (parts[0] === 'film') await showFilm(parts[1]);
+    else if (parts[0] === 'play' && STUDIO.plays) { chrome(true, 'home'); await (await import('./plays.js')).showPlay(view, parts[2], `#/chapter/${parts[1]}`); }
     else if (parts[0] === 'library') await showLibrary();
     else if (parts[0] === 'solve' && STUDIO.solve) await (parts[1] === 'year' ? showSolveList(parts[2]) : parts[1] ? showSolve(decodeURIComponent(parts[1])) : showSolveList());
     else await showHome();

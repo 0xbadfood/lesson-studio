@@ -175,7 +175,7 @@ audio { width: 100%; margin-top: 12px; }
 .bar { height: 8px; border-radius: 999px; background: var(--accent-soft); overflow: hidden; margin: 2px 0 14px; }
 .bar i { display: block; height: 100%; background: var(--accent); border-radius: inherit; transition: width .6s; }
 .player { background: #000; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-.player video { width: 100%; display: block; aspect-ratio: 16 / 9; }
+.player video { width: 100%; display: block; aspect-ratio: 1190 / 1080; }
 .video-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 12px 0 4px; }
 .video-actions .btn { text-decoration: none; }
 .video-actions .sub { margin: 0; }
@@ -300,3 +300,23 @@ audio { width: 100%; margin-top: 12px; }
            color: var(--muted); font-size: 14px; font-weight: 600; background: var(--card); }
 .years a.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .years a:hover { color: var(--ink); }
+
+/* Plays: a Linkwork verb the student drives */
+.play-head { margin-top: 32px; }
+.play { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 16px; align-items: start; }
+.play-picture { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); line-height: 0; aspect-ratio: 1190 / 1080; }
+.play-picture svg { width: 100%; height: 100%; display: block; }
+.play-side { display: grid; gap: 12px; }
+.play-side .panel { margin: 0; }
+.play-options { display: grid; gap: 8px; margin-top: 12px; }
+.play-options .btn { text-align: left; border-radius: 12px; }
+.play-options .btn.picked { border-color: var(--accent); background: var(--accent-soft); }
+.play-control { display: grid; gap: 6px; margin-bottom: 14px; font-size: 14.5px; }
+.play-control span { display: flex; justify-content: space-between; gap: 8px; }
+.play-control input { width: 100%; accent-color: var(--accent); }
+.play-control select { font: inherit; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+.play-readings h3 { font-size: 15px; margin: 8px 0 4px; }
+.play-readings dl { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; margin: 0; font-size: 14.5px; }
+.play-readings dt { color: var(--muted); }
+.play-readings dd { margin: 0; font-weight: 600; }
+@media (max-width: 800px) { .play { grid-template-columns: minmax(0, 1fr); } }
