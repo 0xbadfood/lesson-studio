@@ -234,6 +234,28 @@ def gradient_strips(page, least=10):
     return {span for span, n in spans.items() if n >= least}
 
 
+PAD = 4  # points around a figure's box when it is cut
+
+
+def prose(page, words, least_width=0):
+    """Lines of running text: 4 or more ordinary lowercase words, no wide gap and at least least_width wide (a figure's
+    labels are spread out, numbers or names: a chart's months, an axis's numbers, a table's rows; and two columns'
+    text can read as one line: leph2-06 Fig. 14.12's "p n bias)..."), and a paragraph's short last line just under
+    one, at its left margin (keph1-06 Fig. 6.21(a) was cut with "magnetic field." on top, 2026-10-30)."""
+    out = []
+    for l in page.extract_text_lines():
+        h = l['bottom'] - l['top']
+        ws = sorted((w for w in words if w['top'] >= l['top'] - 1 and w['bottom'] <= l['bottom'] + 1
+                     and w['x0'] >= l['x0'] - 1 and w['x1'] <= l['x1'] + 1), key=lambda w: w['x0'])
+        gaps = [b['x0'] - a['x1'] for a, b in zip(ws, ws[1:])]
+        plain = sum(bool(re.fullmatch(r"[a-z]{3,}[,.;:]?", w.get('text', ''))) for w in ws)
+        if plain >= 4 and max(gaps, default=0) < 2 * h and l['x1'] - l['x0'] >= least_width:
+            out.append((l['x0'], l['top'], l['x1'], l['bottom']))
+        elif out and abs(out[-1][0] - l['x0']) < 3 and 0 <= l['top'] - out[-1][3] < .8 * h and plain < 4:
+            out.append((l['x0'], l['top'], l['x1'], l['bottom']))
+    return out
+
+
 def widen(page, box, skip):
     """Grow the model's box (PDF points) to the drawing objects and the short label lines it cuts through, never to
     body text, captions or text boxes; then trim a caption caught at its bottom."""
@@ -262,6 +284,14 @@ def widen(page, box, skip):
     for c in captions:                                  # a caption caught at the bottom is cut off
         if _touches(c, b, 0) and c[1] > b[1] + .5 * (b[3] - b[1]):
             b[3] = min(b[3], c[1] - 1)
+    for l in prose(page, words, .8 * (b[2] - b[0])):    # prose at the box's top or bottom edge is cut off (half of it
+        inside = max(0, min(l[2], b[2]) - max(l[0], b[0]))   # in the box's width: kemh1-09 Fig. 9.18 lost its x-axis
+        if inside >= .5 * (l[2] - l[0]) and l[1] < b[3] and l[3] > b[1]:   # to the next column's text)
+            mid = (l[1] + l[3]) / 2
+            if mid < b[1] + .2 * (b[3] - b[1]):                     # clear of the crop's padding too
+                b[1] = max(b[1], l[3] + PAD + 1)
+            elif mid > b[3] - .2 * (b[3] - b[1]):
+                b[3] = min(b[3], l[1] - PAD - 1)
     return b
 
 
@@ -477,7 +507,7 @@ def cut_figure(model, pdf, src, folder, block, entry, skip, hint=''):
         p = pdf.pages[page - 1]
         scale = max(p.width, p.height) / 1000           # the square picture: one scale, both axes
         box = widen(p, tuple(v * scale for v in r['box']), skip)
-        pad, k = 4, FIG_DPI / 72
+        pad, k = PAD, FIG_DPI / 72
         target = folder / 'figures' / f'{slug(entry["ref"])}.png'
         target.parent.mkdir(exist_ok=True)
         subprocess.run(['pdftoppm', '-r', str(FIG_DPI), '-png', '-singlefile', '-f', str(page), '-l',
