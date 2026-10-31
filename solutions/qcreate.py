@@ -426,8 +426,8 @@ def gauge(run_dir):
 
 
 QWEN = {'url': 'http://10.8.0.5:8001/v1', 'model': 'Qwen3.8-27B-Q4_K_M.gguf', 'timeout': 900}
-GEMMA = {'url': 'http://10.8.0.5:8001/v1', 'model': 'gemma4-12b-it-mtp', 'timeout': 900, 'temperature': 0.7, 'workers': 4}
-E4B = {**GEMMA, 'url': 'http://10.8.0.5:8002/v1', 'model': 'gemma4-e4b'}
+GEMMA = {'url': 'http://10.8.0.5:8001/v1', 'model': 'gemma4-12b-it-mtp', 'timeout': 2400, 'temperature': 0.7, 'workers': 4, 'limit': 30000}     # 12B needs the room: about 32,000 tokens of context a slot
+E4B = {**GEMMA, 'url': 'http://10.8.0.5:8002/v1', 'model': 'gemma4-e4b', 'timeout': 900, 'limit': 16000}
 LOCAL = {'qwen': QWEN, 'gemma': GEMMA, 'e4b': E4B}
 LOCAL_LIMIT = 16000     # tokens, thinking included; an attempt that reaches it is unfinished, not wrong
 
@@ -440,7 +440,7 @@ def qwen_call(prompt, images, conn=QWEN):
     t0 = time.time()
     headers = {'Authorization': f"Bearer {os.environ['VLLM_API_KEY']}"} if os.environ.get('VLLM_API_KEY') else {}
     r = httpx.post(conn['url'] + '/chat/completions', headers=headers, timeout=conn['timeout'], json={
-        'model': conn['model'], 'max_tokens': LOCAL_LIMIT, **({'temperature': conn['temperature']} if 'temperature' in conn else {}), 'messages': [
+        'model': conn['model'], 'max_tokens': conn.get('limit', LOCAL_LIMIT), **({'temperature': conn['temperature']} if 'temperature' in conn else {}), 'messages': [
             {'role': 'system', 'content': 'You are an expert physics student sitting JEE Advanced.'},
             {'role': 'user', 'content': content + [{'type': 'text', 'text': prompt}]}]})
     r.raise_for_status()
@@ -518,7 +518,7 @@ The student's steps: {steps}
 The student's answer: {answer}"""
 
 
-def steps_test(run_dir, name, tries=3):
+def steps_test(run_dir, name, tries=3, blind_only=False):
     """Each local attempt shows its working and Sonnet grades it: is the model guessing, falling for decoys, or short of a concept? (user, 2026-10-31)"""
     from concurrent.futures import ThreadPoolExecutor
     conn = LOCAL[name]
@@ -537,13 +537,13 @@ def steps_test(run_dir, name, tries=3):
                 text, seconds, tokens = qwen_call(prompt, images, conn)
             except Exception as exc:
                 return {'error': f'{type(exc).__name__}: {exc}'[:200]}
-            info = {'seconds': seconds, 'tokens': tokens, 'unfinished': (tokens or 0) >= LOCAL_LIMIT}
+            info = {'seconds': seconds, 'tokens': tokens, 'unfinished': (tokens or 0) >= conn.get('limit', LOCAL_LIMIT)}
             try:
                 return {**parse(text, 'answer'), **info}
             except ValueError:
                 return {'steps': text[-6000:], 'answer': salvage(text, 'answer'), **info}
         jobs, maps = [], []
-        for mode in ['open'] * tries + ['mcq'] * tries:
+        for mode in ['open'] * tries + ['mcq'] * (0 if blind_only else tries):
             shown = None
             extra, options = ' as one sympy expression or number', ''
             if mode == 'mcq':
@@ -581,6 +581,40 @@ def steps_test(run_dir, name, tries=3):
     print('steps-finished', flush=True)
 
 
+JUDGE = """Two students, one weak and one stronger, attempted this physics question blind, with no options, several times each. From how they went wrong, judge how hard the question is for a well-prepared JEE Advanced aspirant. Weigh how far each got, whether the idea or only the algebra stopped them, and whether they ran out of room. Return one JSON object and nothing else: {{"difficulty": 0 to 100, "hard_part": the step or idea that stops people, "kind": "idea" or "working" or "both", "why": one or two sentences}}. The question and its key are already verified, so if neither student solves it, it is very hard.
+
+Question: {stem}
+What is really going on: {unwrap}
+
+Weak student's attempts:
+{weak}
+
+Stronger student's attempts:
+{strong}"""
+
+
+def judge(run_dir, weak='e4b', strong='gemma'):
+    """Difficulty from two students' blind scripts (user, 2026-10-31). Kept out of reports until the user's own 0 to 100 scores are in, to test it against them."""
+    total = 0.0
+    for f in sorted(run_dir.glob('q*/question.json')):
+        r = json.loads(f.read_text())
+        if 'judge' in r or f'{strong}_steps' not in r or f'{weak}_steps' not in r:
+            continue
+        q, ledger = r['question'], Ledger()
+
+        def scripts(name):
+            out = []
+            for a in r[f'{name}_steps']['attempts']:
+                if a['mode'] == 'open':
+                    out.append(json.dumps({'grade': a['grade'].get('verdict'), 'why': a['grade'].get('why'), 'first_wrong_step': a['grade'].get('first_wrong_step'), 'tokens': a.get('tokens'), 'ran_out_of_room': a.get('unfinished'), 'answer': a.get('answer')}, ensure_ascii=False))
+            return '\n'.join(out)
+        r['judge'] = parse(ledger.ask('judge', WRITER, system='You have marked JEE Advanced for many years.', prompt=JUDGE.format(stem=fill(q['stem'], q['params']), unwrap=fill(q['unwrap'], q['params']), weak=scripts(weak), strong=scripts(strong)), max_tokens=16000), 'difficulty')
+        r['calls'] += ledger.calls
+        total += ledger.total()
+        f.write_text(json.dumps(r, ensure_ascii=False, indent=1))
+    print(f'judge-finished ${total:.2f}', flush=True)
+
+
 def finish(done, result, ledger):
     result['calls'], result['cost'] = ledger.calls, ledger.total()
     done.write_text(json.dumps(result, ensure_ascii=False, indent=1))
@@ -602,8 +636,10 @@ def load_concepts():
 
 
 def main(argv):
+    if argv[0] == 'judge':
+        return judge(OUT / argv[1])
     if argv[0] == 'steps':
-        return steps_test(OUT / argv[2], argv[1])
+        return steps_test(OUT / argv[2], argv[1], blind_only=argv[1] == 'gemma')     # the students solve blind: options only invite guessing (user, 2026-10-31)
     if argv[0] in LOCAL:
         return local_gauge(OUT / argv[1], argv[0], *(int(x) for x in argv[2:4]))
     if argv[0] == 'gauge':
