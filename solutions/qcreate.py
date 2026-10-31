@@ -426,7 +426,7 @@ def gauge(run_dir):
 
 
 QWEN = {'url': 'http://10.8.0.5:8001/v1', 'model': 'Qwen3.8-27B-Q4_K_M.gguf', 'timeout': 900}
-GEMMA = {'url': 'http://10.8.0.5:8001/v1', 'model': 'gemma4-12b-it-mtp', 'timeout': 2400, 'temperature': 0.7, 'workers': 4, 'limit': 30000}     # 12B needs the room: about 32,000 tokens of context a slot
+GEMMA = {'url': 'http://10.8.0.5:8001/v1', 'model': 'gemma4-12b-it-mtp', 'timeout': 3900, 'temperature': 0.7, 'workers': 4, 'limit': 64000}     # past this a model is patient, not smart (user); the server gives each slot 65,536 tokens of context
 E4B = {**GEMMA, 'url': 'http://10.8.0.5:8002/v1', 'model': 'gemma4-e4b', 'timeout': 900, 'limit': 16000}
 LOCAL = {'qwen': QWEN, 'gemma': GEMMA, 'e4b': E4B}
 LOCAL_LIMIT = 16000     # tokens, thinking included; an attempt that reaches it is unfinished, not wrong
