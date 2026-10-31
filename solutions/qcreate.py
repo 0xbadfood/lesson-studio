@@ -518,6 +518,11 @@ The student's steps: {steps}
 The student's answer: {answer}"""
 
 
+def at_ceiling(attempts, ceiling):
+    """Solved attempts had the ceiling been lower: tokens spent are logged, so an attempt that needed more than the ceiling counts as not solved, with no re-run (user, 2026-10-31). Only lower ceilings can be replayed, which is why runs start lenient."""
+    return sum(1 for a in attempts if a.get('grade', {}).get('verdict') == 'correct' and (a.get('tokens') or 0) <= ceiling)
+
+
 def steps_test(run_dir, name, tries=3, blind_only=False):
     """Each local attempt shows its working and Sonnet grades it: is the model guessing, falling for decoys, or short of a concept? (user, 2026-10-31)"""
     from concurrent.futures import ThreadPoolExecutor

@@ -56,6 +56,10 @@ class Code(unittest.TestCase):
         self.assertEqual(qcreate.salvage(r'{"working": "\\s", "answer": 1.5e3}', 'answer'), '1.5e3')
         self.assertIsNone(qcreate.salvage('still thinking', 'choice'))
 
+    def test_a_lower_ceiling_is_replayed_from_the_tokens_spent(self):
+        attempts = [{'tokens': 5000, 'grade': {'verdict': 'correct'}}, {'tokens': 40000, 'grade': {'verdict': 'correct'}}, {'tokens': 3000, 'grade': {'verdict': 'wrong_principle'}}, {'tokens': 64000, 'grade': {'verdict': 'no_working'}}]
+        self.assertEqual([qcreate.at_ceiling(attempts, c) for c in (64000, 16000, 4000)], [2, 1, 0])
+
     def test_cost_counts_every_token_kind(self):
         self.assertAlmostEqual(qcreate.cost('claude-opus-5-5', {'input_tokens': 1_000_000, 'output_tokens': 1_000_000}), 24.0)
         self.assertAlmostEqual(qcreate.cost('claude-sonnet-5-5', {'cache_read_input_tokens': 1_000_000}), 0.2)
