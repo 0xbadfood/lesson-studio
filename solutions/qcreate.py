@@ -581,7 +581,7 @@ def steps_test(run_dir, name, tries=3, blind_only=False):
     print('steps-finished', flush=True)
 
 
-JUDGE = """Two students, one weak and one stronger, attempted this physics question blind, with no options, several times each. From how they went wrong, judge how hard the question is for a well-prepared JEE Advanced aspirant. Weigh how far each got, whether the idea or only the algebra stopped them, and whether they ran out of room. Return one JSON object and nothing else: {{"difficulty": 0 to 100, "hard_part": the step or idea that stops people, "kind": "idea" or "working" or "both", "why": one or two sentences}}. The question and its key are already verified, so if neither student solves it, it is very hard.
+JUDGE = """Two students, one weak and one stronger, attempted this physics question blind, with no options, several times each. From how they went wrong, judge how hard the question is for a well-prepared JEE Advanced aspirant. Weigh how far each got, and whether the idea or only the algebra stopped them. An exam allows limited time, so an attempt that ran out of room did not solve the question. Return one JSON object and nothing else: {{"difficulty": 0 to 100, "hard_part": the step or idea that stops people, "kind": "idea" or "working" or "both", "why": one or two sentences}}. The question and its key are already verified, so if neither student solves it, it is very hard.
 
 Question: {stem}
 What is really going on: {unwrap}
