@@ -320,3 +320,16 @@ audio { width: 100%; margin-top: 12px; }
 .play-readings dt { color: var(--muted); }
 .play-readings dd { margin: 0; font-weight: 600; }
 @media (max-width: 800px) { .play { grid-template-columns: minmax(0, 1fr); } }
+
+/* created questions */
+.created-list { display: grid; gap: 18px; max-width: 860px; margin: 0 auto 40px; }
+.created { min-width: 0; }
+.created.flagged { border-color: var(--bad, #c0392b); }
+.created-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.created-stem { line-height: 1.6; overflow-wrap: anywhere; }
+.created-figure { display: block; max-width: 100%; height: auto; margin: 12px auto; border-radius: 6px; border: 1px solid var(--line); background: #fff; }
+.created-options { list-style: none; padding: 0; display: grid; gap: 6px; overflow-wrap: anywhere; }
+.created-options b { margin-right: 8px; }
+.created details { margin: 12px 0; line-height: 1.55; overflow-wrap: anywhere; }
+.created-flag { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+.created-flag .field { flex: 1 1 240px; margin: 0; }

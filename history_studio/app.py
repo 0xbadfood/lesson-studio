@@ -30,6 +30,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
 from history_studio import activity, catalog, ideas, questions, solving
+from solutions import qreview
 
 REMOTION = Path('/home/nitin/remotion')
 sys.path.insert(0, str(REMOTION))
@@ -405,11 +406,16 @@ def page(profile):
     subject = profile['job']
     studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject,
                          'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions')),
-                         'solve': bool(profile.get('solve')), 'plays': bool(profile.get('plays') and linkwork_mirror())})
+                         'solve': bool(profile.get('solve')), 'created': bool(profile.get('created')), 'plays': bool(profile.get('plays') and linkwork_mirror())})
     text = (HERE / 'static' / 'index.html').read_text()
     text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {profile.get("textbook", subject)} textbook')
     text = text.replace('<span class="mark">H</span>', f'<span class="mark">{profile["mark"]}</span>')
     return text.replace('</head>', f'  <script>window.STUDIO = {studio};</script>\n</head>', 1)
+
+
+class QuestionFlag(BaseModel):
+    flagged: bool = True
+    reason: str = Field(default='', max_length=600)
 
 
 def build(queue=None, access=None, data=None, profile=None):
@@ -643,6 +649,37 @@ def build(queue=None, access=None, data=None, profile=None):
                                              'kind', 'idea')}
                        | {'cover': item['scenes'][0]['src'] if item['scenes'] else None})
         return {'films': out}
+
+    # Created questions: review, and a flag for the inferior ones (a person is the judge of quality, 2026-10-31)
+    review = qreview.Review(data) if profile.get('created') else None
+
+    def reviewing():
+        if review is None:
+            raise HTTPException(404, 'Created questions are not offered here')
+        return review
+
+    @app.get('/api/created')
+    def created_list(request: Request, run: str = ''):
+        signed_in(request)
+        runs = reviewing().runs()
+        run = run if run in runs else (runs[0] if runs else '')
+        return {'runs': runs, 'run': run, 'questions': reviewing().listing(run) if run else []}
+
+    @app.get('/api/created/{run}/{q}/figure')
+    def created_figure(run: str, q: str, request: Request):
+        signed_in(request)
+        path = reviewing().figure(run, q)
+        if not path:
+            raise HTTPException(404, 'No figure')
+        return FileResponse(path, media_type='image/png')
+
+    @app.post('/api/created/{run}/{q}/flag')
+    def created_flag(run: str, q: str, body: QuestionFlag, request: Request):
+        signed_in(request)
+        if run not in reviewing().runs() or not any(i['q'] == q for i in reviewing().listing(run)):
+            raise HTTPException(404, 'No such question')
+        reviewing().set_flag(f'{run}/{q}', body.flagged, body.reason)
+        return {'ok': True}
 
     solver = solving.Solver(profile['solve']) if profile.get('solve') else None
 

@@ -55,12 +55,15 @@ class Code(unittest.TestCase):
         self.assertAlmostEqual(qcreate.cost('claude-opus-5-5', {'input_tokens': 1_000_000, 'output_tokens': 1_000_000}), 24.0)
         self.assertAlmostEqual(qcreate.cost('claude-sonnet-5-5', {'cache_read_input_tokens': 1_000_000}), 0.2)
 
-    def test_the_solves_are_read_not_passed(self):
-        q = {'key': 'A', 'options': dict.fromkeys('ABCD')}
-        self.assertEqual(qcreate.verdict(3, [1, 1, 1], 3, list('AAA'), q), 'solved_every_time')
-        self.assertEqual(qcreate.verdict(1, [1, 2, 3], 1, list('ABA'), q), 'accepted_decoys_bite')
-        self.assertEqual(qcreate.verdict(0, [2, 2, 2], 0, list('BBB'), q), 'review_solver_disagrees_with_key')
-        self.assertEqual(qcreate.verdict(0, [1, 5, 9], 0, list('BCD'), q), 'review_hard_or_broken')
+    def test_what_cannot_be_confirmed_is_discarded(self):
+        self.assertEqual(qcreate.settle(10.0, None, 10.0), 'accepted')
+        self.assertEqual(qcreate.settle(12.0, 10.0, 10.0), 'accepted_hard')
+        self.assertEqual(qcreate.settle(12.0, 12.0, 10.0), 'discarded_key_disputed')
+        self.assertEqual(qcreate.settle(12.0, 14.0, 10.0), 'discarded_unclear')
+        self.assertEqual(qcreate.settle(None, None, 10.0), 'discarded_unclear')
+
+    def test_fable_has_a_price(self):
+        self.assertAlmostEqual(qcreate.cost('claude-fable-5-1', {'input_tokens': 1_000_000, 'output_tokens': 1_000_000}), 60.0)
 
 
 class Figure(unittest.TestCase):

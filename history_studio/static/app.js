@@ -2,6 +2,7 @@
 const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'history', key_ideas: false};
 const view = document.getElementById('view');
 if (STUDIO.solve) document.getElementById('nav-solve').hidden = false;
+if (STUDIO.created) document.getElementById('nav-created').hidden = false;
 const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null, activityTimer: null, questionTimer: null };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -526,6 +527,56 @@ async function showLibrary() {
       </a>`).join('')}</div>` : '<p class="empty">No films yet. Pick a chapter and make the first one.</p>'}`;
 }
 
+/* ---------------------------------------------------------------- created questions (review) */
+function createdCard(q, run) {
+  if (q.broken) return `<article class="panel created"><h2>${esc(q.q)}</h2><p class="sub">Not usable: ${esc(q.status)} · $${(q.cost || 0).toFixed(2)}</p></article>`;
+  const score = (s, t) => (s?.open === null || s?.open === undefined ? '' : `${s.open}/${t.open} blind${t.mcq ? `, ${s.mcq}/${t.mcq} with options` : ''}`);
+  const options = Object.entries(q.options).map(([k, v]) => `<li data-letter="${k}"><b>${k}</b> ${esc(v)}</li>`).join('');
+  const mistakes = Object.entries(q.mistakes).map(([k, v]) => `<li><b>${k}</b> ${esc(v)}</li>`).join('');
+  return `<article class="panel created ${q.flag ? 'flagged' : ''}" id="${esc(q.q)}" data-q="${esc(q.q)}">
+    <div class="created-top"><h2>${esc(q.q.toUpperCase())}</h2><span class="sub">$${q.cost.toFixed(2)} · ${q.rounds} draft${q.rounds === 1 ? '' : 's'}</span></div>
+    <p class="created-stem">${esc(q.stem)}</p>
+    ${q.figure ? `<img class="created-figure" loading="lazy" alt="Figure for ${esc(q.q)}" src="api/created/${esc(run)}/${esc(q.q)}/figure">` : ''}
+    <ol class="created-options">${options}</ol>
+    <details><summary>Answer and unwrapping</summary>
+      <p><b>Answer: ${esc(q.key)}</b></p>
+      <p><b>What's really going on.</b> ${esc(q.unwrap)}</p>
+      <p><b>The decoy.</b> ${esc(q.decoy)}</p>
+      <p><b>The wrong options.</b></p><ul>${mistakes}</ul>
+      <p><b>Concepts.</b></p><ul>${q.concepts.map((c) => `<li>${esc(c.name)}: ${esc(c.where_needed)}</li>`).join('')}</ul>
+      <p class="sub">Sonnet: ${score(q.solves.sonnet, q.tries) || 'not run'}. Haiku: ${score(q.solves.haiku, { open: 3, mcq: 3 }) || 'not run'}.${q.solves.fable ? ` Fable: ${esc(q.solves.fable.outcome)}.` : ''}</p>
+      ${q.figure_flag ? `<p class="sub">The figure check raised: ${esc(q.defects.map((d) => (typeof d === 'string' ? d : Object.values(d).join(' '))).join(' · '))}</p>` : ''}
+    </details>
+    <div class="created-flag">
+      <input class="field" placeholder="What's wrong with it? (optional)" value="${esc(q.flag?.reason || '')}" aria-label="Why this question is inferior">
+      <button class="btn ${q.flag ? '' : 'ghost'}">${q.flag ? 'Flagged: remove flag' : 'Flag as inferior'}</button>
+    </div>
+  </article>`;
+}
+
+async function showCreated(run) {
+  chrome(true, 'created');
+  const d = await api(`api/created${run ? `?run=${encodeURIComponent(run)}` : ''}`);
+  const flagged = d.questions.filter((q) => q.flag).length;
+  const cost = d.questions.reduce((a, q) => a + (q.cost || 0), 0);
+  view.innerHTML = `<section class="hero"><div class="eyebrow">Created questions</div><h1>New JEE-style questions</h1>
+      <p>Written by Opus, with the key and every wrong option checked by code and solved blind by other models. Flag any question that isn't good enough.</p>
+      <p class="sub">${d.questions.length} questions · $${cost.toFixed(2)} · ${flagged} flagged${d.runs.length > 1 ? ` · Runs: ${d.runs.map((r) => `<a href="#/created/${esc(r)}">${esc(r)}</a>`).join(', ')}` : ''}</p></section>
+    <div class="created-list">${d.questions.map((q) => createdCard(q, d.run)).join('') || '<p class="empty">No questions yet.</p>'}</div>`;
+  view.querySelectorAll('.created-flag button').forEach((button) => button.addEventListener('click', async () => {
+    const card = button.closest('[data-q]');
+    const on = !card.classList.contains('flagged');
+    button.disabled = true;
+    try {
+      await api(`api/created/${encodeURIComponent(d.run)}/${card.dataset.q}/flag`, { method: 'POST', body: JSON.stringify({ flagged: on, reason: card.querySelector('input').value }) });
+      card.classList.toggle('flagged', on);
+      button.textContent = on ? 'Flagged: remove flag' : 'Flag as inferior';
+      button.classList.toggle('ghost', !on);
+    } catch (err) { if (err.message !== 'signed out') button.textContent = err.message; }
+    button.disabled = false;
+  }));
+}
+
 /* ---------------------------------------------------------------- solve (Physics Studio) */
 const TYPE_NAMES = { single: 'One correct option', multiple: 'One or more options', numerical: 'Numerical', match: 'Matching lists' };
 const STATE_NAMES = { new: 'Not solved', queued: 'Waiting', solving: 'Solving', settled: 'Settled', unverified: 'Unverified (no key)', needs_review: 'Needs review', failed: 'Failed' };
@@ -739,6 +790,7 @@ async function route() {
     else if (parts[0] === 'film') await showFilm(parts[1]);
     else if (parts[0] === 'play' && STUDIO.plays) { chrome(true, 'home'); await (await import('./plays.js')).showPlay(view, parts[2], `#/chapter/${parts[1]}`); }
     else if (parts[0] === 'library') await showLibrary();
+    else if (parts[0] === 'created' && STUDIO.created) await showCreated(parts[1]);
     else if (parts[0] === 'solve' && STUDIO.solve) await (parts[1] === 'year' ? showSolveList(parts[2]) : parts[1] ? showSolve(decodeURIComponent(parts[1])) : showSolveList());
     else await showHome();
   } catch (err) {

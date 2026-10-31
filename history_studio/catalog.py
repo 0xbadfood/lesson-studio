@@ -55,7 +55,7 @@ PROFILES = {
     # model, checked against the official key, then planned as worked-solution clips with their drawing aids.
     'physics': {'name': 'Physics Studio', 'slug': 'physics', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',
                 'cookie': 'physics_session', 'job': 'physics', 'figures': 'book', 'key_ideas': True,
-                'questions': True, 'solve': 'physics', 'linkwork': 'physics', 'plays': True},
+                'questions': True, 'solve': 'physics', 'linkwork': 'physics', 'plays': True, 'created': True},
     # Maths Studio (2026-10-24): Class 11-12 Maths concept and key-idea films; Solve for maths comes with questions.
     'maths': {'name': 'Maths Studio', 'slug': 'maths', 'mark': 'M', 'subjects': {'maths'}, 'data': 'maths-data',
               'cookie': 'maths_session', 'job': 'maths', 'figures': 'book', 'key_ideas': True, 'questions': True, 'linkwork': 'maths'},

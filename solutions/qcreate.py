@@ -3,7 +3,7 @@
 The method is unwrapping in reverse (user, 2026-10-23): at least three concepts packed into one setting, with a decoy,
 and wrong options that are the mistakes students really make. Code proves the key and every wrong option from one set
 of values; Sonnet's solves are a test of the question, not a pass mark, because a hard question and a broken one look
-alike to a student. Every call's tokens and cost are kept against the question, rejected or not.
+alike to a student. Sonnet checks the key once, Fable settles a disagreement, Haiku's tries are a gauge. Every call's tokens and cost are kept against the question, rejected or not.
 
 Usage (from ~/remotion's venv, ANTHROPIC_API_KEY in the environment): python solutions/qcreate.py <run> [first last]
 """
@@ -35,11 +35,12 @@ BANK = ROOT / 'questions-data' / 'jee-advanced' / 'bank'
 DIGESTS = ROOT / 'textbook-digest'
 WRITER = {'model': 'claude-opus-5-5', 'reasoning_effort': 'high', 'timeout': 1200}
 SOLVER = {'model': 'claude-sonnet-5-5', 'reasoning_effort': 'high', 'timeout': 900}
+ARBITER = {'model': 'claude-fable-5-1', 'reasoning_effort': 'high', 'timeout': 1200}
 GAUGE = {'model': 'claude-haiku-5-5', 'reasoning_effort': 'high', 'timeout': 900}
-PRICES = {'claude-opus-5-5': (4.0, 20.0, 0.20), 'claude-sonnet-5-5': (2.0, 10.0, 0.20), 'claude-haiku-5-5': (0.10, 0.50, 0.01)}    # $ per MTok: input, output, cache read
+PRICES = {'claude-opus-5-5': (4.0, 20.0, 0.20), 'claude-sonnet-5-5': (2.0, 10.0, 0.20), 'claude-haiku-5-5': (0.10, 0.50, 0.01), 'claude-fable-5-1': (10.0, 50.0, 0.25)}    # $ per MTok: input, output, cache read
 MECHANICS = ['keph1-02', 'keph1-03', 'keph1-04', 'keph1-05', 'keph1-06', 'keph1-07']
 REPAIRS = 3         # further writer rounds when code refuses a draft
-OPEN_TRIES, MCQ_TRIES = 3, 3
+OPEN_TRIES, MCQ_TRIES = 3, 3    # the Haiku gauge's tries
 TOLERANCE = 0.01    # a solver's answer within 1% of the key is right
 STYLE = ['2026-P1-phys-Q03', '2026-P1-phys-Q06', '2026-P2-phys-Q04']
 
@@ -297,17 +298,14 @@ def judge_open(answer, q, numbers):
     return v
 
 
-def verdict(open_right, open_values, mcq_right, mcq_choices, q):
-    """Reads the solves. The middle row is what we want; the last two need a person, because a broken question and a hard one look alike."""
-    wrong_on_planned = [c for c in mcq_choices if c != q['key'] and c in q['options']]
-    if open_right == OPEN_TRIES and mcq_right == MCQ_TRIES:
-        return 'solved_every_time'
-    if open_right or mcq_right:
-        return 'accepted_decoys_bite' if wrong_on_planned else 'accepted'
-    agreed = [v for v in open_values if v is not None]
-    if len(agreed) >= 2 and all(near(agreed[0], v, 0.02) for v in agreed):
-        return 'review_solver_disagrees_with_key'
-    return 'review_hard_or_broken'
+def settle(sonnet, fable, key):
+    """accepted: Sonnet reached the key. accepted_hard: only Fable did. Otherwise discarded: both differ from the key the same way (the key is probably wrong) or each its own way (probably unclear)."""
+    same = lambda a, b: a is not None and b is not None and near(a, b)
+    if same(sonnet, key):
+        return 'accepted'
+    if same(fable, key):
+        return 'accepted_hard'
+    return 'discarded_key_disputed' if same(sonnet, fable) else 'discarded_unclear'
 
 
 def solve_call(ledger, stage, need, prompt, images, conn=SOLVER):
@@ -373,28 +371,21 @@ def make(n, brief, run_dir, concepts, style, bank):
     images = [folder / 'figure.png'] if q.get('figure_needed') else []
     stem = fill(q['stem'], q['params'])
     names = ', using these names for any symbols: ' + ', '.join(sorted(q['params']))
-    opens, values, right = [], [], 0
-    for i in range(OPEN_TRIES):
-        a = solve_call(ledger, f'open-{i}', 'answer', OPEN_SOLVE.format(stem=stem, names=names), images)
-        v = judge_open(a.get('answer'), q, numbers)
-        ok = v is not None and near(v, numbers['params']['correct'])
-        right += ok
-        opens.append({'answer': a.get('answer'), 'value': v, 'right': ok, 'working': a.get('working')})
-        values.append(v)
-    rng = random.Random(n)
-    mcqs, mright = [], 0
-    for i in range(MCQ_TRIES):
-        letters = list('ABCD')
-        rng.shuffle(letters)
-        shown = dict(zip('ABCD', letters))     # printed letter -> writer's letter
-        text = '\n'.join(f"({p}) {fill(q['options'][w]['text'], q['params'])}" for p, w in shown.items())
-        a = solve_call(ledger, f'mcq-{i}', 'choice', MCQ_SOLVE.format(stem=stem, options=text), images)
-        chosen = shown.get(str(a.get('choice', '')).strip()[:1])
-        mright += chosen == q['key']
-        mcqs.append({'choice': chosen, 'right': chosen == q['key'], 'working': a.get('working')})
-    result['open'], result['mcq'] = opens, mcqs
-    result['open_right'], result['mcq_right'] = right, mright
-    result['status'] = verdict(right, values, mright, [m['choice'] for m in mcqs], q)
+    # Verification (user, 2026-10-31): one blind Sonnet solve; Fable, also blind and told nothing of the dispute, only when Sonnet differs from the key.
+    # In production nobody is there to judge, so what can't be confirmed is discarded, never shipped.
+    prompt = OPEN_SOLVE.format(stem=stem, names=names)
+    a = solve_call(ledger, 'verify', 'answer', prompt, images)
+    v = judge_open(a.get('answer'), q, numbers)
+    result['open'] = [{'answer': a.get('answer'), 'value': v, 'right': v is not None and near(v, numbers['params']['correct']), 'working': a.get('working')}]
+    result['open_right'] = int(result['open'][0]['right'])
+    fable = None
+    if not result['open_right']:
+        f = solve_call(ledger, 'arbiter', 'answer', prompt, images, ARBITER)
+        fable = judge_open(f.get('answer'), q, numbers)
+        result['fable'] = {'answer': f.get('answer'), 'value': fable, 'working': f.get('working')}
+    result['status'] = settle(v, fable, numbers['params']['correct'])
+    if result.get('fable'):
+        result['fable']['outcome'] = result['status']
     return finish(done, result, ledger)
 
 
@@ -402,7 +393,7 @@ def gauge(run_dir):
     """Haiku tries every question that passed, the same blind way: a weaker solver, as a pointer to how hard each one is. It decides nothing."""
     for f in sorted(run_dir.glob('q*/question.json')):
         r = json.loads(f.read_text())
-        if 'open' not in r or 'haiku' in r:
+        if not str(r.get('status')).startswith(('accepted', 'solved')) or 'haiku' in r:
             continue
         q, ledger = r['question'], Ledger()
         images = [f.parent / 'figure.png'] if q.get('figure_needed') else []
