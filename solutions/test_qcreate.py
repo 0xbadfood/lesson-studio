@@ -42,6 +42,15 @@ class Code(unittest.TestCase):
         _, err = qcreate.run_python({**GOOD, 'python': python})
         self.assertIn('failed', err)
 
+    def test_a_reply_with_words_and_braces_still_reads(self):
+        self.assertEqual(qcreate.parse('Using {v} here. {"working": "x", "choice": "B"}', 'choice')['choice'], 'B')
+        self.assertEqual(qcreate.parse('{"a": {"choice": 1}} then {"choice": "C"}', 'choice')['choice'], 'C')
+        with self.assertRaises(ValueError):
+            qcreate.parse('no answer {here}', 'choice')
+
+    def test_the_haiku_gauge_has_a_price(self):
+        self.assertAlmostEqual(qcreate.cost('claude-haiku-5-5', {'input_tokens': 1_000_000, 'output_tokens': 1_000_000}), 0.6)
+
     def test_cost_counts_every_token_kind(self):
         self.assertAlmostEqual(qcreate.cost('claude-opus-5-5', {'input_tokens': 1_000_000, 'output_tokens': 1_000_000}), 24.0)
         self.assertAlmostEqual(qcreate.cost('claude-sonnet-5-5', {'cache_read_input_tokens': 1_000_000}), 0.2)

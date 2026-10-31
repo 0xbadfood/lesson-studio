@@ -35,9 +35,10 @@ BANK = ROOT / 'questions-data' / 'jee-advanced' / 'bank'
 DIGESTS = ROOT / 'textbook-digest'
 WRITER = {'model': 'claude-opus-5-5', 'reasoning_effort': 'high', 'timeout': 1200}
 SOLVER = {'model': 'claude-sonnet-5-5', 'reasoning_effort': 'high', 'timeout': 900}
-PRICES = {'claude-opus-5-5': (4.0, 20.0, 0.20), 'claude-sonnet-5-5': (2.0, 10.0, 0.20)}    # $ per MTok: input, output, cache read
+GAUGE = {'model': 'claude-haiku-5-5', 'reasoning_effort': 'high', 'timeout': 900}
+PRICES = {'claude-opus-5-5': (4.0, 20.0, 0.20), 'claude-sonnet-5-5': (2.0, 10.0, 0.20), 'claude-haiku-5-5': (0.10, 0.50, 0.01)}    # $ per MTok: input, output, cache read
 MECHANICS = ['keph1-02', 'keph1-03', 'keph1-04', 'keph1-05', 'keph1-06', 'keph1-07']
-REPAIRS = 2         # further writer rounds when code refuses a draft
+REPAIRS = 3         # further writer rounds when code refuses a draft
 OPEN_TRIES, MCQ_TRIES = 3, 3
 TOLERANCE = 0.01    # a solver's answer within 1% of the key is right
 STYLE = ['2026-P1-phys-Q03', '2026-P1-phys-Q06', '2026-P2-phys-Q04']
@@ -89,15 +90,27 @@ MCQ_SOLVE = """Solve this physics question carefully. Exactly one option is corr
 {stem}
 
 {options}"""
-READ_FIGURE = """Here is a figure from a physics question. Using only what the figure shows, judge each statement. Return one JSON object and nothing else: {{"facts": [{{"statement": ..., "shown": true or false, "why": a few words}}], "defects": [anything drawn wrongly or impossible to read]}}.
+READ_FIGURE = """Here is a figure from a physics question. Using only what the figure shows, judge each statement. Return one JSON object and nothing else: {{"facts": [{{"statement": ..., "shown": true or false, "why": a few words}}], "defects": [only what would mislead a student or make the question unanswerable; leave out matters of neatness, and don't ask for units or words the question's text can carry]}}.
 
 Statements:
 {facts}"""
 
 
-def parse(text):
-    start, end = text.find('{'), text.rfind('}')
-    return json.loads(text[start:end + 1], strict=False)
+def parse(text, need=None):
+    """The JSON object in a reply: the last one that decodes (and has `need`), so words or a stray brace before it do no harm."""
+    dec, found, i = json.JSONDecoder(strict=False), [], 0
+    while (i := text.find('{', i)) != -1:
+        try:
+            value, end = dec.raw_decode(text, i)
+        except ValueError:
+            i += 1
+            continue
+        found.append(value)
+        i = end
+    found = [v for v in found if isinstance(v, dict) and (need is None or need in v)]
+    if not found:
+        raise ValueError('no JSON object in the reply')
+    return found[-1]
 
 
 def cost(model, u):
@@ -297,6 +310,15 @@ def verdict(open_right, open_values, mcq_right, mcq_choices, q):
     return 'review_hard_or_broken'
 
 
+def solve_call(ledger, stage, need, prompt, images, conn=SOLVER):
+    """One blind solve. A reply with no readable answer is an attempt with no answer, not the end of the run."""
+    text = ledger.ask(stage, conn, system='You are an expert physics student sitting JEE Advanced.', prompt=prompt, images=images, max_tokens=24000)
+    try:
+        return parse(text, need)
+    except ValueError:
+        return {'working': text[-1500:]}
+
+
 def make(n, brief, run_dir, concepts, style, bank):
     folder = run_dir / f'q{n:02d}'
     folder.mkdir(parents=True, exist_ok=True)
@@ -309,7 +331,7 @@ def make(n, brief, run_dir, concepts, style, bank):
     need = ' and '.join(sorted({f'{b} ({CHAPTERS[b]})' for b in brief}))
     prompt = f'Concepts you may use (name: chapter):\n{listing}\n\nFor this question, draw at least one concept from {need}.\n\nThree real JEE Advanced questions, for style only; never reuse their settings:\n{style}'
     allowed = {c for names in concepts.values() for c in names}
-    q, feedback = None, ''
+    q, feedback, best = None, '', None
     for round_no in range(REPAIRS + 1):
         try:
             text = ledger.ask(f'write-{round_no}', WRITER, system=SYSTEM, prompt=prompt + feedback)
@@ -323,18 +345,22 @@ def make(n, brief, run_dir, concepts, style, bank):
             errors = figure_errors(q, folder)
         if not errors and q.get('figure_needed') and q.get('figure_facts'):
             # a figure that doesn't show what it must goes back to the writer, once code has passed everything else
-            facts = '\n'.join(f'- {f}' for f in q['figure_facts'])
+            facts = '\n'.join(f"- {fill(f, q['params'])}" for f in q['figure_facts'])
             read = parse(ledger.ask(f'read-figure-{round_no}', SOLVER, system='You check figures in physics questions.', prompt=READ_FIGURE.format(facts=facts), images=[folder / 'figure.png'], max_tokens=12000))
             result['figure_read'] = read
             faults = [f"the figure does not show: {f.get('statement')} ({f.get('why')})" for f in read.get('facts', []) if not f.get('shown')] + [f'figure defect: {d}' for d in read.get('defects', [])]
             result['figure_flag'] = bool(faults)
-            if round_no < REPAIRS:
+            if faults and not best:     # one figure repair; the draft is kept, so a slip in the repair can't lose a sound question
+                best = (q, numbers)
                 errors = faults
         result['errors'], result['rounds'] = errors, round_no + 1
         result.setdefault('refusals', []).append(errors)
         if not errors:
             break
         feedback = '\n\nCode refused your last draft:\n' + '\n'.join(f'- {x}' for x in errors) + '\n\nYour last draft:\n' + json.dumps(q, ensure_ascii=False) + '\n\nFix these and write the whole object again. If the physics was wrong, change the question rather than the check.'
+    if best and result.get('errors'):
+        q, numbers = best
+        result['errors'], result['figure_flag'] = [], True
     result['question'] = q
     if q is None or result['errors']:
         result['status'] = 'rejected_missing_parts' if q and q.get('missing_parts') else 'rejected_by_code'
@@ -346,11 +372,10 @@ def make(n, brief, run_dir, concepts, style, bank):
         return finish(done, result, ledger)
     images = [folder / 'figure.png'] if q.get('figure_needed') else []
     stem = fill(q['stem'], q['params'])
-    solver_system = 'You are an expert physics student sitting JEE Advanced.'
     names = ', using these names for any symbols: ' + ', '.join(sorted(q['params']))
     opens, values, right = [], [], 0
     for i in range(OPEN_TRIES):
-        a = parse(ledger.ask(f'open-{i}', SOLVER, system=solver_system, prompt=OPEN_SOLVE.format(stem=stem, names=names), images=images, max_tokens=24000))
+        a = solve_call(ledger, f'open-{i}', 'answer', OPEN_SOLVE.format(stem=stem, names=names), images)
         v = judge_open(a.get('answer'), q, numbers)
         ok = v is not None and near(v, numbers['params']['correct'])
         right += ok
@@ -363,7 +388,7 @@ def make(n, brief, run_dir, concepts, style, bank):
         rng.shuffle(letters)
         shown = dict(zip('ABCD', letters))     # printed letter -> writer's letter
         text = '\n'.join(f"({p}) {fill(q['options'][w]['text'], q['params'])}" for p, w in shown.items())
-        a = parse(ledger.ask(f'mcq-{i}', SOLVER, system=solver_system, prompt=MCQ_SOLVE.format(stem=stem, options=text), images=images, max_tokens=24000))
+        a = solve_call(ledger, f'mcq-{i}', 'choice', MCQ_SOLVE.format(stem=stem, options=text), images)
         chosen = shown.get(str(a.get('choice', '')).strip()[:1])
         mright += chosen == q['key']
         mcqs.append({'choice': chosen, 'right': chosen == q['key'], 'working': a.get('working')})
@@ -371,6 +396,36 @@ def make(n, brief, run_dir, concepts, style, bank):
     result['open_right'], result['mcq_right'] = right, mright
     result['status'] = verdict(right, values, mright, [m['choice'] for m in mcqs], q)
     return finish(done, result, ledger)
+
+
+def gauge(run_dir):
+    """Haiku tries every question that passed, the same blind way: a weaker solver, as a pointer to how hard each one is. It decides nothing."""
+    for f in sorted(run_dir.glob('q*/question.json')):
+        r = json.loads(f.read_text())
+        if 'open' not in r or 'haiku' in r:
+            continue
+        q, ledger = r['question'], Ledger()
+        images = [f.parent / 'figure.png'] if q.get('figure_needed') else []
+        stem = fill(q['stem'], q['params'])
+        names = ', using these names for any symbols: ' + ', '.join(sorted(q['params']))
+        opens, mcqs, rng = [], [], random.Random(r['n'] + 1000)
+        for i in range(OPEN_TRIES):
+            a = solve_call(ledger, f'haiku-open-{i}', 'answer', OPEN_SOLVE.format(stem=stem, names=names), images, GAUGE)
+            v = judge_open(a.get('answer'), q, r['numbers'])
+            opens.append({'answer': a.get('answer'), 'value': v, 'right': v is not None and near(v, r['numbers']['params']['correct'])})
+        for i in range(MCQ_TRIES):
+            letters = list('ABCD')
+            rng.shuffle(letters)
+            shown = dict(zip('ABCD', letters))
+            text = '\n'.join(f"({p}) {fill(q['options'][w]['text'], q['params'])}" for p, w in shown.items())
+            a = solve_call(ledger, f'haiku-mcq-{i}', 'choice', MCQ_SOLVE.format(stem=stem, options=text), images, GAUGE)
+            chosen = shown.get(str(a.get('choice', '')).strip()[:1])
+            mcqs.append({'choice': chosen, 'right': chosen == q['key']})
+        r['haiku'] = {'open': opens, 'mcq': mcqs, 'open_right': sum(o['right'] for o in opens), 'mcq_right': sum(m['right'] for m in mcqs), 'cost': ledger.total()}
+        r['calls'] += ledger.calls
+        f.write_text(json.dumps(r, ensure_ascii=False, indent=1))
+        print(f"q{r['n']:02d} haiku open {r['haiku']['open_right']}/{OPEN_TRIES} mcq {r['haiku']['mcq_right']}/{MCQ_TRIES} picks {[m['choice'] for m in mcqs]} key {q['key']} ${ledger.total():.3f}", flush=True)
+    print('gauge-finished', flush=True)
 
 
 def finish(done, result, ledger):
@@ -394,6 +449,8 @@ def load_concepts():
 
 
 def main(argv):
+    if argv[0] == 'gauge':
+        return gauge(OUT / argv[1])
     run = argv[0]
     first, last = (int(argv[1]), int(argv[2])) if len(argv) > 2 else (1, len(BRIEFS))
     run_dir = OUT / run
@@ -403,7 +460,10 @@ def main(argv):
     by_id = {q['id']: q for q in bank}
     style = '\n\n'.join(re.sub(r'[ \t]+', ' ', by_id[i]['text']).strip() for i in STYLE if i in by_id)
     for n in range(first, last + 1):
-        make(n, BRIEFS[n - 1], run_dir, concepts, style, bank)
+        try:
+            make(n, BRIEFS[n - 1], run_dir, concepts, style, bank)
+        except Exception as exc:     # one question's failure is a finding; the rest still run (its folder has no question.json, so a rerun retries it)
+            print(f'q{n:02d} crashed {type(exc).__name__}: {exc}', flush=True)
     results = [json.loads(f.read_text()) for f in sorted(run_dir.glob('q*/question.json'))]
     print('pilot-finished', len(results), 'questions', f"${sum(r['cost'] for r in results):.2f}", flush=True)
 
