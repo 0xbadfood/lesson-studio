@@ -499,6 +499,88 @@ def local_gauge(run_dir, name, first=1, last=99):
     print(f'{name}-finished', flush=True)
 
 
+STEPS = """Solve this physics question as you would in an examination, showing all your working. Name each principle you use and why it applies here, write each equation, and carry the algebra through to the result. Then return one JSON object and nothing else: {{"steps": ["step one", "step two", ...], "answer": the final answer{extra}}}. Write mathematics in plain text, not LaTeX.
+
+{stem}{options}"""
+GRADE = """A student attempted this physics question. Find where the attempt went right or wrong by reading its steps, not only its answer. Return one JSON object and nothing else:
+{{"verdict": one of "correct" (right method, right result), "right_method_slip" (right principles, an algebra, arithmetic or copying slip), "fell_for_decoy" (followed the tempting route or one of the planned mistakes below), "wrong_principle" (used a principle that doesn't apply, not one of the planned mistakes), "missing_concept" (never used a concept the question needs), "misread" (misread the setup or figure), "guessing" (the steps don't lead to the answer given, or are empty or circular), "lucky" (the right answer from wrong working),
+"first_wrong_step": the step's number, or null, "planned_mistake": the option letter of the planned mistake it matches, or null, "concepts_missing": [concepts it never used], "why": one sentence}}
+
+The question: {stem}
+{options}
+Key: {key}
+What is really going on: {unwrap}
+The decoy: {decoy}
+Planned mistakes: {mistakes}
+Concepts needed: {concepts}
+
+The student's steps: {steps}
+The student's answer: {answer}"""
+
+
+def steps_test(run_dir, name, tries=3):
+    """Each local attempt shows its working and Sonnet grades it: is the model guessing, falling for decoys, or short of a concept? (user, 2026-10-31)"""
+    from concurrent.futures import ThreadPoolExecutor
+    conn = LOCAL[name]
+    pool, key = ThreadPoolExecutor(conn.get('workers', 1)), f'{name}_steps'
+    for f in sorted(run_dir.glob('q*/question.json')):
+        r = json.loads(f.read_text())
+        if not str(r.get('status')).startswith(('accepted', 'solved')) or key in r:
+            continue
+        q, ledger, rng = r['question'], Ledger(), random.Random(r['n'] + 3000)
+        images = [f.parent / 'figure.png'] if q.get('figure_needed') else []
+        stem = fill(q['stem'], q['params'])
+        all_options = '\n'.join(f"({k}) {fill(v['text'], q['params'])}" for k, v in q['options'].items())
+
+        def attempt(prompt):
+            try:
+                text, seconds, tokens = qwen_call(prompt, images, conn)
+            except Exception as exc:
+                return {'error': f'{type(exc).__name__}: {exc}'[:200]}
+            info = {'seconds': seconds, 'tokens': tokens, 'unfinished': (tokens or 0) >= LOCAL_LIMIT}
+            try:
+                return {**parse(text, 'answer'), **info}
+            except ValueError:
+                return {'steps': text[-6000:], 'answer': salvage(text, 'answer'), **info}
+        jobs, maps = [], []
+        for mode in ['open'] * tries + ['mcq'] * tries:
+            shown = None
+            extra, options = ' as one sympy expression or number', ''
+            if mode == 'mcq':
+                letters = list('ABCD')
+                rng.shuffle(letters)
+                shown = dict(zip('ABCD', letters))
+                extra = ': the letter A, B, C or D'
+                options = '\n\nOptions (exactly one is correct):\n' + '\n'.join(f"({p}) {fill(q['options'][w]['text'], q['params'])}" for p, w in shown.items())
+            maps.append((mode, shown))
+            jobs.append(pool.submit(attempt, STEPS.format(stem=stem, options=options, extra=extra)))
+        out = []
+        for job, (mode, shown) in zip(jobs, maps):
+            a = job.result()
+            given = a.get('answer')
+            if mode == 'mcq':     # a letter is put back as the writer's letter, and the option's text, so the grader reads it plainly
+                letter = (shown or {}).get(str(given or '').strip().strip('()')[:1])
+                a['choice'], a['right'] = letter, letter == q['key']
+                given = f"{letter}: {fill(q['options'][letter]['text'], q['params'])}" if letter else given
+            else:
+                v = judge_open(given, q, r['numbers'])
+                a['value'], a['right'] = v, v is not None and near(v, r['numbers']['params']['correct'])
+            grade = {'verdict': 'no_working'}
+            if a.get('steps'):
+                try:
+                    grade = parse(ledger.ask('grade', SOLVER, system='You mark physics examination scripts, strictly and fairly.', prompt=GRADE.format(
+                        stem=stem, options=all_options, key=q['key'], unwrap=fill(q['unwrap'], q['params']), decoy=fill(q['decoy'], q['params']), mistakes=json.dumps(q['mistakes'], ensure_ascii=False),
+                        concepts=', '.join(c['name'] for c in q['concepts']), steps=json.dumps(a['steps'], ensure_ascii=False)[:12000], answer=given), images=images, max_tokens=12000), 'verdict')
+                except ValueError:
+                    grade = {'verdict': 'ungraded'}
+            out.append({'mode': mode, **a, 'grade': grade})
+        r[key] = {'attempts': out, 'cost': ledger.total()}
+        r['calls'] += ledger.calls
+        f.write_text(json.dumps(r, ensure_ascii=False, indent=1))
+        print(f"q{r['n']:02d} done ${ledger.total():.3f}", flush=True)     # results stay in the file: the user's difficulty scores are still to come
+    print('steps-finished', flush=True)
+
+
 def finish(done, result, ledger):
     result['calls'], result['cost'] = ledger.calls, ledger.total()
     done.write_text(json.dumps(result, ensure_ascii=False, indent=1))
@@ -520,6 +602,8 @@ def load_concepts():
 
 
 def main(argv):
+    if argv[0] == 'steps':
+        return steps_test(OUT / argv[2], argv[1])
     if argv[0] in LOCAL:
         return local_gauge(OUT / argv[1], argv[0], *(int(x) for x in argv[2:4]))
     if argv[0] == 'gauge':
