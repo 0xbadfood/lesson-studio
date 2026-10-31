@@ -51,6 +51,11 @@ class Code(unittest.TestCase):
     def test_the_haiku_gauge_has_a_price(self):
         self.assertAlmostEqual(qcreate.cost('claude-haiku-5-5', {'input_tokens': 1_000_000, 'output_tokens': 1_000_000}), 0.6)
 
+    def test_a_right_answer_in_broken_json_is_still_read(self):
+        self.assertEqual(qcreate.salvage(r'{"working": "\\frac{a}{b} \\sin", "choice": "C"}', 'choice'), 'C')
+        self.assertEqual(qcreate.salvage(r'{"working": "\\s", "answer": 1.5e3}', 'answer'), '1.5e3')
+        self.assertIsNone(qcreate.salvage('still thinking', 'choice'))
+
     def test_cost_counts_every_token_kind(self):
         self.assertAlmostEqual(qcreate.cost('claude-opus-5-5', {'input_tokens': 1_000_000, 'output_tokens': 1_000_000}), 24.0)
         self.assertAlmostEqual(qcreate.cost('claude-sonnet-5-5', {'cache_read_input_tokens': 1_000_000}), 0.2)

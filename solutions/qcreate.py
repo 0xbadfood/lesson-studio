@@ -114,6 +114,12 @@ def parse(text, need=None):
     return found[-1]
 
 
+def salvage(text, need):
+    """The named field from JSON a stray LaTeX backslash has broken (Gemma on Q3: \\frac made a right answer unreadable)."""
+    m = list(re.finditer(rf'"{need}"\s*:\s*"((?:[^"\\]|\\.)*)"', text)) or list(re.finditer(rf'"{need}"\s*:\s*(-?[\d.]+(?:[eE][-+]?\d+)?)', text))
+    return m[-1].group(1) if m else None
+
+
 def cost(model, u):
     i, o, c = PRICES[model]
     return (u.get('input_tokens', 0) * i + u.get('cache_creation_input_tokens', 0) * i * 1.25 + u.get('cache_read_input_tokens', 0) * c + u.get('output_tokens', 0) * o) / 1e6
@@ -419,6 +425,80 @@ def gauge(run_dir):
     print('gauge-finished', flush=True)
 
 
+QWEN = {'url': 'http://10.8.0.5:8001/v1', 'model': 'Qwen3.8-27B-Q4_K_M.gguf', 'timeout': 900}
+GEMMA = {'url': 'http://10.8.0.5:8001/v1', 'model': 'gemma4-12b-it-mtp', 'timeout': 900, 'temperature': 0.7, 'workers': 4}
+E4B = {**GEMMA, 'url': 'http://10.8.0.5:8002/v1', 'model': 'gemma4-e4b'}
+LOCAL = {'qwen': QWEN, 'gemma': GEMMA, 'e4b': E4B}
+LOCAL_LIMIT = 16000     # tokens, thinking included; an attempt that reaches it is unfinished, not wrong
+
+
+def qwen_call(prompt, images, conn=QWEN):
+    """One answer from a local model. Returns (text, seconds, completion tokens)."""
+    import base64
+    import httpx
+    content = [{'type': 'image_url', 'image_url': {'url': 'data:image/png;base64,' + base64.b64encode(Path(p).read_bytes()).decode()}} for p in images]
+    t0 = time.time()
+    headers = {'Authorization': f"Bearer {os.environ['VLLM_API_KEY']}"} if os.environ.get('VLLM_API_KEY') else {}
+    r = httpx.post(conn['url'] + '/chat/completions', headers=headers, timeout=conn['timeout'], json={
+        'model': conn['model'], 'max_tokens': LOCAL_LIMIT, **({'temperature': conn['temperature']} if 'temperature' in conn else {}), 'messages': [
+            {'role': 'system', 'content': 'You are an expert physics student sitting JEE Advanced.'},
+            {'role': 'user', 'content': content + [{'type': 'text', 'text': prompt}]}]})
+    r.raise_for_status()
+    body = r.json()
+    return body['choices'][0]['message'].get('content') or '', round(time.time() - t0, 1), (body.get('usage') or {}).get('completion_tokens')
+
+
+def local_gauge(run_dir, name, first=1, last=99):
+    """A local model tries each accepted question the blind way, as a gauge that Claude models were too strong to be (user, 2026-10-31)."""
+    from concurrent.futures import ThreadPoolExecutor
+    conn = LOCAL[name]
+    pool = ThreadPoolExecutor(conn.get('workers', 1))
+    for f in sorted(run_dir.glob('q*/question.json')):
+        r = json.loads(f.read_text())
+        if not first <= r['n'] <= last or not str(r.get('status')).startswith(('accepted', 'solved')) or name in r:
+            continue
+        q = r['question']
+        images = [f.parent / 'figure.png'] if q.get('figure_needed') else []
+        stem = fill(q['stem'], q['params'])
+        names = ', using these names for any symbols: ' + ', '.join(sorted(q['params']))
+        rng = random.Random(r['n'] + 2000)
+
+        def ask(prompt, need):
+            try:
+                text, seconds, tokens = qwen_call(prompt, images, conn)
+            except Exception as exc:     # a busy or slow server costs this attempt, not the run
+                return {}, {'error': f'{type(exc).__name__}: {exc}'[:200]}
+            info = {'seconds': seconds, 'tokens': tokens, 'unfinished': (tokens or 0) >= LOCAL_LIMIT}
+            try:
+                return parse(text, need), info
+            except ValueError:
+                found = salvage(text, need)
+                return ({need: found}, info) if found else ({}, {**info, 'unread': text[-400:]})
+        t0 = time.time()
+        open_jobs = [pool.submit(ask, OPEN_SOLVE.format(stem=stem, names=names), 'answer') for _ in range(OPEN_TRIES)]
+        maps, mcq_jobs = [], []
+        for _ in range(MCQ_TRIES):
+            letters = list('ABCD')
+            rng.shuffle(letters)
+            shown = dict(zip('ABCD', letters))
+            text = '\n'.join(f"({p}) {fill(q['options'][w]['text'], q['params'])}" for p, w in shown.items())
+            maps.append(shown)
+            mcq_jobs.append(pool.submit(ask, MCQ_SOLVE.format(stem=stem, options=text), 'choice'))
+        opens, mcqs = [], []
+        for job in open_jobs:
+            a, info = job.result()
+            v = judge_open(a.get('answer'), q, r['numbers'])
+            opens.append({'answer': a.get('answer'), 'value': v, 'right': v is not None and near(v, r['numbers']['params']['correct']), **info})
+        for job, shown in zip(mcq_jobs, maps):
+            a, info = job.result()
+            chosen = shown.get(str(a.get('choice', '')).strip()[:1])
+            mcqs.append({'choice': chosen, 'right': chosen == q['key'], **info})
+        r[name] = {'open': opens, 'mcq': mcqs, 'open_right': sum(o['right'] for o in opens), 'mcq_right': sum(m['right'] for m in mcqs)}
+        f.write_text(json.dumps(r, ensure_ascii=False, indent=1))
+        print(f"q{r['n']:02d} {name} open {r[name]['open_right']}/{OPEN_TRIES} {[o['value'] for o in opens]} key {r['numbers']['params']['correct']:.6g} mcq {r[name]['mcq_right']}/{MCQ_TRIES} picks {[m['choice'] for m in mcqs]} key {q['key']} tokens {[x.get('tokens') for x in opens + mcqs]} {time.time() - t0:.0f}s", flush=True)
+    print(f'{name}-finished', flush=True)
+
+
 def finish(done, result, ledger):
     result['calls'], result['cost'] = ledger.calls, ledger.total()
     done.write_text(json.dumps(result, ensure_ascii=False, indent=1))
@@ -440,6 +520,8 @@ def load_concepts():
 
 
 def main(argv):
+    if argv[0] in LOCAL:
+        return local_gauge(OUT / argv[1], argv[0], *(int(x) for x in argv[2:4]))
     if argv[0] == 'gauge':
         return gauge(OUT / argv[1])
     run = argv[0]

@@ -53,13 +53,13 @@ class Review:
             if not q.get('options'):
                 out.append({'id': f'{run}/{f.parent.name}', 'q': f.parent.name, 'status': r.get('status'), 'cost': r.get('cost'), 'errors': r.get('errors'), 'broken': True})
                 continue
-            p, h = q.get('params') or {}, r.get('haiku') or {}
+            p, h, w, g, e = q.get('params') or {}, r.get('haiku') or {}, r.get('qwen') or {}, r.get('gemma') or {}, r.get('e4b') or {}
             qid = f'{run}/{f.parent.name}'
             out.append({'id': qid, 'q': f.parent.name, 'status': r.get('status'), 'cost': r.get('cost'), 'rounds': r.get('rounds'),
                         'stem': fill(q['stem'], p), 'options': {k: fill(v['text'], p) for k, v in q['options'].items()}, 'key': q['key'],
                         'unwrap': fill(q.get('unwrap'), p), 'decoy': fill(q.get('decoy'), p), 'mistakes': {k: fill(v, p) for k, v in (q.get('mistakes') or {}).items()},
                         'concepts': q.get('concepts') or [], 'figure': (f.parent / 'figure.png').is_file(), 'figure_flag': bool(r.get('figure_flag')),
                         'defects': (r.get('figure_read') or {}).get('defects') or [], 'solves': {
-                            'sonnet': {'open': r.get('open_right'), 'mcq': r.get('mcq_right')}, 'haiku': {'open': h.get('open_right'), 'mcq': h.get('mcq_right')}, 'fable': r.get('fable')},
+                            'sonnet': {'open': r.get('open_right'), 'mcq': r.get('mcq_right')}, 'haiku': {'open': h.get('open_right'), 'mcq': h.get('mcq_right')}, 'qwen': {'open': w.get('open_right'), 'mcq': w.get('mcq_right')}, 'gemma': {'open': g.get('open_right'), 'mcq': g.get('mcq_right')}, 'e4b': {'open': e.get('open_right'), 'mcq': e.get('mcq_right')}, 'fable': r.get('fable')},
                         'tries': {'open': len(r.get('open') or []), 'mcq': len(r.get('mcq') or [])}, 'flag': flags.get(qid)})
         return out

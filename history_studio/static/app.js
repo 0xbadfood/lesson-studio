@@ -544,7 +544,7 @@ function createdCard(q, run) {
       <p><b>The decoy.</b> ${esc(q.decoy)}</p>
       <p><b>The wrong options.</b></p><ul>${mistakes}</ul>
       <p><b>Concepts.</b></p><ul>${q.concepts.map((c) => `<li>${esc(c.name)}: ${esc(c.where_needed)}</li>`).join('')}</ul>
-      <p class="sub">Sonnet: ${score(q.solves.sonnet, q.tries) || 'not run'}. Haiku: ${score(q.solves.haiku, { open: 3, mcq: 3 }) || 'not run'}.${q.solves.fable ? ` Fable: ${esc(q.solves.fable.outcome)}.` : ''}</p>
+      <p class="sub">Sonnet: ${score(q.solves.sonnet, q.tries) || 'not run'}. Haiku: ${score(q.solves.haiku, { open: 3, mcq: 3 }) || 'not run'}. Qwen: ${score(q.solves.qwen, { open: 3, mcq: 3 }) || 'not run'}. Gemma: ${score(q.solves.gemma, { open: 3, mcq: 3 }) || 'not run'}. Gemma E4B: ${score(q.solves.e4b, { open: 3, mcq: 3 }) || 'not run'}.${q.solves.fable ? ` Fable: ${esc(q.solves.fable.outcome)}.` : ''}</p>
       ${q.figure_flag ? `<p class="sub">The figure check raised: ${esc(q.defects.map((d) => (typeof d === 'string' ? d : Object.values(d).join(' '))).join(' · '))}</p>` : ''}
     </details>
     <div class="created-flag">
