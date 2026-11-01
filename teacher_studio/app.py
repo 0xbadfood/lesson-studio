@@ -47,8 +47,9 @@ def film_list(root=BUNDLES):
     return films
 
 
-def job_id(film, voice_sha, template, logo_sha):
-    return f"{film}-{hashlib.sha256(f'{voice_sha}{template}{logo_sha}'.encode()).hexdigest()[:12]}"
+def job_id(film, voice_sha, template, logo_sha, engine='luxtts'):
+    voice = voice_sha if engine == 'luxtts' else f'{voice_sha}{engine}'     # a film per engine, for comparing them
+    return f"{film}-{hashlib.sha256(f'{voice}{template}{logo_sha}'.encode()).hexdigest()[:12]}"
 
 
 def progress_of(log):
@@ -158,11 +159,12 @@ class Studio:
             raise HTTPException(400, 'Please record your voice in Settings first.')
         if film not in {f['id'] for f in film_list()}:
             raise HTTPException(404, 'No such film.')
-        ident = job_id(film, voice['voice_sha256'], settings['template'], settings.get('logo_sha', ''))
+        engine = settings.get('engine', 'luxtts')
+        ident = job_id(film, voice['voice_sha256'], settings['template'], settings.get('logo_sha', ''), engine)
         with self.lock:
             job = self.jobs.get(ident)
             if not job or job['state'] == 'failed':
-                self.jobs[ident] = {'id': ident, 'film': film, 'template': settings['template'], 'logo': settings.get('logo_sha', ''), 'voice_sha': voice['voice_sha256'], 'name': voice['name'],
+                self.jobs[ident] = {'id': ident, 'film': film, 'template': settings['template'], 'logo': settings.get('logo_sha', ''), 'voice_sha': voice['voice_sha256'], 'name': voice['name'], 'engine': engine,
                                     'state': 'queued', 'queued': time.time()}
                 self.save_jobs()
         self.wake.set()
@@ -184,7 +186,7 @@ class Studio:
         voice = self.voice()
         if not voice or voice['voice_sha256'] != job['voice_sha']:
             return {'state': 'failed', 'error': 'The voice changed while this film was waiting. Please start it again.'}
-        command = [PYTHON, '-m', 'infofilm.rendition', 'render', str(BUNDLES / job['film']), str(out), '--voice', str(self.root / 'voice'), '--template', job['template'], '--name', job['name']]
+        command = [PYTHON, '-m', 'infofilm.rendition', 'render', str(BUNDLES / job['film']), str(out), '--voice', str(self.root / 'voice'), '--template', job['template'], '--name', job['name'], '--engine', job.get('engine', 'luxtts')]
         if job.get('logo') and (self.root / 'logo.png').exists():
             command += ['--logo', str(self.root / 'logo.png')]
         with (out / 'log.txt').open('a') as log:
@@ -217,7 +219,7 @@ class Studio:
 
     def state(self):
         voice, settings = self.voice(), self.settings()
-        current = job_id('', voice['voice_sha256'] if voice else '', settings['template'], settings.get('logo_sha', ''))[1:]
+        current = job_id('', voice['voice_sha256'] if voice else '', settings['template'], settings.get('logo_sha', ''), settings.get('engine', 'luxtts'))[1:]
         films = []
         for film in film_list():
             ident = film['id'] + '-' + current
@@ -275,6 +277,15 @@ def build_app(studio):
         if chosen not in rendition.TEMPLATES:
             raise HTTPException(400, 'No such background.')
         studio.save_settings(template=chosen)
+        return {'ok': True}
+
+    @app.post('/api/engine')
+    async def engine(request: Request):
+        need(request)
+        chosen = (await request.json()).get('engine')
+        if chosen not in rendition.ENGINES:
+            raise HTTPException(400, 'No such voice engine.')
+        studio.save_settings(engine=chosen)
         return {'ok': True}
 
     @app.post('/api/logo')

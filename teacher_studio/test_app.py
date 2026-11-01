@@ -72,6 +72,10 @@ class StudioTests(unittest.TestCase):
         log.write_text('[rendition] voice: {}\n[rendition] succeeded: {"point_clips": 53}\n[rendition-alignment] running: {}\n')
         self.assertEqual(app.progress_of(log), 'Timing the words')
 
+    def test_each_engine_has_its_own_film_and_lux_films_keep_their_names(self):
+        self.assertEqual(app.job_id('C1', 'v', 't', 'l'), app.job_id('C1', 'v', 't', 'l', 'luxtts'))
+        self.assertNotEqual(app.job_id('C1', 'v', 't', 'l'), app.job_id('C1', 'v', 't', 'l', 'vibevoice'))
+
     def test_sessions_are_signed(self):
         good = mock.Mock(cookies={app.COOKIE: self.studio.token()})
         self.assertTrue(self.studio.signed_in(good))
