@@ -198,7 +198,7 @@ class Studio:
                 return {'state': 'done', 'video': value['video'], 'seconds': value['seconds']}
             return {'state': 'failed', 'error': 'The finished film did not pass its final check.'}
         text = (out / 'log.txt').read_text(errors='replace')
-        return {'state': 'failed', 'error': ('Some narration in this voice did not come out clearly. Please try recording your voice again.'
+        return {'state': 'failed', 'error': ('Some narration did not pass its final check. We have kept the details: please press Try again, and tell us if it happens again.'
                                              if 'did not pass its audit' in text or 'Narration' in text[-1500:] else 'This film could not be made. We have kept the details.')}
 
     def worker(self):
