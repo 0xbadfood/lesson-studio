@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teacher Studio</title>
+<style>
+:root{--bg:#f6f4ee;--card:#fff;--ink:#1d2a2e;--muted:#5d6e72;--line:#ddd8ca;--brand:#0b4a54;--brand-ink:#fff;--bad:#a8321e;--badbg:#fbeee9;--good:#1f7a3a;--goodbg:#e9f6ec}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1b1f;--card:#14272c;--ink:#eef2f0;--muted:#9fb3b6;--line:#2b444a;--brand:#f3b85e;--brand-ink:#1b1a12;--bad:#ff9d8c;--badbg:#3a1f1a;--good:#8fd8a0;--goodbg:#17352a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:20px 16px 0;max-width:860px;margin:auto}h1{font-size:22px;margin:0}header p{margin:2px 0 14px;color:var(--muted)}
+nav{display:flex;gap:4px;border-bottom:1px solid var(--line)}nav button{background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 14px;font:inherit;font-weight:600;cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-color:var(--brand)}
+main{max-width:860px;margin:auto;padding:16px}section.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+h2{font-size:17px;margin:0 0 8px}.muted{color:var(--muted);font-size:14px}
+button.main,button.alt{font:inherit;font-weight:600;border-radius:8px;padding:9px 16px;cursor:pointer;border:1px solid var(--brand);min-height:42px}
+button.main{background:var(--brand);color:var(--brand-ink)}button.alt{background:none;color:var(--ink);border-color:var(--line)}button:disabled{opacity:.5;cursor:not-allowed}
+.passage{font-size:19px;line-height:1.6;background:var(--bg);border-radius:8px;padding:14px 16px;margin:10px 0}
+label.tick{display:flex;gap:10px;align-items:flex-start;margin:12px 0}label.tick input{width:20px;height:20px;margin-top:3px;flex:none}
+input[type=text],input[type=password]{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:8px;width:100%;max-width:340px;background:var(--bg);color:var(--ink)}
+.meter{height:10px;background:var(--line);border-radius:5px;overflow:hidden;margin:10px 0}.meter div{height:100%;width:0;background:var(--brand)}
+.msg{border-radius:8px;padding:10px 14px;margin:10px 0}.msg.bad{background:var(--badbg);color:var(--bad)}.msg.good{background:var(--goodbg);color:var(--good)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.looks{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:10px 0}
+.look{border:2px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;font:inherit;font-weight:600;text-align:left;min-height:70px}.look[aria-pressed=true]{outline:3px solid var(--brand);outline-offset:2px}
+.frame{position:relative;border-radius:8px;overflow:hidden;margin-top:10px;background:#000}.frame img.pic{width:100%;display:block}.frame img.logo{position:absolute;right:1.6%;bottom:2.4%;width:5%;height:auto}
+.film{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)}.film:first-of-type{border-top:0}.film b{display:block}
+video{width:100%;border-radius:8px;margin-top:8px;background:#000}.hide{display:none}audio{width:100%;max-width:420px}
+</style></head><body>
+<div id="login" class="hide"><main><section class="card"><h1>Teacher Studio</h1><p class="muted">Enter the access code you were given.</p>
+<form id="loginform" class="row"><input type="password" id="code" aria-label="Access code" autocomplete="current-password"><button class="main">Sign in</button></form><div id="loginmsg"></div></section></main></div>
+<div id="app" class="hide">
+<header><h1>Teacher Studio</h1><p id="chapter"></p><nav role="tablist">
+<button role="tab" data-tab="films" aria-selected="true">Films</button><button role="tab" data-tab="settings" aria-selected="false">Settings</button></nav></header>
+<main>
+<div id="tab-films"><div id="needvoice" class="msg bad hide">Record your voice in Settings before making a film.</div><section class="card"><h2>Your films</h2><p class="muted">Each film is narrated in your voice, with your background and logo. A film takes roughly its own length to make, and they are made one at a time.</p><div id="films"></div><div id="player"></div></section></div>
+<div id="tab-settings" class="hide">
+<section class="card"><h2>Your voice</h2><div id="voicenow"></div>
+<label for="name" class="muted">Your name, as the film will show it</label><br><input type="text" id="name" autocomplete="name">
+<label class="tick"><input type="checkbox" id="consent"><span id="consenttext"></span></label>
+<p class="muted">Find a quiet room, press Record, read this aloud at your normal teaching pace, then press Stop.</p>
+<div class="passage" id="passage"></div>
+<div class="meter" aria-hidden="true"><div id="level"></div></div>
+<div class="row"><button class="main" id="record" disabled>Record</button><span id="timer" class="muted"></span></div><div id="voicemsg" role="status"></div></section>
+<section class="card"><h2>Background</h2><p class="muted">Pictures from the lesson stay as they are. The background changes behind the diagrams and animations.</p><div class="looks" id="looks"></div><div id="preview"></div></section>
+<section class="card"><h2>School logo <span class="muted">(optional)</span></h2><p class="muted">Shown small in the bottom corner. PNG or JPG, under 2 MB.</p><div class="row"><input type="file" id="logo" accept="image/png,image/jpeg" aria-label="Choose a logo"><button class="alt hide" id="nologo">Remove logo</button></div><div id="logomsg" role="status"></div></section>
+</div></main></div>
+<script>
+const $=id=>document.getElementById(id);let S=null,poll=null,logoStamp=Date.now();
+const api=async(p,o)=>{const r=await fetch(p,o);if(r.status===401&&p!=='/api/login'){show(false);throw new Error('sign in')}const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.detail||'Something went wrong. Please try again.');return j};
+const msg=(el,kind,text)=>{el.innerHTML='';if(text){const d=document.createElement('div');d.className='msg '+kind;d.textContent=text;el.append(d)}};
+function show(ok){$('login').classList.toggle('hide',ok);$('app').classList.toggle('hide',!ok)}
+async function load(){S=await api('/api/state');show(true);render()}
+function render(){$('chapter').textContent=S.chapter;$('passage').textContent=S.passage;$('consenttext').textContent=S.consent;
+ const v=$('voicenow');v.innerHTML='';if(S.voice){v.innerHTML='<div class="msg good"></div><audio controls preload="none" src="/api/voice.wav?'+encodeURIComponent(S.voice.when)+'"></audio><p class="muted">Recording again replaces this voice for new films.</p>';v.firstChild.textContent='Voice saved for '+S.voice.name+'.';if(!$('name').value)$('name').value=S.voice.name}
+ $('needvoice').classList.toggle('hide',!!S.voice);
+ const L=$('looks');L.innerHTML='';for(const t of S.templates){const b=document.createElement('button');b.className='look';b.textContent=t.label;b.style.background=t.background;b.style.color=t.text;b.setAttribute('aria-pressed',S.settings.template===t.id);b.onclick=async()=>{await api('/api/template',{method:'POST',body:JSON.stringify({template:t.id})});load()};L.append(b)}
+ const P=$('preview');P.innerHTML='';for(const n of S.samples.filter(n=>n.startsWith(S.settings.template+'-'))){const f=document.createElement('div');f.className='frame';f.innerHTML='<img class="pic" alt="How a scene looks with this background" src="/api/sample/'+n+'">'+(S.settings.logo?'<img class="logo" alt="" src="/api/logo?'+logoStamp+'">':'');P.append(f)}
+ $('nologo').classList.toggle('hide',!S.settings.logo);
+ films();}
+function films(){const F=$('films');F.innerHTML='';let busy=false;for(const f of S.films){const d=document.createElement('div');d.className='film';const left=document.createElement('div');const t=document.createElement('b');t.textContent=f.title;const m=document.createElement('span');m.className='muted';
+  m.textContent={none:f.minutes+' min',queued:'Waiting its turn',running:(f.progress||'Starting')+'…',done:'Ready · '+f.actual_minutes+' min',failed:f.error||'Could not be made'}[f.state];if(f.state==='failed')m.style.color='var(--bad)';left.append(t,m);d.append(left);
+  const r=document.createElement('div');r.className='row';if(f.state==='done'){const w=document.createElement('button');w.className='main';w.textContent='Watch';w.onclick=()=>{const p=$('player');p.innerHTML='<video controls autoplay src="/api/film/'+f.job+'"></video>';p.scrollIntoView({behavior:'smooth'})};const a=document.createElement('a');a.href='/api/film/'+f.job+'?download=1';a.textContent='Download';r.append(w,a)}
+  else if(f.state==='none'||f.state==='failed'){const b=document.createElement('button');b.className='alt';b.textContent=f.state==='failed'?'Try again':'Make film';b.disabled=!S.voice;b.onclick=async()=>{await api('/api/make/'+f.id,{method:'POST'});load()};r.append(b)}
+  if(f.state==='queued'||f.state==='running')busy=true;d.append(r);F.append(d)}
+ clearTimeout(poll);if(busy)poll=setTimeout(load,8000)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected',x===b));$('tab-films').classList.toggle('hide',b.dataset.tab!=='films');$('tab-settings').classList.toggle('hide',b.dataset.tab!=='settings')});
+$('loginform').onsubmit=async e=>{e.preventDefault();try{await api('/api/login',{method:'POST',body:JSON.stringify({code:$('code').value})});load()}catch(x){msg($('loginmsg'),'bad',x.message)}};
+const ready=()=>{$('record').disabled=!(rec||($('consent').checked&&$('name').value.trim()))};$('consent').onchange=ready;$('name').oninput=ready;
+let rec=null,stream=null,started=0,tick=null,raf=null;
+$('record').onclick=async()=>{if(rec){rec.stop();return}msg($('voicemsg'));
+ try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}})}catch(e){msg($('voicemsg'),'bad','We could not use your microphone. Please allow it in your browser and try again.');return}
+ const ctx=new AudioContext(),an=ctx.createAnalyser();ctx.createMediaStreamSource(stream).connect(an);const buf=new Uint8Array(an.fftSize);
+ const draw=()=>{an.getByteTimeDomainData(buf);let m=0;for(const x of buf)m=Math.max(m,Math.abs(x-128));$('level').style.width=Math.min(100,m/1.1)+'%';raf=requestAnimationFrame(draw)};draw();
+ const chunks=[];rec=new MediaRecorder(stream);rec.ondataavailable=e=>chunks.push(e.data);
+ rec.onstop=async()=>{cancelAnimationFrame(raf);clearInterval(tick);stream.getTracks().forEach(t=>t.stop());ctx.close();$('level').style.width='0';$('timer').textContent='';rec=null;$('record').textContent='Record';$('record').disabled=true;msg($('voicemsg'),'good','Checking your recording. This takes a few seconds…');
+  try{const r=await api('/api/voice?consent=1&name='+encodeURIComponent($('name').value),{method:'POST',body:new Blob(chunks)});if(r.ok){msg($('voicemsg'),'good','Your voice is ready. You can now make your films.');await load()}else msg($('voicemsg'),'bad',r.problems.join(' '))}catch(x){msg($('voicemsg'),'bad',x.message)}ready()};
+ rec.start();started=Date.now();$('record').textContent='Stop';tick=setInterval(()=>{$('timer').textContent=Math.round((Date.now()-started)/1000)+' s'},500)};
+$('logo').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{await api('/api/logo',{method:'POST',body:f});logoStamp=Date.now();msg($('logomsg'),'good','Logo added.');load()}catch(x){msg($('logomsg'),'bad',x.message)}e.target.value=''};
+$('nologo').onclick=async()=>{await api('/api/logo',{method:'DELETE'});msg($('logomsg'));load()};
+load().catch(()=>show(false));
+</script></body></html>
