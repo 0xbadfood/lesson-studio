@@ -35,7 +35,7 @@ MAX_LOGO = 2 * 1024 * 1024
 COOKIE = 'teacher_session'
 PYTHON = str(REMOTION / '.venv' / 'bin' / 'python')
 STAGES = [('rendition] voice', 'Recording the narration'), ('audio-audit', 'Checking the narration'), ('alignment', 'Timing the words'),
-          ('narration-room', 'Timing the words'), ('render] running', 'Drawing the film'), ('rendition] succeeded', 'Ready')]
+          ('narration-room', 'Timing the words'), ('render] running', 'Drawing the film')]
 
 
 def film_list(root=BUNDLES):
@@ -55,7 +55,7 @@ def progress_of(log):
     """A teacher's words for how far a film has got, from the rendition's log."""
     if not log.exists():
         return ''
-    text, found = log.read_text(errors='replace'), ''
+    text, found = log.read_text(errors='replace'), 'Starting'     # never 'ready': only a finished job, with its QA, says that
     for mark, words in STAGES:
         if mark in text:
             found = words

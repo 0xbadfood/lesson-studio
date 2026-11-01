@@ -67,6 +67,11 @@ class StudioTests(unittest.TestCase):
             (root / name / 'master.json').write_text('{"seconds": 60}')
         self.assertEqual([f['id'] for f in app.film_list(root)], ['C2', 'C10'])
 
+    def test_a_film_still_being_made_never_says_ready(self):
+        log = Path(self.tmp.name) / 'log.txt'
+        log.write_text('[rendition] voice: {}\n[rendition] succeeded: {"point_clips": 53}\n[rendition-alignment] running: {}\n')
+        self.assertEqual(app.progress_of(log), 'Timing the words')
+
     def test_sessions_are_signed(self):
         good = mock.Mock(cookies={app.COOKIE: self.studio.token()})
         self.assertTrue(self.studio.signed_in(good))
