@@ -407,7 +407,9 @@ def film_request(digest, concept, figures=False):
     for a in additions_for(digest, concept):
         urls = [x['url'] for x in a.get('sources') or [] if isinstance(x, dict) and x.get('url')]
         sources.append({'url': urls[0] if urls else f'{NCERT_PDF.format(code=code)}#note-{a["gap"].lower()}',
-                        'complete': True, 'title': f'Teacher\'s note: {a["title"]}',
+                        # 2026-11-04: titled "Teacher's note" until leph2-04 C1 narrated "a teacher's note gives";
+                        # the student hears where a point comes from, and that is beyond the book
+                        'complete': True, 'title': f'Beyond the book: {a["title"]}',
                         'raw_content': a['content'] + (('\nSources: ' + ', '.join(urls)) if urls else '')})
     subject = f'{concept["name"]} (NCERT Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], "")}, {s["title"]})'
     return {'subject': subject[:300], 'record': record, 'sources': {'results': sources}}

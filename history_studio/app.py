@@ -341,7 +341,7 @@ def progress(queue, record):
         'storyline': [{'heading': p.get('heading'), 'line': p.get('narration')} for p in script['points']] if script else None,
         'narration': f'media/{record["film"]}/narration' if audio and audio.get('audio') else None,
         'scenes': scenes, 'scenes_total': images_total, 'scenes_done': images_done, 'video': video,
-        'notes': [{'title': s['title'].replace("Teacher's note: ", ''), 'url': s['url']}
+        'notes': [{'title': re.sub(r"^(?:Teacher's note|Beyond the book): ", '', s['title']), 'url': s['url']}
                   for s in sources['results'][1:] if s['url'].startswith('http') and 'ncert.nic.in' not in s['url']],
         'source_url': book.get('url')}
 
