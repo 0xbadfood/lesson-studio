@@ -16,6 +16,9 @@ from pathlib import Path
 SUBJECTS = {'Science': 'science', 'Mathematics': 'maths', 'Physics': 'physics', 'Chemistry': 'chemistry',
             'Biology': 'biology'}
 CLASSES = ['06', '07', '08', '09', '10', '11', '12']
+# Books from other boards (ICSE Selina Class 10 Physics, 2026-11-04), in the same class_NN/Subject/<book>-<title>/
+# layout as the NCERT root, which lives in story_generator and stays untouched.
+EXTRA_ROOTS = [Path(__file__).resolve().parents[1] / 'books']
 STOP = set('''a an the and or of to in on for with by from at as is are was were be been it its this that these those
 which what when where who how why can could would should will may might do does did not no yes than then so such
 into about over under between your you we our they their them he she his her i me my us also there here very more
@@ -39,22 +42,24 @@ def catalog(root):
     chapters = json.loads(cache.read_text()) if cache.exists() else []
     known = {c['book'] for c in chapters}
     added = False
-    for cls in CLASSES:
-        for folder, subject in SUBJECTS.items():
-            base = root / f'class_{cls}' / folder
-            if not base.is_dir():
-                continue
-            for book_dir in sorted(base.iterdir()):
-                book = book_dir.name.split('-', 1)[0]
-                if book in known or not book_dir.is_dir():
+    for base_root in (root, *EXTRA_ROOTS):
+        for cls in CLASSES:
+            for folder, subject in SUBJECTS.items():
+                base = base_root / f'class_{cls}' / folder
+                if not base.is_dir():
                     continue
-                book_title = book_dir.name.split('-', 1)[1].replace('-', ' ').title() if '-' in book_dir.name else book
-                for pdf in sorted(book_dir.glob(f'{book}[0-9][0-9].pdf')):
-                    number = int(pdf.stem[-2:])
-                    chapters.append({'id': chapter_id(book, number), 'class': int(cls), 'subject': subject,
-                                     'book': book, 'book_title': book_title, 'chapter': number,
-                                     'title': chapter_title(pdf, number), 'pdf': str(pdf)})
-                    added = True
+                for book_dir in sorted(base.iterdir()):
+                    book = book_dir.name.split('-', 1)[0]
+                    if book in known or not book_dir.is_dir():
+                        continue
+                    book_title = (book_dir.name.split('-', 1)[1].replace('-', ' ').title() if '-' in book_dir.name
+                                  else book)
+                    for pdf in sorted(book_dir.glob(f'{book}[0-9][0-9].pdf')):
+                        number = int(pdf.stem[-2:])
+                        chapters.append({'id': chapter_id(book, number), 'class': int(cls), 'subject': subject,
+                                         'book': book, 'book_title': book_title, 'chapter': number,
+                                         'title': chapter_title(pdf, number), 'pdf': str(pdf)})
+                        added = True
     if added:
         number_parts(chapters)
     if added or not cache.exists():
