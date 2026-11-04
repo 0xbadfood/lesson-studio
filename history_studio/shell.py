@@ -6,6 +6,7 @@ their own subdomains. Each studio keeps its own access code for now; the subdoma
 """
 import argparse
 import html
+import re
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -73,6 +74,14 @@ def build():
     @app.get('/static/app.css')
     def css():
         return FileResponse(HERE / 'static' / 'app.css', headers={'Cache-Control': 'no-cache'})
+
+    @app.get('/notes/{name}')
+    def note(name: str):
+        # Working notes for quick reading (unlisted): one static page each in notes/.
+        path = HERE / 'notes' / f'{name}.html'
+        if not re.fullmatch(r'[a-z0-9-]+', name) or not path.is_file():
+            raise HTTPException(404)
+        return FileResponse(path, headers={'Cache-Control': 'no-cache'})
 
     @app.get('/healthz')
     def healthz():

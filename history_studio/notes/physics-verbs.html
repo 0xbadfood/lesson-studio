@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Physics Verbs Needed</title>
+  <meta name="description" content="Linkwork verbs and extensions physics films still need, from NCERT film gaps and the ICSE Class 10 syllabus.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/app.css">
+  <style>
+    .note { max-width: 980px; margin: 0 auto; padding: 36px 16px 48px; }
+    .note h1 { font-size: clamp(28px, 5.5vw, 42px); margin-bottom: 6px; }
+    .note .asof { color: var(--muted); font-size: 14px; margin: 0 0 22px; }
+    .note h2 { font-size: 24px; margin: 38px 0 10px; }
+    .note p { margin: 0 0 12px; max-width: 72ch; }
+    .note ul, .note ol { margin: 0 0 14px; padding-left: 22px; max-width: 72ch; }
+    .note li { margin: 3px 0; }
+    .stats { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin: 6px 0 18px; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); }
+    .stat b { display: block; font: 650 30px var(--serif); color: var(--accent); }
+    .stat small { color: var(--muted); font-size: 14px; }
+    .wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); margin: 8px 0 14px; }
+    table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+    th { font-weight: 600; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    td.n { color: var(--accent); font-weight: 600; }
+    code, .verb { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; }
+    .verb { background: var(--accent-soft); padding: 1px 6px; border-radius: 6px; white-space: nowrap; }
+    .ok { color: var(--ok); }
+    .gap { color: var(--wait); }
+    .beats { color: var(--muted); font-size: 13.5px; white-space: nowrap; }
+  </style>
+</head>
+<body>
+<main class="note">
+  <h1>Physics verbs still needed</h1>
+  <p class="asof">As of 4 November 2026 · a copy of the working doc, for quick reading</p>
+
+  <div class="stats">
+    <div class="stat"><b>3</b><small>new verbs for NCERT beats</small></div>
+    <div class="stat"><b>24</b><small>extensions to existing verbs</small></div>
+    <div class="stat"><b>3 + 3</b><small>ICSE new verbs + extensions</small></div>
+    <div class="stat"><b>43</b><small>beats that found no verb</small></div>
+  </div>
+
+  <h2>Purpose</h2>
+  <p>So that no beat falls back to a blank backdrop, physics films need these verbs and extensions. We take them up one verb at a time, alongside other work.</p>
+  <p>The list comes from three places:</p>
+  <ul>
+    <li>The 43 beats where the planner wrote "none fits" while refilling blank scenes in published films.</li>
+    <li>Reading the contact sheets for every Class 10–12 physics film.</li>
+    <li>The ICSE Selina Class 10 physics book, checked against the CISCE syllabus topics.</li>
+  </ul>
+
+  <h2>Verbs we have today</h2>
+  <p>Linkwork registers 75 verbs. Eleven are trusted; the rest are on trial, used by the films and studios. Every Class 10–12 physics chapter has at least one verb. The table leaves out the maths and mechanism verbs.</p>
+  <div class="wrap"><table>
+    <tr><th>Area</th><th>Verbs</th></tr>
+    <tr><td>Mechanics</td><td>forces, work, energy, energy_ladder, centre_of_mass, moments, rotation, orbit, gravity_law, stage, motion_on_line, plane_motion, vector_add, pendulum, shm</td></tr>
+    <tr><td>Matter and heat</td><td>elastic, fluid_pressure, fluid_flow, surface_tension, temperature, thermal_expansion, heat_exchange, heat_transfer, gas_process, heat_engine, kinetic_gas</td></tr>
+    <tr><td>Waves and optics</td><td>wave, ray_diagram, refraction, prism, eye, atmosphere, scattering, tir, refracting_surface, prism_deviation, optical_instrument, huygens, interference, diffraction, polaroid, em_waves</td></tr>
+    <tr><td>Electricity and magnetism</td><td>electric, potential, capacitor, circuit, current, magnetic_field, magnetic_force, moving_charges, magnetic_matter, induction, ac, domestic_circuit, energy_use</td></tr>
+    <tr><td>Modern physics</td><td>photoelectric, matter_wave, rutherford, bohr, nucleus, semiconductor</td></tr>
+    <tr><td>Measurement and tools</td><td>dimensions, sig_figs, angle_measure, scale_compare, path_length, graph</td></tr>
+  </table></div>
+
+  <h2>New verbs</h2>
+  <p>NCERT beats need three new verbs. The ICSE syllabus adds three more: pulleys, sound and electromagnetic devices. The first column is the suggested build order.</p>
+  <div class="wrap"><table>
+    <tr><th>#</th><th>Verb</th><th>Book and chapter</th><th>What it draws</th><th>Asked for by</th></tr>
+    <tr><td class="n">1</td><td><span class="verb">kirchhoff</span></td><td>NCERT 12, Ch 3 Current Electricity</td><td>Multi-loop networks: nodes, branch currents from the junction and loop rules, voltage drops around a loop, the Wheatstone bridge with a branch at zero</td><td class="beats">leph1-03 C9 S02, S24, S31, S32</td></tr>
+    <tr><td class="n">2</td><td><span class="verb">pulley</span></td><td>ICSE 10, Ch 3 Machines</td><td>Single fixed and movable pulleys, block and tackle; load, effort, MA, VR and efficiency computed, with friction and the pulleys' own weight</td><td class="beats">ICSE syllabus</td></tr>
+    <tr><td class="n">3</td><td><span class="verb">sound</span></td><td>ICSE 10, Ch 7 Sound</td><td>Echo and its minimum distance (17 m), sonar depth; natural, damped and forced vibration, resonance; loudness, pitch and quality read from waveforms</td><td class="beats">ICSE syllabus</td></tr>
+    <tr><td class="n">4</td><td><span class="verb">em_device</span></td><td>ICSE 10, Ch 10 Electro-magnetism</td><td>Electromagnet, electric bell, DC motor with split rings, AC generator with slip rings, each turning on its own driver</td><td class="beats">ICSE syllabus</td></tr>
+    <tr><td class="n">5</td><td><span class="verb">vertical_circle</span></td><td>NCERT 11, Ch 5 Work, Energy and Power</td><td>A bob on a string in a vertical circle: tension and speed at top and bottom, the least speed at the top (√(gr)), and the string going slack below it</td><td class="beats">keph1-05 C8 S22</td></tr>
+    <tr><td class="n">6</td><td><span class="verb">collision_2d</span></td><td>NCERT 11, Ch 5 Work, Energy and Power</td><td>Two balls meeting off-centre and leaving at angles; momentum conserved along both axes; elastic or not</td><td class="beats">keph1-05 C13 S13</td></tr>
+  </table></div>
+  <p>Film ids follow the rationalised NCERT books. For example, keph1-05 C8 is the eighth concept film of Class 11 Part 1, Chapter 5.</p>
+
+  <h2>Extensions to existing verbs</h2>
+  <p>Most gaps are a missing show or option on a verb we already have. Each one is smaller than a new verb, and it lands as a new show with its own test.</p>
+  <div class="wrap"><table>
+    <tr><th>Verb</th><th>Add</th><th>Chapter</th><th>Beats</th></tr>
+    <tr><td><span class="verb">current</span></td><td>Two identical slabs joined end to end act as resistors in series</td><td>NCERT 12 Ch 3</td><td class="beats">leph1-03 C2 S07</td></tr>
+    <tr><td><span class="verb">current</span></td><td>Many electrons leave collisions in random directions, so their velocities average to zero, plus the drift</td><td>NCERT 12 Ch 3</td><td class="beats">leph1-03 C2 S26</td></tr>
+    <tr><td><span class="verb">current</span></td><td>Charges crossing a section, with a counter: Q = I t, 1 C = 1 A s</td><td>NCERT 12 Ch 4</td><td class="beats">leph1-04 C8 S32, S38</td></tr>
+    <tr><td><span class="verb">electric</span></td><td>Charge shared between identical spheres: q, q/2, q/4</td><td>NCERT 12 Ch 1</td><td class="beats">leph1-01 C2 S07</td></tr>
+    <tr><td><span class="verb">electric</span></td><td>Flux through equal area elements at two distances: fewer lines cut further out</td><td>NCERT 12 Ch 1</td><td class="beats">leph1-01 C5 S13</td></tr>
+    <tr><td><span class="verb">potential</span></td><td>A conductor whose volume and surface are at one potential</td><td>NCERT 12 Ch 2</td><td class="beats">leph1-02 C9 S17</td></tr>
+    <tr><td><span class="verb">potential</span></td><td>A test charge moved between two close equipotentials, giving E = −ΔV/Δr</td><td>NCERT 12 Ch 2</td><td class="beats">leph1-02 C6 S04</td></tr>
+    <tr><td><span class="verb">magnetic_field</span></td><td>The fields of neighbouring solenoid turns adding inside and cancelling between turns</td><td>NCERT 12 Ch 4</td><td class="beats">leph1-04 C7 S07</td></tr>
+    <tr><td><span class="verb">magnetic_matter</span></td><td>B, H and M as three separate named vectors, with no implied sum</td><td>NCERT 12 Ch 5</td><td class="beats">leph1-05 C5 S06</td></tr>
+    <tr><td><span class="verb">em_waves</span></td><td>Source rings timed to the narration, and the Hertz receiver sparking in step</td><td>NCERT 12 Ch 8</td><td class="beats">leph1-08 C2 S12, S16</td></tr>
+    <tr><td><span class="verb">diffraction</span></td><td>A single aperture compared with the wavelength, and the Fresnel distance a²/λ where rays still hold</td><td>NCERT 12 Ch 9</td><td class="beats">leph2-01 C1 S07, S09, S11</td></tr>
+    <tr><td><span class="verb">optical_instrument</span></td><td>Two lenses chained, the first image becoming the second object, with the product of magnifications</td><td>NCERT 12 Ch 9</td><td class="beats">leph2-01 C6 S26</td></tr>
+    <tr><td><span class="verb">tir</span></td><td>A fibre bent too tightly, with light leaking at the bend</td><td>NCERT 12 Ch 9</td><td class="beats">leph2-01 C4 S27</td></tr>
+    <tr><td><span class="verb">polaroid</span></td><td>Unpolarised light as a plane of vibration that changes at random, and one polaroid turned alone</td><td>NCERT 12 Ch 10</td><td class="beats">leph2-02 C7 S11, S16</td></tr>
+    <tr><td><span class="verb">forces</span></td><td>Connected bodies on a rope, with the tension at points along it</td><td>NCERT 11 Ch 4</td><td class="beats">keph1-04 C4 S24</td></tr>
+    <tr><td><span class="verb">work</span></td><td>A body lifted against gravity or pushed up an incline, giving W = mgh</td><td>NCERT 11 Ch 5</td><td class="beats">keph1-05 C10 S02</td></tr>
+    <tr><td><span class="verb">stage</span></td><td>Launches below the horizontal, from −89° to 89°</td><td>NCERT 11 Ch 5</td><td class="beats">keph1-05 C11 S05</td></tr>
+    <tr><td><span class="verb">centre_of_mass</span></td><td>Finding the centre of gravity by hanging a body from two points</td><td>NCERT 11 Ch 6</td><td class="beats">keph1-06 C9 S26</td></tr>
+    <tr><td><span class="verb">dimensions</span></td><td>More quantities, starting with moment of inertia (M L²)</td><td>NCERT 11 Ch 6</td><td class="beats">keph1-06 C10 S12</td></tr>
+    <tr><td><span class="verb">rotation</span></td><td>Uniform angular acceleration: ω = ω₀ + αt, rpm rising over time</td><td>NCERT 11 Ch 6</td><td class="beats">keph1-06 C11 S27</td></tr>
+    <tr><td><span class="verb">elastic</span></td><td>A force–extension graph drawn as the wire stretches</td><td>NCERT 11 Ch 8</td><td class="beats">keph2-01 C9 S08</td></tr>
+    <tr><td><span class="verb">gas_process</span></td><td>Quasi-static piston steps against a sudden expansion with no defined states</td><td>NCERT 11 Ch 11</td><td class="beats">keph2-04 C8 S10, S16</td></tr>
+    <tr><td><span class="verb">heat_engine</span></td><td>A single-reservoir engine, drawn crossed out (Kelvin–Planck)</td><td>NCERT 11 Ch 11</td><td class="beats">keph2-04 C13 S04, C15 S36</td></tr>
+    <tr><td><span class="verb">kinetic_gas</span></td><td>Partial pressures in a mixture (Dalton), e.g. oxygen in humid air</td><td>NCERT 11 Ch 12</td><td class="beats">keph2-05 C4 S26</td></tr>
+    <tr><td><span class="verb">domestic_circuit</span></td><td>Dual-control (staircase) switch, ring main, MCB</td><td>ICSE 10 Ch 9</td><td class="beats">ICSE syllabus</td></tr>
+    <tr><td><span class="verb">moments</span></td><td>Name the lever class (I, II, III) from where the pivot, load and effort sit</td><td>ICSE 10 Ch 3</td><td class="beats">ICSE syllabus</td></tr>
+    <tr><td><span class="verb">wave</span></td><td>Waveforms side by side for loudness (amplitude), pitch (frequency) and quality (shape); can share code with sound</td><td>ICSE 10 Ch 7</td><td class="beats">ICSE syllabus</td></tr>
+  </table></div>
+  <p><b>Fix in the planner, not Linkwork.</b> Four beats had a fitting verb that wasn't offered:</p>
+  <ul>
+    <li><span class="verb">electric</span> for leph1-01 C3 S03</li>
+    <li><span class="verb">graph</span> for keph2-05 C9 S19</li>
+    <li><span class="verb">energy</span> or <span class="verb">motion_on_line</span> for keph1-05 C4 S17, which was offered only optics verbs</li>
+    <li><span class="verb">elastic</span> for keph2-01 C2 S21</li>
+  </ul>
+  <p>One beat needs no verb: leph1-04 C8 S30 (the quantum ampere standard) fits a short caption.</p>
+  <p><b>Open nits from the sheets:</b></p>
+  <ul>
+    <li><span class="verb">nucleus</span>: its "J per kilogram" label sits on a nucleus (leph2-05 C10 S11, S13).</li>
+    <li><span class="verb">semiconductor</span>: its band caption repeats under the metal panel (leph2-06 C1), and its "minority" label touches the ions.</li>
+  </ul>
+
+  <h2>ICSE Class 10 coverage</h2>
+  <p>Existing verbs cover 8 of the 12 Selina chapters. Machines, Sound, Household Circuits and Electro-magnetism need the new verbs and extensions above. Planning follows the CISCE syllabus, not Selina's text.</p>
+  <div class="wrap"><table>
+    <tr><th>Chapter</th><th>Covered by</th><th>Gap</th></tr>
+    <tr><td>1 Force</td><td>moments (moment, couple, equilibrium), centre_of_mass, plane_motion (circular motion)</td><td class="ok">none</td></tr>
+    <tr><td>2 Work, Energy and Power</td><td>work, energy, energy_ladder</td><td class="ok">none</td></tr>
+    <tr><td>3 Machines</td><td>moments (levers)</td><td class="gap">pulley (new); lever classes (moments)</td></tr>
+    <tr><td>4 Refraction at Plane Surfaces</td><td>refraction, prism, tir, prism_deviation</td><td class="ok">none</td></tr>
+    <tr><td>5 Refraction through a Lens</td><td>ray_diagram, refracting_surface, optical_instrument</td><td class="ok">none</td></tr>
+    <tr><td>6 Spectrum</td><td>prism_deviation (dispersion), em_waves (spectrum bands), scattering</td><td class="ok">none</td></tr>
+    <tr><td>7 Sound</td><td>wave (reflection, standing, beats)</td><td class="gap">sound (new): echo, damped and forced vibration, resonance; waveforms for loudness, pitch and quality</td></tr>
+    <tr><td>8 Current Electricity</td><td>current and circuit (emf, internal resistance, combinations), energy_use</td><td class="ok">none</td></tr>
+    <tr><td>9 Household Circuits</td><td>domestic_circuit (mains, fuses, earthing, faults)</td><td class="gap">dual-control switch, ring main, MCB</td></tr>
+    <tr><td>10 Electro-magnetism</td><td>magnetic_field, magnetic_force (Fleming's left-hand rule), induction (generator), ac (transformer)</td><td class="gap">em_device (new): electromagnet, bell, DC motor, AC generator</td></tr>
+    <tr><td>11 Calorimetry</td><td>heat_exchange (specific heat, mixing, latent heat)</td><td class="ok">none</td></tr>
+    <tr><td>12 Radioactivity</td><td>nucleus (decay, rays in fields, penetration, fission, fusion)</td><td class="ok">none</td></tr>
+  </table></div>
+
+  <h2>Order and acceptance</h2>
+  <p>Build kirchhoff first: it alone accounts for four blank beats in one film. Then build the three ICSE verbs, then the extensions grouped by verb file, so each file is touched once.</p>
+  <ol>
+    <li>The four planner routing fixes. They are the cheapest, and they need no Linkwork change.</li>
+    <li>kirchhoff, then pulley, sound and em_device.</li>
+    <li>Extensions with two or more waiting beats: diffraction, em_waves, current, gas_process, heat_engine, polaroid.</li>
+    <li>The single-beat extensions and the open nits.</li>
+    <li>vertical_circle and collision_2d.</li>
+  </ol>
+  <p>A verb or show is accepted when:</p>
+  <ul>
+    <li>It enters as <code>trial</code>, so films can use it but it isn't trusted yet.</li>
+    <li>Its test checks the book's own numbers: the worked example the beat quotes, computed by the verb and not typed in.</li>
+    <li>Its example renders legibly at full and half frame, which the size test enforces.</li>
+    <li>A rebeat of the beats listed here fills them with the verb, and the contact sheet reads right against the narration.</li>
+  </ul>
+  <p>This list is also the first worklist for the gated verb factory, once we plan it.</p>
+</main>
+<footer class="foot">Working note · Learn Studios</footer>
+</body>
+</html>
