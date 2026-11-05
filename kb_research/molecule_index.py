@@ -1,0 +1,193 @@
+#!/usr/bin/env python3
+"""Molecules a chapter names -> textbook-digest/<chapter>/molecules.json, the candidates for Bondwork's named index.
+
+A model reads the chapter's digest blocks and lists every specific molecule, ion and intermediate the book names,
+with the book's own name and formula spelling, the IUPAC name and an isomeric SMILES. RDKit checks each answer
+here (the SMILES parses; the structure's formula is the formula the book prints), and a wrong one goes back to the
+model with what is wrong. Bondwork's build-index checks the candidates again (its guards, and OPSIN reading the
+IUPAC name independently) before any of them enters the index.
+
+  .venv/bin/python kb_research/molecule_index.py kech2-02 kech2-03
+The model is a Lesson Studio connection (MOLECULE_MODEL overrides; default Opus on OpenRouter, as the digest's
+auditor uses). Every call is cached under the chapter's folder.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+from rdkit import Chem, RDLogger
+from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent))
+from scivid import models  # noqa: E402
+
+RDLogger.DisableLog('rdApp.*')
+OUT = HERE.parent / 'textbook-digest'
+SCIVID_DATA = HERE.parent / 'scivid-data'
+MODEL = os.environ.get('MOLECULE_MODEL') or 'claude-opus-5-5-openrouter'
+CHUNK = 30000            # characters of blocks per call: a chapter is two to four calls
+KINDS = ('molecule', 'ion', 'radical', 'intermediate', 'complex', 'ionic')
+
+SCHEMA = '''{"molecules":[{"name":str (the name the book uses, as printed: "acetic acid", "tert-butyl alcohol", "ethene"),
+"aliases":[str] (other names the book uses for it, and its common or IUPAC name if the book gives another),
+"iupac":str (the systematic IUPAC name, with stereodescriptors when the book means one stereoisomer: "(2E)-but-2-ene"),
+"formula":str (the formula as the book prints it, in ASCII: "CH3COOH", "(CH3)3C-OH", "SO4^2-", "[Co(NH3)6]^3+";
+ "" when the book prints none),
+"smiles":str (isomeric SMILES of exactly that species: charges on atoms, stereo only when the book specifies it),
+"kind":"molecule|ion|radical|intermediate|complex|ionic",
+"blocks":[str] (ids of the blocks that name it)}]}'''
+
+PROMPT = '''Below are blocks transcribed from NCERT Class {cls} {book}, Chapter {no} "{title}". List every SPECIFIC chemical
+species the blocks name or draw: molecules, ions, radicals, reaction intermediates (carbocations, carbanions, free
+radicals), complexes and ionic compounds. One entry per species; gather every block that names it.
+
+Leave out: classes and families ("alkanes", "alcohols", "haloarenes"); general formulas and R groups (RCOOH, CnH2n+2,
+R-X); polymers; mixtures and minerals with no single formula; elements named only as elements (sodium metal, chlorine
+the element is fine as Cl2 when the book writes Cl2).
+
+Write the formula exactly as the book prints it (condensed formulas as printed: CH3CH2OH, not C2H6O). Charges after
+^ (SO4^2-, NH4^+, CH3^+). When the book names stereoisomers (cis/trans, E/Z, R/S, d/l), list each as its own entry
+with the stereo in its IUPAC name and in its SMILES.
+
+Return JSON only: {schema}
+
+BLOCKS:
+{blocks}'''
+
+
+def counts(text):
+    """Element counts of a condensed formula: bracketed groups with multipliers, bond marks ignored, hydrates added."""
+    text = re.sub(r'[-=≡–—]', '', text)
+    main, *hydrates = re.split(r'[·*]', text)
+    stack = [{}]
+    for el, k1, opening, closing, k2 in re.findall(r'([A-Z][a-z]?)([0-9]*)|([(\[])|([)\]])([0-9]*)', main):
+        if opening:
+            stack.append({})
+        elif closing:
+            group = stack.pop()
+            for e, n in group.items():
+                stack[-1][e] = stack[-1].get(e, 0) + n * int(k2 or 1)
+        elif el:
+            stack[-1][el] = stack[-1].get(el, 0) + int(k1 or 1)
+    out = dict(stack[0])
+    for h in hydrates:
+        times, rest = re.match(r'([0-9]*)(.*)', h).groups()
+        for e, n in counts(rest).items():
+            out[e] = out.get(e, 0) + n * int(times or 1)
+    return out
+
+
+def book_formula(text):
+    """(element counts, charge) of a formula as the book prints it, with the charge after ^ (SO4^2-) or a bare sign."""
+    body, _, charge = text.partition('^')
+    if not charge and text.endswith(('+', '-')):
+        body, charge = text[:-1], text[-1]
+    sign = re.match(r'([0-9]*)([+-])', charge) if charge else None
+    return counts(body), (int(sign.group(1) or 1) * (1 if sign.group(2) == '+' else -1)) if sign else 0
+
+
+def structure_formula(mol):
+    m = Chem.AddHs(mol)
+    n = {}
+    for atom in m.GetAtoms():
+        n[atom.GetSymbol()] = n.get(atom.GetSymbol(), 0) + 1
+    return n, Chem.GetFormalCharge(mol)
+
+
+def errors(result, known):
+    out = []
+    for i, m in enumerate(result['molecules'], 1):
+        where = f'molecule {i} ({m.get("name", "?")})'
+        if m.get('kind') not in KINDS:
+            out.append(f'{where}: kind must be one of {", ".join(KINDS)}')
+        bad = [b for b in m.get('blocks') or [] if b not in known]
+        if bad or not m.get('blocks'):
+            out.append(f'{where}: blocks must be ids from the BLOCKS given ({", ".join(bad) or "none given"})')
+        mol = Chem.MolFromSmiles(m.get('smiles') or '')
+        if mol is None:
+            out.append(f'{where}: SMILES {m.get("smiles")!r} does not parse')
+            continue
+        if m.get('formula'):
+            want, got = book_formula(m['formula']), structure_formula(mol)
+            if want != got:
+                out.append(f'{where}: the SMILES is {CalcMolFormula(mol)} (charge {got[1]}) but the book formula '
+                           f'{m["formula"]} has {want[0]} (charge {want[1]}); fix whichever is wrong')
+    return out
+
+
+def block_lines(digest):
+    for b in digest['blocks']:
+        items = ' '.join(json.dumps(x, ensure_ascii=False) if not isinstance(x, str) else x for x in b.get('items') or [])
+        yield f'{b["id"]} [{b["type"]}] {b.get("title") or ""}: {b.get("text") or ""} {items}'.strip()
+
+
+def chunks(lines):
+    out, size = [[]], 0
+    for line in lines:
+        if size + len(line) > CHUNK and out[-1]:
+            out.append([])
+            size = 0
+        out[-1].append(line)
+        size += len(line)
+    return out
+
+
+def client(folder):
+    registry = models.Registry(SCIVID_DATA, dict)
+    connection = registry.load()['connections'][MODEL]
+    snapshot = {'steps': {'molecules': MODEL}, 'connections': {MODEL: connection}}
+    return models.client_for(snapshot, 'molecules', folder, SCIVID_DATA)
+
+
+def chapter(code):
+    folder = OUT / code
+    digest = json.loads((folder / 'digest.json').read_text())
+    s = digest['source']
+    known = {b['id'] for b in digest['blocks']}
+    pages = {b['id']: b.get('pages') or [] for b in digest['blocks']}
+    llm = client(folder)
+    found = []
+    for n, part in enumerate(chunks(list(block_lines(digest))), 1):
+        prompt = PROMPT.format(cls=s['class'], book=s.get('book_title', ''), no=s['chapter'], title=s['title'],
+                               schema=SCHEMA, blocks='\n'.join(part))
+
+        def validate(result, part_known={line.split(' ', 1)[0] for line in part}):
+            problems = errors(result, part_known)
+            if problems:
+                raise ValueError('; '.join(problems[:25]))
+            return result
+        result = llm.call(f'molecules-{n}', prompt, max_tokens=32000, validate=validate, attempts=3)
+        found += result['molecules']
+        print(f'{code} part {n}: {len(result["molecules"])} species', flush=True)
+    # one entry per structure, with every name and block the parts gave it
+    merged = {}
+    for m in found:
+        key = Chem.MolToSmiles(Chem.MolFromSmiles(m['smiles']))
+        if key in merged:
+            e = merged[key]
+            e['aliases'] = sorted({*e['aliases'], *m.get('aliases', []), m['name']} - {e['name']})
+            e['blocks'] = sorted({*e['blocks'], *m['blocks']}, key=lambda b: int(b[1:]) if b[1:].isdigit() else 0)
+            e['formula'] = e['formula'] or m.get('formula', '')
+        else:
+            merged[key] = {**m, 'aliases': sorted(set(m.get('aliases', [])) - {m['name']})}
+    molecules = [{**m, 'pages': sorted({p for b in m['blocks'] for p in pages.get(b, [])})} for m in merged.values()]
+    out = {'chapter': code, 'class': s['class'], 'title': s['title'], 'model': MODEL, 'molecules': molecules}
+    (folder / 'molecules.json').write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    print(f'{code}: {len(molecules)} species -> {folder / "molecules.json"}', flush=True)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('chapters', nargs='+')
+    for code in ap.parse_args().chapters:
+        chapter(code)
+
+
+if __name__ == '__main__':
+    main()
