@@ -65,6 +65,8 @@ WORDS_PER_MINUTE = 123                                  # measured: Salt March 1
 SHORTEST = 90                                           # a concept film runs at least 1.5 minutes; no upper cap:
                                                         # it runs as long as its coverage needs (user, 2026-10-15)
 NCERT_PDF = 'https://ncert.nic.in/textbook/pdf/{code}.pdf'
+# a book outside NCERT names its board on screen (2026-11-05: ICSE films were titled "NCERT Class 10 Physics")
+BOARD_AUDIENCE = {'ICSE': 'ICSE'}
 
 
 def _says(block):
@@ -366,7 +368,7 @@ def book_figures(digest, concept):
             continue
         out.append({'id': re.sub(r'[^A-Za-z0-9]+', '-', ref).strip('-'), 'name': ref,
                     'description': about[:400], 'file': str(EXTRAS / drawn),
-                    'credit': f'NCERT Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], s["subject"])}, {ref}'})
+                    'credit': f'{s.get("board", "NCERT")} Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], s["subject"])}, {ref}'})
     db.close()
     return out
 
@@ -382,7 +384,7 @@ def film_request(digest, concept, figures=False):
     code = Path(s['pdf']).stem
     record = {'kind': 'textbook_concept', 'chapter_id': s['id'], 'concept_id': concept['id'],
               'concept': concept['name'], 'summary': concept.get('summary', ''),
-              'audience': f'Class {s["class"]} students in India (NCERT/CBSE)',
+              'audience': f'Class {s["class"]} students in India ({BOARD_AUDIENCE.get(s.get("board"), "NCERT/CBSE")})',
               'book': f'Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], s["subject"])}: {s["book_title"]}',
               'chapter_no': s['chapter'], 'chapter': s['title'], 'coverage': coverage(digest, concept),
               'seconds': film_seconds(digest, concept)}
@@ -402,7 +404,7 @@ def film_request(digest, concept, figures=False):
                              'library': pick.candidates(about), 'animation': ANIMATION}
     pages = sorted({p for b in teaching_blocks(digest, concept) for p in b.get('pages', [])})
     sources = [{'url': NCERT_PDF.format(code=code), 'complete': True,
-                'title': f'NCERT {record["book"]}, Chapter {s["chapter"]} "{s["title"]}", pages {", ".join(map(str, pages))}',
+                'title': f'{s.get("board", "NCERT")} {record["book"]}, Chapter {s["chapter"]} "{s["title"]}", pages {", ".join(map(str, pages))}',
                 'raw_content': book_text(digest, concept)}]
     for a in additions_for(digest, concept):
         urls = [x['url'] for x in a.get('sources') or [] if isinstance(x, dict) and x.get('url')]
@@ -411,7 +413,7 @@ def film_request(digest, concept, figures=False):
                         # the student hears where a point comes from, and that is beyond the book
                         'complete': True, 'title': f'Beyond the book: {a["title"]}',
                         'raw_content': a['content'] + (('\nSources: ' + ', '.join(urls)) if urls else '')})
-    subject = f'{concept["name"]} (NCERT Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], "")}, {s["title"]})'
+    subject = f'{concept["name"]} ({s.get("board", "NCERT")} Class {s["class"]} {SUBJECT_NAMES.get(s["subject"], "")}, {s["title"]})'
     return {'subject': subject[:300], 'record': record, 'sources': {'results': sources}}
 
 

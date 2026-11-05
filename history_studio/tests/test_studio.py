@@ -89,6 +89,15 @@ class CatalogTests(unittest.TestCase):
         self.assertTrue(catalog.SHORTEST <= record['seconds'] and record['seconds'] % 15 == 0)
         self.assertFalse(catalog.filmable(DIGEST, DIGEST['concepts'][1]))
 
+    def test_a_book_outside_ncert_names_its_board(self):
+        # 2026-11-05: the ICSE prototype films were headed "NCERT Class 10 Physics"
+        icse = {**DIGEST, 'source': {**DIGEST['source'], 'board': 'ICSE'}}
+        built = catalog.film_request(icse, icse['concepts'][0])
+        self.assertIn('(ICSE Class', built['subject'])
+        self.assertIn('(ICSE)', built['record']['audience'])
+        self.assertTrue(built['sources']['results'][0]['title'].startswith('ICSE '))
+        self.assertIn('(NCERT Class', catalog.film_request(DIGEST, DIGEST['concepts'][0])['subject'])
+
     def test_length_matches_the_measured_films(self):
         # Unification of Italy (2026-10-15): 561 book words, one accepted addition, 305 s of narration.
         italy = {**DIGEST, 'blocks': [{**DIGEST['blocks'][0], 'text': 'word ' * 561}]}
