@@ -1,0 +1,223 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-asd-device-closure",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 3,
+  "title": "Closing a hole between the heart's upper chambers",
+  "audience": "Parents of a child who needs an atrial septal defect (ASD) closed with a device through a catheter, in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "heart-chambers",
+   "catheter-entry",
+   "asd-occluder-steps"
+  ],
+  "written": "2026-11-05: written from the cited sources and checked against them; requested by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Four rooms and the walls between them",
+   "text": "The heart has four chambers: two smaller upper chambers called the atria, and two larger lower chambers called the ventricles. A thin muscular wall, the interatrial septum, separates the right and the left atria; a thick wall, the interventricular septum, separates the left and the right ventricles. Blood returning from the body enters the right atrium, and blood returning from the lungs enters the left atrium. The right ventricle pumps blood into the pulmonary artery, to the lungs, and the left ventricle pumps blood into the aorta, to the rest of the body. Valves let blood flow only one way.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "definition",
+   "title": "What an atrial septal defect is",
+   "text": "An atrial septal defect, or ASD, is an opening or hole in the wall that separates the two upper chambers of the heart, the atrial septum. Through the hole, oxygen-rich blood leaks from the left side of the heart to the right side. This makes extra work for the right side of the heart, because more blood than necessary flows through the right ventricle to the lungs.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Atrial septal defect: Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/atrial-septal-defect-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "fact",
+   "title": "Where the hole sits",
+   "text": "There are different types of ASD, named by where the hole is. In a secundum ASD the hole is in the middle of the atrial septum; it is the most common type. Other types sit lower in the septum, near the lower chambers, or high or low near the large veins that bring blood back to the heart. Some ASDs are very small and may never cause problems or need treatment; others are large and need treatment.",
+   "source": {
+    "title": "British Heart Foundation, Atrial septal defect (ASD)",
+    "url": "https://www.bhf.org.uk/informationsupport/conditions/atrial-septal-defect"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "What the extra blood does, and which holes close by themselves",
+   "text": "Because blood flows through the hole mostly from the left atrium to the right atrium, more blood flows through the lungs than normal. In most children an ASD causes no symptoms; it is most often found when a doctor hears a murmur, an extra sound in the heartbeat, and an echocardiogram, an ultrasound picture of the heart, confirms it. Left untreated, an ASD may cause problems in adulthood, such as high blood pressure in the lungs, abnormal heart rhythms and a higher risk of stroke. In some children an ASD closes on its own without treatment: a small ASD has a good chance of closing in the first 18 months of life (the hospital says the chance may be as high as 80 percent), but an ASD still present at 3 years of age will never close on its own. Secundum ASDs can usually be closed without surgery, using a device; the other types need an operation.",
+   "source": {
+    "title": "Cincinnati Children's Hospital, Atrial Septal Defects (ASD): information for families",
+    "url": "https://www.cincinnatichildrens.org/health/a/asd"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "Two ways to close the hole",
+   "text": "No medicine can make an ASD smaller or close it faster than it would close naturally; it can only be closed by a procedure on the heart, and both ways are usually done under general anaesthetic. In keyhole closure, a long thin tube is put into a large vein, usually at the top of the leg, and guided up to the heart, where a small device plugs the hole; the device stays in the heart and becomes covered over by the child's own tissue. In open-heart surgery, the surgeon opens the breastbone and works directly on the heart while a heart-lung bypass machine pumps the blood.",
+   "source": {
+    "title": "British Heart Foundation, Atrial septal defect (ASD)",
+    "url": "https://www.bhf.org.uk/informationsupport/conditions/atrial-septal-defect"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "When it is done",
+   "text": "At this hospital the doctors usually wait until a child is between 3 and 6 years old to close the hole. They may close it before age 3 if the hole is large, if the heart is enlarged, or if the child has had many lung infections, and with a catheter they can close it in a child as young as 6 months. It is not an emergency procedure, so it is planned at a time that suits the family. Closing the hole helps prevent heart failure later in life.",
+   "source": {
+    "title": "Children's Health (Dallas), Pediatric septal defect closure: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/septal-defect-closure"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "Not every hole can be closed this way",
+   "text": "Not every ASD can be closed with a device. The hole needs enough wall tissue around it for the device to hold on to. An echocardiogram beforehand gives a good idea of this, but only once the child is asleep and a closer ultrasound, a trans-oesophageal echocardiogram or TOE, has been done can the doctor be sure the hole can be closed with a device. Sometimes the TOE shows that it cannot be closed safely, and then the procedure is stopped; this is uncommon.",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Atrial septal defect - transcatheter device closure factsheet (2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/atrial-septal-defect-transcatheter-device-closure"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "The rim around the hole, and how the doctors see it",
+   "text": "Device closure is now the treatment of choice for most patients with a secundum ASD whose heart anatomy suits it. The rim of wall left around the hole matters: where part of the rim is missing, the risk is higher that the device slips out of place or, over time, rubs on the heart wall, so the team chooses the device size with care, and when a large stretch of rim is missing at the bottom and back of the hole, the hole may not be closable with a device. The procedure is guided by X-ray together with ultrasound: usually the TOE probe in the food pipe; increasingly a tiny ultrasound probe passed up a vein into the heart, called intracardiac echocardiography or ICE; and in small children sometimes an ordinary ultrasound on the chest.",
+   "source": {
+    "title": "Jung and Choi, Transcatheter closure of atrial septal defect: principles and available devices, Journal of Thoracic Disease 2018",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6174149/"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "process",
+   "title": "Getting ready: asleep, and measuring the hole",
+   "text": "The procedure is done under a general anaesthetic, so the child is asleep. Once the child is asleep, the team does a TOE: a small ultrasound probe is placed in the oesophagus, the food pipe from the mouth to the stomach, from where it gives a clear picture of the heart. It measures the size of the hole and helps place the device. If the hole turns out to be too big for a device, the child is woken up and the cardiologist talks with the family about next steps. If the hole is the right size and in the right place, the doctor passes a thin tube with a small balloon on its tip to the hole and fills the balloon to measure the hole again.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Atrial septal defect: Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/atrial-septal-defect-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "process",
+   "title": "The procedure, step by step",
+   "text": "A small tube, a catheter, is placed in a blood vessel at the top of the leg, in the groin. Guided by X-ray and the TOE, the doctor moves the catheter up to the heart and measures the hole. A device shaped like a double disc is passed through the catheter and placed across the hole, where it opens and closes the hole. The device is checked with the TOE and X-ray before it is released. Then the catheters are removed and a small dressing is put on the leg. The procedure takes about 1 to 2 hours. This hospital also lists bruising or bleeding where the catheter went in, a temporary irregular heartbeat (very rare) and small leaks around the device, which often close on their own (rare).",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Atrial septal defect - transcatheter device closure factsheet (2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/atrial-septal-defect-transcatheter-device-closure"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "definition",
+   "title": "The closure device",
+   "text": "The closure device is made of metal and mesh material. It looks like a short tube with a disc on each end, and the discs are of different sizes. To fit inside the catheter the discs are folded up. When the device is in the right place, one disc opens as it is pushed out of the catheter; the short tube plugs the hole, and the other disc opens on the opposite side of the hole, so the wall is held between the two discs. Once the device is in place, the catheter is taken out.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Atrial septal defect: Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/atrial-septal-defect-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "fact",
+   "title": "Healing over the device, and going home",
+   "text": "After looking at X-ray and ultrasound pictures of the hole, the team picks the right size of device, which permanently covers the hole from both sides. The lining of the heart wall seals over the device within six months. There are no stitches, and at this hospital most children stay one night and go home the next day with very few restrictions; the only activity to avoid is high-contact sports, for five to seven days.",
+   "source": {
+    "title": "Children's Health (Dallas), Pediatric septal defect closure: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/septal-defect-closure"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "After the procedure: medicines and check-ups",
+   "text": "At this hospital children stay at least four to six hours after the procedure and most go home the same day; an echocardiogram the next morning checks that no fluid has collected around the heart. For six months the child takes acetylsalicylic acid, ASA or aspirin, to stop small blood clots forming around the device, and needs antibiotics before and after any dental treatment, to help prevent a heart infection called infectious endocarditis; the cardiologist says if this is needed for longer. The child sees their own cardiologist one month afterwards, then every six months for the first two years, with tests to make sure the hole is properly closed.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Atrial septal defect: Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/atrial-septal-defect-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B14",
+   "type": "fact",
+   "title": "The risks, as the hospital explains them",
+   "text": "Heart catheterisation is a fairly low-risk procedure, but not risk-free, and the doctor explains the risks before parents give consent. There is a very small risk that the catheter breaks through a blood vessel or the heart wall; to reduce it, the doctors watch the catheter on X-ray all the time. There is a very small risk of fluid collecting around the heart, which the next-morning echocardiogram checks for. While it is being placed, the device may go in the wrong place, move or fall out of the hole; the doctors see this on the echocardiogram and try to move it or take it out in the catheter lab, and if that is not possible an operation is arranged to remove it and close the hole. Once the device has been in place for some time, there is a small risk that the device becomes worn and damages the heart, called erosion.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Atrial septal defect: Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/atrial-septal-defect-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B15",
+   "type": "fact",
+   "title": "Erosion: rare, and what to watch for",
+   "text": "Cardiac erosion means the device damaging the wall of the heart in the longer term. It is a very rare but serious complication; in most cases it happens within the first year, but it can sometimes happen later. Signs can include chest pain, numbness, sudden weakness, dizziness, fainting, shortness of breath or a fast heartbeat, and anyone with these signs after a device closure should contact their doctor. Tenderness and bruising in the groin is the most common side effect and is normal.",
+   "source": {
+    "title": "Leeds Teaching Hospitals NHS Trust, Atrial Septal Defect percutaneous (keyhole) closure: information for patients (2024)",
+    "url": "https://flipbooks.leedsth.nhs.uk/LN005494.pdf"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "Closing an ASD with a device",
+   "aliases": [
+    "ASD device closure",
+    "Transcatheter ASD closure",
+    "Atrial septal defect closure",
+    "Keyhole ASD closure"
+   ],
+   "sections": [],
+   "summary": "What a hole in the wall between the heart's upper chambers does, why many such holes can be closed with a folded double-disc device passed up a vein from the groin instead of open-heart surgery, and what parents can expect before, during and after.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15"
+   ],
+   "objectives": [
+    "Explain the heart's four chambers, the wall between the upper chambers, and what an atrial septal defect does to blood flow.",
+    "Explain why some holes close by themselves and why a secundum ASD with enough rim around it can often be closed with a device rather than open-heart surgery.",
+    "Follow the procedure: asleep, an ultrasound probe in the food pipe, a thin tube from the groin vein, measuring the hole, a double-disc device that opens on each side, checked before release.",
+    "Know what to expect afterwards: going home soon, aspirin and dental antibiotics for some months, check-up scans, tissue growing over the device, and the rare risks and warning signs."
+   ],
+   "prerequisites": [],
+   "filmable": true,
+   "film_note": "",
+   "film_rule": 1
+  }
+ ]
+}

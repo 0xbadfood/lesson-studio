@@ -1,0 +1,234 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-balloon-coarctoplasty",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 7,
+  "title": "Widening a narrow main artery with a balloon",
+  "audience": "Parents of a baby or child who needs balloon coarctoplasty (balloon angioplasty for coarctation of the aorta), in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "pda-heart-front",
+   "catheter-entry",
+   "coarctation-balloon"
+  ],
+  "written": "2026-11-05: written from the cited sources and checked against them; requested by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Two sides of the heart",
+   "text": "The heart has two pumping sides. The right ventricle pumps blood that has given up its oxygen into the pulmonary artery, which carries it to the lungs to pick up oxygen. The oxygen-rich blood returns to the left side of the heart, and the left ventricle pumps it into the aorta, the main artery, which carries it through a network of arteries to all the tissues of the body.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "definition",
+   "title": "Coarctation: a narrow part of the main artery",
+   "text": "Coarctation of the aorta is a narrowing of the aorta, the main blood vessel carrying oxygen-rich blood from the left ventricle to the body. It occurs most often in a short piece of the aorta just beyond where the arteries to the head and arms branch off, where another blood vessel, the ductus arteriosus, joins it. The ductus is present before birth, and special tissue in its wall makes it close in the first hours or days of life. With a coarctation, the left ventricle must work harder to force blood through the narrow part to the lower body.",
+   "source": {
+    "title": "Cincinnati Children's, Coarctation of the aorta: information for families",
+    "url": "https://www.cincinnatichildrens.org/health/c/coarctation"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "fact",
+   "title": "Why it can get worse after birth",
+   "text": "The aortic wall forms a shelf at the back that narrows the aorta. When the ductus closes, as it naturally does in the first few days after birth, blood flow is squeezed further, and in severe cases the left ventricle can weaken and the child become very sick.",
+   "source": {
+    "title": "Boston Children's Hospital, Coarctation of the aorta (CoA): information for families",
+    "url": "https://www.childrenshospital.org/conditions/coarctation-aorta"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "A newborn in crisis",
+   "text": "When the ductus closes, the left ventricle suddenly has to pump against much higher resistance. This can lead to heart failure and shock, and because these newborns were well until then, the symptoms come on quickly. For a very sick newborn, a medicine called prostaglandin (PGE-1) is given through a drip to open the ductus so blood can reach the lower body, other medicines may help the heart, and many babies need a breathing machine.",
+   "source": {
+    "title": "Cincinnati Children's, Coarctation of the aorta: information for families",
+    "url": "https://www.cincinnatichildrens.org/health/c/coarctation"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "Signs parents may notice",
+   "text": "Signs of severe coarctation in a newborn can include fast breathing, pale or mottled skin, poor feeding, sweating or irritability, and weak pulses in the legs. A milder coarctation may not be found until later, often at a routine blood pressure check; signs can then include high blood pressure, headaches and a heart murmur.",
+   "source": {
+    "title": "Boston Children's Hospital, Coarctation of the aorta (CoA): information for families",
+    "url": "https://www.childrenshospital.org/conditions/coarctation-aorta"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "How it is found",
+   "text": "A key sign is a weak, delayed pulse in the groin compared with the arm, and blood pressure measured in both arms and both legs is higher in the arms. In a newborn the narrowing can be missed while the ductus is still open. An echocardiogram, an ultrasound picture of the heart, shows where the narrowing is, how severe it is and how well the heart pumps.",
+   "source": {
+    "title": "Saxena et al., Indian guidelines for indications and timing of intervention for common congenital heart diseases (national consensus statement), Annals of Pediatric Cardiology 2019",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6716301/"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "Operation or balloon: it depends on age",
+   "text": "Indian guidelines for children's heart conditions recommend an operation as the first choice for a newborn with coarctation. For a critically ill newborn at high risk from surgery, in a shock-like state or with a badly weakened left ventricle, a balloon is a reasonable way to tide the baby over the crisis. For older infants either is used; for children under about 25 kilograms a balloon is recommended, and for bigger children and adults a stent is reasonable. A planned stent is not advised under 10 years of age.",
+   "source": {
+    "title": "Saxena et al., Indian guidelines for indications and timing of intervention for common congenital heart diseases (national consensus statement), Annals of Pediatric Cardiology 2019",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6716301/"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "One hospital's experience with very sick newborns",
+   "text": "At a hospital in Hannover, Germany, surgery is the usual treatment for a newborn with coarctation, but newborns who stayed critically ill despite intensive care were treated first by catheter, with a balloon and usually a small stent; most of them had a badly weakened left ventricle. In this study of 26 newborns, the heart's pumping recovered fully before going home, after catheter treatment and after surgery alike. Eight of the ten catheter babies later had a planned operation; two had not needed one years later. The authors see the catheter as a way to stabilise a very sick baby and a bridge to surgery.",
+   "source": {
+    "title": "Hysko et al., Recovery of biventricular function after catheter intervention or surgery for neonatal coarctation of the aorta, JACC: Advances 2023 (26 newborns, Hannover; CC BY 4.0)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11198406/"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "fact",
+   "title": "Why the narrowing can come back in newborns",
+   "text": "In a Mumbai centre's comparison of babies under one year, newborns treated with a balloon needed a second procedure much more often than newborns who had surgery, so the authors prefer surgery for newborns; for older infants, and for very sick babies at high risk from surgery, a balloon is a reasonable alternative. After a balloon in a newborn the ductal tissue stays in the aortic wall and can spring back and thicken. A second procedure is often another catheter procedure, a repeat balloon or a stent.",
+   "source": {
+    "title": "Sen et al., Native aortic coarctation in neonates and infants: immediate and midterm outcomes with balloon angioplasty and surgery, Annals of Pediatric Cardiology 2018 (75 babies, Mumbai)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6146845/"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "fact",
+   "title": "Before the procedure",
+   "text": "The plan is made by a team of cardiologists, catheter specialists, heart surgeons, anaesthetists and intensive care specialists, and the specialist doing the procedure explains it to the family. The child may need blood tests, a chest X-ray, an echocardiogram, and sometimes an MRI or CT scan. On the day, the family meets the anaesthetist, who gives the medicine for sedation or anaesthesia.",
+   "source": {
+    "title": "Children's Health (Dallas), Pediatric coarctation of the aorta repair: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/repair-of-coarctation-of-the-aorta"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "fact",
+   "title": "The balloon procedure, step by step",
+   "text": "The doctor makes a small puncture in a blood vessel in the groin and puts in a long, thin wire to guide the thin tube, the catheter. Watching on imaging, the doctor slides a balloon-tipped catheter over the wire up to the aorta. With the tip inside the narrowed part, the balloon is inflated to stretch it; in some cases a stent, a small metal mesh tube, is placed to help keep it open. Then the balloon is deflated, the catheter taken out, and the groin bandaged.",
+   "source": {
+    "title": "Children's Health (Dallas), Pediatric coarctation of the aorta repair: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/repair-of-coarctation-of-the-aorta"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "fact",
+   "title": "In a baby: through the groin artery, against the flow",
+   "text": "In a series of newborns and young infants in New Delhi, the tube went in through the femoral artery in the groin. The wire was passed up the aorta, against the flow of blood, through the narrow part, and the pressure difference across it was measured. The balloon was no wider than the aorta lower down, at the level of the diaphragm, and was inflated two to four times, each for only 10 to 15 seconds. A final X-ray picture checked the widened part for any tear or bulge, and the pressure difference was measured again.",
+   "source": {
+    "title": "Arora et al., Midterm safety and outcome of balloon angioplasty of native aortic coarctation in neonates and young infants, Annals of Pediatric Cardiology 2022 (51 babies, New Delhi)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9564400/"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "Stents for older children",
+   "text": "In older children who are close to adult size, a catheter treatment is the first choice: a balloon or a stent can widen the narrow part without surgery. In children who are still growing, a stent means that more catheter procedures are likely to be needed later, because a stent cannot grow with the child.",
+   "source": {
+    "title": "Cincinnati Children's, Coarctation of the aorta: information for families",
+    "url": "https://www.cincinnatichildrens.org/health/c/coarctation"
+   }
+  },
+  {
+   "id": "B14",
+   "type": "fact",
+   "title": "Possible problems",
+   "text": "A balloon for coarctation in newborns and young infants is debated, because the narrowing often comes back, and because of the risk of a bulge (aneurysm) or tear in the aortic wall and of problems in the groin artery. In this New Delhi series there were no major complications or deaths; in some babies the groin artery became blocked and was treated with a blood thinner, heparin, though in a few the flow did not fully recover. About one in four babies needed another procedure, a median of about three months later.",
+   "source": {
+    "title": "Arora et al., Midterm safety and outcome of balloon angioplasty of native aortic coarctation in neonates and young infants, Annals of Pediatric Cardiology 2022 (51 babies, New Delhi)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9564400/"
+   }
+  },
+  {
+   "id": "B15",
+   "type": "fact",
+   "title": "After the procedure",
+   "text": "Afterwards the child spends a few hours in the recovery room, where nurses check the heart rate, breathing and blood pressure, and parents can hold their child. Some children go home the same day and some stay overnight; getting back to usual activities may take one to two weeks. Short-term risks include a problem in the artery used, blood clots, bleeding, high blood pressure that usually settles, and infection.",
+   "source": {
+    "title": "Children's Health (Dallas), Pediatric coarctation of the aorta repair: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/repair-of-coarctation-of-the-aorta"
+   }
+  },
+  {
+   "id": "B16",
+   "type": "fact",
+   "title": "Lifelong check-ups",
+   "text": "The narrowing can come back where it was treated, even years later, most often in children treated as newborns; most can be treated with a balloon or a stent, and some children need an operation. High blood pressure can also continue or appear later and may need medicine. So children need lifelong check-ups with a heart doctor, with blood pressure measured in the arms and the legs and regular echocardiograms.",
+   "source": {
+    "title": "Cincinnati Children's, Coarctation of the aorta: information for families",
+    "url": "https://www.cincinnatichildrens.org/health/c/coarctation"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "Balloon coarctoplasty for a baby or child",
+   "aliases": [
+    "Balloon coarctoplasty",
+    "Balloon angioplasty of coarctation",
+    "Coarctation of the aorta",
+    "CoA"
+   ],
+   "sections": [],
+   "summary": "Why a narrow piece of the aorta near the ductus makes the left side of the heart work harder and can make a newborn very sick, how a balloon passed from the groin artery widens it, when a stent or an operation is chosen instead, and what parents can expect afterwards.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15",
+    "B16"
+   ],
+   "objectives": [
+    "Explain where a coarctation sits on the aorta, next to the ductus, and why closing of the ductus can make a newborn suddenly very sick.",
+    "Recognise the signs of coarctation and how it is found: weak leg pulses, arm and leg blood pressures, and an echocardiogram.",
+    "Follow how the narrow part is widened: a thin tube from the groin artery, a wire across the narrowing, a balloon inflated for seconds, pressures measured before and after, and sometimes a stent.",
+    "Know why surgery is often preferred for newborns, when a balloon is used to tide a very sick baby over, that the narrowing can come back, and why blood pressure checks continue for life."
+   ],
+   "prerequisites": [],
+   "filmable": true,
+   "film_note": "",
+   "film_rule": 1
+  }
+ ]
+}

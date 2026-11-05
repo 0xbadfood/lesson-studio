@@ -1,0 +1,234 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-pda-device-closure",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 5,
+  "title": "Closing an open ductus with a tiny plug",
+  "audience": "Parents of a baby or child who needs a patent ductus arteriosus (PDA) closed with a device by catheter, in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "pda-heart-front",
+   "catheter-entry",
+   "pda-occluder-steps"
+  ],
+  "written": "2026-11-05: written from the cited sources and checked against them; requested by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Two sides of the heart",
+   "text": "The heart has four chambers: two upper chambers, the atria, and two lower pumping chambers, the ventricles. The right ventricle pumps blood that has given up its oxygen into the pulmonary artery, which carries it to the lungs to pick up oxygen. The left ventricle pumps oxygen-rich blood into the aorta, the main artery that carries blood to the whole body.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "definition",
+   "title": "The ductus: a short-cut vessel from before birth",
+   "text": "Every baby in the womb has a short blood vessel called the ductus arteriosus. It joins the pulmonary artery, the main vessel to the lungs, to the aorta, the main vessel to the body. In the womb the placenta gives the baby its oxygen, and the ductus lets blood bypass the lungs. After birth the baby must use its lungs, so blood flows to the lungs and the ductus should close shortly after birth. In some babies, especially babies born early, it stays open, or even opens again. This is called a patent, or open, ductus arteriosus: a PDA.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Patent ductus arteriosus (PDA): information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/conditions-we-treat/patent-ductus-arteriosus-pda/"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "fact",
+   "title": "What an open ductus does",
+   "text": "After birth, if the ductus is still open, blood flows through it from the aorta into the pulmonary artery. This extra blood can overload the lungs and makes the heart work harder to pump it. How much this matters depends on the size of the ductus and how much blood it carries: a baby with a PDA may breathe fast, find breathing hard, have more chest infections, tire easily and grow poorly. A small PDA may cause no symptoms and may be found only when a doctor hears a heart murmur. Even without symptoms, the rough flow of blood through an open ductus raises the risk of a serious infection of the heart, called endocarditis.",
+   "source": {
+    "title": "Cincinnati Children's, Patent ductus arteriosus (PDA): information for families (updated 05/2024)",
+    "url": "https://www.cincinnatichildrens.org/health/p/pda"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "Medicine first, then closing the ductus",
+   "text": "In a newborn the ductus may still close on its own, and medicines such as ibuprofen or indomethacin, which help the muscle in its wall squeeze it shut, work best in newborns. For older infants and children it is more common to close the ductus: by surgery, or in the cardiac catheterisation laboratory with a device or a coil. Surgery is the best option for a child with a very large ductus or other unusual anatomy.",
+   "source": {
+    "title": "Cincinnati Children's, Patent ductus arteriosus (PDA): information for families (updated 05/2024)",
+    "url": "https://www.cincinnatichildrens.org/health/p/pda"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "Why by catheter",
+   "text": "Most significant PDAs need to be closed to protect the child's heart and lungs. In most children this can be done with a catheter, a thin tube put in through a needle puncture in the leg, so most children do not need traditional surgery, and closing by catheter has lower risks and a faster recovery. Children, other than premature babies, can often go home the same day or the next day. Sometimes a catheter cannot be used, because of the size of the ductus or in very small premature babies, and then open surgery may be needed.",
+   "source": {
+    "title": "Children's Health (Dallas), Patent ductus arteriosus (PDA): information for families",
+    "url": "https://www.childrens.com/specialties-services/conditions/patent-ductus-arteriosus"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "Babies born early",
+   "text": "Doctors may suspect a PDA when a baby in the neonatal unit finds it hard to come off the breathing machine; a heart scan confirms it. The baby may have been given a medicine to close it, often ibuprofen, and may be kept on less fluid with medicines called diuretics. Sometimes the medicine does not work or is not suitable, and the ductus is then closed.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Patent ductus arteriosus (PDA): information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/conditions-we-treat/patent-ductus-arteriosus-pda/"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "A different approach for very small babies",
+   "text": "For very small premature babies, whether to close the ductus at all is still debated, and medicine is usually tried first. When it is closed by catheter, the device most often used is one made for this, the Amplatzer Piccolo Occluder, approved for babies of at least 700 grams and at least three days old. The baby is under general anaesthesia and stays on their own breathing machine. A small tube goes into the vein at the top of the leg only, not an artery, and the doctors watch on X-ray and ultrasound as the device is placed; in babies under 2 kilograms it sits entirely inside the ductus. Afterwards the baby goes back to the neonatal intensive care unit, with a heart scan within a day.",
+   "source": {
+    "title": "Baruteau et al., The transcatheter closure of patent ductus arteriosus in extremely low-birth-weight infants: technique and results, J Cardiovasc Dev Dis 2023 (CC BY 4.0)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10744056/"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "Before the procedure",
+   "text": "Before the procedure the baby has tests: a chest X-ray, an echocardiogram, which is an ultrasound picture of the heart, and blood tests. The anaesthetist and the cardiologists who will do the procedure come to see the baby and ask about the baby's health, medicines, allergies and any earlier anaesthetics; this is a good time for parents to share their worries. The doctor explains the procedure and asks the parents to sign a consent form.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Patent ductus arteriosus (PDA): information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/conditions-we-treat/patent-ductus-arteriosus-pda/"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "fact",
+   "title": "How the ductus is closed",
+   "text": "The procedure is done in the cardiac catheterisation laboratory, the cath lab, without open-heart surgery. It is done under general anaesthetic, so the child is asleep and feels no pain. A small tube, a catheter, is placed in a blood vessel in the groin, at the top of the leg. Watching on X-ray and ultrasound, the doctor carefully moves the catheter up to the heart and into the PDA. A tiny device, a plug or a coil, is placed inside the PDA to block the blood flowing through it. The procedure takes about one to two hours.",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Patent ductus arteriosus: transcatheter closure factsheet (updated April 2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/patent-ductus-arteriosus-transcatheter-closure"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "fact",
+   "title": "A coil or a plug",
+   "text": "Depending on the child's age, the child is either sedated or given a general anaesthetic. The catheters go into blood vessels in the groin. They are threaded up to the aorta, stopping close to the ductus, and a picture called an angiogram shows the shape and size of the ductus. If the ductus is small, the doctor may place a coil inside it. For a larger opening, the doctor may use a plug-shaped device to block it.",
+   "source": {
+    "title": "Cincinnati Children's, Patent ductus arteriosus (PDA): information for families (updated 05/2024)",
+    "url": "https://www.cincinnatichildrens.org/health/p/pda"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "fact",
+   "title": "Checked before it is let go",
+   "text": "The device is made of a fine wire mesh, and it plugs the flow of blood through the ductus. It is threaded through the catheter and placed into the ductus. Before it is let go, its position is checked with an echocardiogram and with X-ray pictures. Only once a good position is confirmed is the device released; then the catheter is taken out and the small cut at the top of the leg is covered with a dressing.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Patent ductus arteriosus (PDA): information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/conditions-we-treat/patent-ductus-arteriosus-pda/"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "fact",
+   "title": "Making sure the main artery is clear",
+   "text": "At this hospital, tubes went into both the vein and the artery at the top of the leg, and the duct plugs were usually brought in from the lung-artery side, while most coils came from the aorta side. Before letting the device go, the team took another picture of the aorta and measured the pressure across the newly closed ductus, to be sure the device was not blocking the flow in the aorta. In one child whose device was not right before release, it was taken out, and the ductus was closed later with a smaller device.",
+   "source": {
+    "title": "Adams Paul et al., Transcatheter closure of the patent ductus arteriosus at a public sector hospital in Soweto, South Africa: 15 years, Cardiovasc J Afr 2018 (open access)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6421553/"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "Afterwards, in hospital",
+   "text": "The child wakes up in the recovery area and is watched closely. The leg used for the catheter must stay straight for a few hours, and most children can eat and drink once awake. A chest X-ray or an ultrasound may be done before going home, and most children go home later the same day or the next morning. The device stays in place for good, and over time the heart's own lining grows over it.",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Patent ductus arteriosus: transcatheter closure factsheet (updated April 2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/patent-ductus-arteriosus-transcatheter-closure"
+   }
+  },
+  {
+   "id": "B14",
+   "type": "fact",
+   "title": "Back home",
+   "text": "At home, children can go back to school or daycare after two days, but should have no rough play, cycling or contact sports for a week. The cardiology team arranges follow-up visits and scans.",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Patent ductus arteriosus: transcatheter closure factsheet (updated April 2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/patent-ductus-arteriosus-transcatheter-closure"
+   }
+  },
+  {
+   "id": "B15",
+   "type": "fact",
+   "title": "What to watch for at home",
+   "text": "A little bruising around the place where the catheter went in is normal, as long as it gets lighter over time, and a sore groin or leg for one or two days is normal too. Call the heart team if there is swelling or redness at the site, if the bruise gets bigger, if the child has a fever after the first day, if the soreness lasts more than a couple of days, or if the leg becomes swollen, cold or pale. If the site bleeds, press firmly on it with clean gauze for ten minutes; if it is still bleeding after twenty minutes, keep pressing and go to the nearest emergency department.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Heart catheterization: caring for your child after the procedure",
+    "url": "https://www.aboutkidshealth.ca/heart-catheterization-caring-for-your-child-after-the-procedure"
+   }
+  },
+  {
+   "id": "B16",
+   "type": "fact",
+   "title": "Possible problems",
+   "text": "Closing a PDA by catheter is very safe, but every medical procedure has some risks. They include bruising or bleeding where the catheter went in, the device moving before it settles, which is very rare, a short-lived irregular heartbeat, narrowing of nearby blood vessels, and infection or an allergic reaction to the dye or a medicine. The cardiologist explains these and answers questions before the procedure.",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Patent ductus arteriosus: transcatheter closure factsheet (updated April 2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/patent-ductus-arteriosus-transcatheter-closure"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "Closing a PDA with a device by catheter",
+   "aliases": [
+    "PDA device closure",
+    "Transcatheter PDA closure",
+    "Duct occluder",
+    "PDA coil closure"
+   ],
+   "sections": [],
+   "summary": "Why an open ductus arteriosus overloads a child's lungs and heart, how a plug or coil placed through a thin tube from the leg closes it, and what parents can expect afterwards.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15",
+    "B16"
+   ],
+   "objectives": [
+    "Explain what the ductus arteriosus is, why it should close after birth, and what extra blood flow through an open ductus does to the lungs and heart.",
+    "Explain why the ductus is closed: medicine first in newborns, and closing by catheter for most children, with a different approach for very small premature babies.",
+    "Follow how the ductus is closed: a thin tube from the leg, a coil or a mesh plug placed inside the ductus, and the checks made before the device is let go.",
+    "Know what to expect afterwards: recovery, going home, what to watch for at the catheter site, follow-up, and the possible problems."
+   ],
+   "prerequisites": [],
+   "filmable": true,
+   "film_note": "",
+   "film_rule": 1
+  }
+ ]
+}

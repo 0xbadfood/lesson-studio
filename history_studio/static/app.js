@@ -3,7 +3,7 @@ const STUDIO = window.STUDIO || {name: 'History Studio', mark: 'H', subject: 'hi
 const view = document.getElementById('view');
 if (STUDIO.solve) document.getElementById('nav-solve').hidden = false;
 if (STUDIO.created) document.getElementById('nav-created').hidden = false;
-const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null, activityTimer: null, questionTimer: null };
+const state = { catalog: null, voices: null, cls: null, timer: null, ideaTimer: null, versionTimer: null, activityTimer: null, questionTimer: null };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const minutes = (m) => (m < 1.25 ? 'about a minute' : `about ${Math.round(m)} min`);
@@ -25,7 +25,7 @@ function chrome(on, nav) {
 }
 
 function stopPolling() {
-  clearTimeout(state.timer); state.timer = null; clearTimeout(state.ideaTimer); state.ideaTimer = null;
+  clearTimeout(state.timer); state.timer = null; clearTimeout(state.ideaTimer); state.ideaTimer = null; clearTimeout(state.versionTimer); state.versionTimer = null;
   clearTimeout(state.activityTimer); state.activityTimer = null;
   clearTimeout(state.questionTimer); state.questionTimer = null;
 }
@@ -240,6 +240,7 @@ function filmHtml(f) {
       <p class="sub">${esc(f.idea.why || '')}</p><p>${esc(f.idea.understanding || '')}</p>
       ${f.landed ? `<p class="landing ${f.landed.landed ? 'ok' : 'miss'}">${f.landed.landed ? 'A test learner got the idea' : 'A test learner did not fully get the idea'}${f.landed.score != null ? ` · ${f.landed.score}/100` : ''}${f.landed.rounds > 1 ? ` · after ${f.landed.rounds - 1} rewrite${f.landed.rounds > 2 ? 's' : ''}` : ''}</p>` : ''}</div>`);
   if (f.kind !== 'key_idea' && STUDIO.key_ideas && (f.status === 'done' || f.replanning)) parts.push('<div class="panel" id="key-ideas"></div>');
+  if (STUDIO.languages && f.kind !== 'key_idea' && f.status === 'done') parts.push('<div class="panel" id="versions"></div>');
   if (STUDIO.questions && (f.status === 'done' || f.replanning)) parts.push('<div class="panel" id="questions"></div>');
   if (f.scenes.length || (f.phase === 'scenes' && f.scenes_total)) {
     const total = f.scenes_total || f.scenes.length;
@@ -309,6 +310,7 @@ async function showFilm(id) {
       if (document.getElementById('key-ideas')) showIdeas(id);
       if (document.getElementById('activity')) showActivity(id);
       if (document.getElementById('questions')) showQuestions(id);
+      if (document.getElementById('versions')) showVersions(id);
       const stop = document.getElementById('stop');
       if (stop) stop.onclick = async () => {
         if (!confirm('Stop making this film? You can make it again later; it carries on from where it stopped.')) return;
@@ -509,6 +511,37 @@ async function showIdeas(film) {
       location.hash = `#/film/${made.film}`;
     } catch (err) { alert(err.message); b.disabled = false; b.textContent = 'Make this film'; }
   }));
+}
+
+/* ---------------------------------------------------------------- the film in another language */
+async function showVersions(film) {
+  const box = document.getElementById('versions');
+  if (!box) return;
+  clearTimeout(state.versionTimer);
+  let data;
+  try { data = await api(`api/films/${film}/versions`); } catch (err) { box.remove(); return; }
+  const languages = [...new Set(data.voices.map((v) => v.language))].join(', ');
+  const made = data.versions;
+  const playing = [...box.querySelectorAll('video')].some((m) => !m.paused);
+  if (playing) { state.versionTimer = setTimeout(() => showVersions(film), 8000); return; }
+  box.innerHTML = `<h2>In ${esc(languages)}</h2><p class="sub">The same film, its script translated and spoken in ${esc(languages)} over the same pictures</p>
+    ${made.map((v) => {
+      const voice = data.voices.find((x) => x.id === v.voice && x.lang === v.lang);
+      return `<div class="version"><h3>${esc(voice ? voice.label : v.voice)}</h3>${v.status === 'done'
+        ? `<div class="player"><video controls preload="metadata" src="${v.video}"></video></div>
+           <div class="video-actions"><a class="btn ghost" href="${v.video}" download>Download video</a></div>`
+        : v.status === 'making' ? '<div class="now-line"><div class="spinner"></div><p class="sub">Translating, voicing and checking each line, then making the video (about an hour)…</p></div>'
+        : '<p class="error">This version could not be made. Try again below.</p>'}</div>`; }).join('')}
+    <div class="version-make"><label for="version-voice">Voice</label>
+      <select id="version-voice">${data.voices.map((v) => `<option value="${esc(v.lang)}|${esc(v.id)}">${esc(v.label)}</option>`).join('')}</select>
+      <button class="btn" id="make-version" type="button">Make this version</button></div>`;
+  box.querySelector('#make-version').onclick = async (e) => {
+    const [lang, voice] = box.querySelector('#version-voice').value.split('|');
+    e.target.disabled = true;
+    try { await api(`api/films/${film}/versions`, { method: 'POST', body: JSON.stringify({ lang, voice }) }); } catch (err) { alert(err.message); }
+    showVersions(film);
+  };
+  if (made.some((v) => v.status === 'making')) state.versionTimer = setTimeout(() => showVersions(film), 15000);
 }
 
 /* ---------------------------------------------------------------- library */

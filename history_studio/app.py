@@ -29,7 +29,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from history_studio import activity, catalog, ideas, questions, solving
+from history_studio import activity, catalog, ideas, questions, solving, versions as language_versions
 from solutions import qreview
 
 REMOTION = Path('/home/nitin/remotion')
@@ -371,6 +371,11 @@ def media_path(queue, record, kind, item=None):
 
 
 # ------------------------------------------------------------------ app
+class VersionAsk(BaseModel):
+    lang: str = Field(default='hi', max_length=8)
+    voice: str = Field(max_length=40)
+
+
 class IdeaAsk(BaseModel):
     voice: str | None = Field(default=None, max_length=80)
 
@@ -405,7 +410,7 @@ def page(profile):
     """The single page, named for the studio (History Studio's page is unchanged)."""
     subject = profile['job']
     studio = json.dumps({'name': profile['name'], 'mark': profile['mark'], 'subject': subject,
-                         'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions')),
+                         'key_ideas': bool(profile.get('key_ideas')), 'questions': bool(profile.get('questions')), 'languages': bool(profile.get('languages')),
                          'solve': bool(profile.get('solve')), 'created': bool(profile.get('created')), 'plays': bool(profile.get('plays') and linkwork_mirror())})
     text = (HERE / 'static' / 'index.html').read_text()
     text = text.replace('History Studio', profile['name']).replace('your history textbook', f'your {profile.get("textbook", subject)} textbook')
@@ -425,6 +430,7 @@ def build(queue=None, access=None, data=None, profile=None):
     queue = queue or Queue(QUEUE_ROOT, REMOTION / 'config.json')
     access = access or Access(data)
     films = Films(queue, data, profile)
+    made_in = language_versions.Versions(data)
     finder = ideas.Finder()
     tester = ideas.Finder(lambda project, curriculum: questions.make(project, curriculum, profile['figures'] is True),
                           questions.saved)
@@ -738,10 +744,46 @@ def build(queue=None, access=None, data=None, profile=None):
         except KeyError:
             raise HTTPException(404)
 
+    def finished_film(film):
+        """A finished film a language version can be made of (profiles with languages only)."""
+        if not profile.get('languages'):
+            raise HTTPException(404, 'Other languages are not offered here')
+        try:
+            record = films.find(film)
+        except KeyError:
+            raise HTTPException(404, 'No such film')
+        job = films.job(record['job'])
+        if not job or job['status'] != 'succeeded':
+            raise HTTPException(409, 'A version comes from a finished film')
+        return record, job
+
+    @app.get('/api/films/{film}/versions')
+    def get_versions(film: str, request: Request):
+        signed_in(request)
+        finished_film(film)
+        return {'voices': language_versions.voices(), 'versions': made_in.of(film)}
+
+    @app.post('/api/films/{film}/versions', status_code=202)
+    def make_version(film: str, body: VersionAsk, request: Request):
+        signed_in(request)
+        record, job = finished_film(film)
+        try:
+            made_in.make(film, job['project'], body.lang, body.voice)
+        except KeyError:
+            raise HTTPException(404, 'No such voice')
+        return {'voices': language_versions.voices(), 'versions': made_in.of(film)}
+
     @app.get('/media/{film}/{kind}')
     @app.get('/media/{film}/{kind}/{item}')
     def media(film: str, kind: str, request: Request, item: str | None = None):
         signed_in(request)
+        if kind == 'version':                   # a language version: its own folder, named by the versions record
+            try:
+                if not (item or '').startswith(f'{film}:'):
+                    raise KeyError(item)
+                return FileResponse(made_in.video(item), headers={'Cache-Control': 'private, max-age=3600'})
+            except KeyError:
+                raise HTTPException(404)
         try:
             path = media_path(queue, films.find(film), kind, item)
         except KeyError:

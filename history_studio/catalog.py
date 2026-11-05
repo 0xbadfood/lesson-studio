@@ -50,7 +50,7 @@ PROFILES = {
     # Biology Studio (2026-10-22): Class 11-12 Biology; films get the ~/biology SVG library's diagrams as figures.
     'biology': {'name': 'Biology Studio', 'slug': 'biology', 'mark': 'B', 'subjects': {'biology'}, 'data': 'biology-data',
                 'cookie': 'biology_session', 'job': 'biology', 'figures': 'biology', 'key_ideas': True,
-                'questions': True},
+                'questions': True, 'languages': True},     # a finished film in Hindi too (versions.py, 2026-11-05)
     # Physics Studio (2026-10-23): Class 11-12 Physics, and Solve: JEE questions solved by two students and a teacher
     # model, checked against the official key, then planned as worked-solution clips with their drawing aids.
     'physics': {'name': 'Physics Studio', 'slug': 'physics', 'mark': 'P', 'subjects': {'physics'}, 'data': 'physics-data',

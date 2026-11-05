@@ -1,0 +1,234 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-balloon-pulmonary-valvuloplasty",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 6,
+  "title": "Opening a narrow heart valve to the lungs with a balloon",
+  "audience": "Parents of a baby or child who needs balloon pulmonary valvuloplasty, in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "heart-chambers",
+   "catheter-entry",
+   "pulmonary-valve-balloon"
+  ],
+  "written": "2026-11-05: written from the cited sources and checked against them; requested by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Two sides of the heart",
+   "text": "The heart has four chambers: two upper chambers, the atria, and two lower pumping chambers, the ventricles. Blood that has given up its oxygen in the body returns to the right atrium and passes into the right ventricle, which pumps it into the pulmonary artery, the artery to the lungs, where it picks up oxygen. The oxygen-rich blood comes back to the left side of the heart, and the left ventricle pumps it into the aorta, the main artery, which carries it to the whole body. Valves at the exits of the ventricles, into the pulmonary artery and the aorta, let blood flow only one way and stop it flowing back.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "definition",
+   "title": "Pulmonary stenosis: a narrow valve to the lungs",
+   "text": "Pulmonary stenosis is a narrowing of the pulmonary valve, the valve between the right pumping chamber (the right ventricle) and the large blood vessel that carries blood to the lungs to pick up oxygen (the pulmonary artery). The heart has to work harder to pump blood through the narrowed valve, and over time this makes the muscle of the right ventricle thicken. It is a congenital heart condition: the heart developed this way before birth.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Pulmonary stenosis: information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/conditions-we-treat/pulmonary-stenosis/"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "fact",
+   "title": "What is different about the valve",
+   "text": "A normal pulmonary valve is made up of three thin flaps called leaflets. In pulmonary stenosis, two of the leaflets may be stuck together or too thick, or there may be fewer than three leaflets.",
+   "source": {
+    "title": "Children's Hospital of Philadelphia (CHOP), Pulmonary stenosis: information for families",
+    "url": "https://www.chop.edu/conditions-diseases/pulmonary-stenosis"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "Signs parents may notice",
+   "text": "Children with mild or moderate pulmonary stenosis may have no symptoms. Babies with severe stenosis usually have symptoms shortly after birth: a bluish colour of the skin (cyanosis), low energy, and pale, cool or clammy skin. Rarely, older children tire easily or breathe heavily and fast. In a newborn, the blue colour and a heart murmur lead to a check by a children's heart doctor.",
+   "source": {
+    "title": "Boston Children's Hospital, Pulmonary valve stenosis: information for families",
+    "url": "https://www.childrenshospital.org/conditions/pulmonary-valve-stenosis"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "How it is found",
+   "text": "Older children often have no symptoms, and the condition is found when a doctor hears a murmur at a routine check-up. The key test is an echocardiogram, an ultrasound picture of the heart: it shows where the narrowing is and how severe it is, the shape of the valve and the width of its ring, and how large and strong the right ventricle is.",
+   "source": {
+    "title": "Saxena et al., Indian guidelines for indications and timing of intervention for common congenital heart diseases (national consensus statement), Annals of Pediatric Cardiology 2019",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6716301/"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "When a newborn's valve is very tight",
+   "text": "In a newborn, very severe narrowing is called critical pulmonary stenosis, and it is life-threatening. The right ventricle is often thick-walled and stiff, so some blood crosses from the right to the left side of the heart through an opening between the upper chambers, and the baby looks blue. Some of these babies depend on the ductus arteriosus, a blood vessel from before birth, for blood to reach the lungs, and are given a medicine called prostaglandin (PGE1) to keep it open.",
+   "source": {
+    "title": "Aggarwal et al., Immediate and short-term outcome of balloon pulmonary valvuloplasty in neonatal critical pulmonary stenosis, Annals of Pediatric Cardiology 2025 (24 newborns, Sir Ganga Ram Hospital, New Delhi)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12063987/"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "Why a balloon",
+   "text": "Indian guidelines for children's heart conditions recommend balloon dilatation as the treatment for a narrow pulmonary valve. A newborn with severe stenosis who depends on the ductus needs it straight away, as does any child whose right ventricle is weakening. An operation is kept for a few cases: a narrowing above or below the valve, some very thick valves with a small ring, and a balloon that has not worked.",
+   "source": {
+    "title": "Saxena et al., Indian guidelines for indications and timing of intervention for common congenital heart diseases (national consensus statement), Annals of Pediatric Cardiology 2019",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6716301/"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "On the day of the procedure",
+   "text": "Parents and child meet the cardiologist, the anaesthetist and a nurse, and can ask their questions before the child is given medicine to sleep through the procedure. The child is then taken to the catheterisation laboratory while the parents wait, and they meet again in the recovery area afterwards. For pulmonary valve stenosis the procedure takes about 90 minutes from start to finish.",
+   "source": {
+    "title": "Children's Health (Dallas), Pediatric balloon valvuloplasty: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/balloon-valvuloplasty"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "fact",
+   "title": "The way in: a vein in the groin",
+   "text": "The procedure is done under general anaesthesia. The usual way in is the femoral vein, a vein in the groin. From there the thin tube, the catheter, goes up the large vein to the right side of the heart, into the right ventricle, and across the narrow valve into the lung artery. In a newborn this path has two bends and can be hard, so some teams go in through the jugular vein in the neck instead, a straighter path.",
+   "source": {
+    "title": "Hoetama et al., Balloon pulmonary valvuloplasty in neonates with critical pulmonary stenosis: jugular or femoral, Annals of Pediatric Cardiology 2020",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6979020/"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "fact",
+   "title": "Measuring the valve and placing the balloon",
+   "text": "In one hospital's series of children, the doctors first took an X-ray picture of the right ventricle with dye, which showed the narrow valve, thickened and dome-shaped, and measured the width of the valve ring. They chose a balloon a little wider than the ring, 10 to 20 percent wider. A thin tube was passed across the valve with its tip in a branch of the lung artery, and a guide wire left there held the way while the balloon catheter was slid along it, until the middle of the balloon sat across the valve.",
+   "source": {
+    "title": "Behjati-Ardakani et al., Long-term results of balloon pulmonary valvuloplasty in children with congenital pulmonary valve stenosis, Iranian Journal of Pediatrics 2013 (53 children treated)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3574989/"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "fact",
+   "title": "Opening the valve",
+   "text": "The balloon was filled fully within a few seconds and then quickly emptied. As it fills, the tight valve pinches the middle of the balloon into a waist; when the waist disappears, the valve has been stretched open. The doctors measured the pressure difference across the valve before and straight after, and filled the balloon again until the difference had fallen enough.",
+   "source": {
+    "title": "Behjati-Ardakani et al., Long-term results of balloon pulmonary valvuloplasty in children with congenital pulmonary valve stenosis, Iranian Journal of Pediatrics 2013 (53 children treated)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3574989/"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "fact",
+   "title": "During the procedure",
+   "text": "While the balloon is full, the blood pressure falls and the heart may race or skip; this returns to normal once the balloon is emptied. Serious problems are uncommon, and a balloon of the right size, kept full only briefly, makes them less likely. After a very tight valve is opened, the muscle just below it can tighten for a while; this usually settles over the following months, sometimes helped by a medicine, a beta blocker.",
+   "source": {
+    "title": "Rao PS, Balloon pulmonary valvuloplasty: a systematic review, Indian Heart Journal 2024",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11143516/"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "Afterwards",
+   "text": "When the valve is open, the balloon is emptied and taken out; it does not stay inside. Most children recover within a few hours to a day and stay one night in hospital, and a bruise in the groin fades in a few days. Risks include a leaky valve, bleeding where the tube went in, short-lived irregular heartbeats, infection, and the need for surgery if the procedure does not work.",
+   "source": {
+    "title": "Children's Health (Dallas), Pediatric balloon valvuloplasty: information for families",
+    "url": "https://www.childrens.com/specialties-services/treatments/balloon-valvuloplasty"
+   }
+  },
+  {
+   "id": "B14",
+   "type": "fact",
+   "title": "A newborn may stay a little blue for a while",
+   "text": "After a successful balloon, a newborn with critical stenosis can stay bluish for a while, because the thick, stiff right ventricle still fills poorly and some blood keeps crossing through the opening between the upper chambers. In this New Delhi series, half the babies had needed prostaglandin and kept it for about five days afterwards. As the muscle eases the blue colour fades: by one year almost all had normal oxygen levels. If a baby stays too blue, a stent in the ductus or an operation can help.",
+   "source": {
+    "title": "Aggarwal et al., Immediate and short-term outcome of balloon pulmonary valvuloplasty in neonatal critical pulmonary stenosis, Annals of Pediatric Cardiology 2025 (24 newborns, Sir Ganga Ram Hospital, New Delhi)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12063987/"
+   }
+  },
+  {
+   "id": "B15",
+   "type": "fact",
+   "title": "Growing up: a leak, and sometimes a repeat",
+   "text": "As the child grows, blood may begin to leak back through the valve, and in some children the narrowing comes back. If it does, the balloon procedure can be repeated as long as the leak is not too large; in severe cases an operation may be needed. Children who had pulmonary stenosis need regular check-ups with a children's heart doctor throughout their lives.",
+   "source": {
+    "title": "Children's Hospital of Philadelphia (CHOP), Pulmonary stenosis: information for families",
+    "url": "https://www.chop.edu/conditions-diseases/pulmonary-stenosis"
+   }
+  },
+  {
+   "id": "B16",
+   "type": "fact",
+   "title": "What the long-term studies show",
+   "text": "Over many years the relief usually lasts. The narrowing came back in about one in ten children, and a second balloon procedure with a bigger balloon opened it again. A leak becomes more common over the years, and some patients eventually need the pulmonary valve replaced.",
+   "source": {
+    "title": "Rao PS, Balloon pulmonary valvuloplasty: a systematic review, Indian Heart Journal 2024",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11143516/"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "Balloon pulmonary valvuloplasty for a baby or child",
+   "aliases": [
+    "Balloon pulmonary valvuloplasty",
+    "BPV",
+    "Pulmonary valve stenosis",
+    "Pulmonary stenosis"
+   ],
+   "sections": [],
+   "summary": "Why a narrow pulmonary valve makes the right side of the heart work harder, how a balloon passed from a vein in the groin stretches it open, and what parents can expect afterwards.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15",
+    "B16"
+   ],
+   "objectives": [
+    "Explain the path of blood through the heart and what the pulmonary valve does.",
+    "Explain how a narrow pulmonary valve strains the right ventricle, the signs it can cause, and how an echocardiogram finds it.",
+    "Follow how the valve is opened: a thin tube from a groin vein, a wire across the valve, a balloon a little wider than the valve inflated for a few seconds, and pressures measured before and after.",
+    "Know what to expect afterwards: a short stay, a newborn who may stay blue for a while, a possible leak or return of the narrowing, and lifelong check-ups."
+   ],
+   "prerequisites": [],
+   "filmable": true,
+   "film_note": "",
+   "film_rule": 1
+  }
+ ]
+}

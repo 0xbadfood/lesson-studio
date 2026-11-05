@@ -1,0 +1,234 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-vsd-device-closure",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 4,
+  "title": "Closing a hole between the heart's lower chambers",
+  "audience": "Parents of a child who needs a ventricular septal defect (VSD) closed with a device through a catheter, in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "heart-chambers",
+   "catheter-entry",
+   "vsd-occluder-steps"
+  ],
+  "written": "2026-11-05: written from the cited sources and checked against them; requested by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Four rooms and the walls between them",
+   "text": "The heart has four chambers: two smaller upper chambers called the atria, and two larger lower chambers called the ventricles. A thin muscular wall, the interatrial septum, separates the right and the left atria; a thick wall, the interventricular septum, separates the left and the right ventricles. The right ventricle pumps blood into the pulmonary artery, which carries it to the lungs to pick up oxygen; the left ventricle pumps the oxygen-rich blood into the aorta, which carries it to the rest of the body. Valves let blood flow only one way.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "fact",
+   "title": "The heart's own wiring",
+   "text": "The heartbeat is started and carried by a special kind of heart muscle, the nodal tissue. A patch of it in the right atrium, the sino-atrial node, sets off each beat. A second patch, the atrio-ventricular node, sits low in the right atrium. From it a bundle of fibres, the AV bundle, runs down to the top of the wall between the ventricles and divides into a right and a left branch, which carry the signal into the muscle of each ventricle.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "definition",
+   "title": "What a ventricular septal defect is",
+   "text": "A ventricular septal defect, or VSD, often called a hole in the heart, is a hole in the ventricular septum, the wall between the heart's two bottom chambers. The hole lets some oxygen-rich blood flow from the left ventricle into the right ventricle and back to the lungs, instead of going out to the body. This can make the heart and lungs work harder than normal. Children with a small VSD often have no signs; larger VSDs can cause fast breathing or shortness of breath, and poor weight gain or feeding difficulties.",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Ventricular septal defect - transcatheter device closure factsheet (2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/ventricular-septal-defect-transcatheter-device-closure"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "Where the hole sits",
+   "text": "There are two common types of VSD. A muscular VSD is in the lower, muscular part of the wall between the ventricles. A perimembranous VSD is near the heart's valves. There are also less common types, such as inlet and outlet VSDs, and a VSD is often also described by its size, small or large. Small VSDs can close by themselves and do not need treatment; a small VSD that has not closed is checked at regular appointments.",
+   "source": {
+    "title": "British Heart Foundation, Ventricular septal defect (VSD)",
+    "url": "https://www.bhf.org.uk/informationsupport/conditions/ventricular-septal-defect"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "Which holes close by themselves, and why large ones matter",
+   "text": "Most small VSDs close on their own, particularly those in the muscular part of the wall, and even if they do not close they rarely cause health problems. A VSD never gets bigger, and it sometimes gets smaller or closes completely, so when a baby is diagnosed most cardiologists do not recommend immediate surgery, but watch the baby closely and treat symptoms with medicine while they see whether the hole gets smaller or closes. A large VSD sends extra blood to the lungs, and symptoms often develop gradually over the first few months: fast breathing, trouble feeding and poor growth. Over years, too much flow and pressure can thicken the blood vessels of the lungs, and once permanent changes have happened in the lungs it is no longer safe to close the hole.",
+   "source": {
+    "title": "Cincinnati Children's Hospital, Ventricular Septal Defect (VSD): information for families",
+    "url": "https://www.cincinnatichildrens.org/health/v/vsd"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "Two ways to close the hole",
+   "text": "Larger VSDs need to be closed, and there are two ways, both done under general anaesthetic. In keyhole closure, a small cut is made in the skin and a long thin tube, a catheter, is put into a vein at the top of the leg and guided up to the heart to close the hole with a device that fills or plugs it; the plug stays in place for life. In open-heart surgery, the surgeon opens the breastbone and works directly on the heart, closing the hole with stitches, a patch or a plug, while a heart-lung bypass machine pumps the blood.",
+   "source": {
+    "title": "British Heart Foundation, Ventricular septal defect (VSD)",
+    "url": "https://www.bhf.org.uk/informationsupport/conditions/ventricular-septal-defect"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "A device is used for some holes, not all",
+   "text": "Some VSDs can be closed with a closure device delivered through a heart catheter, a small plastic tube. This is done more often in older children. In infants it needs a limited operation together with the catheter, so that the device can be placed. When a VSD causes symptoms that are hard to control with medicine, surgical closure is often recommended.",
+   "source": {
+    "title": "Cincinnati Children's Hospital, Ventricular Septal Defect (VSD): information for families",
+    "url": "https://www.cincinnatichildrens.org/health/v/vsd"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "Who is suitable",
+   "text": "In small children with large holes, surgery is usually preferred, while bigger children can be treated with a device instead. How well device closure works depends on the size of the hole compared with the size of the child, and on how far the hole is from the aortic valve and the tricuspid valve. The device goes in through a vein or an artery, and the procedure can be done under sedation; it avoids opening the breastbone and the heart-lung machine, which surgery needs and which make recovery and the hospital stay longer. Both surgery and device closure carry a possible risk of a heart rhythm problem called complete heart block.",
+   "source": {
+    "title": "Bergmann et al., Short- and long-term outcome after interventional VSD closure: a single-center experience in pediatric and adult patients, Pediatric Cardiology 2021 (CC BY 4.0)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7864847/"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "process",
+   "title": "The team, and the route from the groin",
+   "text": "For a perimembranous VSD, choosing which children should have device closure is done by a team that includes an interventional cardiologist, a heart doctor who works with catheters, and a heart surgeon experienced in congenital heart disease; in children it should only be done in specialist children's heart units, with heart surgery available in an emergency. A guidewire is put into the artery and the vein at the top of the leg, in the groin, to make a loop of wire through the heart. A thin delivery tube, a sheath, is pushed along the wire across the hole, from the right or the left side of the heart. Guided by ultrasound and X-ray, the device is pushed through the sheath and opened to close the hole.",
+   "source": {
+    "title": "NICE, Transcatheter endovascular closure of perimembranous ventricular septal defect (HealthTech guidance 213, formerly IPG336)",
+    "url": "https://www.nice.org.uk/guidance/htg213"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "process",
+   "title": "The procedure, step by step",
+   "text": "Not all VSDs can be closed this way; it depends on the size and position of the hole. The procedure is done under general anaesthetic, so the child is asleep and feels no pain. A TOE, an ultrasound probe placed in the food pipe, gives very clear pictures of the heart; only after seeing them can the doctor be sure the VSD can be closed with a device, and sometimes it shows that it cannot be done safely and the procedure is stopped, which is uncommon. A catheter is placed in a blood vessel in the groin and moved up to the heart and across the hole, using X-ray and ultrasound. A device, a small plug or double disc of fine mesh, is placed across the hole. It stays securely in place, heart tissue gradually grows over it, and over time it becomes part of the heart wall. The catheters are removed and a small dressing goes on the leg. It takes about 1 to 2 hours.",
+   "source": {
+    "title": "Sydney Children's Hospitals Network, Ventricular septal defect - transcatheter device closure factsheet (2026)",
+    "url": "https://www.schn.health.nsw.gov.au/factsheets/ventricular-septal-defect-transcatheter-device-closure"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "definition",
+   "title": "The closure device",
+   "text": "The closure device is made of metal and mesh material. It looks like a short tube with a disc on each end, and the discs are of different sizes. To fit inside the catheter the discs are folded up. When the device is in the right place, one disc opens as it is pushed out of the catheter; the short tube plugs the hole, and the other disc opens on the opposite side of the hole, so the wall is held between the two discs. If the hole is too big for the device or in the wrong position, it is closed with surgery instead: when the TOE shows this once the child is asleep, the child is woken up and the cardiologist talks with the family about the next steps.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Ventricular septal defect (VSD): Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/ventricular-septal-defect-vsd-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "process",
+   "title": "Checking the device before it is let go",
+   "text": "In this hospital's series, the hole was measured with an X-ray dye picture of the left ventricle and with the TOE, and the device was chosen to fit its size and shape. The first disc was opened on one side of the hole, the middle of the device in the hole, and the second disc on the other side: the first disc went on the left ventricle side when the device came up through the vein, and on the right ventricle side when it came through the artery. With the device still held on its cable, the team checked again with the TOE and dye pictures that it sat well, how much blood still leaked past it, and that it did not disturb the aortic valve; only then was it released by unscrewing the cable. The children went home the day after, and were asked to avoid strenuous activity for a month.",
+   "source": {
+    "title": "Device closure of perimembranous ventricular septal defect: choosing between Amplatzer occluders, Frontiers in Pediatrics 2019 (51 patients)",
+    "url": "https://www.frontiersin.org/journals/pediatrics/articles/10.3389/fped.2019.00300/full"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "After the procedure: medicines and check-ups",
+   "text": "At this hospital most children spend the night after the procedure, and an echocardiogram the next morning checks where the device sits; the cardiologist says when the child can go home. For six months the child takes acetylsalicylic acid, ASA or aspirin, to stop small blood clots forming around the device, and needs antibiotics before and after any dental treatment, to help prevent a heart infection called infectious endocarditis; the cardiologist says if this is needed for longer. The child sees the cardiologist within three months, with tests to make sure the hole is properly closed.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Ventricular septal defect (VSD): Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/ventricular-septal-defect-vsd-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B14",
+   "type": "fact",
+   "title": "The risks, as the hospital explains them",
+   "text": "Heart catheterisation is a fairly low-risk procedure, but not risk-free, and the doctor explains the risks before parents give consent. There is a very small risk that the catheter breaks through a blood vessel or the heart wall; to reduce it, the doctors watch the catheter on X-ray all the time. The device may be placed in the wrong position; the doctors can see this on the echocardiogram and take it out. After it has been opened it may move out of position; then the cardiologist tries to take it out in the catheter lab, and if that is not possible an operation is arranged to remove it and close the hole. Sometimes the device interferes with the heart's electrical system and causes problems with the heartbeat, called heart block; the cardiologist will explain this in more detail.",
+   "source": {
+    "title": "SickKids (The Hospital for Sick Children, Toronto), AboutKidsHealth: Ventricular septal defect (VSD): Closure in the heart catheterization lab",
+    "url": "https://www.aboutkidshealth.ca/ventricular-septal-defect-vsd-closure-in-the-heart-catheterization-lab"
+   }
+  },
+  {
+   "id": "B15",
+   "type": "fact",
+   "title": "Why heart block matters most for perimembranous holes",
+   "text": "The heart's main wiring bundle, the His bundle, runs along the lower back edge of a perimembranous VSD, so it can be bruised or pressed during device closure, especially if the device is too big for the hole. Device closure of perimembranous VSDs can work well in carefully chosen patients, but heart block can also appear late and unexpectedly, so the children need watchful follow-up. In this series of 51 patients, one 15-year-old had heart block when the device was released that recovered within minutes with medicine, but it was found again at the 18-month check and was treated with a permanent pacemaker.",
+   "source": {
+    "title": "Device closure of perimembranous ventricular septal defect: choosing between Amplatzer occluders, Frontiers in Pediatrics 2019 (51 patients)",
+    "url": "https://www.frontiersin.org/journals/pediatrics/articles/10.3389/fped.2019.00300/full"
+   }
+  },
+  {
+   "id": "B16",
+   "type": "fact",
+   "title": "Watching the heart rhythm afterwards",
+   "text": "After the procedure every patient in this centre had an echocardiogram, an ECG and a 24-hour heart rhythm recording, with check-ups at discharge and about 1, 3, 6 and 12 months later, then every year. Most cases of complete heart block after device closure are found 2 to 7 days after the procedure, but later cases, weeks or months afterwards, have also been reported. A new change on the ECG, a bundle branch block, during or just after the procedure may be an early warning sign. Among this centre's 149 patients, one baby of 11 months developed complete heart block a week after the procedure; the device was taken out and the hole closed with surgery, and her heart rhythm recovered within 5 days.",
+   "source": {
+    "title": "Bergmann et al., Short- and long-term outcome after interventional VSD closure: a single-center experience in pediatric and adult patients, Pediatric Cardiology 2021 (CC BY 4.0)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7864847/"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "Closing a VSD with a device",
+   "aliases": [
+    "VSD device closure",
+    "Transcatheter VSD closure",
+    "Ventricular septal defect closure",
+    "Keyhole VSD closure"
+   ],
+   "sections": [],
+   "summary": "What a hole in the wall between the heart's lower chambers does, why many close by themselves, why some muscular and perimembranous holes in suitable children can be closed with a double-disc device through a catheter from the groin instead of open-heart surgery, and what parents can expect, including the watch on the heart rhythm afterwards.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15",
+    "B16"
+   ],
+   "objectives": [
+    "Explain the heart's four chambers, the wall between the lower chambers and its wiring, and what a ventricular septal defect does to blood flow.",
+    "Explain why many VSDs close by themselves, why large ones matter, and why only some holes in some children suit a device rather than surgery.",
+    "Follow the procedure: asleep, an ultrasound probe in the food pipe, thin tubes from the groin vein and artery, a double-disc device that opens on each side of the hole, checked before release.",
+    "Know what to expect afterwards: a night in hospital, aspirin and dental antibiotics for some months, check-ups with heart rhythm tests, and the risks, especially heart block for perimembranous holes."
+   ],
+   "prerequisites": [],
+   "filmable": true,
+   "film_note": "",
+   "film_rule": 1
+  }
+ ]
+}

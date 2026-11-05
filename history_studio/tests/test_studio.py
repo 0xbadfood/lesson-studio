@@ -454,7 +454,10 @@ class TopicTests(unittest.TestCase):
         cat = catalog.catalog(subjects={'biology'})
         eleven = next(c for c in cat if c['class'] == 11)
         beyond = next(s for s in eleven['subjects'] if s['name'] == 'Beyond the book')
-        self.assertEqual([ch['id'] for ch in beyond['chapters']], ['topic-bav-newborn', 'topic-pda-stenting'])
+        self.assertEqual([ch['id'] for ch in beyond['chapters']],          # the cardiologist's nine procedures (2026-11-05)
+                         ['topic-bav-newborn', 'topic-pda-stenting', 'topic-asd-device-closure', 'topic-vsd-device-closure',
+                          'topic-pda-device-closure', 'topic-balloon-pulmonary-valvuloplasty', 'topic-balloon-coarctoplasty',
+                          'topic-cardiac-catheterisation', 'topic-balloon-atrial-septostomy'])
         self.assertNotIn('topic-bav-newborn', [d['source']['id'] for d in catalog.digests(subjects={'physics'})])
         d = catalog.digest_for('topic-bav-newborn', subjects={'biology'})
         request = catalog.film_request(d, d['concepts'][0], figures='biology')
@@ -485,3 +488,56 @@ class BookFigureTests(unittest.TestCase):
         concept = {'id': 'c-test', 'name': 'graphs', 'blocks': ['B82']}
         self.assertEqual(catalog.book_figures(digest, concept), [])
         self.assertIn('[Exercise figure', catalog.book_text(digest, concept))
+
+
+class LanguageVersionTests(ChemistryStudioTests):
+    """A finished film in Hindi too (versions.py, 2026-11-05): made by infofilm.languages in its own process."""
+
+    def setUp(self):
+        super().setUp()
+        from history_studio import versions
+        self.versions, started = versions, []
+        self.started = started
+
+        class Process:
+            pid = 999999999
+
+            def __init__(self, args, **kwargs):
+                started.append(args)
+
+            def wait(self):
+                return 0
+        self.addCleanup(setattr, versions.subprocess, 'Popen', versions.subprocess.Popen)
+        versions.subprocess.Popen = Process
+        self.addCleanup(setattr, versions, 'OUT', versions.OUT)
+        versions.OUT = Path(tempfile.mkdtemp())
+        profile = {**catalog.PROFILES['chemistry'], 'languages': True}
+        self.root = Path(tempfile.mkdtemp())
+        self.client = TestClient(studio.build(self.queue, self.access, self.root, profile))
+        self.client.post('/api/login', json={'code': self.access.code})
+
+    def test_a_finished_film_is_made_again_in_hindi(self):
+        film = self.client.post('/api/films', json={'chapter': 'kech1-02', 'concept': 'C1'}).json()['film']
+        self.assertEqual(self.client.get(f'/api/films/{film}/versions').status_code, 409)     # not finished yet
+        self.queue.jobs['job1']['status'] = 'succeeded'
+        data = self.client.get(f'/api/films/{film}/versions').json()
+        self.assertIn('gautam-hi', [v['id'] for v in data['voices']])
+        self.assertEqual(self.client.post(f'/api/films/{film}/versions', json={'voice': 'nobody'}).status_code, 404)
+        made = self.client.post(f'/api/films/{film}/versions', json={'lang': 'hi', 'voice': 'gautam-hi'}).json()['versions']
+        self.assertEqual(self.started[0][-6:], ['make', self.queue.jobs['job1']['project'], '--lang', 'hi', '--voice', 'gautam-hi'])
+        self.assertEqual(made[0]['status'], 'failed')          # the fake process is not alive and left no result
+        out = self.versions.OUT / f'job1-hi-gautam-hi'
+        out.mkdir()
+        (out / 'video.mp4').write_bytes(b'mp4')
+        (out / 'language.json').write_text(json.dumps({'video': str(out / 'video.mp4')}))
+        done = self.client.get(f'/api/films/{film}/versions').json()['versions'][0]
+        self.assertEqual(done['status'], 'done')
+        self.assertEqual(self.client.get(done['video']).content, b'mp4')
+        self.assertEqual(self.client.get(f'/media/{film}/version/other:hi:gautam-hi').status_code, 404)
+
+    def test_studios_without_languages_offer_none(self):
+        client = TestClient(studio.build(self.queue, self.access, self.root, catalog.PROFILES['chemistry']))
+        client.post('/api/login', json={'code': self.access.code})
+        film = client.post('/api/films', json={'chapter': 'kech1-02', 'concept': 'C1'}).json()['film']
+        self.queue.jobs['job1']['status'] = 'succeeded'
+        self.assertEqual(client.get(f'/api/films/{film}/versions').status_code, 404)

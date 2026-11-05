@@ -1,0 +1,235 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-cardiac-catheterisation",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 8,
+  "title": "Looking inside your child's heart: the cath test",
+  "audience": "Parents of a child who needs a cardiac catheterisation, in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "heart-chambers",
+   "catheter-entry",
+   "cath-pressures",
+   "angiogram-view"
+  ],
+  "written": "2026-11-05: written from the cited sources and checked against them; requested by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Four rooms and two journeys",
+   "text": "The heart has four chambers: two smaller upper chambers, the right and left atria, and two larger lower chambers, the right and left ventricles. Blood makes two journeys. Blood that has given up its oxygen in the body comes back through the big veins, the venae cavae, into the right atrium; the right ventricle pumps it into the pulmonary artery, which carries it to the lungs. Oxygen-rich blood returns from the lungs through the pulmonary veins into the left atrium, and the left ventricle pumps it into the aorta, the main artery to the whole body. Valves between the chambers let blood flow only one way.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "definition",
+   "title": "A test from inside, and how it differs from a treatment",
+   "text": "A child may need a cardiac catheterisation to find out about a heart problem, called a diagnostic cardiac catheterisation, or to fix one, called an interventional cardiac catheterisation, for example to close an abnormal opening between the two sides of the heart or to widen a narrow blood vessel or valve. Diagnostic catheterisation is used less often now, because echocardiography (an ultrasound scan of the heart), MRI and CT scans can often be used instead. It is still used to get a better picture of the heart or a heart defect, to check how blood flows through the heart, to find the pressures in different parts of the heart and lungs, and to check for problems after surgery.",
+   "source": {
+    "title": "Children's National Hospital (Washington DC), Pediatric cardiac catheterization: information for families",
+    "url": "https://childrensnational.org/choose-childrens/conditions-and-treatments/heart/cardiac-catheterization"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "fact",
+   "title": "Before the day",
+   "text": "Most children first have a pre-admission appointment, where the team checks that the child is well and may do blood tests; parents should tell the team about any allergies. The cardiologist explains the procedure and asks the parents to sign a consent form, and an anaesthetist explains the anaesthetic. A child who takes the blood-thinning medicine warfarin may need to stop it beforehand, to lower the risk of bleeding. The night before, a nurse phones to say when the child can last eat and drink. Girls over 12 are asked about a possible pregnancy and give a urine sample for a pregnancy test, because X-rays are used.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Cardiac catheterisation: information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/procedures-and-treatments/cardiac-catheterisation/"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "Asleep for the test",
+   "text": "At this hospital most children have the procedure under a general anaesthetic, so they are asleep; older children may sometimes have sedation instead, which is discussed with the cardiologist. A parent can stay with the child until they are asleep. Depending on what needs to be done, the procedure lasts between one and four hours.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Cardiac catheterisation: information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/procedures-and-treatments/cardiac-catheterisation/"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "The cath lab",
+   "text": "The cath lab team includes a cardiologist, a cardiac anaesthetist, an ECG technician who records the heart's electrical rhythm, theatre nurses and a cardiac radiographer. A special X-ray machine, called an image intensifier, takes moving X-ray pictures from above the child and from the side at the same time. The team records ECG and pressure traces of the heart throughout. A catheterisation does involve a dose of radiation; the hospital explains that the benefits of the test outweigh the risk from the radiation dose, and this is also why girls old enough to be pregnant have a pregnancy test first.",
+   "source": {
+    "title": "Alder Hey Children's Hospital, Cardiac catheterisation radiology and radiation safety: information for parents (PIAG 106)",
+    "url": "https://www.alderhey.nhs.uk/wp-content/uploads/2023/06/Cardiac-Catheterisation-Radiology-Leaflet-PIAG-106.pdf"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "The way in: a small puncture and a sheath",
+   "text": "The catheters are thin, flexible plastic tubes. Usually the doctor makes a small hole with a needle at the top of the leg, in the groin; sometimes other blood vessels are used, including one in the neck. A short plastic tube called a sheath is placed in the blood vessel there. The sheath lets the doctor put the catheter in safely and stops bleeding from the needle hole.",
+   "source": {
+    "title": "Seattle Children's Hospital, Cardiac catheterization: what to expect",
+    "url": "https://www.seattlechildrens.org/clinics/heart/what-to-expect/cardiac-cath/"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "Through a vein to the right side",
+   "text": "To study the right side of the heart, the catheter is put into a vein, usually in the groin, after a numbing injection of local anaesthetic. Watching on X-ray, the doctor moves it up the vein to the right atrium, then into the right ventricle and the pulmonary artery, and sometimes into the branches of the pulmonary artery. On the way, small blood samples are drawn from several vessels and heart chambers, and blood pressures are measured.",
+   "source": {
+    "title": "Boston Children's Hospital, Cardiac catheterization: information for families",
+    "url": "https://www.childrenshospital.org/treatments/cardiac-catheterization"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "Through an artery to the left side",
+   "text": "To reach the left side of the heart, a catheter can be put into an artery, for example at the top of the leg, and threaded up the artery. Live X-ray pictures guide it up towards the heart, and it is passed through the aortic valve into the left side of the heart, where pressures are measured.",
+   "source": {
+    "title": "MedlinePlus (US National Library of Medicine), Left heart catheterization",
+    "url": "https://medlineplus.gov/ency/article/003871.htm"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "fact",
+   "title": "Pressures and oxygen in each part of the heart",
+   "text": "In a diagnostic catheterisation the team takes blood samples and measures the oxygen levels and the pressures in each of the parts of the heart. For angiography, contrast dye is injected through a catheter, so that the X-ray shows the shape of the heart and blood vessels and the path the dye takes through the heart.",
+   "source": {
+    "title": "Stanford Medicine Children's Health, Cardiac catheterization and angiography: frequently asked questions",
+    "url": "https://www.stanfordchildrens.org/en/services/cardiac-catheterization-angiography/faq.html"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "fact",
+   "title": "The angiogram pictures",
+   "text": "During the procedure the doctors watch the catheter on an X-ray screen; this moving X-ray is called fluoroscopy. Dye injected through the catheter shows up on the X-ray, and the X-ray pictures taken are called angiograms. Several injections may be needed, with the catheter moved each time to give different views. The doctor looks at the pictures for blockages or narrowing.",
+   "source": {
+    "title": "UCSF Benioff Children's Hospitals, Cardiac catheterization: patient education",
+    "url": "https://www.ucsfbenioffchildrens.org/education/cardiac-catheterization"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "fact",
+   "title": "What the information is for",
+   "text": "The doctor moves the catheter around, measures the pressures in different parts of the heart and takes blood samples if necessary; dye injected into the heart can be filmed and viewed later. All this gives the team a more detailed picture of the child's heart. A diagnostic catheter is done to get more information, to confirm a diagnosis, or to help the team decide the right timing for the child's heart operation. The results are usually available straight away, and the consultant explains them the same day, though the cardiologist may need to discuss the child with other members of the team, such as the surgeons, before giving more information.",
+   "source": {
+    "title": "Alder Hey Children's Hospital, Cardiac catheterisation: information for parents and carers (PIAG 013)",
+    "url": "https://www.alderhey.nhs.uk/wp-content/uploads/2023/06/Cardiac-Catheterisation-Leaflet-PIAG-013.pdf"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "fact",
+   "title": "Lying flat afterwards",
+   "text": "When the catheters are taken out, a large bandage covers the place where they went in. The child must lie flat and still and keep the leg straight for 4 hours after the procedure. Usually, after a diagnostic procedure, children go home the same day; after a treatment, or intervention, children often stay overnight.",
+   "source": {
+    "title": "Seattle Children's Hospital, Cardiac catheterization: what to expect",
+    "url": "https://www.seattlechildrens.org/clinics/heart/what-to-expect/cardiac-cath/"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "Checking the leg before going home",
+   "text": "Back on the ward, the nurses check the child regularly. They make sure the place where the catheter went in is not bleeding and that the leg has a good blood supply, by checking its colour and how warm it is. Before going home, the nurses make sure the child is no longer drowsy, has had something to eat and drink, and has passed urine. The small entry hole does not need stitches and heals in a few days, though the area around it may become a little bruised.",
+   "source": {
+    "title": "Royal Brompton Hospital, Cardiac catheterisation for children: information for patients and carers",
+    "url": "https://www.rbht.nhs.uk/sites/nhs/files/Leaflets/Cardiac%20catherisation%20for%20children-web.pdf"
+   }
+  },
+  {
+   "id": "B14",
+   "type": "fact",
+   "title": "At home: what to watch for",
+   "text": "There may be some discomfort for a few days, especially if there is a bruise, and paracetamol can be given at the dose for the child's age. The child may be tired for a day or so, can usually go back to school within a couple of days unless the cardiologist advises otherwise, and should avoid cycling and sports for a week. Contact the ward straight away if the entry site bleeds, or becomes red, swollen and painful; if the leg changes colour, looks swollen or feels colder than the other leg; if the child has pins and needles in the leg; or if a high temperature does not go away. If you are worried about the child's colour or breathing, or there is heavy bleeding from the site, call an ambulance.",
+   "source": {
+    "title": "Alder Hey Children's Hospital, Cardiac catheterisation: information for parents and carers (PIAG 013)",
+    "url": "https://www.alderhey.nhs.uk/wp-content/uploads/2023/06/Cardiac-Catheterisation-Leaflet-PIAG-013.pdf"
+   }
+  },
+  {
+   "id": "B15",
+   "type": "fact",
+   "title": "Possible problems",
+   "text": "The cardiologist explains the specific risks for each child before the procedure. Bleeding from the blood vessel usually stops when pressure is applied over the puncture site. Because children's blood vessels are small, a blood clot can form and block the flow; this is seen more often in babies, is usually only temporary, and can be treated with a blood-thinning medicine called heparin, which is why nurses feel for a pulse in the feet. A heartbeat that is too fast or too slow is quite common while the catheter moves through the heart; usually moving the catheter is all that is needed, and only rarely is medicine, an electric shock or a temporary pacemaker needed. Damage to the heart itself is very rare. The anaesthetic can leave a child very drowsy, sick or with a high temperature. The risk of death or serious complication is extremely low, although it may be slightly higher in newborns and very young babies, in children with high blood pressure in the lungs or bleeding or clotting problems, in children who are very blue, and in children whose heart pumps poorly.",
+   "source": {
+    "title": "Alder Hey Children's Hospital, Cardiac catheterisation: information for parents and carers (PIAG 013)",
+    "url": "https://www.alderhey.nhs.uk/wp-content/uploads/2023/06/Cardiac-Catheterisation-Leaflet-PIAG-013.pdf"
+   }
+  },
+  {
+   "id": "B16",
+   "type": "fact",
+   "title": "The dye and other small risks",
+   "text": "Allergic reactions to the X-ray dye are extremely rare, but young children may look flushed for a few hours afterwards; drinking plenty helps the kidneys clear the dye from the body. Infection is unlikely, because no large cuts are made. Every anaesthetic carries a very small risk. Bruising where the catheter went in can be uncomfortable, and paracetamol is usually enough for the pain.",
+   "source": {
+    "title": "Great Ormond Street Hospital, Cardiac catheterisation: information for families",
+    "url": "https://www.gosh.nhs.uk/conditions-and-treatments/procedures-and-treatments/cardiac-catheterisation/"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "A cardiac catheter test in a child",
+   "aliases": [
+    "Cardiac catheterisation",
+    "Cath study",
+    "Diagnostic cardiac catheterisation",
+    "Cardiac angiography"
+   ],
+   "sections": [],
+   "summary": "Why doctors sometimes need to look at a child's heart from the inside, how a thin tube from the groin measures pressures and oxygen in each chamber and takes X-ray pictures with dye, and what parents can expect before, during and after the test.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15",
+    "B16"
+   ],
+   "objectives": [
+    "Name the heart's four chambers and follow the two journeys of blood, to the lungs and to the body.",
+    "Explain why a diagnostic catheterisation is sometimes needed when scans cannot answer the question, and how it differs from an interventional one.",
+    "Follow the test: a sheath in the groin, a catheter through a vein to the right side and through an artery to the left side, pressures and oxygen samples in each part, and dye for the angiogram pictures.",
+    "Know what to expect around the test: preparation and the anaesthetic, lying flat afterwards, checks on the leg, signs to watch for at home, and the possible risks."
+   ],
+   "prerequisites": [],
+   "filmable": true,
+   "film_note": "",
+   "film_rule": 1
+  }
+ ]
+}

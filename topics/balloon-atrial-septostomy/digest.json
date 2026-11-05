@@ -1,0 +1,234 @@
+{
+ "schema": "topic.v1",
+ "source": {
+  "id": "topic-balloon-atrial-septostomy",
+  "kind": "topic",
+  "studio": "biology",
+  "class": 11,
+  "subject": "beyond",
+  "book": "topic",
+  "book_title": "Beyond the book",
+  "chapter": 9,
+  "title": "A balloon to help a newborn's blood mix",
+  "audience": "Parents of a newborn who needs a balloon atrial septostomy (Rashkind procedure), in plain words (no biology background)",
+  "figure_class": 10,
+  "figures": [
+   "heart-chambers",
+   "transposition-heart",
+   "septostomy-steps"
+  ],
+  "written": "2026-11-05: written from the cited sources and checked against them; requested by the paediatric cardiologist reviewer"
+ },
+ "outline": [],
+ "chapter_context": [],
+ "gaps": [],
+ "additions": [],
+ "audit": {},
+ "research": {},
+ "blocks": [
+  {
+   "id": "B1",
+   "type": "fact",
+   "title": "Four rooms and two loops",
+   "text": "The heart has four chambers: two upper chambers, the right and left atria, and two lower pumping chambers, the ventricles. A thin muscular wall, the interatrial septum, separates the two atria. Blood travels in two loops. The right ventricle pumps blood that has given up its oxygen to the lungs, and it comes back full of oxygen to the left atrium. The left ventricle pumps this oxygen-rich blood into the aorta, which carries it to the whole body, and the used blood returns to the right atrium.",
+   "source": {
+    "title": "NCERT Class 11 Biology, Chapter 15 Body Fluids and Circulation",
+    "url": "https://ncert.nic.in/textbook/pdf/kebo115.pdf"
+   }
+  },
+  {
+   "id": "B2",
+   "type": "definition",
+   "title": "The foramen ovale: a door from before birth",
+   "text": "Before birth, the baby's oxygen comes from the mother through the placenta and the umbilical cord, and the baby's lungs are not yet being used. Inside the baby's heart, most of the oxygen-rich blood coming into the right atrium flows across to the left atrium through an opening called the foramen ovale. Another short-cut, the ductus arteriosus, lets blood bypass the lungs. At birth, with the first breaths, the lungs expand, and the ductus arteriosus and the foramen ovale both close over the first minutes and days of life.",
+   "source": {
+    "title": "Stanford Medicine Children's Health, Blood circulation in the fetus and newborn",
+    "url": "https://www.stanfordchildrens.org/en/topic/default?id=blood-circulation-in-the-fetus-and-newborn-90-P02362"
+   }
+  },
+  {
+   "id": "B3",
+   "type": "definition",
+   "title": "Transposition: two arteries swapped",
+   "text": "In transposition of the great arteries, TGA, the two main arteries leaving the heart are switched. The aorta comes from the right ventricle instead of the left, and the pulmonary artery comes from the left ventricle instead of the right. So oxygen-rich blood is pumped back to the lungs, and blood low in oxygen is pumped to the body without passing through the lungs. After birth such a baby looks blue and has low oxygen levels; an echocardiogram, an ultrasound picture of the heart, confirms it.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Transposition of the great arteries (TGA): information for families (updated March 2023)",
+    "url": "https://www.aboutkidshealth.ca/transposition-of-the-great-arteries-tga"
+   }
+  },
+  {
+   "id": "B4",
+   "type": "fact",
+   "title": "Two separate circles that must mix",
+   "text": "Because the arteries are switched, the baby has two disconnected circulations: the oxygen-rich blood goes round and round through the lungs, while the oxygen-poor blood goes round and round through the body. A balloon atrial septostomy makes the natural opening between the two atria, the foramen ovale, bigger, so that blood from both sides can mix and oxygen can be delivered to the rest of the body.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Balloon atrial septostomy: information for families (updated November 2024)",
+    "url": "https://www.aboutkidshealth.ca/balloon-atrial-septostomy"
+   }
+  },
+  {
+   "id": "B5",
+   "type": "fact",
+   "title": "A medicine to keep the ductus open",
+   "text": "Most babies with TGA first need to be made stable by getting more oxygen-rich blood to the body. A medicine called prostaglandin, given into a vein, keeps the ductus arteriosus open, which lets blood mix, so more oxygen-rich blood reaches the body's organs. This medicine can sometimes interfere with the baby's breathing, so a breathing machine, a ventilator, is used to help.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Transposition of the great arteries (TGA): information for families (updated March 2023)",
+    "url": "https://www.aboutkidshealth.ca/transposition-of-the-great-arteries-tga"
+   }
+  },
+  {
+   "id": "B6",
+   "type": "fact",
+   "title": "Why a bigger hole helps",
+   "text": "For most babies a balloon atrial septostomy is also needed to raise the oxygen in the baby's body. The bigger hole in the wall between the upper chambers lets blood high in oxygen in the left atrium mix with blood low in oxygen in the right atrium, so blood higher in oxygen is pumped to the body through the aorta. The hole that is made is repaired later, at the arterial switch operation. Prostaglandin can sometimes be stopped after the septostomy.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Transposition of the great arteries (TGA): information for families (updated March 2023)",
+    "url": "https://www.aboutkidshealth.ca/transposition-of-the-great-arteries-tga"
+   }
+  },
+  {
+   "id": "B7",
+   "type": "fact",
+   "title": "Who needs it",
+   "text": "Right after birth, the main worry is how low the baby's oxygen levels are. In this hospital's experience, about half of babies with TGA who do not also have a hole between the lower chambers, called a ventricular septal defect, need a septostomy.",
+   "source": {
+    "title": "Alder Hey Children's Hospital, Balloon atrial septostomy for transposition of the great arteries (TGA): patient information leaflet PIAG 275",
+    "url": "https://www.alderhey.nhs.uk/conditions/patient-information-leaflets/balloon-atrial-septostomy-for-transposition-of-the-great-arteries-tga/"
+   }
+  },
+  {
+   "id": "B8",
+   "type": "fact",
+   "title": "Often at the bedside",
+   "text": "A balloon atrial septostomy is done by a cardiologist who specialises in catheter procedures. It is usually done at the baby's bedside in the heart intensive care unit, with ultrasound pictures guiding the doctor. If the heart scan suggests it will be more difficult, it may be done instead in a special procedure room, the cardiac catheterisation laboratory.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Balloon atrial septostomy: information for families (updated November 2024)",
+    "url": "https://www.aboutkidshealth.ca/balloon-atrial-septostomy"
+   }
+  },
+  {
+   "id": "B9",
+   "type": "fact",
+   "title": "Getting ready",
+   "text": "A heart specialist explains the procedure, the anaesthesia doctor also talks with the parents, and the parents sign a consent form. The baby must not be fed for a while before the procedure; breast milk can be saved for later. If the baby is not already on a breathing machine, the team puts the baby on one so that the procedure can be done safely, and the baby gets pain medicine and sedation before and during the procedure.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Balloon atrial septostomy: information for families (updated November 2024)",
+    "url": "https://www.aboutkidshealth.ca/balloon-atrial-septostomy"
+   }
+  },
+  {
+   "id": "B10",
+   "type": "fact",
+   "title": "The way in: the belly-button vein or the groin vein",
+   "text": "The catheter, a thin tube with a balloon at its tip, is passed through either the umbilical vein, in the baby's belly button, or the femoral vein, at the top of the leg in the groin. It goes into the right atrium and then through the foramen ovale into the left atrium, while an echocardiogram shows the operator where it is.",
+   "source": {
+    "title": "Child and Adolescent Health Service, Western Australia (Perth Children's Hospital), Neonatal guideline: Cardiac management of balloon atrial septostomy (BAS), reviewed May 2024",
+    "url": "https://cahs.health.wa.gov.au/~/media/HSPs/CAHS/Documents/Health-Professionals/Neonatology-guidelines/Cardiac-Management-of-Balloon-Atrial-Septostomy-BAS.pdf"
+   }
+  },
+  {
+   "id": "B11",
+   "type": "fact",
+   "title": "The balloon is pulled across the wall",
+   "text": "Once the catheter is in the left atrium, the balloon at its tip is filled and then pulled back through the hole into the right atrium. By gently tearing some of the muscle wall that divides the two atria, this makes the small foramen ovale bigger. The balloon is then emptied and the catheter taken out. If the catheter went in through the groin, the baby has a small cut covered with a bandage.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Balloon atrial septostomy: information for families (updated November 2024)",
+    "url": "https://www.aboutkidshealth.ca/balloon-atrial-septostomy"
+   }
+  },
+  {
+   "id": "B12",
+   "type": "fact",
+   "title": "What the team checks",
+   "text": "The balloon is filled with salt water, and the doctor watches it clearly on the ultrasound screen. Before pulling, the team checks on the screen that the balloon is clear of the valve between the upper and lower chambers and of the veins bringing blood from the lungs. It is pulled back gently onto the wall between the atria, then with a quick, controlled tug, taking care not to pull it into the large vein below the heart. If the blood flow through the new opening, seen in colour on the scan, is not enough, the pull can be repeated. Afterwards the cardiologist checks the size of the opening again on an echocardiogram.",
+   "source": {
+    "title": "Child and Adolescent Health Service, Western Australia (Perth Children's Hospital), Neonatal guideline: Cardiac management of balloon atrial septostomy (BAS), reviewed May 2024",
+    "url": "https://cahs.health.wa.gov.au/~/media/HSPs/CAHS/Documents/Health-Professionals/Neonatology-guidelines/Cardiac-Management-of-Balloon-Atrial-Septostomy-BAS.pdf"
+   }
+  },
+  {
+   "id": "B13",
+   "type": "fact",
+   "title": "After the procedure",
+   "text": "The baby goes to the intensive care unit. The team aims to reduce the breathing support and take out the breathing tube and other support, depending on how stable the baby is. Most babies need about one to two days in intensive care after the septostomy; a small number need longer.",
+   "source": {
+    "title": "Alder Hey Children's Hospital, Balloon atrial septostomy for transposition of the great arteries (TGA): patient information leaflet PIAG 275",
+    "url": "https://www.alderhey.nhs.uk/conditions/patient-information-leaflets/balloon-atrial-septostomy-for-transposition-of-the-great-arteries-tga/"
+   }
+  },
+  {
+   "id": "B14",
+   "type": "fact",
+   "title": "Watching the legs and the entry point",
+   "text": "Afterwards the nurses keep monitoring the baby and check the legs, telling the cardiologists if a leg changes colour, feels cool or has weaker pulses. If the groin vein was used, the leg is raised a little, and it may look a little swollen and flushed for one or two days. The nurses watch the entry point, in the belly button or the groin, for bleeding.",
+   "source": {
+    "title": "Child and Adolescent Health Service, Western Australia (Perth Children's Hospital), Neonatal guideline: Cardiac management of balloon atrial septostomy (BAS), reviewed May 2024",
+    "url": "https://cahs.health.wa.gov.au/~/media/HSPs/CAHS/Documents/Health-Professionals/Neonatology-guidelines/Cardiac-Management-of-Balloon-Atrial-Septostomy-BAS.pdf"
+   }
+  },
+  {
+   "id": "B15",
+   "type": "fact",
+   "title": "Possible problems",
+   "text": "A balloon atrial septostomy is considered a low-risk procedure, and the risks depend on the baby's overall health. They include bruising at the groin, a blood clot, infection, bleeding, an irregular heartbeat that is fast, slow or uneven, and stroke; there is a very small risk of death. The cardiologist explains the risks and asks for consent, which can be given in person or over the phone.",
+   "source": {
+    "title": "Alder Hey Children's Hospital, Balloon atrial septostomy for transposition of the great arteries (TGA): patient information leaflet PIAG 275",
+    "url": "https://www.alderhey.nhs.uk/conditions/patient-information-leaflets/balloon-atrial-septostomy-for-transposition-of-the-great-arteries-tga/"
+   }
+  },
+  {
+   "id": "B16",
+   "type": "fact",
+   "title": "A bridge to the switch operation",
+   "text": "The septostomy helps the baby until the repair: an open-heart operation called the arterial switch is needed to fix the swapped arteries. It is usually done within the first two weeks after birth, or sometimes at about six weeks if there is also a hole between the lower chambers. It swaps the two arteries back, so that the aorta leaves the left ventricle and the pulmonary artery the right, and moves the heart's own small arteries, the coronary arteries, to the new aorta. TGA is lifelong, so children keep seeing a heart doctor as they grow.",
+   "source": {
+    "title": "SickKids (AboutKidsHealth), Transposition of the great arteries (TGA): information for families (updated March 2023)",
+    "url": "https://www.aboutkidshealth.ca/transposition-of-the-great-arteries-tga"
+   }
+  }
+ ],
+ "concepts": [
+  {
+   "id": "C1",
+   "name": "Balloon atrial septostomy in a newborn",
+   "aliases": [
+    "Balloon atrial septostomy",
+    "Rashkind procedure",
+    "BAS",
+    "Atrial septostomy"
+   ],
+   "sections": [],
+   "summary": "Why a newborn with transposition of the great arteries needs blood from the two sides of the heart to mix, how a balloon pulled across the wall between the upper chambers makes the foramen ovale bigger, and what parents can expect until the arterial switch operation.",
+   "depth": "stated",
+   "difficulty": "core",
+   "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B14",
+    "B15",
+    "B16"
+   ],
+   "objectives": [
+    "Explain the heart's two loops of blood and the foramen ovale, the opening between the upper chambers from before birth.",
+    "Explain why a baby whose two main arteries are swapped needs blood to mix, and how prostaglandin and a bigger opening help.",
+    "Follow how the septostomy is done: a thin tube through the belly-button or groin vein, a balloon filled in the left atrium and pulled back across the wall, watched on ultrasound.",
+    "Know what to expect afterwards: intensive care, checks of the legs and entry point, the possible problems, and the arterial switch operation in the first weeks."
+   ],
+   "prerequisites": [],
+   "filmable": true,
+   "film_note": "",
+   "film_rule": 1
+  }
+ ]
+}
