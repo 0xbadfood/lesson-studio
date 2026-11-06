@@ -92,6 +92,20 @@ def book_formula(text):
     return counts(body), (int(sign.group(1) or 1) * (1 if sign.group(2) == '+' else -1)) if sign else 0
 
 
+UNLISTED = re.compile(r'\[(Kr|Rn)[^\]]*\]')   # noble gases whose compounds RDKit's valence table leaves out (KrF2)
+
+
+def parse(smiles):
+    """The molecule a SMILES names, or None; a krypton or radon compound is read without RDKit's valence check."""
+    mol = Chem.MolFromSmiles(smiles or '')
+    if mol is None and UNLISTED.search(smiles or ''):
+        mol = Chem.MolFromSmiles(smiles, sanitize=False)
+        if mol is not None:
+            mol.UpdatePropertyCache(strict=False)
+            Chem.SanitizeMol(mol, Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_PROPERTIES)
+    return mol
+
+
 def structure_formula(mol):
     m = Chem.AddHs(mol)
     n = {}
@@ -109,7 +123,7 @@ def errors(result, known):
         bad = [b for b in m.get('blocks') or [] if b not in known]
         if bad or not m.get('blocks'):
             out.append(f'{where}: blocks must be ids from the BLOCKS given ({", ".join(bad) or "none given"})')
-        mol = Chem.MolFromSmiles(m.get('smiles') or '')
+        mol = parse(m.get('smiles'))
         if mol is None:
             out.append(f'{where}: SMILES {m.get("smiles")!r} does not parse')
             continue
@@ -168,7 +182,7 @@ def chapter(code):
     # one entry per structure, with every name and block the parts gave it
     merged = {}
     for m in found:
-        key = Chem.MolToSmiles(Chem.MolFromSmiles(m['smiles']))
+        key = Chem.MolToSmiles(parse(m['smiles']))
         if key in merged:
             e = merged[key]
             e['aliases'] = sorted({*e['aliases'], *m.get('aliases', []), m['name']} - {e['name']})
