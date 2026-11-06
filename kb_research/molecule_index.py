@@ -32,6 +32,7 @@ OUT = HERE.parent / 'textbook-digest'
 SCIVID_DATA = HERE.parent / 'scivid-data'
 MODEL = os.environ.get('MOLECULE_MODEL') or 'claude-opus-5-5-openrouter'
 CHUNK = 30000            # characters of blocks per call: a chapter is two to four calls
+ATTEMPTS = 3            # the last one keeps the species that pass and sets the rest aside
 KINDS = ('molecule', 'ion', 'radical', 'intermediate', 'complex', 'ionic')
 
 SCHEMA = '''{"molecules":[{"name":str (the name the book uses, as printed: "acetic acid", "tert-butyl alcohol", "ethene"),
@@ -48,8 +49,9 @@ species the blocks name or draw: molecules, ions, radicals, reaction intermediat
 radicals), complexes and ionic compounds. One entry per species; gather every block that names it.
 
 Leave out: classes and families ("alkanes", "alcohols", "haloarenes"); general formulas and R groups (RCOOH, CnH2n+2,
-R-X); polymers; mixtures and minerals with no single formula; elements named only as elements (sodium metal, chlorine
-the element is fine as Cl2 when the book writes Cl2).
+R-X); species the book says do not exist (He2 and Ne2, bond order zero); polymers; mixtures and minerals with no
+single formula; elements named only as elements (sodium metal, chlorine the element is fine as Cl2 when the book
+writes Cl2).
 
 Write the formula exactly as the book prints it (condensed formulas as printed: CH3CH2OH, not C2H6O). Charges after
 ^ (SO4^2-, NH4^+, CH3^+). When the book names stereoisomers (cis/trans, E/Z, R/S, d/l), list each as its own entry
@@ -114,25 +116,42 @@ def structure_formula(mol):
     return n, Chem.GetFormalCharge(mol)
 
 
-def errors(result, known):
+def species_errors(m, known):
+    """What is wrong with one species the model listed, in words for the model."""
     out = []
-    for i, m in enumerate(result['molecules'], 1):
-        where = f'molecule {i} ({m.get("name", "?")})'
-        if m.get('kind') not in KINDS:
-            out.append(f'{where}: kind must be one of {", ".join(KINDS)}')
-        bad = [b for b in m.get('blocks') or [] if b not in known]
-        if bad or not m.get('blocks'):
-            out.append(f'{where}: blocks must be ids from the BLOCKS given ({", ".join(bad) or "none given"})')
-        mol = parse(m.get('smiles'))
-        if mol is None:
-            out.append(f'{where}: SMILES {m.get("smiles")!r} does not parse')
-            continue
-        if m.get('formula'):
-            want, got = book_formula(m['formula']), structure_formula(mol)
-            if want != got:
-                out.append(f'{where}: the SMILES is {CalcMolFormula(mol)} (charge {got[1]}) but the book formula '
-                           f'{m["formula"]} has {want[0]} (charge {want[1]}); fix whichever is wrong')
+    if m.get('kind') not in KINDS:
+        out.append(f'kind must be one of {", ".join(KINDS)}')
+    bad = [b for b in m.get('blocks') or [] if b not in known]
+    if bad or not m.get('blocks'):
+        out.append(f'blocks must be ids from the BLOCKS given ({", ".join(bad) or "none given"})')
+    mol = parse(m.get('smiles'))
+    if mol is None:
+        return out + [f'SMILES {m.get("smiles")!r} does not parse']
+    if m.get('formula'):
+        want, got = book_formula(m['formula']), structure_formula(mol)
+        if want != got:
+            out.append(f'the SMILES is {CalcMolFormula(mol)} (charge {got[1]}) but the book formula '
+                       f'{m["formula"]} has {want[0]} (charge {want[1]}); fix whichever is wrong')
     return out
+
+
+def errors(result, known):
+    return [f'molecule {i} ({m.get("name", "?")}): {e}' for i, m in enumerate(result['molecules'], 1)
+            for e in species_errors(m, known)]
+
+
+def keep_good(result, known, rejected):
+    """The last attempt: species still wrong leave the list (with why) so one of them cannot stop a chapter."""
+    kept = []
+    for m in result['molecules']:
+        problems = species_errors(m, known)
+        if problems:
+            rejected.append({'name': m.get('name'), 'formula': m.get('formula'), 'smiles': m.get('smiles'),
+                             'problems': problems})
+        else:
+            kept.append(m)
+    result['molecules'] = kept
+    return result
 
 
 def block_lines(digest):
@@ -166,17 +185,21 @@ def chapter(code):
     known = {b['id'] for b in digest['blocks']}
     pages = {b['id']: b.get('pages') or [] for b in digest['blocks']}
     llm = client(folder)
-    found = []
+    found, rejected = [], []
     for n, part in enumerate(chunks(list(block_lines(digest))), 1):
         prompt = PROMPT.format(cls=s['class'], book=s.get('book_title', ''), no=s['chapter'], title=s['title'],
                                schema=SCHEMA, blocks='\n'.join(part))
+        tries = []
 
         def validate(result, part_known={line.split(' ', 1)[0] for line in part}):
+            tries.append(1)
+            if len(tries) == ATTEMPTS:
+                return keep_good(result, part_known, rejected)
             problems = errors(result, part_known)
             if problems:
                 raise ValueError('; '.join(problems[:25]))
             return result
-        result = llm.call(f'molecules-{n}', prompt, max_tokens=32000, validate=validate, attempts=3)
+        result = llm.call(f'molecules-{n}', prompt, max_tokens=32000, validate=validate, attempts=ATTEMPTS)
         found += result['molecules']
         print(f'{code} part {n}: {len(result["molecules"])} species', flush=True)
     # one entry per structure, with every name and block the parts gave it
@@ -191,9 +214,10 @@ def chapter(code):
         else:
             merged[key] = {**m, 'aliases': sorted(set(m.get('aliases', [])) - {m['name']})}
     molecules = [{**m, 'pages': sorted({p for b in m['blocks'] for p in pages.get(b, [])})} for m in merged.values()]
-    out = {'chapter': code, 'class': s['class'], 'title': s['title'], 'model': MODEL, 'molecules': molecules}
+    out = {'chapter': code, 'class': s['class'], 'title': s['title'], 'model': MODEL, 'molecules': molecules,
+           'rejected': rejected}
     (folder / 'molecules.json').write_text(json.dumps(out, indent=1, ensure_ascii=False))
-    print(f'{code}: {len(molecules)} species -> {folder / "molecules.json"}', flush=True)
+    print(f'{code}: {len(molecules)} species, {len(rejected)} set aside -> {folder / "molecules.json"}', flush=True)
 
 
 def main():
