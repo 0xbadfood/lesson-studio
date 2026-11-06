@@ -203,6 +203,16 @@ class Responses:
         raise RuntimeError(f'{self.label} call {name} failed: {str(last).replace(self.api_key, "[redacted]")[:600]}')
 
 
+# a stream the network cuts mid-answer (the SDK's own transport since it moved to httpx2, and plain httpx)
+try:
+    import httpx2
+    SDK_DROPPED = (httpx2.RemoteProtocolError, httpx2.ReadError, httpx2.ReadTimeout)
+except ImportError:
+    SDK_DROPPED = ()
+DROPPED = (httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout) + SDK_DROPPED
+STREAM_RETRIES = 3
+
+
 class Claude:
     """Anthropic Messages API through the official SDK (anthropic >= 1.0), same interface as Chat."""
 
@@ -251,11 +261,21 @@ class Claude:
             started = time.monotonic()
             try:
                 # Streaming avoids HTTP timeouts on long outputs; "default" fallbacks route refusals server-side.
-                with client.beta.messages.stream(model=self.model, max_tokens=min(64000, max(16000, max_tokens * 3)),
-                                                 system=system, messages=messages, output_config=output_config,
-                                                 betas=['server-side-fallback-2026-07-01'],
-                                                 fallbacks='default') as stream:
-                    message = stream.get_final_message()
+                for cut in range(STREAM_RETRIES + 1):
+                    try:
+                        with client.beta.messages.stream(model=self.model,
+                                                         max_tokens=min(64000, max(16000, max_tokens * 3)),
+                                                         system=system, messages=messages, output_config=output_config,
+                                                         betas=['server-side-fallback-2026-07-01'],
+                                                         fallbacks='default') as stream:
+                            message = stream.get_final_message()
+                        break
+                    except DROPPED as exc:
+                        # a stream cut mid-answer is the network's fault, not the answer's: ask again, same attempt
+                        _write(folder / f'dropped-{attempt}-{cut}.json', {'type': type(exc).__name__, 'error': str(exc)[:500]})
+                        if cut == STREAM_RETRIES:
+                            raise anthropic.APIConnectionError(request=None, message=f'stream cut {cut + 1} times: {exc}') from exc
+                        time.sleep(10 * (cut + 1))
                 raw = message.to_dict()
                 raw['elapsed_seconds'] = round(time.monotonic() - started, 2)
                 raw['usage'] = {'input_tokens': message.usage.input_tokens, 'output_tokens': message.usage.output_tokens}

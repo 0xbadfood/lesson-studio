@@ -94,25 +94,50 @@ def book_formula(text):
     return counts(body), (int(sign.group(1) or 1) * (1 if sign.group(2) == '+' else -1)) if sign else 0
 
 
-UNLISTED = re.compile(r'\[(Kr|Rn)[^\]]*\]')   # noble gases whose compounds RDKit's valence table leaves out (KrF2)
+# p-block atoms from period 3 down may hold more than eight electrons (ClF3, BrF5, IF7, KrF2, XeF4): RDKit's valence
+# table refuses many of them, so they are checked by electron count instead
+EXPANDS = {'Al', 'Si', 'P', 'S', 'Cl', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Sn', 'Sb', 'Te', 'I', 'Xe', 'Rn'}
+VALENCE_ELECTRONS = {'Al': 3, 'Si': 4, 'Ge': 4, 'Sn': 4, 'P': 5, 'As': 5, 'Sb': 5, 'S': 6, 'Se': 6, 'Te': 6,
+                     'Cl': 7, 'Br': 7, 'I': 7, 'Kr': 8, 'Xe': 8, 'Rn': 8}
 
 
 def parse(smiles):
-    """The molecule a SMILES names, or None; a krypton or radon compound is read without RDKit's valence check."""
+    """The molecule a SMILES names, or None. When RDKit's valence table refuses it, every atom but the
+    octet-expanding ones is checked by RDKit as usual, and those by electron count: the bonds and charge may not need
+    more valence electrons than the atom has."""
     mol = Chem.MolFromSmiles(smiles or '')
-    if mol is None and UNLISTED.search(smiles or ''):
-        mol = Chem.MolFromSmiles(smiles, sanitize=False)
-        if mol is not None:
-            mol.UpdatePropertyCache(strict=False)
-            Chem.SanitizeMol(mol, Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_PROPERTIES)
-    return mol
+    if mol is not None or not smiles:
+        return mol
+    raw = Chem.MolFromSmiles(smiles, sanitize=False)
+    if raw is None or not any(a.GetSymbol() in EXPANDS for a in raw.GetAtoms()):
+        return None
+    rest = Chem.RWMol(raw)
+    for atom in rest.GetAtoms():
+        if atom.GetSymbol() in EXPANDS:
+            atom.SetAtomicNum(0)
+            atom.SetNoImplicit(True)
+    try:
+        Chem.SanitizeMol(rest)
+    except Exception:
+        return None
+    for atom in raw.GetAtoms():
+        if atom.GetSymbol() in EXPANDS:
+            used = sum(b.GetBondTypeAsDouble() for b in atom.GetBonds()) + atom.GetNumExplicitHs()
+            if VALENCE_ELECTRONS[atom.GetSymbol()] - atom.GetFormalCharge() - used < 0:
+                return None
+            atom.SetNoImplicit(True)
+    raw.UpdatePropertyCache(strict=False)
+    Chem.SanitizeMol(raw, Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_PROPERTIES)
+    return raw
 
 
 def structure_formula(mol):
+    """Element counts and charge; deuterium and tritium count as D and T, as books write them (D2O, ND3)."""
     m = Chem.AddHs(mol)
     n = {}
     for atom in m.GetAtoms():
-        n[atom.GetSymbol()] = n.get(atom.GetSymbol(), 0) + 1
+        symbol = {2: 'D', 3: 'T'}.get(atom.GetIsotope(), 'H') if atom.GetAtomicNum() == 1 else atom.GetSymbol()
+        n[symbol] = n.get(symbol, 0) + 1
     return n, Chem.GetFormalCharge(mol)
 
 
