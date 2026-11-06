@@ -105,8 +105,10 @@ def parse(smiles):
     """The molecule a SMILES names, or None. When RDKit's valence table refuses it, every atom but the
     octet-expanding ones is checked by RDKit as usual, and those by electron count: the bonds and charge may not need
     more valence electrons than the atom has."""
-    mol = Chem.MolFromSmiles(smiles or '')
-    if mol is not None or not smiles:
+    if not (smiles or '').strip():
+        return None                      # RDKit reads '' as a molecule with no atoms
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is not None:
         return mol
     raw = Chem.MolFromSmiles(smiles, sanitize=False)
     if raw is None or not any(a.GetSymbol() in EXPANDS for a in raw.GetAtoms()):

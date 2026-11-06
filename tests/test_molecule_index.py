@@ -11,6 +11,7 @@ class Parse(unittest.TestCase):
         self.assertEqual(mi.book_formula('KrF2'), mi.structure_formula(kr))
         self.assertIsNotNone(mi.parse('F[Xe](F)(F)F'))
         self.assertIsNone(mi.parse('C(C)(C)(C)(C)C'))
+        self.assertIsNone(mi.parse(''))   # an empty SMILES is no molecule (ClF3 came back as '')
 
     def test_expanded_octets_parse_by_electron_count(self):
         # 2026-11-06, Chemical Bonding: RDKit's valence table refuses ClF3, BrF5 and IF7, which the book draws
