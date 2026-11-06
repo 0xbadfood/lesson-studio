@@ -63,10 +63,24 @@ BLOCKS:
 {blocks}'''
 
 
+# groups and ligands books write by name (Ph, en, py, edta): Bondwork's catalog spells them out the same way
+GROUPS = [(r'Ph(?![a-z])', 'C6H5'), (r'Me(?![a-z])', 'CH3'), (r'Et(?![a-z])', 'C2H5'), (r'(?<![A-Za-z])en(?![a-z])', 'C2H8N2'),
+          (r'(?<![A-Za-z])py(?![a-z])', 'C5H5N'), (r'(?<![A-Za-z])ox(?![a-z])', 'C2O4'), (r'(?<![A-Za-z])gly(?![a-z])', 'C2H4NO2'),
+          (r'(?<![A-Za-z])acac(?![a-z])', 'C5H7O2'), (r'(?<![A-Za-z])(?:edta|EDTA)(?![a-z])', 'C10H12N2O8')]
+
+
+def spelled_out(text):
+    """A book formula with its named groups written as atoms, and a trailing position tag (-o, -m, -p) dropped."""
+    text = re.sub(r'[-\s][omp]$', '', text.strip())
+    for pattern, atoms in GROUPS:
+        text = re.sub(pattern, f'({atoms})', text)
+    return text
+
+
 def counts(text):
     """Element counts of a condensed formula: bracketed groups with multipliers, bond marks ignored, hydrates added."""
-    text = re.sub(r'[-=≡–—]', '', text)
-    main, *hydrates = re.split(r'[·*]', text)
+    text = re.sub(r'[-=≡–—]', '', spelled_out(text))
+    main, *hydrates = re.split(r'[·.*]', text)
     stack = [{}]
     for el, k1, opening, closing, k2 in re.findall(r'([A-Z][a-z]?)([0-9]*)|([(\[])|([)\]])([0-9]*)', main):
         if opening:

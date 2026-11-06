@@ -24,6 +24,15 @@ class Parse(unittest.TestCase):
         self.assertIsNone(mi.parse('FCl(F)FC(C)(C)(C)C'))          # the carbon is still checked by RDKit
         self.assertIsNone(mi.parse('[Ne][Ne]'))                    # period 2: no expanded octet
 
+    def test_named_groups_dot_hydrates_and_position_tags(self):
+        # 2026-11-06, Coordination Compounds and Aldehydes: 28 right structures set aside for formulas we misread
+        for formula, smiles in (('[Co(en)3]^3+', '[Co+3].NCCN.NCCN.NCCN'), ('[CrCl3(py)3]', '[Cr+3].[Cl-].[Cl-].[Cl-].c1ccncc1.c1ccncc1.c1ccncc1'),
+                                ('PhCOPh', 'O=C(c1ccccc1)c1ccccc1'), ('PhMgBr', 'Br[Mg]c1ccccc1'),
+                                ('CuSO4.5H2O', '[Cu+2].[O-]S(=O)(=O)[O-].O.O.O.O.O'), ('OHCC6H4CHO-p', 'O=Cc1ccc(C=O)cc1'),
+                                ('edta^4-', '[O-]C(=O)CN(CC(=O)[O-])CCN(CC(=O)[O-])CC(=O)[O-]'), ('EtOH', 'CCO')):
+            self.assertEqual(mi.book_formula(formula), mi.structure_formula(mi.parse(smiles)), formula)
+        self.assertEqual(mi.book_formula('Mn'), ({'Mn': 1}, 0))
+
     def test_deuterium_counts_as_d(self):
         # 2026-11-06, Hydrogen: D2, HD and ND3 were set aside, counted as H2 and NH3
         for smiles, formula in (('[2H][2H]', 'D2'), ('[2H][H]', 'HD'), ('[2H]N([2H])[2H]', 'ND3'), ('[2H]N', 'NH2D'),
