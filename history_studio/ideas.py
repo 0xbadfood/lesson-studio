@@ -25,7 +25,7 @@ SHORTEST, LONGEST = 3, 5          # minutes; the idea's complexity decides withi
 TASK = (
     "A short film has just taught one textbook concept, faithfully and completely (its narration and evidence are "
     "below). Students who found it hard now need its key ideas simplified: each key idea becomes its own short film "
-    "of {shortest}-{longest} minutes that drills down one idea with analogies and everyday pictures. Choose {fewest}-"
+    "of {shortest}-{longest} minutes that drills down one idea slowly, with an analogy and everyday examples (students say the book is too dense and quick). Choose {fewest}-"
     "{most} key ideas from this concept: the ideas everything else rests on and the ones students most often find "
     "hard or get wrong, in the order a student should watch them. Do not list mere facts or definitions; a key idea "
     "is something to understand. For each give id ('I1'...), title (a short question or statement a student would "
